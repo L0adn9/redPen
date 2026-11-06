@@ -1,0 +1,3 @@
+CLO1 | Prepare and visualise real-world data using appropriate tools | tasks: T1 | criteria: Data cleaning and figures (supervised)
+CLO2 | Derive evidence-based recommendations from data analysis | tasks: T2 | criteria: Evidence-based insights and recommendations
+CLO3 | Explain and adapt an analysis workflow | tasks: T3 | criteria: Walkthrough and live change

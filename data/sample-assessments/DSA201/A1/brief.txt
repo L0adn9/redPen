@@ -1,0 +1,19 @@
+SYNTHETIC SAMPLE written for RedPen testing. Not an official APU assessment.
+
+Module: DSA201 Data Structures & Algorithms (Level 2)
+Assessment: A1, Individual Assignment (40% of module)
+Lecturer: Dr. Sample Lecturer (REPLACE_WITH_TEST_LECTURER_EMAIL)
+Pass mark: 40%
+AI use: not stated.
+
+Scenario
+A university library holds 250,000 book records. Staff need to search books by ISBN and by title, and to produce a list of books sorted by publication year for the annual stock report. You have been asked to recommend and implement suitable algorithms.
+
+Tasks
+T1 (20 marks) Explain how bubble sort, merge sort, quick sort and binary search work, including their best, average and worst-case time complexity.
+T2 (15 marks) Produce a comparison table of the four algorithms covering time complexity, space complexity and stability.
+T3 (30 marks) Recommend which sorting and searching algorithms the library should use for the stock report and for ISBN/title search. Justify your choice for this scenario, with reference to the data size and how often each operation runs.
+T4 (25 marks) Implement your chosen search algorithm in Python and show test cases with their outputs.
+T5 (10 marks) Presentation, structure and referencing (APA 7th).
+
+Submission: one report (max 2,500 words) plus a .py file, uploaded to Moodle in Week 7.

@@ -1,0 +1,3 @@
+CLO1 | Plan and track individual work within an agile software project | tasks: T1 | criteria: Evidence of individual contribution
+CLO2 | Evaluate project risks and their management using appropriate frameworks | tasks: T2 | criteria: Risk analysis from team records
+CLO3 | Reflect on professional practice and act on feedback | tasks: T3 | criteria: Response to peer feedback

@@ -1,0 +1,3 @@
+CLO1 | Design a conceptual data model that satisfies given business requirements | tasks: T1,T4 | criteria: ERD correctness and assumptions, Reflection on design decisions
+CLO2 | Apply normalisation to produce a relational schema in 3NF | tasks: T2 | criteria: Normalisation to 3NF
+CLO3 | Implement and query a relational database using SQL | tasks: T3 | criteria: SQL implementation

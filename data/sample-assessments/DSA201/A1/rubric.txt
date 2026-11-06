@@ -1,0 +1,16 @@
+SYNTHETIC SAMPLE written for RedPen testing. Not an official APU assessment.
+
+Rubric: DSA201 A1
+Criterion | Max | Task | CLO
+Explanation of algorithms | 20 | T1 | CLO1
+Complexity comparison table | 15 | T2 | CLO1
+Justification for the scenario | 30 | T3 | CLO2
+Implementation and testing | 25 | T4 | CLO3
+Presentation and referencing | 10 | T5 | -
+
+Band descriptors (apply to every criterion, as a share of that criterion's marks):
+- Excellent (80-100%): complete, accurate, insightful, specific to the scenario, well justified.
+- Good (65-79%): accurate and mostly complete, some specific justification.
+- Satisfactory (50-64%): generally correct but generic or partly incomplete.
+- Pass (40-49%): basic, with errors or significant gaps.
+- Fail (0-39%): missing, largely incorrect or irrelevant.

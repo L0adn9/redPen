@@ -1,0 +1,22 @@
+# Secrets: never commit
+secrets*
+*.secret
+.env
+*.env
+client_secret*
+credentials*.json
+
+# Real (non-synthetic) data stays in Drive, not in the repo
+data/real/
+data/calibration/*real*
+data/pilot/briefs/
+*.pdf.raw
+
+# Video files are too big; link to them instead
+video/*.mp4
+video/*.mov
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/

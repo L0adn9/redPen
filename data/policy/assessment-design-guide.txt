@@ -1,0 +1,44 @@
+REDPEN ASSESSMENT DESIGN GUIDE
+Knowledge file for the RedPen Redesign agent and the RedPen Insight chat agent.
+Summary compiled by the RedPen team from public sources (listed at the end). Not an official APU policy.
+
+1. WHY REDESIGN
+An assessment is only useful as evidence of a course learning outcome (CLO) if a student cannot pass it without achieving that outcome. If an unedited AI answer passes, the assessment no longer reliably evidences the CLOs it is mapped to. Malaysian programmes map CLOs to programme learning outcomes (PLOs) and must align assessment to learning outcomes (MQA Code of Practice for Programme Accreditation, COPPA 2nd edition). A redesign must keep the same CLOs assessed.
+
+2. AI ASSESSMENT SCALE (AIAS, version 2.1; Perkins, Roe & Furze, 2025)
+Level 1, No AI: completed without AI, usually in a supervised setting.
+Level 2, AI Planning: AI may be used for brainstorming, outlining and research; the final work is the student's own.
+Level 3, AI Collaboration: AI may help draft and refine; the student critically evaluates and modifies AI output and documents how AI was used.
+Level 4, Full AI: AI may be used throughout; assessment focuses on the student's direction, judgement and quality of the result.
+Level 5, AI Exploration: creative or novel use of AI is itself part of the task.
+State the level clearly in the brief. A level is only meaningful if the design makes it enforceable; levels 1-2 normally need a secure (supervised or verified) component.
+
+3. THE TWO-LANE APPROACH
+Lane 1, "secure" (Bath: "closed"; AUT: "Channel 1"): assessments that assure learning under controlled conditions (in-class, invigilated, viva, live demonstration). Used to certify that CLOs are met.
+Lane 2, "open" (Bath: "open"; AUT: "Channel 2"): AI use is allowed and scaffolded; the focus is learning, process and judgement.
+University of Sydney introduced the two-lane approach in Semester 2 2025. The University of Bath's two-lane framework replaces its earlier ABC categories from September 2026. A programme should make sure every CLO is assured by at least one secure-lane assessment somewhere in the programme.
+
+4. REDESIGN TECHNIQUES (pick 1-3 per option; estimate the extra marking time)
+a) Viva checkpoint: a 5-10 minute oral where the student explains and modifies their own work. Strong for code, analysis and design. About +5-10 min per student; can be sampled (e.g. 20% plus all borderline cases).
+b) Recorded walkthrough: a 3-5 minute screen recording explaining decisions, with a live change requested in the brief. About +4 min per student.
+c) In-class component: part of the task done in a lab/tutorial (e.g. the core algorithm or analysis), with take-home extension. +0-2 min.
+d) Class-released or local data: data released only in class, generated per student, or specific to APU/Malaysia (e.g. local timetable, campus survey, Malaysian open data). AI cannot know the values; results are checkable.
+e) Process evidence: drafts, version history (Git commits, document history), decision log, AI-use log. +2-3 min.
+f) Personalisation tied to verifiable activity: reflection must reference the student's own lab results, peer feedback received in class, or their own earlier submission.
+g) Critique-the-AI task (open lane, AIAS 3-4): give students an AI-generated answer; they must find errors, test it and improve it with evidence.
+h) Shift the weighting: move marks from easily generated content (definitions, generic explanation, formatting) to judgement, justification against specific data, and defence of decisions.
+i) Staged submission: proposal then final, with feedback in between; the final must respond to that feedback.
+
+5. GOOD PRACTICE RULES
+- Keep the same CLOs; say which part of the redesigned task evidences each CLO.
+- Be realistic for one lecturer with ~100 students; prefer sampling vivas over vivas for everyone.
+- Accessibility: offer alternatives (e.g. written viva in a supervised room) for students who need them.
+- Never rely on AI-text detectors; they are unreliable and unfair. Design so that evidence of learning is visible.
+- Tell students clearly what AI use is allowed (state the AIAS level in the brief).
+
+SOURCES
+- AI Assessment Scale: https://aiassessmentscale.com/ ; arXiv 2412.09029; Perkins, Roe & Furze (2025), JUTLP 22(7), doi:10.53761/rrm4y757
+- University of Sydney two-lane approach: https://www.sydney.edu.au/news-opinion/news/2024/11/27/university-of-sydney-ai-assessment-policy.html
+- University of Bath two-lane FAQ: https://teachinghub.bath.ac.uk/guide/the-two-lane-approach-frequently-asked-questions/
+- AUT: https://aut.ac.nz/about/teaching-learning-and-assessment/generative-ai-and-assessment-at-aut
+- MQA COPPA 2nd ed.: https://www2.mqa.gov.my/qad/v2/2021/June/COPPA%202nd%20Ed%20110621.pdf

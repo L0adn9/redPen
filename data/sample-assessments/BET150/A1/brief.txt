@@ -1,0 +1,14 @@
+SYNTHETIC SAMPLE written for RedPen testing. Not an official APU assessment.
+
+Module: BET150 Business Ethics (Level 1)
+Assessment: A1, Individual Essay (60% of module)
+Lecturer: Dr. Sample Lecturer (REPLACE_WITH_TEST_LECTURER_EMAIL)
+Pass mark: 40%
+AI use: not stated.
+
+Tasks
+T1 (60 marks) Critically discuss the ethical issues raised by the gig economy (e.g. food delivery and e-hailing platforms) in Malaysia. Apply TWO ethical theories (for example utilitarianism, Kantian ethics, virtue ethics or stakeholder theory) to analyse the responsibilities of platforms towards their workers.
+T2 (25 marks) Recommend three actions platforms should take to act more ethically, and justify each using your analysis.
+T3 (15 marks) Academic writing and referencing (APA 7th, at least 8 academic sources).
+
+Length: 2,000 words (+/- 10%). Submission: Moodle, Week 10.

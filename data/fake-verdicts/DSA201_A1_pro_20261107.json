@@ -1,0 +1,39 @@
+{
+  "module": "DSA201",
+  "module_name": "Data Structures & Algorithms",
+  "assessment": "A1",
+  "brief_path": "/RedPen/Assessments/DSA201/A1/brief.txt",
+  "lecturer_email": "REPLACE_WITH_TEST_LECTURER_EMAIL",
+  "model": "pro",
+  "audit_date": "2026-11-07",
+  "exposure": "HIGH",
+  "persona_grades": {
+    "copy_paster": "B+",
+    "prompt_engineer": "A",
+    "honest_helper": "C"
+  },
+  "persona_totals": {
+    "copy_paster": 72,
+    "prompt_engineer": 78,
+    "honest_helper": 55
+  },
+  "pass_mark": 40,
+  "clos_at_risk": [
+    {
+      "id": "CLO1",
+      "text": "Explain the operation and complexity of standard sorting and searching algorithms",
+      "why": "The copy-paster scored 17/20 on 'Explanation of algorithms'."
+    },
+    {
+      "id": "CLO2",
+      "text": "Analyse and justify the choice of data structure and algorithm for a given scenario",
+      "why": "The copy-paster scored 22/30 on 'Justification for the scenario'."
+    }
+  ],
+  "easy_criteria": [
+    "Explanation of algorithms",
+    "Complexity comparison table",
+    "Justification for the scenario"
+  ],
+  "summary": "An unedited AI answer to this brief scored B+ (72%), above the 40% pass mark. CLO1 and CLO2 are no longer reliably evidenced by this assessment."
+}

@@ -1,0 +1,17 @@
+SYNTHETIC SAMPLE written for RedPen testing. Not an official APU assessment.
+
+Module: DAN301 Data Analytics in Practice (Level 3)
+Assessment: A2, Individual Lab Assessment + Report (40% of module)
+Lecturer: Dr. Sample Lecturer (REPLACE_WITH_TEST_LECTURER_EMAIL)
+Pass mark: 40%
+AI use: AIAS Level 3 (AI Collaboration) for the report only; Part A is supervised with no AI.
+
+Context
+In the Week 10 lab, each student receives a unique dataset generated from their student ID (campus canteen transactions, 6 months). The dataset is not available before or outside the lab.
+
+Tasks
+T1 (40 marks) Part A, supervised in the Week 10 lab (no AI): clean your dataset and produce the three required summary figures. Your notebook is submitted at the end of the lab.
+T2 (40 marks) Part B, report (take-home): using YOUR dataset's results from Part A, identify two patterns in canteen demand and recommend changes to opening hours or stock. Every claim must cite a value from your own Part A notebook.
+T3 (20 marks) A 5-minute recorded walkthrough of your Part A notebook, in which you also make one change requested on the day of recording (the change is emailed to you when you start the recording window).
+
+Submission: lab notebook (end of Week 10 lab), report + recording link (Week 12).

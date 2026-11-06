@@ -1,0 +1,18 @@
+SYNTHETIC SAMPLE written for RedPen testing. Not an official APU assessment.
+
+Module: SEP310 Software Engineering Project Management (Level 3)
+Assessment: A2, Individual Portfolio (30% of module)
+Lecturer: Dr. Sample Lecturer (REPLACE_WITH_TEST_LECTURER_EMAIL)
+Pass mark: 40%
+AI use: AIAS Level 2 (AI Planning). You may use AI to brainstorm and plan; all submitted text and evidence must be your own.
+
+Context
+This portfolio accompanies your team project (A1). Your tutor signs your team's weekly meeting minutes in the lab, and your Git repository history is collected automatically by the module's GitHub Classroom.
+
+Tasks
+T1 (35 marks) Using your own commits from the team repository (minimum 15 commits, referenced by hash), explain how your individual contribution evolved across Sprints 1-3 and how it matched the sprint backlog.
+T2 (25 marks) Analyse ONE risk your team actually faced (as recorded in your signed meeting minutes) and evaluate how it was managed, using a risk management framework from the lectures.
+T3 (25 marks) Reflect on the peer feedback you received in the Week 8 lab review session (the written feedback forms are returned to you in class) and describe two concrete changes you made in response.
+T4 (15 marks) Professional presentation of the portfolio.
+
+Submission: PDF portfolio with links to commits and scanned signed minutes, Week 12.

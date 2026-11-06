@@ -1,0 +1,15 @@
+SYNTHETIC SAMPLE written for RedPen testing. Not an official APU assessment.
+
+Rubric: BET150 A1
+Criterion | Max | Task | CLO
+Application of ethical theories | 35 | T1 | CLO1
+Critical analysis of the Malaysian context | 25 | T1 | CLO2
+Justified recommendations | 25 | T2 | CLO2
+Academic writing and referencing | 15 | T3 | CLO3
+
+Band descriptors (apply to every criterion, as a share of that criterion's marks):
+- Excellent (80-100%): complete, accurate, insightful, specific to the scenario, well justified.
+- Good (65-79%): accurate and mostly complete, some specific justification.
+- Satisfactory (50-64%): generally correct but generic or partly incomplete.
+- Pass (40-49%): basic, with errors or significant gaps.
+- Fail (0-39%): missing, largely incorrect or irrelevant.

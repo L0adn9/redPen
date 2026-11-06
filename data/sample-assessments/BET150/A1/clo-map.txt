@@ -1,0 +1,3 @@
+CLO1 | Apply ethical theories to analyse business decisions | tasks: T1 | criteria: Application of ethical theories
+CLO2 | Evaluate the responsibilities of organisations towards stakeholders in a Malaysian context | tasks: T1,T2 | criteria: Critical analysis of the Malaysian context, Justified recommendations
+CLO3 | Communicate arguments in academic writing with appropriate referencing | tasks: T3 | criteria: Academic writing and referencing

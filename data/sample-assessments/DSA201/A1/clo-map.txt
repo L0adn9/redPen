@@ -1,0 +1,3 @@
+CLO1 | Explain the operation and complexity of standard sorting and searching algorithms | tasks: T1,T2 | criteria: Explanation of algorithms, Complexity comparison table
+CLO2 | Analyse and justify the choice of data structure and algorithm for a given scenario | tasks: T3 | criteria: Justification for the scenario
+CLO3 | Implement and test algorithms in a programming language | tasks: T4 | criteria: Implementation and testing
