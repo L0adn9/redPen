@@ -44,7 +44,7 @@ Build in this order and test each step. Exact button names in Gemini Enterprise 
    6. **Jira** search → create/update
    7. **Gmail** report
    8. **Condition** HIGH → **Calendar** event
-4. Test with `DSA201_A1_pro_20261107.json` (HIGH): expect a Jira issue, revised brief, email and invite. Test with `DAN301_A2_pro_20261107.json` (LOW): expect a Jira issue labelled `exposure-low` and no redesign.
+4. Check the fakes first: `python3 tools/check_verdict.py data/fake-verdicts/*.json` (Abdullah's checker; it must say OK). Test with `DSA201_A1_pro_20261107.json` (HIGH): expect a Jira issue, revised brief, email and invite. Test with `DAN301_A2_pro_20261107.json` (LOW): expect a Jira issue labelled `exposure-low` and no redesign.
 5. Message Abdullah: **"Fix workflow works on fake verdicts"**.
 
 ## 3. Event trigger (Sat)

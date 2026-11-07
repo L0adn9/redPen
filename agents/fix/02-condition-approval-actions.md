@@ -5,8 +5,13 @@
 - **Rule:** `exposure` **equals** `HIGH` **OR** `exposure` **equals** `MEDIUM` → go to the Redesign agent.
 - **Else (LOW):** skip the redesign and go straight to "Jira create/update" with label `exposure-low`, status **Audited**, plus a short Gmail "No action needed" note. Still log it: the register should show LOW results too.
 
-If the Condition step can't read a field from the JSON file directly, add a tiny **Gemini Agent** step first, "Read verdict", with the instruction:
-`Read the verdict JSON file that triggered this workflow and output it unchanged as JSON.` Then point the Condition at its `exposure` field.
+If the Condition step can't read a field from the JSON file directly (day-1 check #16), add a tiny **Gemini Agent** step first, "Read verdict":
+- **Connected apps:** Google Drive, restricted to `/RedPen/Verdicts/`
+- **Output format:** JSON
+- **Instruction:** `Open the verdict JSON file that triggered this workflow (or the file path given as input) in /RedPen/Verdicts/ and output its content unchanged as JSON. No markdown fences, no extra text.`
+Then point the Condition at its `exposure` field.
+
+Also apply Abdullah's step-scope finding (day-1 check #13): if a step can only see the step just before it, every step in the Fix workflow must copy the verdict forward. Add this line to the end of the Redesign, Compose and action-prep agent instructions: `Also output the input verdict unchanged under the key "verdict".`
 
 ## Approval step (after the Redesign agent)
 - **Approver:** the `lecturer_email` from the verdict. For the demo, use one of your own accounts as "the lecturer".

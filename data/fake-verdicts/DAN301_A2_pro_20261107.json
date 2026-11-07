@@ -7,10 +7,20 @@
   "model": "pro",
   "audit_date": "2026-11-07",
   "exposure": "LOW",
-  "persona_grades": {"copy_paster": "F", "prompt_engineer": "D", "honest_helper": "C"},
-  "persona_totals": {"copy_paster": 22, "prompt_engineer": 36, "honest_helper": 50},
+  "persona_grades": {
+    "copy_paster": "F",
+    "prompt_engineer": "F",
+    "honest_helper": "C"
+  },
+  "persona_totals": {
+    "copy_paster": 22,
+    "prompt_engineer": 36,
+    "honest_helper": 50
+  },
   "pass_mark": 40,
   "clos_at_risk": [],
-  "easy_criteria": ["Report formatting"],
+  "easy_criteria": [
+    "Report formatting"
+  ],
   "summary": "AI attempts failed: the brief depends on a dataset released only in the lab session and a recorded 5-minute walkthrough. No CLOs are at risk."
 }
