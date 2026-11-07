@@ -20,12 +20,14 @@ Build in this order. Test after each step and don't move on until it works. Exac
    4. `04-persona-honest-helper.md`
    - Personas 2–4 only need the Intake output. If the builder supports parallel branches, run them in parallel; otherwise run them in sequence.
 4. Run it on `DSA201/A1`. Check that each persona output is valid JSON and has answers for every selected task.
+5. **Before adding more steps, run day-1 check #13** (step scope). In the last persona step, ask it to repeat the module code from the Intake step.
+   - If it can't see the Intake output, switch to [`fallback-pass-through.md`](fallback-pass-through.md) now, not on Saturday night.
 
 ## 2. Examiner + Verdict + save (Sat morning)
 1. Add `05-examiner.md` (model **Pro**) after the personas.
 2. Add `06-verdict.md`.
 3. Add the **Drive upload** action (step 5 in `06-verdict.md`), saving to `/RedPen/Verdicts/`. Approve the review prompt.
-4. Run it on `DSA201/A1` and `DAN301/A2`. Expect DSA201 to be HIGH or MEDIUM and DAN301 to be LOW. If DAN301 comes out HIGH, the Examiner is too generous: re-read rule 4.
+4. Run it on `DSA201/A1` and `DAN301/A2`. Paste each verdict into `python3 tools/check_verdict.py -` (Ctrl-D to finish) to check it matches the contract before Hassan's workflow reads it. Expect DSA201 to be HIGH or MEDIUM and DAN301 to be LOW. If DAN301 comes out HIGH, the Examiner is too generous: re-read rule 4.
 5. When it works, message Hassan: **"Verdict files are landing in /Verdicts/"**.
 
 ## 3. Calibration round 1 (Sat afternoon)

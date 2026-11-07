@@ -27,7 +27,7 @@ RULES:
 4. persona_grades and persona_totals: copy grade and total_percent for each persona.
 5. summary: one or two plain sentences a busy lecturer understands, e.g. "An unedited AI answer to this brief scored B+ (72%), above the 40% pass mark. CLO1 and CLO2 are no longer reliably evidenced."
 6. model: "pro"
-7. audit_date: today's date in YYYY-MM-DD.
+7. audit_date: today's date in YYYY-MM-DD. If the workflow passes a run date/time variable, use that instead of your own idea of today's date.
 8. file_name: <module>_<assessment>_<model>_<YYYYMMDD>.json
 
 OUTPUT: only valid JSON, no markdown fences, exactly these keys:

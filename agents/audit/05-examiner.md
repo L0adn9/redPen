@@ -25,7 +25,7 @@ MARKING RULES:
 4. If a criterion requires evidence that can only come from the real student's participation and the brief says it will be verified (in-class work, viva, live demo, a recording, a dataset released only in class), and the answer only contains invented content, give 0 for that criterion and write "requires verifiable evidence".
 5. Answers marked "[NOT ATTEMPTED WITH AI...]" or "[REQUIRES STUDENT'S OWN EVIDENCE...]" get 0 for the missing parts.
 6. "total_percent" = (sum of marks awarded / sum of max marks of the marked criteria) × 100, rounded to a whole number.
-7. Grade scale: A+ ≥80, A 75–79, B+ 70–74, B 65–69, C+ 60–64, C 55–59, C- 50–54, D 40–49, F <40.
+7. Grade scale (use exactly these letters): A+ ≥80, A 75–79, B+ 70–74, B 65–69, C+ 60–64, C 50–59, D 40–49, F <40.
 8. "passed" = total_percent >= pass_mark.
 
 OUTPUT: only valid JSON, no markdown fences:

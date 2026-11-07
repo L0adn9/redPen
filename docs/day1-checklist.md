@@ -16,3 +16,6 @@ Run these the moment the license works. Write the result and the date. If a chec
 | 10 | Abdullah | A scheduled run can process **several** briefs (loop) | | Monthly run audits the top 3 due soonest; demo on 1 |
 | 11 | Both | Do write actions also pause for review in **scheduled/event** runs? | | Fine for the demo (human in the loop); say so in the pitch |
 | 12 | Both | Can agents/workflows be **shared** between our two accounts? | | Rebuild in the leader's account from the repo prompts |
+| 13 | Abdullah | **Step scope:** can a later step (e.g. the Examiner) use the output of *any* earlier step (Intake + all 3 personas), or only the step just before it? Test: in step 3, ask "repeat the module code from step 1". The docs don't say. | | Switch to pass-through mode: `agents/audit/fallback-pass-through.md` |
+| 14 | Abdullah | **Event payload:** with a Drive event trigger, how does the first step see the new file (name, path, folder)? Check what the Intake step receives. | | Manual trigger with the folder path input for the demo; event trigger only shown starting a run |
+| 15 | Abdullah | **Date:** does the Verdict agent write the correct `audit_date`, or a made-up one? | | Hard-code the date in the Verdict prompt on demo day, or drop the date from `file_name` and let Drive's timestamp do it |
