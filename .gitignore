@@ -20,3 +20,7 @@ video/*.mov
 .DS_Store
 .vscode/
 .idea/
+
+# Pre-licence prompt test bench (Gemini API). Local only: the product is built in Gemini Enterprise.
+tools/dryrun.py
+data/dryrun/
