@@ -1,0 +1,28 @@
+{
+  "file_name": "CT050-3-2-WAPP_Group_Assignment_flash_20261112.json",
+  "module": "CT050-3-2-WAPP",
+  "module_name": "Web Applications",
+  "assessment": "Group Assignment",
+  "brief_path": "/RedPen/Assessments/WAPP/GA/brief.txt",
+  "lecturer_email": "",
+  "model": "flash",
+  "audit_date": "2026-11-12",
+  "exposure": "LOW",
+  "persona_grades": {
+    "copy_paster": "F",
+    "prompt_engineer": "F",
+    "honest_helper": "F"
+  },
+  "persona_totals": {
+    "copy_paster": 33,
+    "prompt_engineer": 37,
+    "honest_helper": 18
+  },
+  "pass_mark": 50,
+  "clos_at_risk": [],
+  "easy_criteria": [
+    "Design & Modelling",
+    "Implementation & Discussion"
+  ],
+  "summary": "The AI personas failed to reach the 50% pass mark, largely because the live session criteria (CLO1) were not attempted. However, the AI demonstrated high proficiency in the documentation tasks (CLO2), with the prompt engineer scoring up to 80% on design and implementation criteria."
+}

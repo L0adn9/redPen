@@ -35,7 +35,7 @@ import sys
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "tools"))
-from redpen_audit import api_key, call, instructions, parse  # noqa: E402
+from redpen_audit import AuditError, api_key, call, instructions, parse  # noqa: E402
 from check_verdict import grade_for  # noqa: E402
 
 GRADES = ["F", "D", "C", "C+", "B", "B+", "A", "A+"]
@@ -133,8 +133,14 @@ def main():
             else:
                 user = json.dumps({"intake": intake, "student": {"persona": "student", "answers": [
                     {"task_id": "ALL", "answer": mask(answer)}]}}, ensure_ascii=False)
-                text, model = call(instructions("05-examiner.md"), user + "\n\n" + CALIBRATION_NOTE, key)
-                ex, _ = parse(text, "examiner")
+                for attempt in range(3):  # retry if the model returns broken JSON
+                    text, model = call(instructions("05-examiner.md"), user + "\n\n" + CALIBRATION_NOTE, key)
+                    try:
+                        ex, _ = parse(text, "examiner")
+                        break
+                    except AuditError:
+                        if attempt == 2:
+                            raise
                 ex["_model"] = model
                 out_file.write_text(json.dumps(ex, indent=2, ensure_ascii=False))
             res = (ex.get("results") or [{}])[0]

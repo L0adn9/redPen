@@ -1,0 +1,41 @@
+{
+  "module": "WAPP",
+  "assessment": "GA",
+  "run_date": "2026-11-12",
+  "steps": {
+    "01-intake": {
+      "model": "google/gemini-3-flash-preview",
+      "seconds": 8.8
+    },
+    "02-copy_paster": {
+      "model": "google/gemini-3-flash-preview",
+      "seconds": 6.2
+    },
+    "02-honest_helper": {
+      "model": "google/gemini-3-flash-preview",
+      "seconds": 7.6
+    },
+    "02-prompt_engineer": {
+      "model": "google/gemini-3-flash-preview",
+      "seconds": 10.1
+    },
+    "05-examiner": {
+      "model": "google/gemini-3-flash-preview",
+      "seconds": 13.6
+    },
+    "06-verdict": {
+      "model": "google/gemini-3-flash-preview",
+      "seconds": 3.3
+    }
+  },
+  "warnings": [],
+  "total_seconds": 35.8,
+  "contract": {
+    "ok": true,
+    "errors": [],
+    "warnings": [
+      "lecturer_email looks unset: ''",
+      "file_name 'CT050-3-2-WAPP_Group_Assignment_flash_20261112.json' should be 'CT050-3-2-WAPP_Group Assignment_flash_20261112.json'"
+    ]
+  }
+}

@@ -28,3 +28,4 @@ data/dryrun/
 
 # Python
 __pycache__/
+.venv/

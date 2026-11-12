@@ -1,0 +1,2 @@
+CLO3 | Demonstrate a solid understanding of how to write solutions using various data structures and algorithms | tasks: C++ array and linked-list programs, video | criteria: all part A criteria
+CLO2 | Explain and compare data structures and algorithms in documentation | tasks: Word documentation | criteria: all part B criteria

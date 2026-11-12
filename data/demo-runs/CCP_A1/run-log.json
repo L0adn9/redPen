@@ -1,0 +1,40 @@
+{
+  "module": "CCP",
+  "assessment": "A1",
+  "run_date": "2026-11-12",
+  "steps": {
+    "01-intake": {
+      "model": "google/gemini-3-flash-preview",
+      "seconds": 11.6
+    },
+    "02-honest_helper": {
+      "model": "google/gemini-3-flash-preview",
+      "seconds": 6.8
+    },
+    "02-copy_paster": {
+      "model": "google/gemini-3-flash-preview",
+      "seconds": 11.4
+    },
+    "02-prompt_engineer": {
+      "model": "google/gemini-3-flash-preview",
+      "seconds": 13.7
+    },
+    "05-examiner": {
+      "model": "google/gemini-3-flash-preview",
+      "seconds": 16.6
+    },
+    "06-verdict": {
+      "model": "google/gemini-3-flash-preview",
+      "seconds": 3.4
+    }
+  },
+  "warnings": [],
+  "total_seconds": 45.2,
+  "contract": {
+    "ok": true,
+    "errors": [],
+    "warnings": [
+      "lecturer_email looks unset: ''"
+    ]
+  }
+}

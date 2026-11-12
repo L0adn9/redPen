@@ -1,0 +1,38 @@
+{
+  "file_name": "DSTR_LW2_flash_20261112.json",
+  "module": "DSTR",
+  "module_name": "Data Structures",
+  "assessment": "LW2",
+  "brief_path": "/RedPen/Assessments/DSTR/LW2/brief.txt",
+  "lecturer_email": "",
+  "model": "flash",
+  "audit_date": "2026-11-12",
+  "exposure": "MEDIUM",
+  "persona_grades": {
+    "copy_paster": "D",
+    "prompt_engineer": "A+",
+    "honest_helper": "F"
+  },
+  "persona_totals": {
+    "copy_paster": 47,
+    "prompt_engineer": 100,
+    "honest_helper": 13
+  },
+  "pass_mark": 50,
+  "clos_at_risk": [
+    {
+      "id": "CLO3",
+      "text": "Demonstrate a solid understanding of how to write solutions using various data structures and algorithms",
+      "why": "The prompt_engineer scored 3/3 on 'Identify and address technical challenges'."
+    }
+  ],
+  "easy_criteria": [
+    "Identify and address technical challenges",
+    "Use of appropriate data structures and algorithms",
+    "Implementation of functional requirements",
+    "Code quality: readability, efficiency and correctness",
+    "Quality of individual contribution to the integrated system",
+    "Innovation and creativity in the solution"
+  ],
+  "summary": "An AI-prompted solution scored 100% on the written component, achieving an A+. While the copy-paster did not reach the 50% pass mark, CLO3 is significantly at risk as the technical requirements can be fully satisfied by AI."
+}

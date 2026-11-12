@@ -1,0 +1,13 @@
+CT077-3-2-DSTR Lab Work #1 + Solution Work (30 marks). Pass mark 50%.
+A. Lab Evaluation Work #1 (15 marks, individual), assessed from a 30-minute pre-recorded group VIDEO in which each member explains their part (a submitted recording, not a live session):
+- Utilization of data structures (Technical Proficiency): 4
+- Implementation of relevant algorithms (Technical Proficiency): 4
+- Demonstrates understanding of data structures/algorithms used (Comprehensive Understanding): 4
+- Justifies choices of structures/algorithms (Insightful Justification): 3
+B. Solution Work - Documentation (15 marks, group), Word document max 40 pages / 6000 words:
+- Theoretical Explanation (data structures, algorithms): 3
+- Input Output Screenshots: 3
+- Summary Discussions (incl. time and space complexity): 3
+- Conclusion & Reflection: 3
+- Content Organization: 3
+No band descriptors beyond the labels above. Use APU grade bands: 80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.

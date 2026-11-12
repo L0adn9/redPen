@@ -1,0 +1,63 @@
+{
+  "module": "CT074-3-2",
+  "assessment": "A1",
+  "exposure": "HIGH",
+  "options": [
+    {
+      "id": "R1",
+      "title": "Secure In-Class Viva & Decision Log",
+      "aias_level": 2,
+      "lane": "secure",
+      "techniques": [
+        "viva checkpoint",
+        "process evidence"
+      ],
+      "clo_coverage": [
+        {
+          "id": "CLO2",
+          "how": "Students must defend their code structure and synchronization choices in person, proving they 'applied' the concepts themselves."
+        },
+        {
+          "id": "CLO3",
+          "how": "The viva specifically targets safety aspects (deadlocks/race conditions) within their specific implementation."
+        }
+      ],
+      "targets_easy_criteria": [
+        "Explanation of the safety aspects of multi-threaded system implemented",
+        "Justification of coding techniques implemented"
+      ],
+      "extra_marking_minutes_per_student": 8,
+      "revised_task_text": "In addition to the code and report, students must maintain a 'Concurrency Decision Log' documenting three specific debugging challenges related to thread safety (e.g., how a race condition was identified and resolved). A mandatory 5-minute in-class viva will be conducted where students must explain their choice of synchronization primitives (e.g., Semaphores vs ReentrantLocks) and demonstrate their code's behavior when the 'emergency landing' scenario is triggered."
+    },
+    {
+      "id": "R2",
+      "title": "AI Critique & Stress Test",
+      "aias_level": 5,
+      "lane": "open",
+      "techniques": [
+        "critique/improve an AI-generated answer",
+        "class-released data"
+      ],
+      "clo_coverage": [
+        {
+          "id": "CLO2",
+          "how": "Ensures students can differentiate between generic AI code and optimized concurrent systems."
+        },
+        {
+          "id": "CLO3",
+          "how": "Focuses on safety by forcing students to find flaws in AI-generated synchronization logic."
+        }
+      ],
+      "targets_easy_criteria": [
+        "Depth of discussion of concurrency concepts",
+        "Explanations of concurrency concepts implemented with relevant code samples"
+      ],
+      "extra_marking_minutes_per_student": 5,
+      "revised_task_text": "Students are provided with a 'baseline' AI-generated solution for the airport simulation which contains three intentional, subtle concurrency bugs (e.g., a potential deadlock in the refueling logic). The task is to: 1) Identify and document the safety flaws in the AI code. 2) Implement a superior version that handles a 'class-exclusive' scenario: the refueling truck now has a 10% chance of breakdown, requiring a recovery thread. The report must compare the student's safety mechanisms against the baseline AI's flaws."
+    }
+  ],
+  "recommended": "R1",
+  "why_recommended": "R1 provides the highest assurance of student authorship through a brief viva, which directly addresses the AI's ability to perfectly mimic explanations of safety aspects.",
+  "email_summary": "The recent audit shows that AI can now generate a high-distinction (77%) solution for the Asia Pacific Airport simulation, including both functional Java code and safety explanations. This puts CLO2 and CLO3 at high risk as the AI handles thread synchronization and theoretical justifications with ease. I recommend implementing a short 5-minute in-class viva (Option R1) to verify student understanding of their specific code's safety logic. This move to the 'Secure Lane' ensures that while students may use tools for drafting, the final grade is based on their demonstrated ability to explain their own concurrent design decisions.",
+  "_model": "google/gemini-3-flash-preview"
+}

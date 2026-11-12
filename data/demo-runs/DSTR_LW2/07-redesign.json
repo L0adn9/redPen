@@ -1,0 +1,56 @@
+{
+  "module": "DSTR",
+  "assessment": "LW2",
+  "exposure": "MEDIUM",
+  "options": [
+    {
+      "id": "R1",
+      "title": "Invigilated Logic & Modification Lab",
+      "aias_level": 1,
+      "lane": "secure",
+      "techniques": [
+        "in-class or invigilated component",
+        "class-released data"
+      ],
+      "clo_coverage": [
+        {
+          "id": "CLO3",
+          "how": "Students must modify their specific data structure implementation in a supervised setting to handle a new, surprise constraint provided during the lab session."
+        }
+      ],
+      "targets_easy_criteria": [
+        "Identify and address technical challenges",
+        "Implementation of functional requirements",
+        "Code quality: readability, efficiency and correctness"
+      ],
+      "extra_marking_minutes_per_student": 10,
+      "revised_task_text": "Section 9 Update: Individual Evaluation Lab. In addition to the F2F Q&A, students must attend a 30-minute supervised lab session. You will be provided with a 'Surprise Scenario' (e.g., 'A specific delivery company is banned; all their parcels must be moved from the Priority Queue to a Stack for immediate return'). You must live-code this modification into your existing system without external AI assistance. Assessment will focus on your ability to adapt your chosen data structures to new technical challenges."
+    },
+    {
+      "id": "R2",
+      "title": "Version History & AI-Critique Log",
+      "aias_level": 3,
+      "lane": "open",
+      "techniques": [
+        "process evidence",
+        "critique/improve an AI-generated answer"
+      ],
+      "clo_coverage": [
+        {
+          "id": "CLO3",
+          "how": "Ensures the 'writing' of the solution is a human-led process of refinement and error-correction rather than a single prompt output."
+        }
+      ],
+      "targets_easy_criteria": [
+        "Innovation and creativity in the solution",
+        "Quality of individual contribution to the integrated system"
+      ],
+      "extra_marking_minutes_per_student": 5,
+      "revised_task_text": "Task 6 – Process Evidence (Compulsory): You must submit a development log containing: 1) Three distinct snapshots of your code (Initial logic, Mid-point integration, Final version). 2) If AI was used for 'Concept Clarification' (as per Yellow status), you must include the AI's output and a 200-word critique explaining where the AI's suggestion was inefficient or failed to meet the specific requirements of the APU Parcel System. Failure to show evolution of the code will result in a 0 for Technical Challenges."
+    }
+  ],
+  "recommended": "R1",
+  "why_recommended": "Moving the high-stakes logic verification to a 'secure' lane via a supervised modification task is the most robust way to ensure the student—not a prompt—actually understands the underlying data structure implementation.",
+  "email_summary": "Your DSTR audit shows that while the 'Yellow' AI policy is strict, a 'Prompt Engineer' persona can still achieve 100% by generating the core C++ logic. This puts CLO3 at risk because the AI handles all technical problem-solving. I recommend adding a short, invigilated 'Surprise Scenario' modification task to the individual evaluation. This forces students to demonstrate they can actually manipulate their code in real-time, effectively separating those who understand the logic from those who simply prompted it.",
+  "_model": "google/gemini-3-flash-preview"
+}

@@ -1,0 +1,40 @@
+{
+  "module": "DSTR",
+  "assessment": "LW2",
+  "run_date": "2026-11-12",
+  "steps": {
+    "01-intake": {
+      "model": "google/gemini-3-flash-preview",
+      "seconds": 14.6
+    },
+    "02-honest_helper": {
+      "model": "google/gemini-3-flash-preview",
+      "seconds": 6.1
+    },
+    "02-copy_paster": {
+      "model": "google/gemini-3-flash-preview",
+      "seconds": 7.3
+    },
+    "02-prompt_engineer": {
+      "model": "google/gemini-3-flash-preview",
+      "seconds": 11.3
+    },
+    "05-examiner": {
+      "model": "google/gemini-3-flash-preview",
+      "seconds": 10.8
+    },
+    "06-verdict": {
+      "model": "google/gemini-3-flash-preview",
+      "seconds": 2.9
+    }
+  },
+  "warnings": [],
+  "total_seconds": 39.5,
+  "contract": {
+    "ok": true,
+    "errors": [],
+    "warnings": [
+      "lecturer_email looks unset: ''"
+    ]
+  }
+}

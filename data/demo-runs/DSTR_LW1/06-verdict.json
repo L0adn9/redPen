@@ -1,0 +1,43 @@
+{
+  "file_name": "DSTR_LW1_flash_20261112.json",
+  "module": "DSTR",
+  "module_name": "Data Structures & Algorithms",
+  "assessment": "LW1",
+  "brief_path": "/RedPen/Assessments/DSTR/LW1/brief.txt",
+  "lecturer_email": "",
+  "model": "flash",
+  "audit_date": "2026-11-12",
+  "exposure": "HIGH",
+  "persona_grades": {
+    "copy_paster": "C",
+    "prompt_engineer": "C",
+    "honest_helper": "F"
+  },
+  "persona_totals": {
+    "copy_paster": 50,
+    "prompt_engineer": 57,
+    "honest_helper": 0
+  },
+  "pass_mark": 50,
+  "clos_at_risk": [
+    {
+      "id": "CLO2",
+      "text": "Explain and compare data structures and algorithms in documentation",
+      "why": "The prompt_engineer scored 10/15 on 'Explain and compare data structures and algorithms in documentation'."
+    },
+    {
+      "id": "CLO3",
+      "text": "Demonstrate a solid understanding of how to write solutions using various data structures and algorithms",
+      "why": "The prompt_engineer scored 9/15 on 'Demonstrate a solid understanding of how to write solutions using various data structures and algorithms'."
+    }
+  ],
+  "easy_criteria": [
+    "Justification for choices of structures/algorithms",
+    "Theoretical Explanation",
+    "Summary Discussions",
+    "Conclusion & Reflection",
+    "Content Organization",
+    "Utilization of data structures"
+  ],
+  "summary": "An unedited AI solution to this brief passed with a score of 50%, meeting the 50% pass threshold. CLO2 and CLO3 are at high risk because AI generated passing documentation and logic without human intervention."
+}

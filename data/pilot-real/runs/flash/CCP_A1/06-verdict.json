@@ -1,0 +1,46 @@
+{
+  "file_name": "CT074-3-2_A1_flash_20261112.json",
+  "module": "CT074-3-2",
+  "module_name": "Concurrent Programming",
+  "assessment": "A1",
+  "brief_path": "/RedPen/Assessments/CCP/A1/brief.txt",
+  "lecturer_email": "",
+  "model": "flash",
+  "audit_date": "2026-11-12",
+  "exposure": "HIGH",
+  "persona_grades": {
+    "copy_paster": "A",
+    "prompt_engineer": "A+",
+    "honest_helper": "C"
+  },
+  "persona_totals": {
+    "copy_paster": 77,
+    "prompt_engineer": 86,
+    "honest_helper": 57
+  },
+  "pass_mark": 50,
+  "clos_at_risk": [
+    {
+      "id": "CLO2",
+      "text": "Apply the concepts of concurrency and parallelism in the construction of a system using a suitable programming language",
+      "why": "The prompt_engineer scored 20/20 on 'Program runs appropriately with basic requirements *'."
+    },
+    {
+      "id": "CLO3",
+      "text": "Explain the safety aspects of multi-threaded and parallel systems",
+      "why": "The prompt_engineer scored 24/30 on 'Explanation of the safety aspects of multi-threaded system implemented [LO3-PO6]'."
+    }
+  ],
+  "easy_criteria": [
+    "Assumptions [LO3-PO6]",
+    "Explanation of the safety aspects of multi-threaded system implemented [LO3-PO6]",
+    "Justification of coding techniques implemented [LO3-PO6]",
+    "Depth of discussion of concurrency concepts [LO3-PO6]",
+    "Appropriateness of coding techniques used to implement design with appropriate comment lines in source codes *",
+    "Appropriateness of the Java concurrent programming facilities used",
+    "Program runs appropriately with basic requirements *",
+    "Additional requirements met *",
+    "Explanations of concurrency concepts implemented with relevant code samples *"
+  ],
+  "summary": "An unedited AI response to this brief achieved a high grade (77%), well above the 50% pass mark. CLO2 and CLO3 are at high risk as the AI effectively generates both functional concurrent Java code and the required theoretical explanations."
+}

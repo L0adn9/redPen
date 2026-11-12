@@ -1,0 +1,281 @@
+CT077-3-2-DSTR Lab Work #1 + Solution Work Page 1 of 9
+ COMPARATIVE ANALYSIS OF ARRAYS AND SINGLY
+ LINKED LISTS FOR SORTING AND SEARCHING IN
+ SMART HEALTHCARE & HOSPITAL PATIENT
+ MANAGEMENT SYSTEM
+ (Working Duration: Friday of Week 4 to Friday of Week 9 – 30 Marks)
+Background
+MetroHealth System is a major healthcare provider experiencing a surge in daily patient visits
+across its network. Each day, thousands of patients enter different facility types to seek
+consultation, treatment, emergency care, or routine health screenings. Concerned about
+waiting times, bed allocation, and operational bottlenecks, the hospital board wishes to
+optimize healthcare resource management. To better understand patient flow and resource
+usage, detailed registration and clinical data were collected across three distinct facilities:
+ 1. Facility A (General Hospital - Metropolitan Hub):
+ • Adult and elderly patients admitted or visited for outpatient consultations,
+ emergency care, surgical procedures, or routine check-ups.
+ 2. Facility B (University Medical Center):
+ • Young adults, students, and pediatric patients undergoing preventive health
+ screenings, minor treatments, vaccination drives, or sports injury rehab.
+ 3. Facility C (Community Health Clinic - Rural/Suburban):
+ • Residents of all ages seeking general practitioner consultations, chronic disease
+ monitoring, and maternal care.
+The dataset collected for each patient includes:
+ 1. Patient ID - A unique identifier for each patient (example: PT10042).
+ 2. Age - The age of the patient.
+ 3. Care Type - Type of healthcare service received (Emergency, Outpatient, Inpatient,
+ Vaccination, Rehabilitation, Routine Checkup).
+ 4. Length of Stay / Visit Duration (Hours) - The total hours spent in the facility.
+ 5. Base Cost Per Hour (MYR/hr) - The standard billing rate associated with the
+ specific care type.
+ 6. Days Visits Per Year - The average number of visits or days per year the patient
+ utilizes hospital services.
+Hospital administrators aim to analyze this data to identify high-cost care departments,
+compare medical service utilization across facilities, and design policies that reduce patient
+wait times while optimizing medical resource distribution.
+To perform this analysis efficiently, the hospital’s IT research team decided to store and process
+the dataset using arrays and singly linked lists, applying various sorting and searching
+algorithms. By comparing the performance of these fundamental data structures and
+algorithms, the administration can determine the most effective methods to manage large
+medical records while gaining actionable clinical insights.
+Level 2 Asia Pacific University of Technology and Innovation 2602
+CT077-3-2-DSTR Lab Work #1 + Solution Work Page 2 of 9
+Assignment Task
+ 1. Group Formation
+ a. This assignment must be completed in teams, with a minimum of THREE (3)
+ members and a maximum of FIVE (5) members per team.
+ 2. Datasets Provided
+ a. Three datasets are provided for this assignment:
+ o Dataset 1 - Facility A (General Hospital): Adult & elderly patients using
+ Emergency, Surgical, and Outpatient care.
+ o Dataset 2 - Facility B (University Medical Center): Students & young
+ adults using Rehabilitation, Vaccination, and Preventive Care.
+ o Dataset 3 - Facility C (Community Health Clinic): Residents of all ages
+ using General Consultation and Chronic Care services.
+ 3. Program Implementation
+ a. Implement Dataset 1, Dataset 2, and Dataset 3 using arrays.
+ b. Implement the same datasets using singly linked lists.
+ c. Ensure the data structures allow easy access for sorting, searching, and analysis
+ operations.
+ d. Develop two (2) separate programs:
+ o One focusing strictly on array implementation.
+ o The other focuses strictly on singly linked list implementation.
+ 4. Patient Demographic & Billing Categorization
+ a. Recategorize patients into the following age groups:
+ o 0–17: Pediatrics & Adolescents
+ o 18–25: Young Adults / University Students
+ o 26–45: Working Adults (Early Career)
+ o 46–60: Working Adults (Late Career)
+ o 61–100: Senior Citizens / Geriatric Care
+ b. For each age group, determine:
+ o Most preferred / requested Care Type.
+ o Total medical cost produced (Cost = Length of Stay x Base Cost Per Hour x
+ Days Visits Per Year).
+ c. Average medical cost per patient:
+ 𝐓𝐨𝐭𝐚𝐥 𝐌𝐞𝐝𝐢𝐜𝐚𝐥 𝐂𝐨𝐬𝐭 𝐢𝐧 𝐀𝐠𝐞 𝐆𝐫𝐨𝐮𝐩
+ 𝐀𝐯𝐞𝐫𝐚𝐠𝐞 𝐂𝐨𝐬𝐭 =
+ 𝐍𝐮𝐦𝐛𝐞𝐫 𝐨𝐟 𝐏𝐚𝐭𝐢𝐞𝐧𝐭𝐬 𝐢𝐧 𝐀𝐠𝐞 𝐆𝐫𝐨𝐮𝐩
+Level 2 Asia Pacific University of Technology and Innovation 2602
+CT077-3-2-DSTR Lab Work #1 + Solution Work Page 3 of 9
+5. Healthcare Expenditure & Service Analysis.
+ a. Calculate total medical billing costs per dataset.
+ b. Determine total medical costs grouped by Care Type.
+ c. Compare expenditure and visit durations across datasets and age groups.
+ d. Display results as text-based tables in the console.
+ Sample:
+6. Sorting Experiments
+ a. Sort datasets by Age, Visit Duration (Length of Stay), or Total Medical Cost.
+ b. Implement at least one (1) sorting algorithm.
+ c. Compare time complexity and memory usage between arrays and singly linked lists.
+ d. Display sorting performance results as text-based tables in the console.
+7. Searching Experiments
+ a. Search for patient records matching specific criteria, such as:
+ • Age group (example: 61–100)
+ • Specific Care Type (example: Emergency or Rehabilitation)
+ • Visit duration threshold (example: > 24 hours)
+ b. Implement search algorithms on unsorted vs. sorted data.
+ c. Compare execution time, steps/comparisons, and memory overhead between arrays
+ and singly linked lists.
+ d. Display search query results in formatted console tables.
+8. Performance Analysis
+ a. Record execution time and memory footprint for all sorting and searching
+ operations.
+ b. Analyze under which conditions arrays or singly linked lists perform better
+ (example: contiguous memory access vs. node pointer overhead, dynamic
+ insertion vs. fixed indexing).
+ c. Discuss real-world advantages and trade-offs of each data structure in medical
+ record management.
+9. Clinical Insights and Recommendations
+ a. Compare treatment costs and service preferences across datasets and age
+ groups using text table.
+ b. Identify which demographic groups generate the highest healthcare billing
+ and which care types experience the highest patient traffic.
+ c. Provide practical recommendations for hospital administrators to optimize
+ patient admission pipelines and reduce healthcare bottlenecks based on
+ demographic trends.
+Level 2 Asia Pacific University of Technology and Innovation 2602
+CT077-3-2-DSTR Lab Work #1 + Solution Work Page 4 of 9
+AI USAGE POLICY FOR CODING ASSIGNMENTS
+ 1. Students are strictly prohibited from using artificial intelligence (AI) tools to generate
+ complete or partial solutions, source code, algorithms, or program logic for this
+ assignment.
+ 2. The use of AI tools is permitted only for supportive purposes, such as:
+ • Understanding programming concepts or syntax
+ • Identifying relevant keywords or technical terms
+ • Clarifying error messages or documentation terminology
+ 3. All submitted code must be the student’s own original work. Lecturers reserve the
+ right to conduct oral questioning, code tracing, or live demonstrations to verify the
+ authenticity and understanding of submitted work.
+ 4. Therefore, students must be able to explain and justify every part of their code during
+ evaluation or questioning.
+ 5. If AI tools are used for assistance, students must clearly declare the purpose of AI
+ usage
+ Example, “AI was used to identify appropriate keywords related to file handling in C++”
+ 6. Copying, paraphrasing, or adapting AI-generated code or solutions, whether
+ modified or unmodified, is considered a violation of academic integrity.
+ 7. Any misuse of AI tools, including generating solutions beyond permitted assistance,
+ may result in penalties including:
+ • Zero (0) marks for the assignment OR
+ • Disciplinary action in accordance with institutional policies.
+Level 2 Asia Pacific University of Technology and Innovation 2602
+CT077-3-2-DSTR Lab Work #1 + Solution Work Page 5 of 9
+Submission Guidelines #1: Program and Video Submission – Lab Work #1
+(15 Marks)
+ 1. Your team is required to utilize C++ programming to develop this prototype,
+ comprising two programs in this section.
+ o Do not use GUI, charts, or external visualization libraries.
+ o Organize data neatly in text tables using formatting (e.g., fixed-width columns, separators).
+ 2. Built-in containers such as <list>, <vector>, etc. are not allowed in this assignment.
+ All containers need to be self-created.
+ Refer to the link: https://www.geeksforgeeks.org/containers-cpp-stl/ for further information on
+ built-in containers in STL C++.
+ 3. The program will be enhanced if your team effectively implements and compares
+ various useful searching or sorting algorithms in your developed prototype.
+ 4. The evaluation criteria for this lab work #1 include assessing the clarity and structural
+ design of the code, as well as the quality of comments and adherence to good
+ programming practices. (e.g., indentation, meaningful identifier names, comments,
+ etc.).
+ 5. Creativity is encouraged.
+ The best solution is not limited to the core features specified in this assignment. Teams
+ are encouraged to extend the system with additional logical functionalities, provided
+ that all enhancements are clearly related to and supported by data structure concepts.
+ 6. Plagiarism Policy and Penalty.
+ Plagiarism in any form, including copying code, algorithms, documentation, or analysis
+ from other groups, seniors, online sources, or AI-generated content without proper
+ acknowledgment, is strictly prohibited.
+ Any group found to have committed plagiarism will receive a FAIL (0 marks) for the
+ assignment. Further disciplinary action may be taken in accordance with the
+ institution’s academic integrity policy.
+ All submitted work must be original and developed solely by the assigned group members.
+ 7. The team leader must submit the system solution in a ZIP file format to Moodle by
+ Friday of Week 9, no later than 5:00 pm.
+ a) Include only the .cpp, .hpp, and .csv/text files in the ZIP file.
+ b) The ZIP file must follow this naming format:
+ “<GroupNo>_<Team Leader ID >_<Member 1 ID >_<Member 2 ID >_<Member 3 ID >.zip”
+ For example, “G1_TP012345_TP014556_TP067554_TP034325.zip”
+Level 2 Asia Pacific University of Technology and Innovation 2602
+CT077-3-2-DSTR Lab Work #1 + Solution Work Page 6 of 9
+ 8. Each team leader must also upload ONE (1) video recording to the Moodle system
+ by Friday of Week 9, no later than 5:00 pm.
+ a) The maximum duration for the overall video recording is 30 minutes.
+ b) All members must participate in the video recording, presenting and explaining
+ the development process in detail, with each member speaking for no more than 5
+ minutes.
+ c) Each member must relate their explanation to the workload matrix distribution
+ table provided in the Word document.
+ d) Compress the final video recording to under 200MB before submitting.
+ e) If the video exceeds the specified time limit (30 minutes), it will only be assessed
+ up to the specified duration.
+ f) Videos must be recorded at normal speed (1x) and cannot be sped up or adjusted
+ to meet the demo video duration requirements.
+ g) The video recording file must adhere to the following name format:
+ “<GroupNo>_<Team Leader ID >_<Member 1 ID >_<Member 2 ID >_<Member 3 ID >.mp4”
+ For example, “G1_TP012345_TP014556_TP067554_TP034325.mp4”
+ 9. Refer to Page 8 for marking criteria of this Lab Evaluation Work #1 submission.
+Level 2 Asia Pacific University of Technology and Innovation 2602
+CT077-3-2-DSTR Lab Work #1 + Solution Work Page 7 of 9
+Submission Guidelines #2: Documentation Submission – Solution Work (15
+Marks)
+ 1. Create a Word document (refer Appendix 1 in page 9) that explains the overall
+ efficiency and limitations of your developed system
+ 2. Clearly demonstrate the differences in implementation and performance between arrays
+ and linked lists based on the operations performed in this specific analysis scenario.
+ 3. Present results that clearly show the advantages and disadvantages of using arrays and
+ linked lists in this specific sentiment analysis scenario.
+ 4. Include a summary of all your hypotheses, observations, experimental results,
+ justifications, and reflections, etc. in your word documentation.
+ 5. Your team must include a workload distribution matrix table after the cover page,
+ showing each member's contributions to the project.
+ Note that this table will impact each member's personal final mark in Lab Evaluation Work #1
+ based on their stated contribution percentage.
+ 6. If you use some code which has been taken or adapted from another source (book,
+ magazine, internet, forum, etc.) then this must be cited and referenced using APA
+ Referencing Style within your source code, and this must be mentioned explicitly in
+ the report. Failure to reference code properly will be treated as plagiarism.
+ 7. The team leader is required to upload a word document before / on Friday of Week 9,
+ no later than 5:00 pm.
+ The documentation should be named using format:
+ “<GroupNo>_<Team Leader ID >_<Member 1 ID >_<Member 2 ID >_<Member 3 ID >.docx”
+ For example, “G1_TP012345_TP014556_TP067554_TP034325.docx”
+ 8. Refer to the Page 8 for marking criteria of this Solution Work submission.
+Level 2 Asia Pacific University of Technology and Innovation 2602
+CT077-3-2-DSTR Lab Work #1 + Solution Work Page 8 of 9
+ MARKING CRITERIA
+ (Lab Evaluation Work #1 - 15 MARKS)
+ This Lab Evaluation Work #1 will be evaluated according to the following
+ performance criteria:
+ Assessment Components Inclusive 15 Marks
+ CLO3: Lab Evaluation Task #1 – 30-Minute Video Recording
+ (Assessment will be based on individual performance)
+ Practical Skills: Use of Data Structures & Algorithms + Personal Understanding
+ Utilization of data structures Technical Proficiency
+ Implementation of relevant algorithms Technical Proficiency
+ Demonstrates understanding of data structures/algorithms Comprehensive
+ used Understanding
+ Justifies choices of structures/algorithms Insightful Justification
+ MARKING CRITERIA
+ (Solution Work - 15 MARKS)
+ This solution work will be evaluated according to the following performance criteria:
+ Assessment Components Inclusive 15 Marks
+ CLO2: Solution Work - Documentation
+ (Assessment will be based on group component)
+ Theoretical Explanation Clear explanation
+ (e.g., Data Structures, Algorithms)
+ Input Output Screenshots Adequate Screenshots
+ Summary Discussions Clear and insightful
+ (Inclusive Time and Space Complexity) analysis
+ Conclusion & Reflection Clearly highlighted and
+ (Other Relevant / Importance Discussions) insightful
+ Content Organization Well-structured and
+ logical flow
+Approximation of Total Pages for the documentation: 40 (max).
+Approximation of Words for the documentation: 6000 words (max)
+Level 2 Asia Pacific University of Technology and Innovation 2602
+CT077-3-2-DSTR Lab Work #1 + Solution Work Page 9 of 9
+ APPENDIX 1:
+ SOLUTION WORK - DOCUMENTATION
+ (15 MARKS)
+The report outline as below:
+ - Cover Page (1 page)
+ - Module Code and Name
+ - Intake Code
+ - Group Number
+ - Member List.
+ - Workload Matrix Table with signature (1 page)
+ - Theoretical Explanation (2 - 4 pages)
+ - Elaborate on the data manipulations in chosen data structures.
+ - Input Output Screenshots (5 - 15 pages)
+ - System input output screenshots
+ - Summary Discussions (5 - 15 pages)
+ - System efficiency (including actual execution time, time efficiency, space efficiency etc.).
+ - Summarize and discuss all the observations / thoughts made during the development.
+ - Critically summarize the strengths and weaknesses of the code you developed.
+ - Conclusion and Reflection (1 - 2 pages)
+ - Summary of your works
+ - Describe your future work in terms of your system weaknesses, if any.
+ - Additional personal thoughts on this assignment, if any.
+ - References (if applicable) (1 page)
+ - Appendix (if applicable) (1 page)
+Approximation of Total Pages : 40 (max).
+Approximation of Words : 6000 words (max)
+Level 2 Asia Pacific University of Technology and Innovation 2602

@@ -1,0 +1,69 @@
+{
+  "module": "DBS202",
+  "assessment": "A1",
+  "exposure": "HIGH",
+  "options": [
+    {
+      "id": "R1",
+      "title": "Two-Lane Secure Checkpoint & Local Data",
+      "aias_level": 2,
+      "lane": "secure",
+      "techniques": [
+        "viva checkpoint",
+        "class-released data",
+        "process evidence"
+      ],
+      "clo_coverage": [
+        {
+          "id": "CLO1",
+          "how": "Students must justify ERD entities and relationships against a live 'business rule update' provided in class."
+        },
+        {
+          "id": "CLO2",
+          "how": "Normalisation steps are verified via a version log showing the progression from 1NF to 3NF."
+        },
+        {
+          "id": "CLO3",
+          "how": "SQL implementation is tested via a 5-minute screencast explaining the logic of the income query."
+        }
+      ],
+      "targets_easy_criteria": [
+        "ERD correctness and assumptions",
+        "Normalisation to 3NF",
+        "SQL implementation"
+      ],
+      "extra_marking_minutes_per_student": 8,
+      "revised_task_text": "T1: Based on the scenario and the 'DBS202 Week 6 Case Update' (available only via Moodle), draw a Crow’s Foot ERD. T2: Normalise the provided dataset to 3NF. You must submit a 'Process Log' showing your initial 1NF draft and the changes made to reach 3NF. T3: Write SQL for the tables and queries. T4 (VIVA COMPONENT): Submit a 3-minute video walkthrough showing your ERD and running your SQL code. In the video, you must explain how your SQL query (c) specifically handles cases where an event has no bookings."
+    },
+    {
+      "id": "R2",
+      "title": "AI Critique & Implementation",
+      "aias_level": 4,
+      "lane": "open",
+      "techniques": [
+        "critique/improve an AI-generated answer",
+        "reflection tied to verifiable in-class activity"
+      ],
+      "clo_coverage": [
+        {
+          "id": "CLO1",
+          "how": "Critiquing an intentionally flawed AI-generated ERD proves conceptual understanding."
+        },
+        {
+          "id": "CLO2",
+          "how": "Repairing a 'broken' AI normalisation attempt demonstrates mastery of dependencies."
+        }
+      ],
+      "targets_easy_criteria": [
+        "ERD correctness and assumptions",
+        "Normalisation to 3NF"
+      ],
+      "extra_marking_minutes_per_student": 4,
+      "revised_task_text": "T1 (ERD): Use an AI tool to generate a schema for the scenario. Identify three specific errors or 'hallucinations' in the AI's model regarding the business rules (e.g., waiting list logic). Provide your corrected ERD. T2 (Normalisation): Take the provided 'AI-Generated 2NF' (see Appendix A) and prove why it fails to meet 3NF criteria by identifying transitive dependencies it missed. T3 (SQL): Implement your corrected model in SQL. T4 (Reflection): Describe how your design differs from the AI-generated version based on the feedback you received during the Week 5 in-class review."
+    }
+  ],
+  "recommended": "R1",
+  "why_recommended": "Option R1 provides the highest assurance of student authorship through a combination of 'secure' lane video evidence and local data that prevents generic AI generation.",
+  "email_summary": "Our audit shows that an unedited AI response can currently score 89% (A+) on this assessment, meaning it no longer reliably tests your learning outcomes for ERD design and SQL. I recommend shifting to a 'Secure' lane approach by adding a mandatory 3-minute video walkthrough where students must explain their specific design choices. Additionally, introducing a 'live' business rule update during the semester will prevent students from using pre-loaded AI prompts to generate the entire solution.",
+  "_model": "google/gemini-3-flash-preview"
+}

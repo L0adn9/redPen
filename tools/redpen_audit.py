@@ -324,6 +324,7 @@ def main():
     ap.add_argument("--email", help="lecturer email to put in the verdict")
     ap.add_argument("--date", default=dt.date.today().isoformat())
     ap.add_argument("--parallel", type=int, default=2)
+    ap.add_argument("--label", default="flash", help="model label written into the verdict: flash or pro")
     a = ap.parse_args()
     print(f"Backend: {backend()} | models (in order): " + ", ".join(models()))
     if a.check or not a.folders:
@@ -337,12 +338,12 @@ def main():
         module, assessment = folder.parent.name, folder.name
         txt = {n: (folder / n).read_text(encoding="utf-8") for n in ("brief.txt", "rubric.txt", "clo-map.txt")}
         res = run_audit(txt["brief.txt"], txt["rubric.txt"], txt["clo-map.txt"], module, assessment,
-                        lecturer_email=a.email, run_date=a.date, key=key,
+                        lecturer_email=a.email, run_date=a.date, key=key, model_label=a.label,
                         on_step=lambda n, d, s: print(f"  {module} {assessment} {n}: {s}s", flush=True))
         name = f"{module}_{assessment}"
         _save(res, pathlib.Path(a.out) / name)
         if a.save_demo:
-            if "data/real" in str(folder.resolve()):
+            if "data/real/" in str(folder.resolve()) + "/":
                 raise AuditError("refusing to save real data to data/demo-runs/")
             _save(res, DEMO / name)
         return name, res

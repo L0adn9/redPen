@@ -1,0 +1,310 @@
+{
+  "marked_criteria": [
+    "Introduction",
+    "Storyboard & Design Documents",
+    "Design & Modelling",
+    "Implementation & Discussion",
+    "Conclusion, Document Styles & Formatting",
+    "Web Page Layout & Appearance",
+    "User Authentication & Authorization",
+    "Dynamic Content",
+    "Insert, Update & Delete Records",
+    "Form Validation, Navigation & Usability"
+  ],
+  "results": [
+    {
+      "persona": "copy_paster",
+      "scores": [
+        {
+          "criterion": "Introduction",
+          "score": 7,
+          "max": 10,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The objectives and scope are clearly stated, though the project schedule is a very brief list rather than a detailed plan. It provides a solid foundation but lacks depth in the planning phase."
+        },
+        {
+          "criterion": "Storyboard & Design Documents",
+          "score": 6,
+          "max": 10,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Use cases and flow charts are mentioned but only described in text rather than presented as visual documents. This makes the requirement specification feel thin for a group project."
+        },
+        {
+          "criterion": "Design & Modelling",
+          "score": 7,
+          "max": 10,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The ERD and navigational structure are well-described textually, but the lack of actual wireframe images or detailed diagrams limits the effectiveness of the design documentation."
+        },
+        {
+          "criterion": "Implementation & Discussion",
+          "score": 7,
+          "max": 10,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The explanation of source code for CSS and SQL is functional, though the discussion is brief. It covers the requirements but does not provide extensive detail on the implementation logic."
+        },
+        {
+          "criterion": "Conclusion, Document Styles & Formatting",
+          "score": 6,
+          "max": 10,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The conclusion is a simple summary and the formatting is basic. While it includes references, the overall presentation is minimal for a final report."
+        },
+        {
+          "criterion": "Web Page Layout & Appearance",
+          "score": 0,
+          "max": 10,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "User Authentication & Authorization",
+          "score": 0,
+          "max": 10,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "Dynamic Content",
+          "score": 0,
+          "max": 10,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "Insert, Update & Delete Records",
+          "score": 0,
+          "max": 10,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "Form Validation, Navigation & Usability",
+          "score": 0,
+          "max": 10,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        }
+      ],
+      "total_percent": 33,
+      "grade": "F",
+      "passed": false
+    },
+    {
+      "persona": "prompt_engineer",
+      "scores": [
+        {
+          "criterion": "Introduction",
+          "score": 7,
+          "max": 10,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Good articulation of objectives and a clear 9-week schedule. The scope is well-defined, though a bit generic in its description of the CMS."
+        },
+        {
+          "criterion": "Storyboard & Design Documents",
+          "score": 7,
+          "max": 10,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Identifies primary users and specific use cases like self-assessment. The flowchart logic is sound, but again, is described rather than illustrated."
+        },
+        {
+          "criterion": "Design & Modelling",
+          "score": 8,
+          "max": 10,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The ERD description is robust and the navigational tree logic (two-click rule) shows professional design thinking. Wireframe descriptions are high-quality."
+        },
+        {
+          "criterion": "Implementation & Discussion",
+          "score": 8,
+          "max": 10,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Detailed discussion on Flexbox and stored procedures. The inclusion of a reflection on state management issues shows a deeper engagement with the implementation process."
+        },
+        {
+          "criterion": "Conclusion, Document Styles & Formatting",
+          "score": 7,
+          "max": 10,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Well-structured summary with formal citations. The document flow is logical and professional."
+        },
+        {
+          "criterion": "Web Page Layout & Appearance",
+          "score": 0,
+          "max": 10,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "User Authentication & Authorization",
+          "score": 0,
+          "max": 10,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "Dynamic Content",
+          "score": 0,
+          "max": 10,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "Insert, Update & Delete Records",
+          "score": 0,
+          "max": 10,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "Form Validation, Navigation & Usability",
+          "score": 0,
+          "max": 10,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        }
+      ],
+      "total_percent": 37,
+      "grade": "F",
+      "passed": false
+    },
+    {
+      "persona": "honest_helper",
+      "scores": [
+        {
+          "criterion": "Introduction",
+          "score": 4,
+          "max": 10,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Weakness: The project schedule is missing. As the schedule must be student-provided evidence, it receives zero for that portion."
+        },
+        {
+          "criterion": "Storyboard & Design Documents",
+          "score": 2,
+          "max": 10,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Weakness: Use cases are listed, but flow charts are completely missing. This criterion relies heavily on the student's unique journey evidence."
+        },
+        {
+          "criterion": "Design & Modelling",
+          "score": 3,
+          "max": 10,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Weakness: Wireframes and Navigational Structure diagrams are missing. Only a generic ERD description is provided."
+        },
+        {
+          "criterion": "Implementation & Discussion",
+          "score": 5,
+          "max": 10,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Provides a satisfactory explanation of the .NET Core strategy and SQL usage, but lacks the specific source code detail required for full marks."
+        },
+        {
+          "criterion": "Conclusion, Document Styles & Formatting",
+          "score": 4,
+          "max": 10,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "A very brief conclusion with no references or detailed formatting structure. It feels like an unfinished outline."
+        },
+        {
+          "criterion": "Web Page Layout & Appearance",
+          "score": 0,
+          "max": 10,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "User Authentication & Authorization",
+          "score": 0,
+          "max": 10,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "Dynamic Content",
+          "score": 0,
+          "max": 10,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "Insert, Update & Delete Records",
+          "score": 0,
+          "max": 10,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "Form Validation, Navigation & Usability",
+          "score": 0,
+          "max": 10,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        }
+      ],
+      "total_percent": 18,
+      "grade": "F",
+      "passed": false
+    }
+  ]
+}

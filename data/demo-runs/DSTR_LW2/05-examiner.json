@@ -1,0 +1,338 @@
+{
+  "marked_criteria": [
+    "Identify and address technical challenges",
+    "Use of appropriate data structures and algorithms",
+    "Implementation of functional requirements",
+    "Code quality: readability, efficiency and correctness",
+    "Quality of individual contribution to the integrated system",
+    "Innovation and creativity in the solution",
+    "Data structure selection and justification",
+    "Relevance of selected data structures to functionality",
+    "Justification of algorithms and operations",
+    "Understanding of efficiency, limitations and edge cases",
+    "Effectiveness of individual demonstration and responses"
+  ],
+  "results": [
+    {
+      "persona": "copy_paster",
+      "scores": [
+        {
+          "criterion": "Identify and address technical challenges",
+          "score": 2,
+          "max": 3,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The student identifies basic issues like duplicate IDs and missing info but fails to address more complex logical challenges like concurrent state management between Task 1 and Task 2."
+        },
+        {
+          "criterion": "Use of appropriate data structures and algorithms",
+          "score": 2,
+          "max": 3,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "Using a dictionary for O(1) lookup in T1 and a BST in T5 is appropriate, but the priority sorting in T2 uses a basic list sort on every request which is inefficient."
+        },
+        {
+          "criterion": "Implementation of functional requirements",
+          "score": 2,
+          "max": 3,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "Core requirements are met, though the BST removal in Task 5 is not actually implemented, only described in a comment."
+        },
+        {
+          "criterion": "Code quality: readability, efficiency and correctness",
+          "score": 1,
+          "max": 2,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The code is readable but lacks proper error handling for edge cases, such as removing a non-existent node in a BST without proper recursive logic."
+        },
+        {
+          "criterion": "Quality of individual contribution to the integrated system",
+          "score": 1,
+          "max": 2,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The individual modules are functional but there is little evidence of how they would pass data between Task 1 (Intake) and Task 5 (Category Tree) effectively."
+        },
+        {
+          "criterion": "Innovation and creativity in the solution",
+          "score": 1,
+          "max": 2,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The solution follows standard textbook patterns with no unique approach to the Smart Campus scenario."
+        },
+        {
+          "criterion": "Data structure selection and justification",
+          "score": 0,
+          "max": 4,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "Relevance of selected data structures to functionality",
+          "score": 0,
+          "max": 4,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "Justification of algorithms and operations",
+          "score": 0,
+          "max": 3,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "Understanding of efficiency, limitations and edge cases",
+          "score": 0,
+          "max": 2,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "Effectiveness of individual demonstration and responses",
+          "score": 0,
+          "max": 2,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        }
+      ],
+      "total_percent": 47,
+      "grade": "D",
+      "passed": false
+    },
+    {
+      "persona": "prompt_engineer",
+      "scores": [
+        {
+          "criterion": "Identify and address technical challenges",
+          "score": 3,
+          "max": 3,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "Well-considered challenges such as handling non-FIFO sorting in intake and heap management for priority requests are fully addressed."
+        },
+        {
+          "criterion": "Use of appropriate data structures and algorithms",
+          "score": 3,
+          "max": 3,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "Excellent choice of a Max-Heap for T2 and a Doubly Linked List for T1 to allow O(1) removal of specific nodes."
+        },
+        {
+          "criterion": "Implementation of functional requirements",
+          "score": 3,
+          "max": 3,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "All requirements, including complex BST removal and heapify logic, are fully implemented and functional."
+        },
+        {
+          "criterion": "Code quality: readability, efficiency and correctness",
+          "score": 2,
+          "max": 2,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "Code is clean, efficient, and includes helpful reflections that demonstrate understanding of the logic."
+        },
+        {
+          "criterion": "Quality of individual contribution to the integrated system",
+          "score": 2,
+          "max": 2,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "Clearly defined data structures that facilitate integration, such as the registeredIDs vector for cross-module validation."
+        },
+        {
+          "criterion": "Innovation and creativity in the solution",
+          "score": 2,
+          "max": 2,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "Creative use of heap-based priority for specific campus service types like 'Return to Sender' deadlines."
+        },
+        {
+          "criterion": "Data structure selection and justification",
+          "score": 0,
+          "max": 4,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "Relevance of selected data structures to functionality",
+          "score": 0,
+          "max": 4,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "Justification of algorithms and operations",
+          "score": 0,
+          "max": 3,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "Understanding of efficiency, limitations and edge cases",
+          "score": 0,
+          "max": 2,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "Effectiveness of individual demonstration and responses",
+          "score": 0,
+          "max": 2,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        }
+      ],
+      "total_percent": 100,
+      "grade": "A+",
+      "passed": true
+    },
+    {
+      "persona": "honest_helper",
+      "scores": [
+        {
+          "criterion": "Identify and address technical challenges",
+          "score": 1,
+          "max": 3,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The student only identifies theoretical challenges without implementing any code-based solutions."
+        },
+        {
+          "criterion": "Use of appropriate data structures and algorithms",
+          "score": 1,
+          "max": 3,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "Appropriate structures are named, but since no code is provided, the application cannot be assessed."
+        },
+        {
+          "criterion": "Implementation of functional requirements",
+          "score": 0,
+          "max": 3,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "Requirements are not implemented; the student provided a plan rather than code."
+        },
+        {
+          "criterion": "Code quality: readability, efficiency and correctness",
+          "score": 0,
+          "max": 2,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "No code was submitted for evaluation."
+        },
+        {
+          "criterion": "Quality of individual contribution to the integrated system",
+          "score": 0,
+          "max": 2,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "A plan does not constitute a contribution to an integrated software system."
+        },
+        {
+          "criterion": "Innovation and creativity in the solution",
+          "score": 0,
+          "max": 2,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "No implementation provided to judge innovation."
+        },
+        {
+          "criterion": "Data structure selection and justification",
+          "score": 0,
+          "max": 4,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "Relevance of selected data structures to functionality",
+          "score": 0,
+          "max": 4,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "Justification of algorithms and operations",
+          "score": 0,
+          "max": 3,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "Understanding of efficiency, limitations and edge cases",
+          "score": 0,
+          "max": 2,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "Effectiveness of individual demonstration and responses",
+          "score": 0,
+          "max": 2,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        }
+      ],
+      "total_percent": 13,
+      "grade": "F",
+      "passed": false
+    }
+  ]
+}

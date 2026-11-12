@@ -1,0 +1,175 @@
+{
+  "module": "CT074-3-2",
+  "module_name": "Concurrent Programming",
+  "assessment": "A1",
+  "folder_path": "/RedPen/Assessments/CCP/A1/",
+  "brief_path": "/RedPen/Assessments/CCP/A1/brief.txt",
+  "lecturer_email": "",
+  "ai_policy": "not stated",
+  "pass_mark": 50,
+  "total_marks": 100,
+  "context": "Asia Pacific Airport. You have been tasked to simulate the operations of the airport.",
+  "tasks": [
+    {
+      "id": "System",
+      "text": "Implementation: You should implement your simulation in Java. The simulation run should not take more than 60 seconds to simulate. Basic Requirements: There is only 1 runway for all planes to land and depart. There can only be 3 airplanes on the airport grounds, including the runway. Once an aircraft obtains permission to land, it should land on the runway, coast to the assigned gate, dock to the gate, allow passengers to disembark, refill supplies and fuel, receive new passengers, undock, coast to the assigned runway and take-off. Each step should take some time. As the airport is small, there is no waiting area on the ground for the planes to wait for a gate to become available. Additional Requirements: Passengers disembarking/embarking from the 3 gates and Refill supplies and cleaning of aircraft should happen concurrently. As there is only 1 refuelling truck, refuelling of aircraft should happen exclusively. A congested scenario should be simulated where 2 planes are waiting to land while the 2 gates are occupied, and a 3rd plane comes in with fuel shortage, requiring emergency landing. State your assumptions and how you will implement them. Include your own additional requirements based on assumptions made to simulate concurrency concepts. The Statistics: At the end of the simulation, i.e., when all planes have left the airport, the ATC manager should do some sanity checks of the airport and print out some statistics on the run (Maximum/Average/Minimum waiting time, Number of planes served/Passengers boarded). Video of the simulation running. Maximum 5 minutes per person. Simulate scenarios as stated above. Show which requirements are met in the output and corresponding code.",
+      "marks": 100
+    },
+    {
+      "id": "Report",
+      "text": "The documentation should detail the system implementation and testing. 1. Introduction and assumptions made. 2. Basic requirements met: List of requirements met, Short explanation of concurrency concepts (atomic statements, synchronization, etc) implemented, Code snippet of the Java concurrent programming facilities implemented. 3. Additional requirements met: List of requirements met, Short explanation of concurrency concepts implemented, Code snippet of the Java concurrent programming facilities implemented. 4. Requirements which were NOT met: List of basic requirements, List of additional requirements. Should not exceed 1500 words excluding references/appendix/coding.",
+      "marks": 100
+    }
+  ],
+  "selected_tasks": [
+    {
+      "id": "System",
+      "text": "Implementation: You should implement your simulation in Java. The simulation run should not take more than 60 seconds to simulate. Basic Requirements: There is only 1 runway for all planes to land and depart. There can only be 3 airplanes on the airport grounds, including the runway. Once an aircraft obtains permission to land, it should land on the runway, coast to the assigned gate, dock to the gate, allow passengers to disembark, refill supplies and fuel, receive new passengers, undock, coast to the assigned runway and take-off. Each step should take some time. As the airport is small, there is no waiting area on the ground for the planes to wait for a gate to become available. Additional Requirements: Passengers disembarking/embarking from the 3 gates and Refill supplies and cleaning of aircraft should happen concurrently. As there is only 1 refuelling truck, refuelling of aircraft should happen exclusively. A congested scenario should be simulated where 2 planes are waiting to land while the 2 gates are occupied, and a 3rd plane comes in with fuel shortage, requiring emergency landing. State your assumptions and how you will implement them. Include your own additional requirements based on assumptions made to simulate concurrency concepts. The Statistics: At the end of the simulation, i.e., when all planes have left the airport, the ATC manager should do some sanity checks of the airport and print out some statistics on the run (Maximum/Average/Minimum waiting time, Number of planes served/Passengers boarded). Video of the simulation running. Maximum 5 minutes per person. Simulate scenarios as stated above. Show which requirements are met in the output and corresponding code.",
+      "marks": 100
+    },
+    {
+      "id": "Report",
+      "text": "The documentation should detail the system implementation and testing. 1. Introduction and assumptions made. 2. Basic requirements met: List of requirements met, Short explanation of concurrency concepts (atomic statements, synchronization, etc) implemented, Code snippet of the Java concurrent programming facilities implemented. 3. Additional requirements met: List of requirements met, Short explanation of concurrency concepts implemented, Code snippet of the Java concurrent programming facilities implemented. 4. Requirements which were NOT met: List of basic requirements, List of additional requirements. Should not exceed 1500 words excluding references/appendix/coding.",
+      "marks": 100
+    }
+  ],
+  "rubric": [
+    {
+      "criterion": "Assumptions [LO3-PO6]",
+      "max": 20,
+      "bands": "80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO3"
+      ],
+      "tasks": [
+        "Report"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Explanation of the safety aspects of multi-threaded system implemented [LO3-PO6]",
+      "max": 30,
+      "bands": "80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO3"
+      ],
+      "tasks": [
+        "Report"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Justification of coding techniques implemented [LO3-PO6]",
+      "max": 30,
+      "bands": "80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO3"
+      ],
+      "tasks": [
+        "Report"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Depth of discussion of concurrency concepts [LO3-PO6]",
+      "max": 20,
+      "bands": "80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO3"
+      ],
+      "tasks": [
+        "Report"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Appropriateness of coding techniques used to implement design with appropriate comment lines in source codes *",
+      "max": 20,
+      "bands": "80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO2"
+      ],
+      "tasks": [
+        "System"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Appropriateness of the Java concurrent programming facilities used",
+      "max": 20,
+      "bands": "80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO2"
+      ],
+      "tasks": [
+        "System"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Program runs appropriately with basic requirements *",
+      "max": 20,
+      "bands": "80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO2"
+      ],
+      "tasks": [
+        "System"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Additional requirements met *",
+      "max": 20,
+      "bands": "80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO2"
+      ],
+      "tasks": [
+        "System"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Explanations of concurrency concepts implemented with relevant code samples *",
+      "max": 20,
+      "bands": "80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO2"
+      ],
+      "tasks": [
+        "System"
+      ],
+      "live_session": false
+    }
+  ],
+  "clos": [
+    {
+      "id": "CLO2",
+      "text": "Apply the concepts of concurrency and parallelism in the construction of a system using a suitable programming language",
+      "tasks": [
+        "System"
+      ],
+      "criteria": [
+        "Appropriateness of coding techniques used to implement design with appropriate comment lines in source codes *",
+        "Appropriateness of the Java concurrent programming facilities used",
+        "Program runs appropriately with basic requirements *",
+        "Additional requirements met *",
+        "Explanations of concurrency concepts implemented with relevant code samples *"
+      ]
+    },
+    {
+      "id": "CLO3",
+      "text": "Explain the safety aspects of multi-threaded and parallel systems",
+      "tasks": [
+        "Report"
+      ],
+      "criteria": [
+        "Assumptions [LO3-PO6]",
+        "Explanation of the safety aspects of multi-threaded system implemented [LO3-PO6]",
+        "Justification of coding techniques implemented [LO3-PO6]",
+        "Depth of discussion of concurrency concepts [LO3-PO6]"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,260 @@
+{
+  "module": "CT077-3-2-DSTR",
+  "module_name": "DATA STRUCTURES",
+  "assessment": "LW2",
+  "folder_path": "/RedPen/Assessments/DSTR/LW2/",
+  "brief_path": "/RedPen/Assessments/DSTR/LW2/brief.txt",
+  "lecturer_email": "",
+  "ai_policy": "AI Usage Level for This Coursework: ● Yellow (Restricted Use)\nLimited use of generative AI is allowed for specific purposes only (e.g., brainstorming ideas, clarifying concepts, or language refinement). AI must not be used to generate substantive content for submission. You must clearly acknowledge any AI use according to the course guidelines.\nThe following uses of GenAI are NOT permitted: Complete or Partial Solution Generation, Core Data Structure Implementation, Core Algorithm & Program Logic Generation, Data Structure Selection & Justification, Automated Code Tracing, Complexity & Performance Analysis, F2F Q&A Preparation as a Substitute for Understanding, Individual Contribution.\nCopying, paraphrasing, or adapting AI-generated code or solutions, whether modified or unmodified, is considered a violation of academic integrity.",
+  "pass_mark": 50,
+  "total_marks": 30,
+  "context": "APU is introducing a Smart Campus Parcel Collection and Delivery Management System to\nmanage the increasing number of parcels received for students and staff.\nThe campus receives parcels from different delivery companies every day. Parcels may need\nto be received at the campus delivery centre, registered into the system, sorted for collection or\ndelivery, assigned to collection counters or delivery personnel, collected by students or staff,\nand returned to the sender when necessary.\nDuring peak periods, hundreds of parcels may be processed within a short period. The system\nmust therefore provide an efficient way to manage parcels and ensure that important\noperational information is maintained accurately.\nThe system should support different operational situations, including managing parcels waiting\nto be processed, managing parcels requiring different levels of attention, allocating collection\nand delivery resources efficiently, recording recent staff activities, locating parcel information,\nmanaging parcel records, and handling exceptional situations such as missing parcels,\nunavailable resources, incorrect collection information and cancelled requests.\nThe university requires an integrated system that applies appropriate data structures and\nalgorithms to manage these operations efficiently.\nYour team is required to develop a C++ prototype for the Smart Campus Parcel Collection and\nDelivery Management System.",
+  "tasks": [
+    {
+      "id": "T1",
+      "text": "Task 1 – Parcel Intake, Sorting and Processing Module\nThis module manages parcels when they arrive at the campus delivery centre. It is responsible\nfor registering parcels, maintaining their information, sorting them according to their next\nrequired action, and managing parcels waiting to be processed.\nParcel Information\n• Parcel ID\n• Recipient ID\n• Recipient Name\n• Delivery Company\n• Parcel Type\n• Arrival Date/Time\n• Parcel Status\nPossible parcel types: Standard Parcel, Large Parcel, Fragile Parcel, Document and Special-\nHandling Parcel. Possible statuses include Received, Pending, Processing, Ready for\nCollection, Out for Delivery, Collected, Returned, Missing and Cancelled.\nFunctional Requirements\n1. Register a New Parcel\nAllow staff to register a parcel on arrival. Assign a unique Parcel ID, record recipient and\ndelivery information, parcel type and arrival date/time, assign an initial status, and prevent\nincomplete or duplicate registration.\n2. Maintain and Locate Parcel Records\nMaintain registered parcel records and allow staff to display, search for and view selected\nparcels, including relevant details and current status.\n3. Sort and Process Incoming Parcels\nClassify and process incoming parcels according to their next required action. A parcel may be\nprepared for recipient collection, assigned for campus delivery, sent for special handling,\nprocessed for return to sender, or placed on hold for investigation. Update status and route the\nparcel to the appropriate next stage.\n4. Update or Remove Parcel Records\nAllow appropriate parcel information to be updated when circumstances change, including\nstatus changes, collection, delivery, return or cancellation. Invalid operations must be\nprevented.\n5. Handle Exceptional Parcel Conditions\nHandle duplicate Parcel IDs, invalid recipient information, missing parcel information, a parcel\nreported as missing, searching for a non-existent parcel, processing an already completed\nparcel, and attempting to process an empty collection.\nExpected Core Output\n• Parcel registration record\n• List of pending parcels\n• Parcel selected for processing\n• Updated parcel status\n• Processed/completed/missing/returned parcel records",
+      "marks": 6
+    },
+    {
+      "id": "T2",
+      "text": "Task 2 – Parcel Service and Collection Management Module\nAfter a parcel has been received and registered, it may require different services before the\nparcel process is completed. Examples include recipient collection, campus delivery, special\nhandling, re-delivery and return to sender. This module manages service requests from creation\nuntil completion, cancellation or return.\nService Request Information\n• Request ID\n• Parcel ID\n• Recipient ID\n• Recipient Name\n• Service Type\n• Request Date/Time\n• Request Status\nPossible service types: Recipient Collection, Campus Delivery, Special Handling, Return to\nSender and Re-delivery. Possible statuses: Pending, Processing, Completed, Cancelled and\nReturned.\nFunctional Requirements\n1. Create a Service Request\nAllow authorised staff to create a service request for a registered parcel. Assign a unique\nRequest ID, associate it with an existing Parcel ID, record recipient and service information,\nassign an initial status, and prevent invalid or duplicate requests.\n2. Maintain Active Service Requests\nMaintain active service requests and allow staff to display requests awaiting action. Requests\nshould be added, viewed, processed and removed when completed or cancelled.\n3. Determine the Next Request to be Handled\nDetermine which active service request should be processed next according to processing\nconditions defined by the team. The team may consider service type, urgency, request time,\nrecipient requirements or special handling and must justify its rule.\n4. Process and Update Service Requests\nProcess a selected request and update its status. Record completion, cancellation or return\ninformation, update the associated parcel where appropriate, and prevent completed or\ncancelled requests from being processed again.\n5. Handle Exceptional Service Conditions\nHandle an empty set of active requests, invalid Request ID or Parcel ID, cancelled requests,\nincorrect recipient or collection information, equivalent processing conditions, attempts to\nprocess a completed request, and invalid service operations.\nExpected Core Output\n• Active service requests\n• Selected request details\n• Next request selected for processing\n• Updated request status\n• Completed/cancelled/returned service requests",
+      "marks": 6
+    },
+    {
+      "id": "T3",
+      "text": "Task 3 – Collection Counter and Delivery Resource Management\nModule\nThis module manages collection counters and delivery resources. It must manage resource\navailability and allocate parcels or service requests to appropriate resources while maintaining\naccurate resource information.\nResource Information\n• Resource ID\n• Resource Type\n• Location, where applicable\n• Current Status\n• Current Parcel/Request\n• Number of Transactions Handled\nResource types may include Collection Counter, Delivery Desk, Special-Handling Counter and\nDelivery Personnel. Possible statuses include Available, Occupied, Unavailable and\nMaintenance.\nFunctional Requirements\n1. Register and Maintain Collection and Delivery Resources\nAllow staff to register and maintain collection counters and delivery personnel. Each resource\nshould have a unique identifier, type and current status.\n2. Display Current Resource Availability\nProvide an up-to-date view of available, occupied and unavailable resources, including the\nparcel or request currently assigned where applicable.\n3. Assign a Parcel or Service Request\nAssign a parcel or service request to an appropriate available collection counter or delivery\nresource according to allocation rules defined by the team. Update the assignment and resource\nstatus.\n4. Update Resource Status\nAllow a resource to be marked occupied, available, unavailable or otherwise changed.\nAssociated assignment information must remain consistent.\n5. Handle Resource Allocation Exceptions\nHandle all resources being occupied, no suitable resource being available, a resource becoming\nunavailable during processing, invalid Resource ID, selection of an unavailable resource,\nduplicate active assignment, or invalid release/update operation.\nExpected Core Output\n• Resource list\n• Current resource status\n• Parcel/resource assignment\n• Current resource handling each request\n• Resource utilisation/assignment information",
+      "marks": 6
+    },
+    {
+      "id": "T4",
+      "text": "Task 4 – Parcel Activity and Record Management Module\nThis module maintains a history of important activities performed during parcel processing. It\nshould allow staff to review what happened to a parcel and, where permitted, reverse an\nappropriate recent operation.\nActivity Information\n• Activity ID\n• Parcel ID\n• Request ID, where applicable\n• Activity Type\n• Date/Time\n• Previous Status\n• New Status\n• Staff/User ID, where appropriate\nPossible activities include Parcel Registration, Parcel Update, Service Request Creation,\nResource Assignment, Status Change, Collection Confirmation, Cancellation and Return\nProcessing.\nFunctional Requirements\n1. Record Parcel-Related Activities\nRecord important activities performed during parcel processing, with sufficient information to\nidentify the parcel, activity and relevant time or sequence.\n2. Display Activity History\nAllow staff to display recent activities and the activity history for a selected parcel, including\nthe order in which activities occurred.\n3. Retrieve and Review Previous Activities\nAllow staff to select a parcel and review previous activities, including processing sequence,\nprevious status, most recent activity and relevant request or resource information.\n4. Reverse or Undo an Appropriate Recent Activity\nProvide a mechanism for reversing an appropriate recent activity where permitted. Identify the\nactivity, confirm eligibility, restore relevant information and update related\nparcel/request/resource status where necessary.\n5. Handle Activity-History Exceptions\nHandle no activity history, invalid Parcel ID, an activity that cannot be reversed, an activity\nalready reversed, invalid activity selection, or an operation that would result in an invalid parcel\nstatus.\nExpected Core Output\n• Activity records\n• Recent activity history\n• Selected parcel activity trace\n• Current parcel status\n• Result of a valid reversal/undo operation",
+      "marks": 6
+    },
+    {
+      "id": "T5",
+      "text": "Task 5 – Parcel Category Organisation Module\nThis module manages the organization and retrieval of parcel information. It allows staff to\norganize parcel records according to a selected key and efficiently insert, search, display,\nupdate and remove parcel information.\nThe team must select an appropriate organization key based on the requirements of the\nsystem. Possible organization keys include Parcel ID, Recipient ID, Delivery Company,\nParcel Category or Service Type.\nThe selected data structure implementation must be meaningfully integrated into the parcel\nmanagement system and must support the required operations.\nParcel Information\nEach parcel record may contain:\n • Parcel ID\n • Recipient ID\n • Recipient Name\n • Delivery Company\n • Parcel Category\n • Service Type\n • Parcel Status\n • Arrival Date/Time\nThe team should determine which field is used as the organization/search key and ensure\nthat the selected key is suitable for the implemented data structure.\nFunctional Requirements\n1. Create and Maintain the Parcel Organization Structure\nAllow staff to create and maintain the tree-based organization structure for parcel records.\nEach parcel record should contain sufficient information to identify the parcel and support the\nselected organization key.\n2. Insert a New Parcel Record\nAllow staff to insert a new parcel record into the selected data structure. The system should\nvalidate the parcel information and prevent invalid or duplicate records where the selected\nkey requires uniqueness.\n3. Search for a Parcel or Category\nAllow staff to search for a specified parcel record or organization key. The system should\ndisplay the relevant parcel information when the record is found and provide an appropriate\nmessage when the requested record does not exist.\n4. Display and Traverse Parcel Records\nAllow staff to display the stored parcel information using an appropriate traversal method.\nThe team should select and implement a suitable traversal method based on the purpose of\nthe operation.\nThe team should explain why the selected traversal method is appropriate for the required\noutput.\n5. Update or Remove a Parcel Record\nAllow authorized staff to update or remove a selected parcel record. The operation must\nmaintain the properties and structure of the selected tree implementation.\n6. Handle Exceptional Conditions\nThe system should handle appropriate exceptional conditions, including:\n • Empty data structure\n • Duplicate parcel or organization key\n • Searching for a non-existent parcel\n • Invalid Parcel ID or organization key\n • Attempting to delete a non-existent record\n • Attempting to update a non-existent record\n • Invalid parcel information\n • Removing a record that affects the data structure\nExpected Core Output\nThe system should be able to produce:\n • Parcel organization structure\n • Newly inserted parcel record\n • Search result for a selected parcel or key\n • Traversal output of stored parcel records\n • Updated parcel record\n • Result of a valid deletion operation\n • Appropriate messages for invalid or unsuccessful operations",
+      "marks": 6
+    }
+  ],
+  "selected_tasks": [
+    {
+      "id": "T1",
+      "text": "Task 1 – Parcel Intake, Sorting and Processing Module\nThis module manages parcels when they arrive at the campus delivery centre. It is responsible\nfor registering parcels, maintaining their information, sorting them according to their next\nrequired action, and managing parcels waiting to be processed.\nParcel Information\n• Parcel ID\n• Recipient ID\n• Recipient Name\n• Delivery Company\n• Parcel Type\n• Arrival Date/Time\n• Parcel Status\nPossible parcel types: Standard Parcel, Large Parcel, Fragile Parcel, Document and Special-\nHandling Parcel. Possible statuses include Received, Pending, Processing, Ready for\nCollection, Out for Delivery, Collected, Returned, Missing and Cancelled.\nFunctional Requirements\n1. Register a New Parcel\nAllow staff to register a parcel on arrival. Assign a unique Parcel ID, record recipient and\ndelivery information, parcel type and arrival date/time, assign an initial status, and prevent\nincomplete or duplicate registration.\n2. Maintain and Locate Parcel Records\nMaintain registered parcel records and allow staff to display, search for and view selected\nparcels, including relevant details and current status.\n3. Sort and Process Incoming Parcels\nClassify and process incoming parcels according to their next required action. A parcel may be\nprepared for recipient collection, assigned for campus delivery, sent for special handling,\nprocessed for return to sender, or placed on hold for investigation. Update status and route the\nparcel to the appropriate next stage.\n4. Update or Remove Parcel Records\nAllow appropriate parcel information to be updated when circumstances change, including\nstatus changes, collection, delivery, return or cancellation. Invalid operations must be\nprevented.\n5. Handle Exceptional Parcel Conditions\nHandle duplicate Parcel IDs, invalid recipient information, missing parcel information, a parcel\nreported as missing, searching for a non-existent parcel, processing an already completed\nparcel, and attempting to process an empty collection.\nExpected Core Output\n• Parcel registration record\n• List of pending parcels\n• Parcel selected for processing\n• Updated parcel status\n• Processed/completed/missing/returned parcel records",
+      "marks": 6
+    },
+    {
+      "id": "T2",
+      "text": "Task 2 – Parcel Service and Collection Management Module\nAfter a parcel has been received and registered, it may require different services before the\nparcel process is completed. Examples include recipient collection, campus delivery, special\nhandling, re-delivery and return to sender. This module manages service requests from creation\nuntil completion, cancellation or return.\nService Request Information\n• Request ID\n• Parcel ID\n• Recipient ID\n• Recipient Name\n• Service Type\n• Request Date/Time\n• Request Status\nPossible service types: Recipient Collection, Campus Delivery, Special Handling, Return to\nSender and Re-delivery. Possible statuses: Pending, Processing, Completed, Cancelled and\nReturned.\nFunctional Requirements\n1. Create a Service Request\nAllow authorised staff to create a service request for a registered parcel. Assign a unique\nRequest ID, associate it with an existing Parcel ID, record recipient and service information,\nassign an initial status, and prevent invalid or duplicate requests.\n2. Maintain Active Service Requests\nMaintain active service requests and allow staff to display requests awaiting action. Requests\nshould be added, viewed, processed and removed when completed or cancelled.\n3. Determine the Next Request to be Handled\nDetermine which active service request should be processed next according to processing\nconditions defined by the team. The team may consider service type, urgency, request time,\nrecipient requirements or special handling and must justify its rule.\n4. Process and Update Service Requests\nProcess a selected request and update its status. Record completion, cancellation or return\ninformation, update the associated parcel where appropriate, and prevent completed or\ncancelled requests from being processed again.\n5. Handle Exceptional Service Conditions\nHandle an empty set of active requests, invalid Request ID or Parcel ID, cancelled requests,\nincorrect recipient or collection information, equivalent processing conditions, attempts to\nprocess a completed request, and invalid service operations.\nExpected Core Output\n• Active service requests\n• Selected request details\n• Next request selected for processing\n• Updated request status\n• Completed/cancelled/returned service requests",
+      "marks": 6
+    },
+    {
+      "id": "T5",
+      "text": "Task 5 – Parcel Category Organisation Module\nThis module manages the organization and retrieval of parcel information. It allows staff to\norganize parcel records according to a selected key and efficiently insert, search, display,\nupdate and remove parcel information.\nThe team must select an appropriate organization key based on the requirements of the\nsystem. Possible organization keys include Parcel ID, Recipient ID, Delivery Company,\nParcel Category or Service Type.\nThe selected data structure implementation must be meaningfully integrated into the parcel\nmanagement system and must support the required operations.\nParcel Information\nEach parcel record may contain:\n • Parcel ID\n • Recipient ID\n • Recipient Name\n • Delivery Company\n • Parcel Category\n • Service Type\n • Parcel Status\n • Arrival Date/Time\nThe team should determine which field is used as the organization/search key and ensure\nthat the selected key is suitable for the implemented data structure.\nFunctional Requirements\n1. Create and Maintain the Parcel Organization Structure\nAllow staff to create and maintain the tree-based organization structure for parcel records.\nEach parcel record should contain sufficient information to identify the parcel and support the\nselected organization key.\n2. Insert a New Parcel Record\nAllow staff to insert a new parcel record into the selected data structure. The system should\nvalidate the parcel information and prevent invalid or duplicate records where the selected\nkey requires uniqueness.\n3. Search for a Parcel or Category\nAllow staff to search for a specified parcel record or organization key. The system should\ndisplay the relevant parcel information when the record is found and provide an appropriate\nmessage when the requested record does not exist.\n4. Display and Traverse Parcel Records\nAllow staff to display the stored parcel information using an appropriate traversal method.\nThe team should select and implement a suitable traversal method based on the purpose of\nthe operation.\nThe team should explain why the selected traversal method is appropriate for the required\noutput.\n5. Update or Remove a Parcel Record\nAllow authorized staff to update or remove a selected parcel record. The operation must\nmaintain the properties and structure of the selected tree implementation.\n6. Handle Exceptional Conditions\nThe system should handle appropriate exceptional conditions, including:\n • Empty data structure\n • Duplicate parcel or organization key\n • Searching for a non-existent parcel\n • Invalid Parcel ID or organization key\n • Attempting to delete a non-existent record\n • Attempting to update a non-existent record\n • Invalid parcel information\n • Removing a record that affects the data structure\nExpected Core Output\nThe system should be able to produce:\n • Parcel organization structure\n • Newly inserted parcel record\n • Search result for a selected parcel or key\n • Traversal output of stored parcel records\n • Updated parcel record\n • Result of a valid deletion operation\n • Appropriate messages for invalid or unsuccessful operations",
+      "marks": 6
+    }
+  ],
+  "rubric": [
+    {
+      "criterion": "Identify and address technical challenges",
+      "max": 3,
+      "bands": "No band descriptors are given. Use the APU grade bands: 80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO3"
+      ],
+      "tasks": [
+        "T1",
+        "T2",
+        "T3",
+        "T4",
+        "T5"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Use of appropriate data structures and algorithms",
+      "max": 3,
+      "bands": "No band descriptors are given. Use the APU grade bands: 80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO3"
+      ],
+      "tasks": [
+        "T1",
+        "T2",
+        "T3",
+        "T4",
+        "T5"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Implementation of functional requirements",
+      "max": 3,
+      "bands": "No band descriptors are given. Use the APU grade bands: 80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO3"
+      ],
+      "tasks": [
+        "T1",
+        "T2",
+        "T3",
+        "T4",
+        "T5"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Code quality: readability, efficiency and correctness",
+      "max": 2,
+      "bands": "No band descriptors are given. Use the APU grade bands: 80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO3"
+      ],
+      "tasks": [
+        "T1",
+        "T2",
+        "T3",
+        "T4",
+        "T5"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Quality of individual contribution to the integrated system",
+      "max": 2,
+      "bands": "No band descriptors are given. Use the APU grade bands: 80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO3"
+      ],
+      "tasks": [
+        "T1",
+        "T2",
+        "T3",
+        "T4",
+        "T5"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Innovation and creativity in the solution",
+      "max": 2,
+      "bands": "No band descriptors are given. Use the APU grade bands: 80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO3"
+      ],
+      "tasks": [
+        "T1",
+        "T2",
+        "T3",
+        "T4",
+        "T5"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Data structure selection and justification",
+      "max": 4,
+      "bands": "No band descriptors are given. Use the APU grade bands: 80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO3"
+      ],
+      "tasks": [
+        "T1",
+        "T2",
+        "T3",
+        "T4",
+        "T5"
+      ],
+      "live_session": true
+    },
+    {
+      "criterion": "Relevance of selected data structures to functionality",
+      "max": 4,
+      "bands": "No band descriptors are given. Use the APU grade bands: 80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO3"
+      ],
+      "tasks": [
+        "T1",
+        "T2",
+        "T3",
+        "T4",
+        "T5"
+      ],
+      "live_session": true
+    },
+    {
+      "criterion": "Justification of algorithms and operations",
+      "max": 3,
+      "bands": "No band descriptors are given. Use the APU grade bands: 80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO3"
+      ],
+      "tasks": [
+        "T1",
+        "T2",
+        "T3",
+        "T4",
+        "T5"
+      ],
+      "live_session": true
+    },
+    {
+      "criterion": "Understanding of efficiency, limitations and edge cases",
+      "max": 2,
+      "bands": "No band descriptors are given. Use the APU grade bands: 80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO3"
+      ],
+      "tasks": [
+        "T1",
+        "T2",
+        "T3",
+        "T4",
+        "T5"
+      ],
+      "live_session": true
+    },
+    {
+      "criterion": "Effectiveness of individual demonstration and responses",
+      "max": 2,
+      "bands": "No band descriptors are given. Use the APU grade bands: 80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO3"
+      ],
+      "tasks": [
+        "T1",
+        "T2",
+        "T3",
+        "T4",
+        "T5"
+      ],
+      "live_session": true
+    }
+  ],
+  "clos": [
+    {
+      "id": "CLO3",
+      "text": "Demonstrate a solid understanding of how to write solutions using various data structures and algorithms",
+      "tasks": [
+        "T1",
+        "T2",
+        "T3",
+        "T4",
+        "T5"
+      ],
+      "criteria": [
+        "Identify and address technical challenges",
+        "Use of appropriate data structures and algorithms",
+        "Implementation of functional requirements",
+        "Code quality: readability, efficiency and correctness",
+        "Quality of individual contribution to the integrated system",
+        "Innovation and creativity in the solution",
+        "Data structure selection and justification",
+        "Relevance of selected data structures to functionality",
+        "Justification of algorithms and operations",
+        "Understanding of efficiency, limitations and edge cases",
+        "Effectiveness of individual demonstration and responses"
+      ]
+    }
+  ]
+}

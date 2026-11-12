@@ -1,0 +1,282 @@
+{
+  "marked_criteria": [
+    "Assumptions [LO3-PO6]",
+    "Explanation of the safety aspects of multi-threaded system implemented [LO3-PO6]",
+    "Justification of coding techniques implemented [LO3-PO6]",
+    "Depth of discussion of concurrency concepts [LO3-PO6]",
+    "Appropriateness of coding techniques used to implement design with appropriate comment lines in source codes *",
+    "Appropriateness of the Java concurrent programming facilities used",
+    "Program runs appropriately with basic requirements *",
+    "Additional requirements met *",
+    "Explanations of concurrency concepts implemented with relevant code samples *"
+  ],
+  "results": [
+    {
+      "persona": "copy_paster",
+      "scores": [
+        {
+          "criterion": "Assumptions [LO3-PO6]",
+          "score": 14,
+          "max": 20,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The main weakness is that the report only lists 4 brief assumptions without explaining how they impact the simulation's validity. While functional, the assumption that 'emergency planes bypass ground limits' is a logical leap not fully explored in the report."
+        },
+        {
+          "criterion": "Explanation of the safety aspects of multi-threaded system implemented [LO3-PO6]",
+          "score": 20,
+          "max": 30,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The answer mentions race conditions and thread safety but fails to explain *how* specifically semaphores prevent them in this context. It asserts safety rather than detailing the mechanics of thread synchronization."
+        },
+        {
+          "criterion": "Justification of coding techniques implemented [LO3-PO6]",
+          "score": 21,
+          "max": 30,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The justification is sparse; it mentions fairness for the runway semaphore but does not justify why a Semaphore was chosen over a Lock or other structures for the ground capacity. It provides a description rather than a critical justification."
+        },
+        {
+          "criterion": "Depth of discussion of concurrency concepts [LO3-PO6]",
+          "score": 13,
+          "max": 20,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The discussion remains at a surface level, listing concepts like 'atomic operation' and 'mutual exclusion' without discussing the broader implications of thread management or deadlock prevention. It meets the requirements but lacks academic depth."
+        },
+        {
+          "criterion": "Appropriateness of coding techniques used to implement design with appropriate comment lines in source codes *",
+          "score": 15,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The code is functional and well-structured, but the commenting is minimal. A strict lecturer would expect more internal documentation explaining the logic of the emergency bypass."
+        },
+        {
+          "criterion": "Appropriateness of the Java concurrent programming facilities used",
+          "score": 18,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The choice of Semaphores for resource pooling and AtomicInteger for stats is standard and appropriate. Minor weakness: using a synchronized list for wait times is correct but slightly less modern than other concurrent collections."
+        },
+        {
+          "criterion": "Program runs appropriately with basic requirements *",
+          "score": 19,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The basic flow is correct and includes a ground capacity limit. However, the simulation of the 60-second limit is merely asserted by short sleep times rather than measured."
+        },
+        {
+          "criterion": "Additional requirements met *",
+          "score": 18,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The emergency scenario is implemented, but the 'emergency plane' simply bypasses the ground capacity semaphore, which might lead to more than 3 planes on the ground, technically violating a basic constraint."
+        },
+        {
+          "criterion": "Explanations of concurrency concepts implemented with relevant code samples *",
+          "score": 15,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The report provides snippets, but they are very short. The explanation of the 'cleaning' thread logic (forking a thread within a thread) is present but could be clearer."
+        }
+      ],
+      "total_percent": 77,
+      "grade": "A",
+      "passed": true
+    },
+    {
+      "persona": "prompt_engineer",
+      "scores": [
+        {
+          "criterion": "Assumptions [LO3-PO6]",
+          "score": 17,
+          "max": 20,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "Good detail on the time scaling assumption (1ms = 1min). The logic for prioritizing emergency planes is clearer than the previous attempt, though still relies on a simple assertion of priority."
+        },
+        {
+          "criterion": "Explanation of the safety aspects of multi-threaded system implemented [LO3-PO6]",
+          "score": 24,
+          "max": 30,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "Better explanation of critical sections and the use of fairness. The weakness is the lack of discussion on potential deadlocks between runway and gate acquisition."
+        },
+        {
+          "criterion": "Justification of coding techniques implemented [LO3-PO6]",
+          "score": 24,
+          "max": 30,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The reflection section adds value by justifying the switch from ReentrantLock to Semaphore for fairness. However, the justification for using Thread.join() for parallelism is quite basic."
+        },
+        {
+          "criterion": "Depth of discussion of concurrency concepts [LO3-PO6]",
+          "score": 16,
+          "max": 20,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "Shows a deeper understanding of 'fairness' and 'starvation'. The discussion of 'fork-join' logic at the gate is a good addition to the basic requirements."
+        },
+        {
+          "criterion": "Appropriateness of coding techniques used to implement design with appropriate comment lines in source codes *",
+          "score": 17,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The code is very clean and professional with appropriate headers. The use of a 'task' helper method reduces repetition and improves readability."
+        },
+        {
+          "criterion": "Appropriateness of the Java concurrent programming facilities used",
+          "score": 19,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Excellent use of concurrent facilities. The implementation of concurrent gate tasks via separate threads and joins is a very appropriate use of Java's threading model."
+        },
+        {
+          "criterion": "Program runs appropriately with basic requirements *",
+          "score": 20,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The code perfectly simulates the requested sequence. No visible weaknesses in the basic requirement implementation."
+        },
+        {
+          "criterion": "Additional requirements met *",
+          "score": 18,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The emergency plane logic is better but still essentially just 'skips' the ground capacity check, which creates a capacity violation. A more robust implementation would use a PriorityBlockingQueue."
+        },
+        {
+          "criterion": "Explanations of concurrency concepts implemented with relevant code samples *",
+          "score": 18,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Clear, formatted snippets with accompanying explanations. The link between the concept (Atomicity) and the implementation (AtomicInteger) is well-defined."
+        }
+      ],
+      "total_percent": 86,
+      "grade": "A+",
+      "passed": true
+    },
+    {
+      "persona": "honest_helper",
+      "scores": [
+        {
+          "criterion": "Assumptions [LO3-PO6]",
+          "score": 10,
+          "max": 20,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The assumptions are brief and partially rely on the brief's text rather than original reasoning. The emergency landing logic is mentioned but not fully detailed."
+        },
+        {
+          "criterion": "Explanation of the safety aspects of multi-threaded system implemented [LO3-PO6]",
+          "score": 15,
+          "max": 30,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The explanation is very thin, essentially just a list. It identifies the tools used (Semaphore, Lock) but does not explain the safety 'aspects' or why these tools were chosen for those specific risks."
+        },
+        {
+          "criterion": "Justification of coding techniques implemented [LO3-PO6]",
+          "score": 15,
+          "max": 30,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "There is no real justification provided for the coding choices, only a description of what was done. The report lacks critical analysis of the techniques used."
+        },
+        {
+          "criterion": "Depth of discussion of concurrency concepts [LO3-PO6]",
+          "score": 10,
+          "max": 20,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The discussion is far too brief to be considered 'in-depth'. It serves more as a summary of the code than a discussion of concurrency theory or concepts."
+        },
+        {
+          "criterion": "Appropriateness of coding techniques used to implement design with appropriate comment lines in source codes *",
+          "score": 12,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The code uses placeholder comments like '[REQUIRES STUDENT'S OWN EVIDENCE]' which results in a reduction. The actual logic is sound but the delivery is incomplete."
+        },
+        {
+          "criterion": "Appropriateness of the Java concurrent programming facilities used",
+          "score": 16,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The use of ReentrantLock(true) for the runway is good practice for ensuring fairness. The rest of the implementation is standard but effective."
+        },
+        {
+          "criterion": "Program runs appropriately with basic requirements *",
+          "score": 14,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Basic requirements are met in the code provided, but the presence of placeholder text for required evidence prevents a full score."
+        },
+        {
+          "criterion": "Additional requirements met *",
+          "score": 12,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The congested scenario is described but the implementation in the provided snippet is incomplete (the main method to launch the scenario is missing)."
+        },
+        {
+          "criterion": "Explanations of concurrency concepts implemented with relevant code samples *",
+          "score": 10,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Explanations are minimal. While code is provided, the mapping between the code and the concepts in the report is not detailed enough for a high grade."
+        }
+      ],
+      "total_percent": 57,
+      "grade": "C",
+      "passed": true
+    }
+  ]
+}

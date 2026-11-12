@@ -1,0 +1,137 @@
+CT050-3-2-WAPP - Web Applications Group Assignment Page 1 of 5
+ ASIA PACIFIC UNIVERSITY OF TECHNOLOGY AND INNOVATION
+ CT050-3-2-WAPP - WEB APPLICATIONS
+ GROUP ASSIGNMENT
+LEARNING OUTCOMES
+At the end of this assignment, you should be able to:
+ No. Learning Outcome Assessment
+ Component
+ 1 Develop a web application that is connected to a well-designed Group Assignment
+ database by using server and client-side scripting language based (Web-based
+ on the current web standards. (C6, PLO2) System)
+ 2 Explain the design and solution which provide a systematic way Group Assignment
+ to develop web applications. (A3, PLO5) (Documentation)
+ASSIGNMENT BRIEF
+As one of the members of a Web Application Development Team that consists of 3 or 4
+students, you are assigned to design and develop a complete Web-based Learning System
+using .Net technology.
+The objective is to create a website that will serve as a platform for registered and
+non-registered users looking for digital learning resources, which refer to digital resources
+such as web applications that engage students in learning activities and support students'
+learning goals. Online learning activities include but are not limited to synchronous and
+asynchronous online discussions, online self-assessments, virtual labs, simulations, problem-
+solving, and interactive learning objects.
+The website must demonstrate database connectivity, client/ server processing, and good
+usage of multimedia elements. The team will entirely determine the website’s
+title, scope, and contents. You are expected to have a local database, apply good
+interface design principles, and a fully functional navigation feature. The usage of a
+website template that suits the web application theme is allowed in this assignment.
+Level 2 Asia Pacific University of Technology and Innovation 2026
+CT050-3-2-WAPP - Web Applications Group Assignment Page 2 of 5
+REQUIREMENTS
+The website must fulfill the following criteria, i.e., it should:
+ ▪ Consist of interlinked webpages.
+ ▪ Contain proper examples of appropriate usage of the HTML5 elements.
+ ▪ Demonstrate Cascading Stylesheet (CSS) usages, this may be by providing:
+ - External CSS
+ - Internal CSS
+ - Inline style
+ - Combination of the above
+ ▪ Provide good quality content.
+ ▪ Demonstrate database connectivity to perform at least all the following operations:
+ - Insert new records
+ - Display records
+ - Update/ modify records
+ - Delete records
+ ▪ Contain a registration page for new members.
+ ▪ Contain registered member modules (require a valid login) to manage their activities.
+ ▪ Contain administrator module (require a valid login) to manage the website content and
+ database.
+ ▪ Perform form validation.
+ ▪ Provide appropriate navigation support.
+ ▪ Perform proper file organization and naming convention.
+Note: The usage of web page creation tools is permitted.
+Level 2 Asia Pacific University of Technology and Innovation 2026
+CT050-3-2-WAPP - Web Applications Group Assignment Page 3 of 5
+DOCUMENTATION
+1. PROPOSAL REPORT
+ ▪ Submission dateline: Week 7
+ Groups are required to submit a proposal report which consists of the following:
+ ➢ Website Title
+ ➢ Objectives
+ ➢ Mission Statement
+ ➢ Audience Modelling
+ ➢ Project Scope
+2. FINAL REPORT
+ The documentation should include the following:
+ ▪ Format:
+ - Type face: Times New Roman. Boldface, italics & lines can be used for
+ emphasizing and to enhance readability.
+ - Font size: 12(except titles and headings).
+ - Spacing: 1.5 lines between texts of a paragraph.
+ - Alignment: justify.
+ - Headers and footers can be used.
+ - Numbered.
+ - Binding: APU standard for Level 2
+ - Cover page, your cover page should contain the following items
+ » Group Member’s Name and ID.
+ » Intake code.
+ » Subject.
+ » Project Title.
+ » Date Assigned (the date the report was handed out).
+ » Date Completed (the date the report is due to be handed in).
+ » APU logo
+ ▪ Recommended Content
+ - Table of Contents
+ » The table of contents should have the topic title and reference page
+ number attached to each topic.
+ - Introduction/ Project Plan
+ » This section introduces your project including the objectives, scopes,
+ and project schedule.
+ - Requirement Specification
+ » This section defines the audience modeling, use cases, flow charts, and
+ major functions of the web.
+Level 2 Asia Pacific University of Technology and Innovation 2026
+CT050-3-2-WAPP - Web Applications Group Assignment Page 4 of 5
+ - Design and Modeling
+ » Provide Entity Relationship Diagram (ERD), Wireframes for major
+ layouts of the web pages, and Website Navigational Structure. All
+ components must be provided along with appropriate descriptions.
+ - Implementation
+ » Provide a detailed explanation of the source code of the major web
+ application features. This includes CSS for web page styling, form
+ validation, and SQL queries for database connectivity.
+ »
+ - User Guidance
+ » Screenshots of the web pages with an appropriate description.
+ - Conclusions (summary, lesson learned, and future enhancements)
+ - References
+ - Appendix
+ » Proposal Report
+ ▪ Note: Full source code should not be included in the documentation.
+FINAL REPORT SUBMISSION
+ ▪ The complete Web site and report are to be submitted in Moodle.
+Level 2 Asia Pacific University of Technology and Innovation 2026
+CT050-3-2-WAPP - Web Applications Group Assignment Page 5 of 5
+Marking Schema
+Group Assignment - Documentation (50%):
+ No Documentation Mark Allocated Score Remark
+ Group Criteria (%) (%)
+ 1 Introduction 10 0
+ 2 Storyboard & Design Documents 10 0
+ 3 Design & Modelling 10 0
+ 4 Implementation & Discussion 10 0
+ 5 Conclusion, Document Styles & 10 0
+ Formatting
+ Total: 50 0
+Group Assignment - Implementation (50%):
+ No Implementation (Website and Mark Allocated Score Remark
+ Presentation)
+ Individual Criteria (%) (%)
+ 1 Web Page Layout & Appearance 10 0
+ 2 User Authentication & Authorization 10 0
+ 3 Dynamic Content 10 0
+ 4 Insert, Update & Delete Records 10 0
+ 5 Form Validation, Navigation & Usability 10 0
+ Total: 50 0
+Level 2 Asia Pacific University of Technology and Innovation 2026

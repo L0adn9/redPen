@@ -1,0 +1,188 @@
+{
+  "module": "CT050-3-2-WAPP",
+  "module_name": "Web Applications",
+  "assessment": "Group Assignment",
+  "folder_path": "/RedPen/Assessments/WAPP/GA/",
+  "brief_path": "/RedPen/Assessments/WAPP/GA/brief.txt",
+  "lecturer_email": "",
+  "ai_policy": "not stated",
+  "pass_mark": 50,
+  "total_marks": 100,
+  "context": "As one of the members of a Web Application Development Team that consists of 3 or 4 students, you are assigned to design and develop a complete Web-based Learning System using .Net technology.\n\nThe objective is to create a website that will serve as a platform for registered and non-registered users looking for digital learning resources, which refer to digital resources such as web applications that engage students in learning activities and support students' learning goals. Online learning activities include but are not limited to synchronous and asynchronous online discussions, online self-assessments, virtual labs, simulations, problem- solving, and interactive learning objects.",
+  "tasks": [
+    {
+      "id": "T1",
+      "text": "Develop a complete Web-based Learning System using .Net technology. The website must demonstrate database connectivity, client/ server processing, and good usage of multimedia elements. It must consist of interlinked webpages, use HTML5 elements, demonstrate CSS usage (External, Internal, Inline), provide good quality content, perform CRUD operations (Insert, Display, Update, Delete), contain a registration page, member modules, admin modules, form validation, and appropriate navigation.",
+      "marks": 50
+    },
+    {
+      "id": "T2",
+      "text": "Final Report Documentation including: Introduction/ Project Plan (objectives, scopes, project schedule), Requirement Specification (audience modeling, use cases, flow charts, major functions), Design and Modeling (ERD, Wireframes, Website Navigational Structure with descriptions), Implementation (detailed explanation of source code for CSS, form validation, and SQL queries), User Guidance (screenshots with descriptions), Conclusions, References, and Appendix.",
+      "marks": 50
+    }
+  ],
+  "selected_tasks": [
+    {
+      "id": "T1",
+      "text": "Develop a complete Web-based Learning System using .Net technology. The website must demonstrate database connectivity, client/ server processing, and good usage of multimedia elements. It must consist of interlinked webpages, use HTML5 elements, demonstrate CSS usage (External, Internal, Inline), provide good quality content, perform CRUD operations (Insert, Display, Update, Delete), contain a registration page, member modules, admin modules, form validation, and appropriate navigation.",
+      "marks": 50
+    },
+    {
+      "id": "T2",
+      "text": "Final Report Documentation including: Introduction/ Project Plan (objectives, scopes, project schedule), Requirement Specification (audience modeling, use cases, flow charts, major functions), Design and Modeling (ERD, Wireframes, Website Navigational Structure with descriptions), Implementation (detailed explanation of source code for CSS, form validation, and SQL queries), User Guidance (screenshots with descriptions), Conclusions, References, and Appendix.",
+      "marks": 50
+    }
+  ],
+  "rubric": [
+    {
+      "criterion": "Introduction",
+      "max": 10,
+      "bands": "80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO2"
+      ],
+      "tasks": [
+        "T2"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Storyboard & Design Documents",
+      "max": 10,
+      "bands": "80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO2"
+      ],
+      "tasks": [
+        "T2"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Design & Modelling",
+      "max": 10,
+      "bands": "80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO2"
+      ],
+      "tasks": [
+        "T2"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Implementation & Discussion",
+      "max": 10,
+      "bands": "80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO2"
+      ],
+      "tasks": [
+        "T2"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Conclusion, Document Styles & Formatting",
+      "max": 10,
+      "bands": "80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO2"
+      ],
+      "tasks": [
+        "T2"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Web Page Layout & Appearance",
+      "max": 10,
+      "bands": "80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO1"
+      ],
+      "tasks": [
+        "T1"
+      ],
+      "live_session": true
+    },
+    {
+      "criterion": "User Authentication & Authorization",
+      "max": 10,
+      "bands": "80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO1"
+      ],
+      "tasks": [
+        "T1"
+      ],
+      "live_session": true
+    },
+    {
+      "criterion": "Dynamic Content",
+      "max": 10,
+      "bands": "80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO1"
+      ],
+      "tasks": [
+        "T1"
+      ],
+      "live_session": true
+    },
+    {
+      "criterion": "Insert, Update & Delete Records",
+      "max": 10,
+      "bands": "80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO1"
+      ],
+      "tasks": [
+        "T1"
+      ],
+      "live_session": true
+    },
+    {
+      "criterion": "Form Validation, Navigation & Usability",
+      "max": 10,
+      "bands": "80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO1"
+      ],
+      "tasks": [
+        "T1"
+      ],
+      "live_session": true
+    }
+  ],
+  "clos": [
+    {
+      "id": "CLO1",
+      "text": "Develop a web application connected to a well-designed database using server and client-side scripting",
+      "tasks": [
+        "T1"
+      ],
+      "criteria": [
+        "Web Page Layout & Appearance",
+        "User Authentication & Authorization",
+        "Dynamic Content",
+        "Insert, Update & Delete Records",
+        "Form Validation, Navigation & Usability"
+      ]
+    },
+    {
+      "id": "CLO2",
+      "text": "Explain the design and solution which provide a systematic way to develop web applications",
+      "tasks": [
+        "T2"
+      ],
+      "criteria": [
+        "Introduction",
+        "Storyboard & Design Documents",
+        "Design & Modelling",
+        "Implementation & Discussion",
+        "Conclusion, Document Styles & Formatting"
+      ]
+    }
+  ]
+}

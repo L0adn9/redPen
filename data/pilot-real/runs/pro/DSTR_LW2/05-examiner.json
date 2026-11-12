@@ -1,0 +1,338 @@
+{
+  "marked_criteria": [
+    "Identify and address technical challenges",
+    "Use of appropriate data structures and algorithms",
+    "Implementation of functional requirements",
+    "Code quality: readability, efficiency and correctness",
+    "Quality of individual contribution to the integrated system",
+    "Innovation and creativity in the solution",
+    "Data structure selection and justification",
+    "Relevance of selected data structures to functionality",
+    "Justification of algorithms and operations",
+    "Understanding of efficiency, limitations and edge cases",
+    "Effectiveness of individual demonstration and responses"
+  ],
+  "results": [
+    {
+      "persona": "copy_paster",
+      "scores": [
+        {
+          "criterion": "Identify and address technical challenges",
+          "score": 2,
+          "max": 3,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The main weakness is that task-specific exceptions like reporting a parcel as missing, verifying that a Parcel ID exists before creating a service request in Task 2, and searching by category in Task 5 are omitted. However, standard edge cases like empty queues (`!qFront`), duplicate keys, and two-child BST node deletion via `findMin(node->right)` are properly handled."
+        },
+        {
+          "criterion": "Use of appropriate data structures and algorithms",
+          "score": 2,
+          "max": 3,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The main weakness is duplicating entire `Parcel` nodes in both the master list and the FIFO queue (`Parcel* qp = new Parcel{*np}`) in Task 1, alongside using an $O(N)$ sorted linked list for Task 2's priority queue and an unbalanced BST in Task 5. Nevertheless, the selected structures (Linked List, FIFO Queue, Priority Queue, and BST) are functional and appropriate for the problem domain."
+        },
+        {
+          "criterion": "Implementation of functional requirements",
+          "score": 2,
+          "max": 3,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "Several functional requirements are missing or only partially covered: Task 1 lacks a search/view function for individual parcels and record removal, Task 2 does not validate Parcel IDs against registered parcels, and Task 5 omits several required fields from `TreeNode`. Core insertion, sorting, priority processing, and BST traversal/deletion operations are implemented and work as expected."
+        },
+        {
+          "criterion": "Code quality: readability, efficiency and correctness",
+          "score": 1,
+          "max": 2,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The classes lack destructors to free dynamically allocated nodes (causing memory leaks), and Task 1 updates statuses via an $O(N)$ linear scan after dequeuing a duplicated struct. While the C++ syntax is clean and readable, these memory management and efficiency flaws hold it to a satisfactory level."
+        },
+        {
+          "criterion": "Quality of individual contribution to the integrated system",
+          "score": 1,
+          "max": 2,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The three modules are written as completely isolated classes with separate `Parcel`, `ServiceRequest`, and `TreeNode` structs and no actual code integration or shared references between them. Each standalone module is complete enough to represent a basic individual submission, but system integration is absent."
+        },
+        {
+          "criterion": "Innovation and creativity in the solution",
+          "score": 1,
+          "max": 2,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The implementation relies entirely on standard textbook data structures (basic singly linked lists and an unbalanced BST) with hard-coded string checks and no creative features beyond the baseline specification. The priority tie-breaking in Task 2 (`cur->next->priority <= prio`) is a sensible touch but standard."
+        },
+        {
+          "criterion": "Data structure selection and justification",
+          "score": 0,
+          "max": 4,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "Relevance of selected data structures to functionality",
+          "score": 0,
+          "max": 4,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "Justification of algorithms and operations",
+          "score": 0,
+          "max": 3,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "Understanding of efficiency, limitations and edge cases",
+          "score": 0,
+          "max": 2,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "Effectiveness of individual demonstration and responses",
+          "score": 0,
+          "max": 2,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        }
+      ],
+      "total_percent": 30,
+      "grade": "F",
+      "passed": false
+    },
+    {
+      "persona": "prompt_engineer",
+      "scores": [
+        {
+          "criterion": "Identify and address technical challenges",
+          "score": 2,
+          "max": 3,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "While the code addresses tree skewing via AVL rotations, tie-breaking via `arrivalSeq`, and arbitrary heap cancellation via dual `heapifyUp`/`heapifyDown`, it leaves out destructors for dynamic memory and omits an explicit update method in Task 5. The technical challenges around state locking (`isTerminalStatus`) and pointer synchronisation in Task 1 are well handled."
+        },
+        {
+          "criterion": "Use of appropriate data structures and algorithms",
+          "score": 3,
+          "max": 3,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The selection and custom implementation of a Doubly Linked List with a pointer-referencing FIFO Queue (Task 1), an array-based Binary Max-Heap with sequence tie-breaking (Task 2), and a self-balancing AVL Tree with category filtering (Task 5) are highly appropriate and algorithmically sound."
+        },
+        {
+          "criterion": "Implementation of functional requirements",
+          "score": 2,
+          "max": 3,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The main weakness is that Task 1 omits a function to remove/unlink parcel records from the Doubly Linked List, Task 2 lacks display methods for active and completed requests, and Task 5 omits the required `update` method on the AVL tree. The core registration, priority heap extraction, and AVL insertion/search/deletion requirements are well implemented."
+        },
+        {
+          "criterion": "Code quality: readability, efficiency and correctness",
+          "score": 2,
+          "max": 2,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The code is modular, readable, and efficient, achieving $O(\\log N)$ complexity for priority queue and AVL tree operations and avoiding data duplication in Task 1 via `ParcelNode*` references."
+        },
+        {
+          "criterion": "Quality of individual contribution to the integrated system",
+          "score": 1,
+          "max": 2,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "Although the text claims that Task 1 invokes Task 2's `createRequest()` hook and Task 2 synchronises with Task 1's `ParcelNode`, those cross-module calls are completely absent from the actual C++ code provided. The internal design of each module (such as storing `ParcelNode*` in `QueueNode`) is well structured, but inter-module integration is only asserted, not coded."
+        },
+        {
+          "criterion": "Innovation and creativity in the solution",
+          "score": 2,
+          "max": 2,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "Storing `ParcelNode*` references inside the intake queue to prevent data desynchronisation, combining priority scores with deterministic `arrivalSeq` tie-breakers in the binary heap, and adding an optional `catFilter` to the AVL in-order traversal show thoughtful design beyond a basic implementation."
+        },
+        {
+          "criterion": "Data structure selection and justification",
+          "score": 0,
+          "max": 4,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "Relevance of selected data structures to functionality",
+          "score": 0,
+          "max": 4,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "Justification of algorithms and operations",
+          "score": 0,
+          "max": 3,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "Understanding of efficiency, limitations and edge cases",
+          "score": 0,
+          "max": 2,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "Effectiveness of individual demonstration and responses",
+          "score": 0,
+          "max": 2,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        }
+      ],
+      "total_percent": 40,
+      "grade": "D",
+      "passed": false
+    },
+    {
+      "persona": "honest_helper",
+      "scores": [
+        {
+          "criterion": "Identify and address technical challenges",
+          "score": 0,
+          "max": 3,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The submission is only a high-level planning outline with `[REQUIRES STUDENT'S OWN WORK...]` placeholders and does not address or resolve any technical challenges in code."
+        },
+        {
+          "criterion": "Use of appropriate data structures and algorithms",
+          "score": 0,
+          "max": 3,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "All data structure selections and algorithms are explicitly omitted as `[REQUIRES STUDENT'S OWN WORK]`."
+        },
+        {
+          "criterion": "Implementation of functional requirements",
+          "score": 0,
+          "max": 3,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "No C++ prototype or functional implementation is provided; the response only restates the brief's requirements as bullet points."
+        },
+        {
+          "criterion": "Code quality: readability, efficiency and correctness",
+          "score": 0,
+          "max": 2,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "No code was submitted (`Per Yellow AI Policy - No code, data structure selection, or logic generated by AI`)."
+        },
+        {
+          "criterion": "Quality of individual contribution to the integrated system",
+          "score": 0,
+          "max": 2,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "No individual system components or code were contributed beyond a generic planning checklist."
+        },
+        {
+          "criterion": "Innovation and creativity in the solution",
+          "score": 0,
+          "max": 2,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "No solution was implemented, and the brainstorming notes only suggest standard C++ `enum class` usage."
+        },
+        {
+          "criterion": "Data structure selection and justification",
+          "score": 0,
+          "max": 4,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "Relevance of selected data structures to functionality",
+          "score": 0,
+          "max": 4,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "Justification of algorithms and operations",
+          "score": 0,
+          "max": 3,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "Understanding of efficiency, limitations and edge cases",
+          "score": 0,
+          "max": 2,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "Effectiveness of individual demonstration and responses",
+          "score": 0,
+          "max": 2,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        }
+      ],
+      "total_percent": 0,
+      "grade": "F",
+      "passed": false
+    }
+  ]
+}

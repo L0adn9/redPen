@@ -1,0 +1,29 @@
+{
+  "file_name": "CT077-3-2-DSTR_LW2_pro_20261112.json",
+  "module": "CT077-3-2-DSTR",
+  "module_name": "DATA STRUCTURES",
+  "assessment": "LW2",
+  "brief_path": "/RedPen/Assessments/DSTR/LW2/brief.txt",
+  "lecturer_email": "",
+  "model": "pro",
+  "audit_date": "2026-11-12",
+  "exposure": "LOW",
+  "persona_grades": {
+    "copy_paster": "F",
+    "prompt_engineer": "D",
+    "honest_helper": "F"
+  },
+  "persona_totals": {
+    "copy_paster": 30,
+    "prompt_engineer": 40,
+    "honest_helper": 0
+  },
+  "pass_mark": 50,
+  "clos_at_risk": [],
+  "easy_criteria": [
+    "Use of appropriate data structures and algorithms",
+    "Code quality: readability, efficiency and correctness",
+    "Innovation and creativity in the solution"
+  ],
+  "summary": "Even a well-prompted AI answer scored only D (40%), failing to reach the 50% pass mark because half the marks require a live demonstration and Q&A. CLO3 remains reliably evidenced."
+}

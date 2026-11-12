@@ -1,0 +1,175 @@
+{
+  "module": "DSTR",
+  "module_name": "Data Structures & Algorithms",
+  "assessment": "LW1",
+  "folder_path": "/RedPen/Assessments/DSTR/LW1/",
+  "brief_path": "/RedPen/Assessments/DSTR/LW1/brief.txt",
+  "lecturer_email": "",
+  "ai_policy": "Students are strictly prohibited from using artificial intelligence (AI) tools to generate complete or partial solutions, source code, algorithms, or program logic for this assignment. The use of AI tools is permitted only for supportive purposes, such as: Understanding programming concepts or syntax, Identifying relevant keywords or technical terms, Clarifying error messages or documentation terminology.",
+  "pass_mark": 50,
+  "total_marks": 30,
+  "context": "MetroHealth System is a major healthcare provider experiencing a surge in daily patient visits across its network. Each day, thousands of patients enter different facility types to seek consultation, treatment, emergency care, or routine health screenings. Concerned about waiting times, bed allocation, and operational bottlenecks, the hospital board wishes to optimize healthcare resource management. To better understand patient flow and resource usage, detailed registration and clinical data were collected across three distinct facilities",
+  "tasks": [
+    {
+      "id": "T1",
+      "text": "Program Implementation: Implement Dataset 1, Dataset 2, and Dataset 3 using arrays. Implement the same datasets using singly linked lists. Ensure the data structures allow easy access for sorting, searching, and analysis operations. Develop two (2) separate programs: One focusing strictly on array implementation, the other focuses strictly on singly linked list implementation.",
+      "marks": 15
+    },
+    {
+      "id": "T2",
+      "text": "Solution Work - Documentation: Create a Word document that explains the overall efficiency and limitations of your developed system. Clearly demonstrate the differences in implementation and performance between arrays and linked lists based on the operations performed in this specific analysis scenario. Present results that clearly show the advantages and disadvantages of using arrays and linked lists in this specific sentiment analysis scenario. Include a summary of all your hypotheses, observations, experimental results, justifications, and reflections.",
+      "marks": 15
+    }
+  ],
+  "selected_tasks": [
+    {
+      "id": "T1",
+      "text": "Program Implementation: Implement Dataset 1, Dataset 2, and Dataset 3 using arrays. Implement the same datasets using singly linked lists. Ensure the data structures allow easy access for sorting, searching, and analysis operations. Develop two (2) separate programs: One focusing strictly on array implementation, the other focuses strictly on singly linked list implementation.",
+      "marks": 15
+    },
+    {
+      "id": "T2",
+      "text": "Solution Work - Documentation: Create a Word document that explains the overall efficiency and limitations of your developed system. Clearly demonstrate the differences in implementation and performance between arrays and linked lists based on the operations performed in this specific analysis scenario. Present results that clearly show the advantages and disadvantages of using arrays and linked lists in this specific sentiment analysis scenario. Include a summary of all your hypotheses, observations, experimental results, justifications, and reflections.",
+      "marks": 15
+    }
+  ],
+  "rubric": [
+    {
+      "criterion": "Utilization of data structures",
+      "max": 4,
+      "bands": "Technical Proficiency. Use APU grade bands: 80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO3"
+      ],
+      "tasks": [
+        "T1"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Implementation of relevant algorithms",
+      "max": 4,
+      "bands": "Technical Proficiency. Use APU grade bands: 80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO3"
+      ],
+      "tasks": [
+        "T1"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Demonstrates understanding of data structures/algorithms used",
+      "max": 4,
+      "bands": "Comprehensive Understanding. Use APU grade bands: 80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO3"
+      ],
+      "tasks": [
+        "T1"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Justifies choices of structures/algorithms",
+      "max": 3,
+      "bands": "Insightful Justification. Use APU grade bands: 80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO3"
+      ],
+      "tasks": [
+        "T1"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Theoretical Explanation",
+      "max": 3,
+      "bands": "Clear explanation of Data Structures, Algorithms. Use APU grade bands: 80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO2"
+      ],
+      "tasks": [
+        "T2"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Input Output Screenshots",
+      "max": 3,
+      "bands": "Adequate Screenshots. Use APU grade bands: 80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO2"
+      ],
+      "tasks": [
+        "T2"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Summary Discussions",
+      "max": 3,
+      "bands": "Clear and insightful analysis Inclusive Time and Space Complexity. Use APU grade bands: 80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO2"
+      ],
+      "tasks": [
+        "T2"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Conclusion & Reflection",
+      "max": 3,
+      "bands": "Clearly highlighted and insightful. Use APU grade bands: 80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO2"
+      ],
+      "tasks": [
+        "T2"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Content Organization",
+      "max": 3,
+      "bands": "Well-structured and logical flow. Use APU grade bands: 80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO2"
+      ],
+      "tasks": [
+        "T2"
+      ],
+      "live_session": false
+    }
+  ],
+  "clos": [
+    {
+      "id": "CLO3",
+      "text": "Demonstrate a solid understanding of how to write solutions using various data structures and algorithms",
+      "tasks": [
+        "T1"
+      ],
+      "criteria": [
+        "Utilization of data structures",
+        "Implementation of relevant algorithms",
+        "Demonstrates understanding of data structures/algorithms used",
+        "Justifies choices of structures/algorithms"
+      ]
+    },
+    {
+      "id": "CLO2",
+      "text": "Explain and compare data structures and algorithms in documentation",
+      "tasks": [
+        "T2"
+      ],
+      "criteria": [
+        "Theoretical Explanation",
+        "Input Output Screenshots",
+        "Summary Discussions",
+        "Conclusion & Reflection",
+        "Content Organization"
+      ]
+    }
+  ]
+}

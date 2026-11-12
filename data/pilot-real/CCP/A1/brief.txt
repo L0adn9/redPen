@@ -1,0 +1,176 @@
+ Concurrent Programming - CT074-3-2 Asia Pacific University of Technology & Innovation Level 2
+ Objective:
+ This assignment has been designed for students to apply appropriate concurrent program
+ methods in implementing a concurrent program from a program specification.
+ Learning Outcomes
+ ON COMPLETION OF THIS ASSIGNMENT, YOU SHOULD BE ABLE TO DEMONSTRATE THE
+ FOLLOWING LEARNING OUTCOME(S):
+No. Learning Outcome Assessment
+ 1 Explain the fundamental concepts of concurrency and parallelism Exam
+ in the design of a concurrent system (C2, PLO1)
+ 2 Apply the concepts of concurrency and parallelism in the Individual
+ construction of a system using a suitable programming language. Assignment (System)
+ (C3, PLO2)
+ 3 Explain the safety aspects of multi-threaded and parallel systems Individual
+ (A3, PLO6) Assignment (Report)
+ Programme Outcomes (PO):
+ PLO2 Cognitive Skills - This relates to thinking or intellectual capabilities and the ability to apply
+ knowledge and skills. The capacity to develop levels of intellectual skills progressively begins
+ from understanding, critical/creative thinking, assessment, and applying, analysing, problem
+ solving as well as synthesizing to create new ideas, solutions, strategies, or new practices. Such
+ intellectual skills enable the learner to search and comprehend new information from different
+ fields of knowledge and practices.
+ Individual Assignment - Report (20%):
+ Question Vs Taxonomy
+ Question Affective Level
+ No. Topic 1 2 3 4 5 PLO
+ SQ SQ SQ SQ SQ
+ 1 Introduction and background 20% 6
+ Explanation of the safety aspects of 6
+ 2 30%
+ multi-threaded system implemented
+ Justification of coding techniques 6
+ 3 30%
+ implemented.
+ Depth of discussion of concurrency 6
+ 4 20%
+ concepts.
+ Total 100%
+ Page 1 of 6
+Concurrent Programming - CT074-3-2 Asia Pacific University of Technology & Innovation Level 2
+Individual Assignment - System (25%):
+ Question Vs Taxonomy
+ Question Cognitive Level
+ No. Topic 1 2 3 4 5 6 PLO
+ SQ SQ SQ SQ SQ SQ
+ Appropriateness of coding techniques 2
+ used to implement design with
+ 1 20%
+ appropriate comment lines in source
+ codes
+ Appropriateness of the Java 2
+ 2 concurrent programming facilities 20%
+ used.
+ Program runs appropriately with 2
+ 3 20%
+ basic requirements
+ 4 Additional requirements met 20% 2
+ Explanations of concurrency concepts 2
+ 5 implemented with relevant code 20%
+ samples
+ Total 100%
+Submission Requirements:
+Assignment Handout Date : 17th August 2026
+Assignment Due Date : 30th October 2026
+Case Study
+Asia Pacific Airport
+You have been tasked to simulate the operations of the airport.
+*******************************Basic Requirements******************************
+• There is only 1 runway for all planes to land and depart.
+• There can only be 3 airplanes on the airport grounds, including the runway. This is to
+ ensure that the aircraft does not collide with another aircraft on the runway or gates.
+• Once an aircraft obtains permission to land, it should land on the runway, coast to the
+ assigned gate, dock to the gate, allow passengers to disembark, refill supplies and fuel,
+ receive new passengers, undock, coast to the assigned runway and take-off.
+• Each step should take some time.
+• As the airport is small, there is no waiting area on the ground for the planes to wait for a
+ gate to become available.
+ Page 2 of 6
+Concurrent Programming - CT074-3-2 Asia Pacific University of Technology & Innovation Level 2
+ Figure 1: Layout of the Asia Pacific Airport (Not to scale)
+*****************************Additional Requirements****************************
+These events should happen concurrently:
+- Passengers disembarking/embarking from the 3 gates.
+- Refill supplies and cleaning of aircraft
+As there is only 1 refuelling truck, this event should happen exclusively:
+- Refuelling of aircraft
+A congested scenario should be simulated where 2 planes are waiting to land while the 2 gates
+are occupied, and a 3rd plane comes in with fuel shortage, requiring emergency landing.
+State your assumptions and how you will implement them.
+Include your own additional requirements based on assumptions made to simulate
+concurrency concepts.
+The Statistics
+At the end of the simulation, i.e., when all planes have left the airport, the ATC manager
+should do some sanity checks of the airport and print out some statistics on the run. The result
+of the sanity checks must be printed. You must
+• Check that all gates are indeed empty.
+• Print out statistics on
+ Page 3 of 6
+Concurrent Programming - CT074-3-2 Asia Pacific University of Technology & Innovation Level 2
+ - Maximum/Average/Minimum waiting time for a plane.
+ - Number of planes served/Passengers boarded.
+Deliverables:
+For this exercise, you are to model the ATC scenario and design a Java program to simulate
+activity for the airport:
+ • Altogether, all planes should try to land at the airport.
+ • Use a random number generator, so a new airplane arrives every 0, 1, or 2 seconds.
+ (This might be accomplished by an appropriate statement sleep (rand.nextInt(2000));
+ • Assume each plane can accommodate maximum 50 passengers.
+ • Assume passengers are always ready to embark and disembark the terminal (i.e., no
+ capacity issues inside the passenger terminals).
+Sample Output
+In order to see what is happening dynamically you must have output from the passengers, the
+air traffic controller, and the pilots reporting all their major events.
+Add information about which process/thread is doing the output. This way you can see if a
+process/thread acts for another, which is strictly forbidden, but is a common error for Java
+solutions (objects are not processes!). An example of such incorrect behaviour is
+Thread-ATC : Plane 5: Requesting permission to land!
+MainThread : ATC: Please wait and join the circle queue.
+Thread-Passenger-8: I’m boarding Plane 2 now.
+Where you can see that not only the ATC thread is acting for Plane 5, but also the main thread
+is acting for the ATC.
+Implementation
+You should implement your simulation in Java.
+The simulation run should not take more than 60 seconds to simulate.
+Documentation for System (Report)
+The documentation should detail the system implementation and testing.
+ 1. Introduction and assumptions made
+ 2. Basic requirements met:
+ • List of requirements met.
+ - Short explanation of concurrency concepts (atomic statements,
+ synchronization, etc) implemented.
+ - Code snippet of the Java concurrent programming facilities implemented.
+ Page 4 of 6
+Concurrent Programming - CT074-3-2 Asia Pacific University of Technology & Innovation Level 2
+ 3. Additional requirements met:
+ • List of requirements met.
+ - Short explanation of concurrency concepts (atomic statements,
+ synchronization, etc) implemented.
+ - Code snippet of the Java concurrent programming facilities implemented.
+ 4. Requirements which were NOT met:
+ • List of basic requirements.
+ • List of additional requirements
+Should not exceed 1500 words excluding references/appendix/coding.
+Submission for System
+ • Java files required to run the simulation.
+ • Video of the simulation running. Maximum 5 minutes per person.
+ o Simulate scenarios as stated above.
+ o Show which requirements are met in the output and corresponding code.
+Both code and presentation Zipped into a single zip file named TP0XXXXX CCP.zip
+Note: Report should NOT be zipped together with code and presentation.
+Marking Scheme (NOT for student’s documentation guidance)
+Report (20%)
+Criteria Total marks Marks
+ awarded
+Assumptions [LO3-PO6] 20
+Explanation of the safety aspects of multi-threaded system 30
+implemented [LO3-PO6]
+Justification of coding techniques implemented [LO3-PO6] 30
+Depth of discussion of concurrency concepts [LO3-PO6] 20
+TOTAL MARKS 100
+System (25%)
+Criteria Total marks Marks
+ awarded
+Appropriateness of coding techniques used to implement 20
+design with appropriate comment lines in source codes *
+Appropriateness of the Java concurrent programming facilities 20
+used.
+Program runs appropriately with basic requirements * 20
+Additional requirements met * 20
+Explanations of concurrency concepts implemented with 20
+relevant code samples *
+ Page 5 of 6
+Concurrent Programming - CT074-3-2 Asia Pacific University of Technology & Innovation Level 2
+TOTAL MARKS 100
+*Based on video presentation of the simulation.
+ Page 6 of 6

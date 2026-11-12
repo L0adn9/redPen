@@ -1,0 +1,282 @@
+{
+  "marked_criteria": [
+    "Utilization of data structures",
+    "Implementation of relevant algorithms",
+    "Demonstrates understanding of data structures/algorithms used",
+    "Justification for choices of structures/algorithms",
+    "Theoretical Explanation",
+    "Input Output Screenshots",
+    "Summary Discussions",
+    "Conclusion & Reflection",
+    "Content Organization"
+  ],
+  "results": [
+    {
+      "persona": "copy_paster",
+      "scores": [
+        {
+          "criterion": "Utilization of data structures",
+          "score": 2,
+          "max": 4,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The student implemented basic structures, but Dataset 1, 2, and 3 are only represented by 3 hardcoded entries each, failing to handle the 'thousands of patients' described in the context."
+        },
+        {
+          "criterion": "Implementation of relevant algorithms",
+          "score": 1,
+          "max": 4,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "Aside from simple insertion and traversal, the required sorting and searching operations are completely missing from the code implementation."
+        },
+        {
+          "criterion": "Demonstrates understanding of data structures/algorithms used",
+          "score": 2,
+          "max": 4,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "While the code runs, the simplified nature of the datasets suggests a limited understanding of how to scale these structures for actual analysis."
+        },
+        {
+          "criterion": "Justification for choices of structures/algorithms",
+          "score": 2,
+          "max": 3,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The documentation provides a good rationale regarding memory allocation and insertion speeds, though it incorrectly mentions binary search for the provided unsorted array code."
+        },
+        {
+          "criterion": "Theoretical Explanation",
+          "score": 2,
+          "max": 3,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Correctly identifies Big O complexities and memory differences, but erroneously refers to the scenario as 'sentiment analysis' multiple times, which is irrelevant to healthcare patient flow."
+        },
+        {
+          "criterion": "Input Output Screenshots",
+          "score": 0,
+          "max": 3,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "No actual screenshots were provided in the Word document summary; only text-based console output was simulated."
+        },
+        {
+          "criterion": "Summary Discussions",
+          "score": 2,
+          "max": 3,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Provides a solid comparison of complexities (O(1) vs O(n)), although the 'experimental results' seem generated rather than measured from the provided 3-item datasets."
+        },
+        {
+          "criterion": "Conclusion & Reflection",
+          "score": 2,
+          "max": 3,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Good reflection on the impact on healthcare delivery and future improvements like doubly linked lists, though the 'sentiment analysis' confusion persists."
+        },
+        {
+          "criterion": "Content Organization",
+          "score": 2,
+          "max": 3,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The document is logically structured with clear headings, making the comparison easy to follow despite content errors."
+        }
+      ],
+      "total_percent": 50,
+      "grade": "C",
+      "passed": true
+    },
+    {
+      "persona": "prompt_engineer",
+      "scores": [
+        {
+          "criterion": "Utilization of data structures",
+          "score": 3,
+          "max": 4,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "Better utilization of classes and a larger array buffer (3000), but the main function is empty and does not actually implement the three datasets as requested."
+        },
+        {
+          "criterion": "Implementation of relevant algorithms",
+          "score": 2,
+          "max": 4,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "Includes a Bubble Sort and Search algorithm for the array, but fails to implement a corresponding sort for the linked list or execute them in main."
+        },
+        {
+          "criterion": "Demonstrates understanding of data structures/algorithms used",
+          "score": 2,
+          "max": 4,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "Shows theoretical competence, but the lack of a working entry point (main) to process the data indicates incomplete implementation."
+        },
+        {
+          "criterion": "Justification for choices of structures/algorithms",
+          "score": 2,
+          "max": 3,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "Logical justification regarding ER surges and dynamic allocation, though claims of 'testing' are unsupported by the empty main function."
+        },
+        {
+          "criterion": "Theoretical Explanation",
+          "score": 2,
+          "max": 3,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Clear definitions of contiguous vs non-contiguous memory are provided, showing good theoretical grasp."
+        },
+        {
+          "criterion": "Input Output Screenshots",
+          "score": 0,
+          "max": 3,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Required evidence of program execution (screenshots) is entirely missing."
+        },
+        {
+          "criterion": "Summary Discussions",
+          "score": 2,
+          "max": 3,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Complexity table is accurate and relevant to the MetroHealth scenario, specifically discussing the registration flow."
+        },
+        {
+          "criterion": "Conclusion & Reflection",
+          "score": 2,
+          "max": 3,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Insightful reflection on pointer management errors and the suggestion of hybrid structures for bidirectional flow."
+        },
+        {
+          "criterion": "Content Organization",
+          "score": 2,
+          "max": 3,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Documentation is professional and follows a logical sequence."
+        }
+      ],
+      "total_percent": 57,
+      "grade": "C",
+      "passed": true
+    },
+    {
+      "persona": "honest_helper",
+      "scores": [
+        {
+          "criterion": "Utilization of data structures",
+          "score": 0,
+          "max": 4,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "Task not attempted."
+        },
+        {
+          "criterion": "Implementation of relevant algorithms",
+          "score": 0,
+          "max": 4,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "Task not attempted."
+        },
+        {
+          "criterion": "Demonstrates understanding of data structures/algorithms used",
+          "score": 0,
+          "max": 4,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "Task not attempted."
+        },
+        {
+          "criterion": "Justification for choices of structures/algorithms",
+          "score": 0,
+          "max": 3,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "Task not attempted."
+        },
+        {
+          "criterion": "Theoretical Explanation",
+          "score": 0,
+          "max": 3,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Task not attempted."
+        },
+        {
+          "criterion": "Input Output Screenshots",
+          "score": 0,
+          "max": 3,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Task not attempted."
+        },
+        {
+          "criterion": "Summary Discussions",
+          "score": 0,
+          "max": 3,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Task not attempted."
+        },
+        {
+          "criterion": "Conclusion & Reflection",
+          "score": 0,
+          "max": 3,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Task not attempted."
+        },
+        {
+          "criterion": "Content Organization",
+          "score": 0,
+          "max": 3,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Task not attempted."
+        }
+      ],
+      "total_percent": 0,
+      "grade": "F",
+      "passed": false
+    }
+  ]
+}

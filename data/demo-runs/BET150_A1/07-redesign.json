@@ -1,0 +1,64 @@
+{
+  "module": "BET150",
+  "assessment": "A1",
+  "exposure": "HIGH",
+  "options": [
+    {
+      "id": "R1",
+      "title": "Secure Lane Viva & Local Data",
+      "aias_level": 2,
+      "lane": "secure",
+      "techniques": [
+        "viva checkpoint",
+        "class-released data",
+        "process evidence"
+      ],
+      "clo_coverage": [
+        {
+          "id": "CLO1",
+          "how": "Students must orally explain the logic of their theoretical application during a 5-minute viva."
+        },
+        {
+          "id": "CLO2",
+          "how": "Analysis must incorporate a specific dataset of Malaysian gig worker survey results provided only in the Week 6 lecture."
+        }
+      ],
+      "targets_easy_criteria": [
+        "Application of ethical theories",
+        "Critical analysis of the Malaysian context"
+      ],
+      "extra_marking_minutes_per_student": 7,
+      "revised_task_text": "T1 (40 marks): Using the '2024 APU-BET150 Gig Economy Survey Data' released in Week 6, critically discuss the ethical issues of platforms in Malaysia. Apply TWO ethical theories to the data findings.\nT2 (20 marks): Recommend three actions based on your T1 analysis.\nT3 (15 marks): Academic writing and referencing.\nT4 (25 marks): A mandatory 5-minute in-class viva (Week 11) where you must explain your choice of theories and how they relate to the specific survey data provided. Failure to attend the viva results in a 0 for T1."
+    },
+    {
+      "id": "R2",
+      "title": "Open Lane AI Critique & Reflection",
+      "aias_level": 5,
+      "lane": "open",
+      "techniques": [
+        "critique/improve an AI-generated answer",
+        "reflection tied to verifiable in-class activity"
+      ],
+      "clo_coverage": [
+        {
+          "id": "CLO1",
+          "how": "Students demonstrate mastery by identifying flaws in an AI's application of theory."
+        },
+        {
+          "id": "CLO2",
+          "how": "Students must reconcile AI suggestions with specific Malaysian labor laws discussed in class tutorials."
+        }
+      ],
+      "targets_easy_criteria": [
+        "Justified recommendations",
+        "Application of ethical theories"
+      ],
+      "extra_marking_minutes_per_student": 4,
+      "revised_task_text": "T1 (30 marks): Generate a 1,000-word essay using an AI (e.g., ChatGPT) on gig economy ethics in Malaysia. Submit the prompt and the raw output as an appendix.\nT2 (40 marks): Provide a 'Track Changes' critique of the AI output. You must identify at least three instances where the AI oversimplifies Malaysian context or misapplies ethical theory, citing specific Malaysian labor regulations discussed in Weeks 3-5.\nT3 (30 marks): Write a 1,000-word 'Corrected Analysis' and set of recommendations that improves upon the AI's logic using academic sources."
+    }
+  ],
+  "recommended": "R1",
+  "why_recommended": "Option R1 provides a 'secure lane' through the viva, ensuring that even if AI is used for drafting, the student must demonstrate personal understanding of the ethical application to pass.",
+  "email_summary": "The audit found that an unedited AI response easily scores an A+ (82%) on your current brief, making it impossible to verify if students actually understand the ethical theories or the Malaysian context. Both CLO1 and CLO2 are at high risk because the AI handles general ethical application and Malaysian 'facts' very convincingly. I recommend adding a short, 5-minute in-class viva and using a specific dataset released only in your lectures. This 'secure lane' approach ensures students can explain their own work and prevents them from relying solely on pre-trained AI knowledge.",
+  "_model": "google/gemini-3-flash-preview"
+}

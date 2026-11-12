@@ -1,0 +1,66 @@
+{
+  "module": "DSA201",
+  "assessment": "A1",
+  "exposure": "HIGH",
+  "options": [
+    {
+      "id": "R1",
+      "title": "Secure Viva Walkthrough",
+      "aias_level": 2,
+      "lane": "secure",
+      "techniques": [
+        "recorded walkthrough",
+        "process evidence"
+      ],
+      "clo_coverage": [
+        {
+          "id": "CLO1",
+          "how": "Students must orally explain the operation of their chosen algorithm during the walkthrough."
+        },
+        {
+          "id": "CLO2",
+          "how": "Students must verbally justify why their chosen algorithm suits the library scenario."
+        },
+        {
+          "id": "CLO3",
+          "how": "The walkthrough requires live navigation of the code and explanation of test outputs."
+        }
+      ],
+      "targets_easy_criteria": [
+        "Explanation of algorithms",
+        "Implementation and testing"
+      ],
+      "extra_marking_minutes_per_student": 8,
+      "revised_task_text": "T1-T3: Submit the report as originally specified. T4: Submit your Python code along with a 5-minute screen recording. In the recording, you must: 1) Run your code live to demonstrate the test cases. 2) Explain one specific logic block in your code and how it relates to the algorithm's complexity. 3) Briefly explain one change you made to the code during development (referencing your version history/drafts). Failure to submit a valid walkthrough will result in a 0 for T4 and T1."
+    },
+    {
+      "id": "R2",
+      "title": "AI Critique & Local Data",
+      "aias_level": 4,
+      "lane": "open",
+      "techniques": [
+        "critique/improve an AI-generated answer",
+        "class-released data"
+      ],
+      "clo_coverage": [
+        {
+          "id": "CLO1",
+          "how": "Requires identifying technical hallucinations or complexity errors in an AI output."
+        },
+        {
+          "id": "CLO2",
+          "how": "Requires justifying choices against a specific, unique dataset released only via the VLE."
+        }
+      ],
+      "targets_easy_criteria": [
+        "Justification for the scenario"
+      ],
+      "extra_marking_minutes_per_student": 3,
+      "revised_task_text": "T1: We have provided an AI-generated explanation of sorting algorithms on Moodle which contains three deliberate technical errors. Identify and correct these errors (20 marks). T3: Instead of the generic library scenario, use the 'APU_Library_Dataset_Nov26.csv' released in Week 5. Your justification must account for the specific distribution of ISBNs and the 'Special Collection' flag found in this file (30 marks)."
+    }
+  ],
+  "recommended": "R1",
+  "why_recommended": "A recorded walkthrough provides a secure 'Lane 1' check that ensures the student understands the code and theory they may have generated using AI, effectively protecting the integrity of all three at-risk CLOs.",
+  "email_summary": "The audit of DSA201 A1 found that an unedited AI response can score an A+ (89%), meaning the current brief does not reliably test algorithm implementation or justification. I recommend moving to a 'secure' lane by adding a 5-minute recorded walkthrough of the student's code and logic. This ensures that even if AI is used for drafting, the student must demonstrate personal mastery to pass. This approach adds roughly 8 minutes of marking time per student but secures the assessment against copy-paste AI usage.",
+  "_model": "google/gemini-3-flash-preview"
+}

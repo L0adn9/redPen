@@ -1,0 +1,1 @@
+CLO3 | Demonstrate a solid understanding of how to write solutions using various data structures and algorithms | tasks: Part A code, Part B Q&A | criteria: all

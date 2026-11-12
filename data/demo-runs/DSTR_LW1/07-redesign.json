@@ -1,0 +1,92 @@
+{
+  "module": "DSTR",
+  "assessment": "LW1",
+  "exposure": "HIGH",
+  "options": [
+    {
+      "id": "R1",
+      "title": "In-Class Live Trace & Justification",
+      "aias_level": 1,
+      "lane": "secure",
+      "techniques": [
+        "invigilated component",
+        "viva checkpoint"
+      ],
+      "clo_coverage": [
+        {
+          "id": "CLO2",
+          "how": "Students must explain their specific code logic during the in-class trace without AI assistance."
+        },
+        {
+          "id": "CLO3",
+          "how": "Demonstrated through live execution and immediate oral justification of algorithm performance on a small sample dataset."
+        }
+      ],
+      "targets_easy_criteria": [
+        "Theoretical Explanation",
+        "Justification for choices of structures/algorithms",
+        "Demonstrates understanding"
+      ],
+      "extra_marking_minutes_per_student": 10,
+      "revised_task_text": "In addition to the video and documentation, all teams must participate in a 15-minute in-class validation session (Week 10). Each member will be randomly assigned a section of their submitted code and asked to: 1) Manually trace the state of the Data Structure (Array or Linked List) using a specific provided test case (e.g., Patient ID PT999); 2) Justify why their chosen sorting algorithm was selected over an alternative (e.g., Bubble vs QuickSort) based on their specific implementation. Marks for CLO2 and CLO3 will be heavily weighted on this live demonstration."
+    },
+    {
+      "id": "R2",
+      "title": "Dynamic Class-Released Test Data",
+      "aias_level": 2,
+      "lane": "open",
+      "techniques": [
+        "class-released data",
+        "process evidence"
+      ],
+      "clo_coverage": [
+        {
+          "id": "CLO2",
+          "how": "Comparison must be based on specific, late-released anomalies in the data that AI cannot predict."
+        },
+        {
+          "id": "CLO3",
+          "how": "Writing solutions that handle unpredictable data formats or constraints provided only in the final week."
+        }
+      ],
+      "targets_easy_criteria": [
+        "Summary Discussions",
+        "Utilization of data structures",
+        "Experimental Results"
+      ],
+      "extra_marking_minutes_per_student": 5,
+      "revised_task_text": "The implementation must be designed to handle the standard datasets provided in Week 4. However, in Week 8, a 'Stress Test Dataset' will be released containing 50,000 randomized records with specific data integrity issues (e.g., null pointers in patient links). Your documentation and code must specifically address the performance metrics and error-handling strategies used for this Stress Test Dataset. General theoretical AI-generated comparisons will not receive marks; analysis must refer to specific timestamps and memory spikes observed during the Stress Test run."
+    },
+    {
+      "id": "R3",
+      "title": "AI Critique & Decision Log",
+      "aias_level": 5,
+      "lane": "open",
+      "techniques": [
+        "critique/improve an AI-generated answer",
+        "process evidence"
+      ],
+      "clo_coverage": [
+        {
+          "id": "CLO2",
+          "how": "Students compare their manual implementation against an AI implementation, critiquing the AI's limitations."
+        },
+        {
+          "id": "CLO3",
+          "how": "Proving understanding by debugging or optimizing a purposely flawed AI-generated structure."
+        }
+      ],
+      "targets_easy_criteria": [
+        "Conclusion & Reflection",
+        "Justification for choices",
+        "Summary Discussions"
+      ],
+      "extra_marking_minutes_per_student": 7,
+      "revised_task_text": "Section 10 of your report (New): AI Comparative Critique. Generate a Singly Linked List implementation using an LLM of your choice. In your report, provide a side-by-side comparison of the AI's logic versus your team's manual implementation. You must: 1) Identify at least two inefficiencies or errors in the AI's time complexity analysis; 2) Provide a 'Decision Log' showing how your team evolved your code from the initial design to the final version, specifically noting where you deviated from standard AI suggestions to meet healthcare-specific constraints (e.g., memory safety for patient data)."
+    }
+  ],
+  "recommended": "R1",
+  "why_recommended": "Option R1 (Secure Lane) is the most robust way to ensure CLO mastery, as it forces students to demonstrate their understanding live, neutralizing the 'copy-paste' capability of AI that led to the high exposure.",
+  "email_summary": "The audit found that AI can currently pass the DSTR LW1 assessment with 50% by generating high-quality documentation and core algorithm logic. This puts CLO2 and CLO3 at risk as the current video/report format is easily spoofed. I recommend implementing a 'Secure Lane' redesign (R1) which adds a short in-class live code-tracing session. This ensures students can explain their logic in real-time, providing an authentic check that the work is their own.",
+  "_model": "google/gemini-3-flash-preview"
+}

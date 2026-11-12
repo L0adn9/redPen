@@ -1,0 +1,2 @@
+CLO2 | Apply the concepts of concurrency and parallelism in the construction of a system using a suitable programming language | tasks: system (Java simulation + video) | criteria: all System criteria
+CLO3 | Explain the safety aspects of multi-threaded and parallel systems | tasks: report | criteria: all Report criteria
