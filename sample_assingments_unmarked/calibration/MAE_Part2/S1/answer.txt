@@ -1,0 +1,1846 @@
+CT124-3-2-MAE                   MOBILE APP ENGINEERING                   SPACESHARKS APP
+
+
+
+
+                           GROUP ASSIGNMENT (REPORT)
+                          TECHNOLOGY PARK MALAYSIA
+                                     CT124-3-2-MAE
+                             MOBILE APP ENGINEERING
+                                     APU2F2602CS
+
+
+GROUP: 17
+LECTURER: MR AMAD ARSHAD
+DUE DATE: 2 November 2026, 11:00 PM
+WEIGHTAGE: 60% of the module (Part 2: 75 of the 100 assignment marks)
+
+
+
+INSTRUCTIONS TO CANDIDATES:
+   1. Documentation format: Times New Roman, font size 12, single line spacing, white A4
+      paper.
+   2. Part 2 marks: problem solving and design 15, mobile client system 37, automated
+      system testing 15, app demo and supporting documentation 8.
+   3. The report, the app (source code and APK) and the app demo video are submitted on
+      Moodle by 11:00 PM on the due date.
+   4. All group members take part in the app demonstration to the lecturer.
+
+
+
+
+                                             1
+CT124-3-2-MAE                    MOBILE APP ENGINEERING                               SPACESHARKS APP
+
+
+
+Student Details
+No.        Name                                       TP Number              App Role
+
+1          MUHAMMAD HASSAN (Group Leader)             TP088111               Client
+
+2          KAUNG HTET                                 TP077453               Owner / Manager
+
+3          MUNTASIR UZZAMAN MASHRAFI                  TP088872               Content Creator / Staff
+
+
+
+
+Item                       Details
+
+Intake Code                APU2F2602CS
+
+Module                     CT124-3-2-MAE Mobile App Engineering
+
+Lecturer                   Mr Amad Arshad
+
+Group                      Group 17
+
+Project Title              SPACESHARKS Project Coordination App, Part 2: Mobile System and
+                           Supporting Documentation
+
+Platform                   Flutter 3.47 (Dart 3.13) for Android (iOS project included, not tested);
+                           Firebase Authentication and Cloud Firestore
+
+
+
+
+                                                 2
+CT124-3-2-MAE                                     MOBILE APP ENGINEERING                                         SPACESHARKS APP
+
+
+
+Table of Contents
+1.0 Introduction.......................................................................................................................... 5
+2.0 System Description: Problems and Solutions......................................................................6
+3.0 Functional Requirements and CRUD...................................................................................7
+     3.1 Functional Requirements................................................................................................7
+     3.2 CRUD by Role...............................................................................................................8
+4.0 Backend Database: Cloud Firestore.....................................................................................9
+5.0 Use Case Diagram.............................................................................................................. 13
+6.0 Wireframes and Mock-ups for All Roles........................................................................... 14
+     6.1 Sign in (All Roles)........................................................................................................14
+     6.2 Owner / Manager..........................................................................................................14
+     6.3 Content Creator / Staff................................................................................................. 17
+     6.4 Client............................................................................................................................ 18
+     6.5 Adaptive Design (Tablet)............................................................................................. 19
+7.0 System Architecture Design...............................................................................................20
+8.0 Design Decisions and Limitations......................................................................................22
+     8.1 Design Decisions..........................................................................................................22
+     8.2 Limitations and Future Work.......................................................................................22
+9.0 Automated Test Report...................................................................................................... 24
+     9.1 Test Plan....................................................................................................................... 24
+     9.2 Test Cases and Results.................................................................................................25
+     9.3 Test Run Results...........................................................................................................26
+     9.4 Defects Found and Fixed..............................................................................................31
+     9.5 Conclusion....................................................................................................................33
+10.0 User Manual..................................................................................................................... 34
+     10.1 Getting Started............................................................................................................34
+     10.2 Owner / Manager Guide............................................................................................. 35
+     10.3 Content Creator / Staff Guide.....................................................................................36
+     10.4 Client Guide............................................................................................................... 37
+     10.5 Troubleshooting..........................................................................................................38
+
+
+                                                                     3
+CT124-3-2-MAE                                    MOBILE APP ENGINEERING                                       SPACESHARKS APP
+
+
+11.0 Workload Matrix.............................................................................................................. 39
+12.0 Conclusion and Recommendations..................................................................................40
+     12.1 Conclusion..................................................................................................................40
+     12.2 Recommendations......................................................................................................40
+13.0 References........................................................................................................................ 41
+Appendix A: Submission Contents and How to Run...............................................................42
+Appendix B: Detailed Test Cases.............................................................................................43
+     B.1 Core: Models, Validation, Data Rules (Unit)..............................................................43
+     B.2 Third-party API (Unit).................................................................................................44
+     B.3 Owner / Manager (Unit).............................................................................................. 44
+     B.4 Content Creator / Staff (Unit)...................................................................................... 45
+     B.5 Client (Unit).................................................................................................................45
+     B.6 Task Detail: Permissions and Actions (Unit)..............................................................46
+     B.7 Screens Driven Like a User (Widget)..........................................................................46
+     B.8 End to End on Android (Integration)...........................................................................47
+     B.9 Task Detail Actions and Alerts (Widget)....................................................................47
+     B.10 Firestore Security Rules (Firebase Emulator)............................................................48
+     B.11 Regression Tests for Defects Found on Firebase (Unit)............................................49
+
+
+
+
+                                                                    4
+CT124-3-2-MAE                     MOBILE APP ENGINEERING                      SPACESHARKS APP
+
+
+
+1.0 Introduction
+
+This document discusses the SPACESHARKS Project Coordination Application that is a
+cross-platform application developed with Flutter and is aimed at serving the users that are in
+any of the three user roles identified during the generative research phase of Part 1, i.e.,
+Owner/Manager, Content Creator/Staff, and Client. This application consolidates the
+SPACESHARKS workflow that previously used status updates through messaging apps,
+approvals over the phone, and manually done content scheduling.
+
+This report covers all required deliverables for Part 2, i.e., problem-solving and design
+documentation (Sections 1.0–8.0), test report (Section 9.0), user manuals for all three user roles
+(Section 10.0), and workload matrix (Section 11.0). Source code, APK, and the video
+demonstration of the application will be uploaded to Moodle separately.
+
+The implementation of all 26 use cases (OM-UC1–OM-UC9, ST-UC1–ST-UC8, CL-UC1–
+CL-UC9) from the proposal has been completed. Full CRUD (Create, Read, Update, and
+Delete) capability is provided for packages and tasks, along with image uploading with version
+control, a record of approval timestamps, and a third-party public holidays API for weekly
+content scheduling.
+
+This application is developed using Flutter 3.47 (Dart 3.13) and targets Android OS. An iOS
+project is also included but has not been built or tested. In order to optimize development time
+and lower the costs of building separate native apps for each platform, cross-platform
+development has been used (Biørn-Hansen et al., 2018). The architecture of the application
+follows the MVVM pattern and has a repository layer. Firebase Authentication and Cloud
+Firestore act as the backend services for the application. Public holidays data is obtained from
+the third-party API of Nager.Holidays (Nager.Holidays, n.d.). All calendar items can be
+exported to Google Calendar. Testing involves usage of flutter_test for unit and widget testing
+and integration_test for end-to-end testing. The source code is managed through Git and is
+uploaded to GitHub, and a build is triggered automatically when the code is pushed to the
+remote repository.
+
+
+
+
+                                                5
+CT124-3-2-MAE                      MOBILE APP ENGINEERING                      SPACESHARKS APP
+
+
+
+2.0 System Description: Problems and Solutions
+
+All three stakeholders face a unified problem that manifests itself in scattering of status,
+feedback, and approvals between different chat apps and a manual schedule. It makes it
+impossible to obtain a real-time overview of a client’s package status. The following sections
+describe the problems and corresponding solutions for each stakeholder category.
+
+Owner/Manager: Managers had no overview of all client packages; therefore, operational
+delays could only be detected by reviewing the schedule manually (O2) while employees’
+workload was known only through actions within the Viber group (O3). Other problems
+include delays in handing over the work to another person (O1) and the lack of documentation
+that reflects client approvals and modifications. The app gives owners an overview dashboard
+showing all open client packages, overdue actions, and things pending for approvals. It also
+shows the phase of the package, current delivery status with respect to the commitment, and the
+health of the package (OM-UC1, 2, 3, 8). There is a special page for workload where every
+employee is classified as either overloaded, busy, or has free capacity (OM-UC4). The
+handover list shows whether each file was received, and the owner can request the status update
+with just one click (OM-UC7, OM-UC9). The history of approvals stores a timestamp of every
+decision taken by the client (OM-UC5).
+
+Content Creator/Staff: Staff members were not getting feedback on a unified channel (S01);
+the task sheet was often out-of-date, priorities of the task were unclear, and it was not clear what
+the final file version was or whether the handover was received. The app offers staff a unified
+task list of all clients, a feedback thread for every task, and alerts on the modifications (ST-UC1,
+2, 4). The “Do first” feature prioritises the workload by overdue tasks, change requests, and
+tasks that are due within 48 hours (ST-UC3). Every uploaded file gets a version number,
+handovers stay pending until confirmation by the recipient, and the approved version is marked
+as the final one (ST-UC5, 6, 7). There is a weekly calendar showing the workload and a way to
+notify the owner about the overload (ST-UC8).
+
+Client: Clients were unaware of the content that was going to be delivered during the upcoming
+week (P01); there was uncertainty whether their comments in the chat group were received
+(P02); there was no documentation of informal approvals (P03). The app provides information
+on the phase of the package (Introduction, Build-up, or Accelerated) and content that is going to
+be delivered in the next seven days (CL-UC1, CL-UC2, CL-UC3). Clients can post their
+comments on each deliverable and find out whether the agency has seen them (CL-UC4, CL-
+UC7). Client’s approval or change requests can be posted using a dedicated button where the
+name of the submitter, version, and time of the action are stored (CL-UC5, CL-UC6). In-app
+notifications inform the client when his/her action is required, and a library of approved
+deliverables collects all of them in one place (CL-UC8, CL-UC9).
+
+
+
+
+                                                 6
+CT124-3-2-MAE                          MOBILE APP ENGINEERING                              SPACESHARKS APP
+
+
+
+3.0 Functional Requirements and CRUD
+
+3.1 Functional Requirements
+                                     Table 1: Functional requirements
+
+
+ID     Requirement                                                                      Role
+
+FR1    User authentication through e-mail and password, landing page according          All
+       to user’s role.
+
+
+FR2    Ability to create, view, update and delete client packages including the         Owner
+       following attributes: client name, package name, package phase, promised
+       deliverables, goals and an active flag.
+
+FR3    Ability to create, view, update, reassign and delete tasks including the         Owner
+       following attributes: title, description, task type, assignee, priority, task
+       deadline and release date.
+
+FR4    Dashboard statistics related to the ratio between delivered and promised         Owner
+       deliverables and the status of packages.
+
+FR5    Statistics related to the load and capacity of each person, handovers and        Owner
+       their receipt status.
+
+FR6    Notifications to the assignee to update status, gathering of information         Owner
+       about the status updates and workload tracking of staff.
+
+FR7    Listing of tasks assigned to the user for all clients, filtering by the client   Staff
+       and sorting in a “Do first” order.
+
+FR8    Function to start a task, upload new file versions (images, videos,              Staff
+       documents) and send for approval.
+
+FR9    Function to transfer a task to a colleague and receive confirmation about        Staff
+       handover receipt.
+
+
+FR10   Week-based calendar view (with holidays included) and reporting about            Staff
+       workload overload to the manager.
+
+
+FR11   Package phase currently in use, list of deliverables to be approved and          Client
+       deliverables of the next seven days.
+
+
+FR12   Approvals of deliverable versions or change requests along with                  Client
+       explanations, time stamps and full log of operations done.
+
+
+FR13   Function to comment on the deliverables and see whether the agency has           Client, Staff, Owner
+       read the comments.
+
+
+FR14   Function to see the list of all approved deliverables and the final version      Client
+       of the deliverables.
+
+
+
+
+                                                        7
+CT124-3-2-MAE                             MOBILE APP ENGINEERING                            SPACESHARKS APP
+
+
+
+ ID         Requirement                                                                  Role
+
+ FR15       Notifications within the application about new tasks, changes, comments,     All
+            approvals, handovers and status updates.
+
+
+ FR16       Retrieving public holidays via API, listing in the weekly calendar and       All
+            adding any item to Google Calendar.
+
+
+ FR17       Validation of form fields with loading, empty and error states.              All
+
+
+
+
+3.2 CRUD by Role
+CRUD - C = create, R = read, U = update, D = delete. On deletion of a task by the owner,
+everything else related to the task is also deleted, namely comments, approvals, versions, and
+handover details. Permissions checking happens at two levels: at the application level, where all
+actions performed on the screen are checked against the permissions of the user, and also on the
+server side using Firestore security rules (firestore.rules). These rules are automatically
+checked using the Firebase emulator (Section 9.3).
+
+         Table 2: CRUD permissions for roles (enforced in both the application and firestore.rules)
+
+
+ Collection          Owner/Manager           Content Creator/Staff            Client
+
+ users               CRUD                    R (own profile U, not role)      R (own profile U, not role)
+
+
+ packages            CRUD                    R                                R (own package only)
+
+
+ tasks               CRUD                    R U (status, versions)           R (only own package), U status
+                                                                              only by approving
+
+
+ comments            C R U D (mark           C R U (mark seen)                C R (own package)
+                     seen)
+
+
+ approvals           RD                      R                                C R (only own package)
+
+
+ versions (files)    CRD                     CR                               R (only own package)
+
+
+
+ handovers           CRD                     C R U (confirm received)         None
+
+
+ alerts              C R U D (own)           C R U D (own)                    C R U D (own)
+
+
+
+
+                                                          8
+CT124-3-2-MAE                     MOBILE APP ENGINEERING                      SPACESHARKS APP
+
+
+
+4.0 Backend Database: Cloud Firestore
+For the backend process, Cloud Firestore is used in conjunction with Firebase Authentication
+for providing sign-in facilities for the users (Firebase, n.d.-a, n.d.-b). In particular, Firebase
+provides the services for authentication and a cloud database without any server setup process
+(Moroney, 2017). The data is arranged in eight top-level collections linked with the help of
+identifiers. Each list in the application serves as a live listener and, therefore, when a client
+approves a deliverable on their mobile phone, the dashboard of the owner and the task list of the
+staff are instantly updated.
+
+
+
+
+                                  Figure 1: Firestore data model
+
+
+
+
+                                                9
+CT124-3-2-MAE                         MOBILE APP ENGINEERING                              SPACESHARKS APP
+
+
+                                      Table 3: Firestore collections
+
+
+ Collection     Description
+
+ users          Stores user’s profile information and user roles where the document id will be equal to the
+                Firebase Auth UID of the user. The user role defines what screen will be shown after
+                authentication.
+
+
+ packages       Houses the package offered by the company to the client and engagement phase. This
+                collection is used for assessing delivery of items as per commitment and overall package
+                condition.
+
+
+ tasks          Houses all deliverables such as posts, reels, graphics, stories and captions. It helps in keeping
+                track of progress made in status and also maintaining latest/approved version numbers.
+
+
+ comments       Houses the history of feedback messages showing if the client’s message has been read by
+                the agency and the time it was read.
+
+
+ approvals      Stores the client’s decisions where there will be a one-to-one mapping of documents and
+                decisions. It keeps version numbers with timestamps.
+
+
+ versions       Stores uploaded file versions either as a URL or the file itself, and each new upload increases
+                the version number.
+
+
+ handovers      Stores files exchanged between the team members; its status is pending until it is confirmed
+                by the recipient.
+
+
+ alerts         Stores user alerts generated by application repositories automatically.
+
+
+
+
+The five distinct states in the task flow are To do, In progress, Awaiting approval, Approved,
+and Changes requested. The state transitions are handled at the level of the repository layer,
+which is tasked with notifying accordingly.
+
+
+
+
+                                        Figure 2: Task status flow
+
+
+
+The binary data of the file is saved by storing the file along with its MIME type and size. In the
+Spark plan, files whose size does not exceed 700 KB can be saved in Firestore. In the Blaze
+plan, the files are saved in Firebase Cloud Storage (--dart-define=CLOUD_STORAGE=true).
+Images are displayed in the app, while the other files are shown as icons with the file name.
+Composite indexes are not used in the queries. In each query, only one equality filter is used, for
+
+
+
+                                                      10
+CT124-3-2-MAE                       MOBILE APP ENGINEERING                      SPACESHARKS APP
+
+
+example, getting the tasks where assigneeId == uid. In this case, sorting occurs on the client
+side and there is no need to use Firestore indexes.
+Firebase Project Setup
+
+The backend includes the Firebase project named spacesharks-app running on the Spark free
+plan. Cloud Firestore is hosted in the asia-southeast1 (Singapore) region, which was considered
+to be the closest one to the agency and its clients. As for authentication, it uses sign-in via email
+and password, and both Android and Web apps are registered in the project. The database was
+created in test mode while the demonstration data was loaded, and then the security rules set in
+firestore.rules were published.
+
+
+
+
+                  Figure 3: Firebase Authentication with the seven demo accounts
+
+
+
+
+                                                 11
+CT124-3-2-MAE                 MOBILE APP ENGINEERING                        SPACESHARKS APP
+
+
+
+
+                Figure 4: Cloud Firestore collections and a task document
+
+
+
+
+                       Figure 5: Published Firestore security rules
+
+
+
+
+                                           12
+CT124-3-2-MAE                    MOBILE APP ENGINEERING                     SPACESHARKS APP
+
+
+
+5.0 Use Case Diagram
+This diagram includes all three actors and 26 use cases, and it also includes CRUD operations
+on packages and tasks. Log in is common to all three actors, while there are three calendar use
+cases that include the public holidays API.
+
+
+
+
+          Figure 6: Use case diagram: Owner/Manager, Content Creator/Staff and Client
+
+
+
+
+                                              13
+CT124-3-2-MAE                     MOBILE APP ENGINEERING                      SPACESHARKS APP
+
+
+
+6.0 Wireframes and Mock-ups for All Roles
+The wireframes for part 1 (proposal Figures 4 to 9) have been incorporated in the screens
+below. All of the screens incorporate the same color scheme of black, white, and orange, font
+type of Inter, status colors of green (approved), amber (pending), and red (overdue) along with
+the navigation.
+
+6.1 Sign in (All Roles)
+One login screen for every role, with field validation. Demo account chips appear only in demo
+mode.
+
+
+
+
+                       Figure 7: Sign in screen and its validation messages
+
+6.2 Owner / Manager
+Dashboard addresses "which packages should be looked into?" immediately: counts at the top,
+followed by the listing of packages along with their phase, delivery against promise and health
+(OM-UC1, OM-UC3). When we click on the package, the details page will open, and the owner
+will edit the phase, filter and create tasks (CRUD operations).
+
+
+
+
+                                               14
+CT124-3-2-MAE                    MOBILE APP ENGINEERING                     SPACESHARKS APP
+
+
+
+
+        Figure 8: Owner dashboard, package detail and the new task form with validation
+
+
+
+
+Figure 9: Workload and handovers (OM-UC4, OM-UC7, OM-UC9), weekly content calendar with a
+                      public holiday (OM-UC6) and the new package form
+
+
+
+
+                                              15
+CT124-3-2-MAE                       MOBILE APP ENGINEERING                        SPACESHARKS APP
+
+
+
+
+ Figure 10: Task detail as the owner sees it (upload, request status, edit and delete in the menu) and
+                                      the alerts list (OM-UC3)
+
+
+
+
+                                                  16
+CT124-3-2-MAE                     MOBILE APP ENGINEERING                      SPACESHARKS APP
+
+
+
+6.3 Content Creator / Staff
+
+
+
+
+ Figure 11: My tasks with "Do first" (ST-UC1, ST-UC3), task detail with upload, send for approval
+           and hand over (ST-UC4 to ST-UC7), and the status update dialog (OM-UC9)
+
+
+
+
+ Figure 12: My week with workload counts and a holiday warning (ST-UC8), the overload flag, and
+                               handovers to confirm (ST-UC6)
+
+
+
+
+                                               17
+CT124-3-2-MAE                     MOBILE APP ENGINEERING                    SPACESHARKS APP
+
+
+
+6.4 Client
+
+
+
+
+Figure 13: My package with phase progress (CL-UC1 to CL-UC3), a deliverable waiting for approval
+ (CL-UC5) with its feedback thread and "seen" time (CL-UC4, CL-UC7), and the change request that
+                                          needs a reason
+
+
+
+
+Figure 14: Content calendar (CL-UC3), approved library with the final versions (CL-UC6, CL-UC9)
+                                     and alerts (CL-UC8)
+
+
+
+
+                                              18
+CT124-3-2-MAE                      MOBILE APP ENGINEERING                     SPACESHARKS APP
+
+
+
+6.5 Adaptive Design (Tablet)
+If the screen is 600 pixels wide or above, the navigation rail comes on the side and cards fit into
+two or three columns.
+
+
+
+
+                       Figure 15: Owner dashboard on a 1280 px wide tablet
+
+
+
+
+                                                19
+CT124-3-2-MAE                          MOBILE APP ENGINEERING                            SPACESHARKS APP
+
+
+
+7.0 System Architecture Design
+The app is implemented using Model-View-ViewModel (MVVM) with a repository layer
+(Flutter, n.d.-a), as outlined in the proposal (section 3.2.2).
+
+
+
+
+                                      Figure 16: System architecture
+
+
+
+                                        Table 4: Architecture layers
+
+Layer           What it contains                    Example
+
+View            Each role gets their screens and    owner_dashboard_screen.dart,
+                widgets. They show state and        task_detail_screen.dart
+                invoke actions
+
+ViewModel       ChangeNotifier class per screen:    OwnerDashboardViewModel (overdue count, health),
+                listens for repository streams,     TaskDetailViewModel (canDecide, canUpload)
+                computes counts and lists,
+                determines what actions a user is
+                allowed to perform
+
+Repository      Business logic goes here, all in    FeedbackRepository.recordDecision saves the
+                one place and unit-tested           approval, updates the task and alerts staff
+
+Data source     DocStore contract with two          Same app code runs on Firebase or on sample data
+                concrete classes:
+                FirestoreDocStore (in production)
+                and MemoryDocStore (for demo
+                data and testing)
+
+Services        Authentication, file storage,       FirebaseAuthRepository, DataUriFileStorage,
+                holidays API                        HolidayService
+
+
+
+
+                                                    20
+CT124-3-2-MAE                     MOBILE APP ENGINEERING                     SPACESHARKS APP
+
+
+Why this architecture.
+
+   •   Testability: ViewModels and repositories do not contain any UI code, therefore 93 unit
+       and widget tests work in about 35 seconds with the in-memory database (88.4% line
+       coverage), 2 end-to-end tests are run on an Android emulator, and one live test executes
+       the entire flow against the live Firebase project. Since the ViewModels and repositories
+       are separated from the UI, they can be tested in isolation thanks to their modularity and
+       the fact that MVVM architecture simplifies testing (Andrade et al., 2025).
+
+   •   Swappable backend: since all interactions go through DocStore, it is possible to develop
+       and test the entire app before creating the Firebase project – the last step is simply
+       changing one setting (--dart-define=BACKEND=firebase).
+
+   •   Security: Firestore security rules will check the role of the logged-in user on the server
+       side, so it is impossible for one client to access any data of another client outside the
+       app.
+
+Folder structure.
+ lib/
+   core/        models, data (DocStore, repositories, auth, files, holidays),
+ theme, utils, shared widgets
+   features/
+      auth/     login and role routing
+      owner/    dashboard, packages, tasks (form), workload, calendar
+      staff/    my tasks, my week, handovers
+      client/   my package, calendar, library
+      shared/   task detail, alerts, weekly calendar, feedback widgets
+ test/          unit and widget tests per role
+ integration_test/ end-to-end workflow tests
+
+
+
+
+                                              21
+CT124-3-2-MAE                     MOBILE APP ENGINEERING                     SPACESHARKS APP
+
+
+
+8.0 Design Decisions and Limitations
+
+8.1 Design Decisions
+Each decision has been taken keeping in mind the target users studied in our Part 1 research, and
+the time availability.
+
+      A single login screen with the users/{uid} having their own role. Each of these three
+       roles will have the same login procedure (as in proposal Figure 4), and then there will be
+       verification of their security rules once again.
+
+      All roles will get identical Task Detail page with information according to the role of
+       individual users. Consistency in the screens ensures that clients see Approve / Request
+       changes, staff sees Upload / Send for approval / Hand over, and the Owner sees Edit /
+       Delete / Request status.
+
+      Alerts within the app as opposed to Push Notifications. Since the alerts will be stored in
+       Firestore, they will be retained even when the device is offline and testable. Push
+       Notifications (Firebase Cloud Messaging) is for future work.
+
+      A Public holiday API and an “Add to Google Calendar” link as opposed to a Full
+       Google Calendar Sync. Full sync will mean that all the users have to sign into Google
+       (OAuth). While the Nager.Holidays API does not need any key, in addition to this, it
+       offers the feature of "Add to Google Calendar" link allowing anyone to add anything to
+       their Google calendar.
+
+      Responsive Design for mobiles and tablets: bottom tabs on mobiles and navigation rail
+       with multicolumn grid and width of content typical of tablets.
+
+      Input validation of forms all the way: required fields, character limit, number range, no
+       due date in past, publish date after the due date, and reason for change request.
+
+      The recommended palette of our proposal: black and white of the logo for grey cards
+       with hints of orange for actions, green for accepted, amber for awaiting, and red for
+       overdue.
+
+8.2 Limitations and Future Work
+      Tests were conducted only for the Android app. On the other hand, iOS project exists
+       but was not installed as no Mac machine with Xcode is available.
+
+      File size cannot exceed 700 KB without the Blaze plan. Cloud storage must be used for
+       large files such as long videos.
+
+      Notifications are done in-app. When Firebase Cloud Messaging is used, notification
+       will also be sent directly to the user's phone.
+
+
+
+
+                                               22
+CT124-3-2-MAE                    MOBILE APP ENGINEERING                   SPACESHARKS APP
+
+
+      The holiday API works only for public holidays in Malaysia. It does not work for school
+       holidays.
+
+      Users can be added either by the admin or through the demo-data loader and there is no
+       self-signup option.
+
+
+
+
+                                             23
+CT124-3-2-MAE                        MOBILE APP ENGINEERING                      SPACESHARKS APP
+
+
+
+9.0 Automated Test Report
+This section presents the automated testing processes for the app. The results here are derived
+from automated runs on GitHub Actions and through an Android emulator. Automated testing
+is selected as it can be repeated when the app changes and is able to spot defects overlooked by
+manual testing, as indicated in the systematic review of Android app testing (Flutter, n.d.-b;
+Kong et al., 2019).
+
+
+
+9.1 Test Plan
+9.1.1 Scope
+The automated tests assess the user processes applicable to all three roles: logging in, owner’s
+process and task management, delivery processing by the worker, approvals and feedback by
+the client, alerts and weekly calendar with holidays API, form verification and adaptive layout.
+Manual testing was applied only for the app testing on the phone; every piece of information
+presented in this section is based on the results of automated testing.
+9.1.2 Approach: Five Levels of Tests
+
+                                 Table 5: Five levels of automated tests
+
+ Level       Framework            What it tests                Where
+
+ Unit        flutter_test         Models, validators,          test/core, test/owner, test/staff,
+             (test, expect)       formatters, repositories     test/client, test/shared
+                                  (business rules), view
+                                  models (screen logic and
+                                  permissions), the holidays
+                                  API client
+
+ Widget      flutter_test         Real screens driven like a   test/features,
+             (testWidgets,        user: typing, tapping,       test/widget_test.dart
+             WidgetTester,        dialogs, validation
+             finders)             messages, navigation,
+                                  phone and tablet layouts
+
+ Integrati   integration_tes      The full app on an           integration_test/app_test.dart
+ on          t                    Android device or
+                                  emulator, across roles:
+                                  owner assigns, staff
+                                  deliver, client approves,
+                                  owner sees it delivered
+
+ Security    @firebase/           Every query and write the    test_rules/rules.test.mjs
+ rules       rules-unit-          app makes, for each role,
+             testing on the       against
+             Firebase emulator    firestore.rules: what
+                                  must be allowed and what
+                                  must be refused
+
+
+
+
+                                                    24
+CT124-3-2-MAE                              MOBILE APP ENGINEERING                        SPACESHARKS APP
+
+
+
+ Level       Framework                  What it tests                 Where
+
+ Live end-   integration_tes            The app against the real      integration_test/
+ to-end      t + flutter                Firebase project (Auth,       firebase_e2e_test.dart
+             drive                      Firestore and the published
+                                        rules), driven through
+                                        every role in Chrome at
+                                        phone size, with a
+                                        screenshot at every step
+
+
+Test data: A fresh copy of a demo agency (with 3 clients, 3 staff, 32 deliverables, comments,
+approvals, handovers, and notifications) is created for every experiment. The code logic here is
+the same as in the case of Firebase, since all repositories are calling the DocStore interface,
+while the back-storage changes. The tests that rely on dates are using a fixed clock, that is, an
+arbitrary date set to be October 28th, 2026, 12:00 PM, which makes "overdue" and "due soon"
+phrases to mean the same everywhere.
+Third-party API: The holidays adapter accepts its HTTP call as a parameter; therefore, we can
+feed the tested object with the pre-recorded JSON response and not with the actual network.
+This saves the time of testing and makes experiments replicable and gives the chance to check
+the offline scenario as well.
+9.1.3 Tools and Environment
+Flutter 3.47.8 (stable) and Dart 3.13.7 are the versions used for the testing process, which
+makes use of packages provided by Flutter SDK including flutter_test, integration_test and
+flutter_driver. It also utilizes @firebase/rules-unit-testing and firebase-tools for the Firestore
+emulator. Flutter test --coverage (lcov) is used to measure the coverage. Static analysis,
+execution of all tests, coverage measurement and APK build is done by GitHub Actions on
+every push. The integration tests are carried out either on an emulator or an Android phone and
+the live Firebase test is performed in headless chrome (412 x 915).
+
+
+
+9.2 Test Cases and Results
+108 automated tests are run, which consist of 70 unit tests, 23 widget tests, 2 integration tests,
+12 security-rule tests and 1 live end-to-end test on Firebase resulting in 106 test cases being
+created. The results of unit and widget tests have been recorded during GitHub Actions testing,
+which is positive as 93 tests passed out of 93 (Flutter 3.47.8). The integration tests were also run
+successfully from an Android emulator according to section 9.3.3, and finally, the in total 12
+rule tests passed according to the report in section 9.3.4.
+
+                           Table 6: Test cases by area (full test cases in Appendix B)
+ Area                           Level               Test cases         Count         Result    Details
+ Core: Models, Validation,      Unit                TC-01 to TC-27     27            Pass      Table B1
+ Data Rules
+ Third-party API                Unit                TC-28 to TC-32     5             Pass      Table B2
+ Owner / Manager                Unit                TC-33 to TC-47     15            Pass      Table B3
+ Content Creator / Staff        Unit                TC-48 to TC-50     3             Pass      Table B4
+ Client                         Unit                TC-51 to TC-52     2             Pass      Table B5
+
+
+
+                                                         25
+CT124-3-2-MAE                             MOBILE APP ENGINEERING                              SPACESHARKS APP
+
+
+
+ Area                          Level               Test cases          Count                Result      Details
+ Task Detail: Permissions      Unit                TC-53 to TC-64      12                   Pass        Table B6
+ and Actions
+ Screens Driven Like a         Widget              TC-65 to TC-78      14                   Pass        Table B7
+ User
+ End to End on Android         Integration         TC-79 to TC-80      2                    Pass        Table B8
+ Task Detail Actions and       Widget              TC-81 to TC-89      9                    Pass        Table B9
+ Alerts
+ Firestore Security Rules      Firebase            TC-90 to TC-        12                   Pass        Table B10
+                               Emulator            101
+ Live End-to-end on the        Live end-to-end     TC-105              1 (16                Pass        Section
+ Real Firebase Project                                                 checkpoints)                     9.3.5
+ Regression Tests for          Unit                TC-102 to TC-       4                    Pass        Table B11
+ Defects Found on                                  104, TC-106
+ Firebase
+
+
+Every test case has an ID, the requirement or use case it checks (for example FR3 or CL-UC5),
+the steps, the expected result and the actual result. The full tables are in Appendix B so this
+section stays readable.
+
+
+
+9.3 Test Run Results
+                                      Table 7: Summary of the final test run
+ Measure                                                    Result
+ Static analysis (flutter analyze)                          No issues found
+ Unit and widget tests                                      93 passed, 0 failed (run time 35 s)
+ Line coverage                                              88.4% (2,476 of 2,801 lines)
+ Release APK build                                          Built, 57.0 MB
+ Integration tests on Android emulator                      2 passed, 0 failed (run time 44 s)
+ Security rules tests on the Firebase emulator              12 passed, 0 failed; the old rules failed 5 of the 12
+ Live end-to-end test on Firebase (Chrome, phone            1 passed: all 16 checkpoints (under 10 minutes)
+ size)
+
+
+
+9.3.1 Unit and Widget Test Run
+The full output of the GitHub Actions run (--reporter expanded lists every test with its running
+pass count):
+
+
+
+
+                                                       26
+CT124-3-2-MAE                     MOBILE APP ENGINEERING                       SPACESHARKS APP
+
+
+
+
+                         Figure 17: flutter test output: all 93 tests passed
+
+
+
+
+                                    Figure 18: Static analysis
+
+
+
+9.3.2 Coverage
+Flutter test --coverage is used to determine how much of the code is covered in various files.
+The best coverage is obtained in the files dealing with business logic (repositories.dart, 93%),
+view models (90% to 100%), and models (80% to 100%). The worst coverage is reported in
+firestore_doc_store.dart (0%) because it's a simple adapter to the live Firestore service, which
+gets substituted with an in-memory store in unit tests; its functionality is tested during the
+application runs on Firebase.
+
+
+
+
+                                                 27
+CT124-3-2-MAE                      MOBILE APP ENGINEERING                      SPACESHARKS APP
+
+
+
+
+                                 Figure 19: Line coverage per file
+
+9.3.3 Integration Tests on Android
+Both integration tests ran on an Android emulator (API 29, Pixel 4 profile) in GitHub Actions
+and passed. The full-workflow test drives four roles in one run: the owner's new task appears in
+the copywriter's list; the copywriter starts it, uploads a version and sends it; the client approves
+it; and the approval appears in the owner's approval log with version 1.
+
+
+
+
+                        Figure 20: Integration tests on the Android emulator
+
+9.3.4 Security Rules on the Firebase Emulator
+The rules tests run on GitHub Actions whenever firestore.rules changes. Run against the first
+version of the rules, 5 of the 12 tests failed, which revealed defects D10 and D11 below. The
+corrected rules pass all 12, and these are the rules published to the live project.
+
+                                                28
+CT124-3-2-MAE                     MOBILE APP ENGINEERING                        SPACESHARKS APP
+
+
+
+
+                Figure 21: Security rules tests on the Firebase emulator: 12 passed
+
+
+
+
+9.3.5 Live End-to-end Test on Firebase
+On 28 October 2026, the live test was performed via GitHub Actions on the authentic
+spacesharks-app Firebase project and managed to pass all of the 16 checkpoints within just 10
+minutes. There are 2 figures below showing the screenshots taken in chronological order.
+During construction, the program detected 5 genuine bugs (D12 to D16), each of which has
+been already rectified in the application and then tested again.
+The test consists of passing 16 checkpoints in accordance with the following roles:
+       1. All: The login screen rejects incorrect password and empty fields
+       2. Owner: The dashboard shows live packages from the Firestore
+       3. Owner: The package is created using the form and then moved to Build-up
+       4. Owner: The task is created for Priya Nair, edited, and a status inquiry is made
+       5. Staff: The alerts on task creation and status inquiry are received
+       6. Staff: The employee starts working and uploading (version 1, image in Firestore)
+       7. Staff: The status update is sent; the task is transferred to Nurul Aina with a comment
+       8. Staff: Nurul Aina approves the transfer
+       9. Client: The client can see only his/her package; gets the “Please review” message
+       10. Client: Change request has to provide justification; the request has been stored; it
+           states “Not viewed yet”
+       11. Rules: One client is denied another client’s package and the package list
+       12. Staff: Uploads version 2 and sends again; the client sees “Agency has seen” as his
+           comment
+       13. Client: Approves the second version; it gets the Final status and appears in the
+           library; calendar opens and notifications have been marked as read
+       14. Owner: Approval log shows the two decisions including version, name and time;
+           overload and status notifications have been received
+       15. All: The new connection re-reads the approved task from Firestore
+       16. Owner: Gets rid of the task with the records and of the package through the menus
+
+                                                29
+CT124-3-2-MAE                       MOBILE APP ENGINEERING                        SPACESHARKS APP
+
+
+
+
+  Figure 22: Live run on Firebase, part 1: login, owner creates the package and task, staff deliver,
+                                 designer confirms the handover
+
+
+
+
+                                                 30
+CT124-3-2-MAE                          MOBILE APP ENGINEERING                             SPACESHARKS APP
+
+
+
+
+ Figure 23: Live run on Firebase, part 2: client reviews, requests changes and approves; owner sees
+                     the approval log, alerts, workload and calendar; clean-up
+
+9.4 Defects Found and Fixed
+Every push to GitHub runs the full suite, so defects were caught within minutes of being
+introduced. All of them are fixed and re-tested.
+
+
+                                      Table 8: Defects found and fixed
+#      Found by              Defect                            Fix                            Re-test
+D1     flutter analyze and   The file picker package           Switched to                    TC-59, TC-64:
+       every test file       (version 13) removed              FilePicker.pickFile and        Pass
+       failed to compile     FilePicker.platform, so           readAsBytes, kept in one
+                             uploads could not compile         service class
+D2     TC-73, TC-77          The task form and a test          Added one-off reads            TC-73, TC-77:
+       timed out after 10    waited for the first value of a   (TaskRepository.getAll,        Pass
+       minutes               live database stream, which       AlertRepository.getForUser)
+                             never arrives inside a widget
+                             test
+D3     TC-74 (layout         The client account                Dropdowns expand to the        TC-74: Pass
+       error)                dropdown overflowed the           field width and shorten long
+                             phone screen by 322 px            text with an ellipsis
+
+
+
+
+                                                      31
+CT124-3-2-MAE                        MOBILE APP ENGINEERING                                SPACESHARKS APP
+
+
+
+#     Found by             Defect                           Fix                              Re-test
+D4    TC-68 (layout        A status label overflowed a      Labels shrink and shorten        TC-68: Pass
+      error)               narrow card by 4.3 px            instead of overflowing
+D5    Screenshot test      Page titles and button labels    The theme's title and button     Screenshots
+                           used the fallback font           styles now name the Inter        checked
+                           instead of Inter                 font
+D6    Screenshot test      The "Request changes" error      Shorter message and the          TC-71: Pass
+                           message was cut off by the       error can wrap to two lines
+                           character counter
+D7    TC-68                A section far down a long        Tests use a tall phone-width     TC-68, TC-70:
+                           page was not built yet, so       screen and scroll to items       Pass
+                           the test could not find it       before tapping
+D8    TC-80 on the         On a real phone screen the       The test closes the keyboard     TC-79, TC-80:
+      Android emulator     on-screen keyboard covered       and scrolls to each item         Pass
+                           the Sign in button, so the       before tapping, as a user
+                           automated tap missed             would
+D9    TC-81                An uploaded file that is not a   Previews now show a              TC-81: Pass
+                           valid image raised an error      "broken image" icon instead
+                           while drawing the preview        of failing
+D10   Rules tests TC-96,   The app lists comments,          Rules check the client's         TC-96, TC-97:
+      TC-97                approvals and versions by        access through the task          Pass
+                           task, but the rules checked      (ownsTask)
+                           the package, so Firestore
+                           refused a client's own
+                           feedback thread
+D11   Rules tests TC-97,   Security gaps: any signed-in     Roles can only be set by an      TC-97, TC-99,
+      TC-99, TC-100        user could set their own role    owner; versions are limited      TC-100: Pass
+                           to owner, clients could read     to the client's own tasks;
+                           other clients' files, and a      clients may only change the
+                           client could edit any field of   decision fields
+                           their task
+D12   Live end-to-end      Deleting a task left its         Deleting a task (or package)     TC-101, TC-
+      test                 comments, approvals,             deletes its records; owners      102: Pass
+                           versions and handovers           may delete them in the rules
+                           behind
+D13   Live end-to-end      A package created today          Expected progress counts         TC-103: Pass
+      test                 showed "Behind" before any       from the package start to the
+                           work was due                     end of the month
+D14   Live end-to-end      If sign-in finished after the    View models ignore updates       TC-104: Pass
+      test                 home screen had replaced         after their screen has closed
+                           the login screen, the login
+                           view model reported an
+                           error
+D15   Live end-to-end      A task created after 5 PM        It is then due at the end of     TC-106: Pass
+      test                 with today's due date was        the day
+                           overdue the moment it was
+                           saved
+
+
+
+
+                                                      32
+CT124-3-2-MAE                      MOBILE APP ENGINEERING                           SPACESHARKS APP
+
+
+
+ #     Found by           Defect                        Fix                              Re-test
+ D16   Live end-to-end    The package detail and        Both screens handle stream       TC-105: Pass
+       test               workload screens did not      errors; Firestore errors name
+                          handle a refused or failed    the refused query; the task is
+                          live query, so signing out    deleted before its records
+                          while they were open raised
+                          an error; deleting a task
+                          showed an empty history
+                          before the task disappeared
+
+
+
+9.5 Conclusion
+The automated suite addresses all the possible applications of each of the three roles with five
+levels of coverage: business logic (unit), screens and forms (widget), cross-role workflow in
+Android (integration), Firestore security rules (simulated by Firebase emulator) and full
+workflow in the real Firebase project (live end-to-end). During the last round, all 93 unit and
+widget tests were successful with a line coverage of 88.4%, two integration tests were run on
+Android Emulator successfully, and all 12 rules tests showed the same result in the final test.
+The suite has found 16 actual bugs, including 2 vulnerabilities in the rules, all of which were
+processed. The tests are executed on each push, which allows errors of workflow to be detected
+before the final build.
+
+
+
+
+                                                 33
+CT124-3-2-MAE                         MOBILE APP ENGINEERING                            SPACESHARKS APP
+
+
+
+10.0 User Manual
+This manual shows each of the three roles how to use the SPACESHARKS Project
+Coordination App, step by step. The screenshots referred to here are the same screens shown in
+section 6.0.
+
+10.1 Getting Started
+10.1.1 Install the App
+    1. Copy app-release.apk to an Android phone (Android 7.0 or newer).
+    2. Open the file. If Android asks, allow "Install unknown apps" for your file manager or
+       browser.
+    3. Tap Install, then Open.
+10.1.2 Sign in
+Everyone signs in on the same screen. Your account's role decides which home screen opens.
+    1. Enter your email and password.
+    2. Tap Sign in.
+    3. If a field is empty or the email is not valid, a red message appears under the field. If the
+       email or password is wrong, "Incorrect email or password." appears above the button.
+Demo accounts (password password123 for all):
+
+                           Table 9: Demo accounts (password password123)
+ Role                       Email
+ Owner / Manager            owner@spacesharks.test
+ Content Creator / Staff    designer@spacesharks.test, editor@spacesharks.test, writer@spacesharks.test
+ Client                     client@kopikita.test, client@glowskin.test, client@urbanfit.test
+
+
+          The sign-in screen, and the messages shown when a field is empty: see Figure 7.
+
+
+10.1.3 Screens Every Role Shares
+          •   The bottom bar (on phone) or side bar (on tablet): allows you to navigate between
+              the three main screens of your role.
+          •   The bell icon (upper right corner): signifies the alerts that you have; the orange
+              number indicates the total unread alerts. When tapped, an alert will show you the
+              task related to it, and it will be marked as read. You can clear all alerts by tapping the
+              Mark all read option.
+          •   Your initials (upper right corner): display your name and your position, and sign-out
+              option.
+          •   Task detail: tapping on any task gets each user the same page, with the details and
+              history of the project; there are buttons on the task page depending on the role.
+          •   Weekly calendar: allows moving between weeks by using the arrows, and the public
+              holidays are indicated in red next to each day.
+
+
+
+                                                     34
+CT124-3-2-MAE                     MOBILE APP ENGINEERING                    SPACESHARKS APP
+
+
+
+10.2 Owner / Manager Guide
+Your three tabs are Dashboard, Workload and Calendar.
+                Dashboard, package detail and the new task form: see Figure 8.
+10.2.1 Check All Client Packages (Dashboard)
+       1. Three tiles located at the top of the screen display currently active packages,
+          overdue items, and items that pending approval from client.
+       2. In this part of the tool, each package card displays the client name, phase, Delivered
+          X of Y promised and the color assigned to a package indicating its health: green
+          shows On track, amber shows is At risk or red showing Behind.
+       3. Overdue items list displayed at the bottom of the page helps to see each overdue
+          item with the responsible person assigned to it.
+10.2.2 Add, Edit or Delete a Package
+       1. To create new package tap + New package button at the Dashboard.
+       2. Complete required fields like client business name, select a client account, enter
+          package name, completes expected deliverables per month (from 1 to 60) the phase
+          and optional goals to create a package.
+       3. To edit or delete the package, just open it and tap ⋮ → Edit package or Delete
+          package.
+10.2.3 Manage a Package's Tasks
+  1. Press on a package card for access to its contents.
+  2. Press the phase chip (Introduction, Build-up, Accelerated) to shift the client to that
+     phase.
+  3. Select the status chips (To do, In progress, Awaiting approval...) to filter the tasks.
+  4. Press the + New task button. Type the title, the optional brief, the content type, the
+     person assigned (listed first are those with a fewest tasks), priority, the date of
+     completion and optionally the publish date. Click button Create task. The worker gets
+     an in-app alert.
+  5. To modify the task use ⋮ → Edit task or ⋮ → Delete task. By reassigning task the new
+     employee is notified.
+  6. The Approval log located at the bottom contains history of all decisions made by client
+     indicating the version, name and time.
+  Workload and handovers, the weekly calendar and the new package form: see Figure 9.
+10.2.4 See Who Has Capacity (Workload)
+   1. On each staff card, you can find all counts of open tasks, overdue tasks, and tasks due to
+       be completed this week along with the status of the person who holds the card:
+       Overloaded, Busy, and Has capacity.
+   2. When you tap a staff card, you can see the current open tasks assigned to this staff
+       member. In case you wish to know the status of any open task, you can tap ? next to the
+       task to send the staff member an alert about the required status update.
+   3. The Handovers section contains information on all tasks completed and passed to the
+       different members of the staff as well as status messages about those tasks such as a
+
+
+
+                                              35
+CT124-3-2-MAE                       MOBILE APP ENGINEERING                     SPACESHARKS APP
+
+
+       green tick indicating the completion of the task or an orange clock displaying waiting
+       time.
+10.2.5 Weekly Content Calendar
+   1. You can choose between all clients or a specific client. When selecting exactly one client,
+       the phase bar will appear right above the calendar.
+   2. In order to see the week’s calendar, you must move left and right, scrolling through that
+       calendar. All public holidays are marked with a red color. If your task is scheduled on a
+       holiday, it will be assigned the status “Posting on a holiday”.
+   3. Tap the calendar icon on an item to add it to Google Calendar.
+                  A task as the owner sees it, and the alerts list: see Figure 10.
+
+10.3 Content Creator / Staff Guide
+Your three tabs are My tasks, My week and Handovers.
+            My tasks, a task's detail page and the status update dialog: see Figure 11.
+10.3.1 See What to Do First (My Tasks)
+   1. Do first lists work that is overdue, has changes requested, or is due within 48 hours,
+      most urgent at the top.
+   2. Later lists the rest; Approved shows finished work.
+   3. Tap a client chip at the top to see only that client's tasks.
+10.3.2 Work on a Task
+To access one of the assignments you need to tap on that task. The number of buttons you see
+will depend on the state of the task.
+       1.        To start working on a task, mark it as In progress.
+       2.        To send a new version: select the file (photo, video, or document) from your
+                 phone and make a note about the changes made if needed. Then just click the
+                 Upload button to upload the new version (v1, v2...). The file cannot be larger
+                 than 700 KB unless the agency has a storage in Cloud.
+       3.        To send a version for approval: press the button when the last version is ready
+                 and confirm your actions. The client will get notified.
+       4.        To hand over a task: choose a colleague and describe what is being handed over.
+                 A confirmation must be received by the person.
+       5.        To update the status: reply to your manager's inquiry about the task status with a
+                 short message.
+       6.        To handle the feedback: read all messages from the client and the manager in
+                 one thread and respond below. When you open the thread, the client will get to
+                 know that their message was received.
+                My week, the overload flag and the handovers tab: see Figure 12.
+10.3.3 My Week and Overload
+   1. The tiles show your open tasks, how many are due in 7 days and how many are overdue.
+
+
+
+                                                36
+CT124-3-2-MAE                     MOBILE APP ENGINEERING                    SPACESHARKS APP
+
+
+   2. If it is too much, tap Too much work? Flag overload to the manager, write what
+      should move, and tap Send flag. Every owner gets an alert.
+   3. The weekly calendar below shows your tasks by publish date, with public holidays and
+      the Google Calendar button.
+10.3.4 Handovers
+   1. Handed to me: files colleagues passed to you. Tap Confirm received so they and the
+      manager know you have it.
+   2. Handed over by me: shows whether each colleague has confirmed.
+
+10.4 Client Guide
+Your three tabs are My package, Calendar and Library.
+ My package, a deliverable waiting for your decision, and a change request: see Figure 13.
+10.4.1 See Where Your Package Stands (My Package)
+   1. The bar under your business name shows your phase: Introduction, Build-up or
+      Accelerated.
+   2. The tiles show what is waiting for you, what is in progress, and how many of your
+      promised items are approved.
+   3. Waiting for your approval lists deliverables that need your decision. Coming up in
+      the next 7 days shows what will be posted soon.
+10.4.2 Approve or Ask for Changes
+   1. Tap a deliverable that is waiting for you.
+   2. Look at the latest file under Files.
+   3. Tap Approve (you can add a comment) or Request changes. A request needs a short
+      reason, for example "Make the logo bigger".
+   4. Your decision is saved with your name, the version, the date and the time, and the team
+      is alerted. The approved version is marked Final.
+10.4.3 Give Feedback and Check It Was Seen
+   1. On any deliverable, type in Write feedback or a reply at the bottom and tap the orange
+      send button.
+   2. Under your comment you see Not seen yet until someone at the agency opens it, then
+      Seen by agency with the time.
+                 Content calendar, approved library and alerts: see Figure 14.
+10.4.4 Calendar, Library and Alerts
+   1. Calendar: what is planned each day, week by week, with public holidays. Tap the
+      calendar icon to add an item to your Google Calendar.
+   2. Library: every approved post, reel and graphic with its final version. Tap one to open it.
+   3. Alerts (bell): tells you when something is ready for your review or when the team
+      replies.
+10.4.5 Tablets
+On a tablet the tabs move to a side bar and cards are shown in columns.
+
+
+                                              37
+CT124-3-2-MAE                       MOBILE APP ENGINEERING                            SPACESHARKS APP
+
+
+                       The app on a tablet (owner dashboard): see Figure 15.
+
+10.5 Troubleshooting
+                                     Table 10: Troubleshooting
+Problem                                   What to do
+"Incorrect email or password."            Check the email for typing mistakes. Demo accounts use
+                                          password123.
+"This account has no SPACESHARKS          Your login exists but the owner has not set up your role. Ask
+profile yet."                             the owner.
+"No internet connection."                 Connect to Wi-Fi or mobile data and try again. Changes made
+                                          offline are sent when you are back online.
+"File is too large."                      Choose a file under 700 KB, or a compressed copy of the
+                                          image.
+A button is missing on a task             Buttons depend on your role and the task's status. For example,
+                                          clients only see Approve when a version is waiting, and only
+                                          the assigned staff member can upload.
+Public holidays do not appear             The holidays come from the internet. Check your connection;
+                                          the calendar still works without them.
+Alerts number does not go down            Tap the alert to mark it as read, or tap Mark all read.
+
+
+
+
+                                                 38
+     CT124-3-2-MAE                      MOBILE APP ENGINEERING                          SPACESHARKS APP
+
+
+
+     11.0 Workload Matrix
+                                        Table 11: Workload matrix
+Member                       App role                 Developed / delivered
+
+
+Muhammad Hassan (TP088111)   Client                   Client module: My package and phase progress, approve /
+                                                      request changes, feedback thread with “seen” status, approved
+                                                      library, client calendar. Shared: data layer and Firebase
+                                                      integration, automated tests and GitHub build, APK, demo
+                                                      video, compiling the report.
+
+
+
+
+Kaung Htet (TP077453)        Owner/Manager            Owner module: dashboard and package health, package and
+                                                      task create/edit/delete, workload and handovers view, status
+                                                      requests, owner calendar. Shared: Firebase project setup
+                                                      (Authentication, Firestore), security rules, system description,
+                                                      CRUD table, architecture diagram, user manual.
+
+
+
+
+Muntasir Uzzaman Mashrafi    Content Creator/Staff    Staff module: My tasks priority list, start work, upload
+(TP088872)                                            versions, send for approval, handovers, status updates,
+                                                      overload flag, My week. Shared: test case design, automated
+                                                      test report, use case diagram, Android testing.
+
+
+
+
+                                                     39
+CT124-3-2-MAE                    MOBILE APP ENGINEERING                   SPACESHARKS APP
+
+
+
+12.0 Conclusion and Recommendations
+
+12.1 Conclusion
+The SPACESHARKS Project Coordination App addresses the issue identified in our Part 1
+research: information regarding status, feedback, and approvals was dispersed through many
+chats and manual schedules. Now the owners of the packages are using the same dashboard to
+track the health and progress of every package, the staff know what it is important to do and
+pass the work with an implementation confirmation, and the clients approve or request
+modifications with a record containing an exact time of any case. All in all, 26 use cases are
+implemented with the use of Firebase Authentication and Cloud Firestore together with role-
+based security rules, uploading images with versioning and public holiday API. The app is
+based on 108 automated tests, including an end-to-end live test on the real Firebase project.
+
+12.2 Recommendations
+Our recommendations are as follows (in order of importance):
+           1. Implement push notifications via Firebase Cloud Messaging. Notifications
+              are only sent when the app is active; this system would immediately inform both
+              crew members and clients about all recent activities and requests.
+           2. Transfer files to Firebase Cloud Storage (Blaze plan). This way, file size
+              limitations would be lifted, allowing for easier access to reels and videos.
+           3. Allow the owner to send invitations to staff and clients via email. Currently,
+              only the owner/demo loader has this ability; once implemented, it would allow
+              new clients to obtain services on their own.
+           4. Perform testing of the iOS version. The Flutter project already includes
+              support for iOS, but testing requires Mac with Xcode and an actual TestFlight
+              session with real users.
+           5. Provide clients with monthly report exports (PDF). Such an option could
+              allow owners to deliver reports to clients, outlining materials and delivery
+              timelines.
+           6. Two-way Google Calendar sync. Today items are added one at a time by link;
+              syncing with Google sign-in would keep the content calendar and personal
+              calendars aligned.
+           7. Usability testing with SPACESHARKS staff and two clients. Measure task
+              completion and satisfaction with the System Usability Scale (Brooke, 1996) and
+              refine the screens before launch.
+
+
+
+
+                                             40
+CT124-3-2-MAE                     MOBILE APP ENGINEERING                     SPACESHARKS APP
+
+
+
+13.0 References
+Andrade, F., de Paula, H., Brito, A., Cardoso, L., & Tavares, C. (2025). Impact of MVC and
+      MVVM architectures on test quality: An analysis of GitHub open-source repositories.
+      In Proceedings of the 24th Brazilian Symposium on Software Quality (SBQS) (pp.
+      270–277). Sociedade Brasileira de Computação.
+      https://doi.org/10.5753/sbqs.2025.15072
+
+Biørn-Hansen, A., Grønli, T.-M., & Ghinea, G. (2018). A survey and taxonomy of core
+       concepts and research challenges in cross-platform mobile development. ACM
+       Computing Surveys. https://bura.brunel.ac.uk/handle/2438/16569
+
+Brooke, J. (1996). SUS: A “quick and dirty” usability scale. In P. W. Jordan, B. Thomas, B.
+      A. Weerdmeester, & I. L. McClelland (Eds.), Usability evaluation in industry (pp.
+      189–194). Taylor & Francis.
+
+Firebase. (n.d.-a). Cloud Firestore documentation. Google.
+       https://firebase.google.com/docs/firestore
+
+Firebase. (n.d.-b). Firebase Authentication documentation. Google.
+       https://firebase.google.com/docs/auth
+
+Flutter. (n.d.-a). Guide to app architecture. Google.
+        https://docs.flutter.dev/app-architecture/guide
+
+Flutter. (n.d.-b). Testing Flutter apps. Google. https://docs.flutter.dev/testing/overview
+
+Kong, P., Li, L., Gao, J., Liu, K., Bissyandé, T. F., & Klein, J. (2019). Automated testing of
+       Android apps: A systematic literature review. IEEE Transactions on Reliability,
+       68(1), 45–66. https://doi.org/10.1109/TR.2018.2865733
+
+Moroney, L. (2017). The definitive guide to Firebase: Build Android apps on Google’s
+      mobile platform. Apress.
+
+Nager.Holidays. (n.d.). Holiday API. Retrieved October 31, 2026, from
+      https://nagerholidays.com/api
+
+
+
+
+                                               41
+CT124-3-2-MAE                        MOBILE APP ENGINEERING                              SPACESHARKS APP
+
+
+
+Appendix A: Submission Contents and How to Run
+                                 Table 12: Files submitted on Moodle
+
+File                                         Contents
+
+MAE_Part2_Report_Group17.docx / .pdf         This report
+
+spacesharks-app source code (.zip)           Flutter project: lib/, test/, integration_test/, android/, ios/,
+                                             firestore.rules, README.md
+
+app-release.apk                              Android build of the app
+
+App demo video                               Recorded demonstration of the three roles
+                                             https://drive.google.com/file/d/
+                                             13wxYapggxtVzFMFXPSuIlwdFDS5H75Hu/view?
+                                             usp=sharing
+
+
+Run the app. flutter pub get, then flutter run (demo data) or flutter run --dart-
+define=BACKEND=firebase (Firebase). Run the tests. flutter test, flutter test --
+coverage, and flutter test integration_test/app_test.dart on a connected Android
+device or emulator.
+
+
+
+
+                                                  42
+CT124-3-2-MAE                      MOBILE APP ENGINEERING                            SPACESHARKS APP
+
+
+
+Appendix B: Detailed Test Cases
+These are the full test case tables summarised in Table 6 (section 9.2). Every case passed on the
+final run.
+
+B.1 Core: Models, Validation, Data Rules (Unit)
+                          Table B1: Core: models, validation, data rules
+ ID      Requirement /      Test                          Expected result                         Result
+         use case
+ TC-01   Data model         Task saved to and read back   Every field identical after toMap /     Pass
+                            from the database             fromMap
+ TC-02   OM-UC3             Overdue rule                  Only open tasks past their due date     Pass
+                                                          are overdue
+ TC-03   Robustness         Unknown status value in       Falls back to "To do" without           Pass
+                            old data                      crashing
+ TC-04   Robustness         Dates stored as text or       Read back as the correct date and       Pass
+                            milliseconds                  time
+ TC-05   CL-UC2             Package saved and read        Phase and promised items kept;          Pass
+                            back                          phase step = 2 for Build-up
+ TC-06   FR1                User profile                  Role kept; initials "NA" for Nurul      Pass
+                                                          Aina
+ TC-07   ST-UC5, ST-UC6     File version and handover     isImage true for image/png;             Pass
+                            helpers                       handover received once receivedAt
+                                                          is set
+ TC-08   FR17               Email validation              Empty and invalid emails rejected;      Pass
+                                                          valid email (with spaces) accepted
+ TC-09   FR17               Password validation           Fewer than 6 characters rejected        Pass
+ TC-10   FR17               Required + maximum            "Title is required." / "Title must be   Pass
+                            length combined               5 characters or fewer."
+ TC-11   FR2                Number range (promised        Text, 0 rejected; 12 accepted           Pass
+                            items)
+ TC-12   FR3                Date not in the past          Yesterday rejected; today accepted      Pass
+ TC-13   UI text            Due-date wording and          "Due tomorrow", "2 days overdue",       Pass
+                            timestamps                    "2 Nov 2026, 3:05 PM"
+ TC-14   Real-time data     Database listener             New list delivered after every          Pass
+                                                          change (0, 1, 2)
+ TC-15   Robustness         Update a missing document     Error raised, nothing written           Pass
+ TC-16   FR1                Sign in, correct password     Returns the user with role Owner        Pass
+                            (any letter case)
+ TC-17   FR1                Sign in, wrong password       "Incorrect email or password."          Pass
+ TC-18   ST-UC2             Owner creates a task          Assignee receives a "New task"          Pass
+                                                          alert
+ TC-19   FR3                Owner deletes a task          Task no longer exists                   Pass
+
+
+
+
+                                                   43
+CT124-3-2-MAE                    MOBILE APP ENGINEERING                                SPACESHARKS APP
+
+
+
+ID      Requirement /     Test                              Expected result                       Result
+        use case
+TC-20   CL-UC5, CL-       Client approves version 2         Status Approved, approved version     Pass
+        UC6, OM-UC5                                         = 2, approval saved with name and
+                                                            time
+TC-21   CL-UC5            Client requests changes           Status Changes requested; staff       Pass
+                          with a note                       alerted with the note
+TC-22   CL-UC4, CL-       Client comments, then staff       Staff alerted; comment marked         Pass
+        UC7, ST-UC4       open the thread                   "seen" with a time
+TC-23   CL-UC8            Staff send for approval           Status Awaiting approval; client      Pass
+                                                            alerted
+TC-24   ST-UC5            Upload to a task with no          Version 1 created; task moves to In   Pass
+                          files                             progress
+TC-25   Storage limit     Upload over the size limit        Refused with a clear error            Pass
+TC-26   ST-UC6, OM-       Hand over, then confirm           Pending until confirmed, then         Pass
+        UC7                                                 Received
+TC-27   FR15              Mark all alerts read              Every alert read                      Pass
+
+
+
+B.2 Third-party API (Unit)
+                                   Table B2: Third-party API
+ID      Requirement     Test                        Expected result                               Result
+TC-28   FR16            Parse the Nager.Date        2 holidays; first is Deepavali on 8 Nov       Pass
+                        JSON                        2026
+TC-29   FR16            Request URL and             Calls /api/v3/PublicHolidays/2026/MY          Pass
+                        caching                     once for two reads
+TC-30   FR16            API unreachable             Empty list, calendar still works              Pass
+                        (offline)
+TC-31   FR16            Holidays in one week        Week of 2 to 8 Nov returns Deepavali only     Pass
+TC-32   FR16            Add to Google               Pre-filled title and UTC start/end times      Pass
+                        Calendar link
+
+
+
+B.3 Owner / Manager (Unit)
+                                  Table B3: Owner / Manager
+ID      Use case        Test                     Expected result                                  Result
+TC-33   OM-UC1, OM-     Dashboard counts         3 active packages, 2 overdue, 2 awaiting         Pass
+        UC2, OM-UC3                              approval; Kopi Kita delivered 7 of 12
+TC-34   OM-UC1          Dashboard updates        Awaiting count drops from 2 to 1 right after     Pass
+                        live                     a client approves
+TC-35   OM-UC4          Assignee list in the     Staff sorted by fewest open tasks                Pass
+                        task form
+
+
+
+
+                                                 44
+CT124-3-2-MAE                          MOBILE APP ENGINEERING                            SPACESHARKS APP
+
+
+
+ID      Use case         Test                       Expected result                                 Result
+TC-36   FR3              Publish date before        Rejected                                        Pass
+                         due date
+TC-37   FR3, ST-UC2      Create a task from the     Saved as To do for the right client; assignee   Pass
+                         form                       alerted
+TC-38   FR3              Reassign a task            New assignee gets a "Task reassigned" alert     Pass
+TC-39   OM-UC6           Change the package         Saved as Build-up                               Pass
+                         phase
+TC-40   OM-UC5           Filter tasks and           Filter shows only Awaiting approval; log        Pass
+                         approval log               not empty
+TC-41   FR2              Delete a package           Package and all its tasks removed               Pass
+TC-42   OM-UC8           Health: delivery           On track                                        Pass
+                         keeps up
+TC-43   OM-UC8           Health: slightly           At risk                                         Pass
+                         behind
+TC-44   OM-UC8           Health: 2 or more          Behind                                          Pass
+                         overdue
+TC-45   OM-UC4           Capacity labels            1 open = Has capacity, 3 = Busy, 5 or 2         Pass
+                                                    overdue = Overloaded
+TC-46   OM-UC4, OM-      Workload page data         3 staff listed; 1 handover waiting              Pass
+        UC7
+TC-47   ST-UC8           Staff overload flag        Owner receives an Overload alert with the       Pass
+                                                    reason
+
+
+
+B.4 Content Creator / Staff (Unit)
+                                  Table B4: Content Creator / Staff
+ID      Use case      Test                Expected result                                           Result
+TC-48   ST-UC1, ST-   Do first            Overdue task first, then due today; 8 approved listed     Pass
+        UC3           section             separately
+TC-49   ST-UC2        Filter by client    Only that client's tasks                                  Pass
+TC-50   ST-UC3        Urgency order       Overdue, changes requested, due soon, then by             Pass
+                                          priority
+
+
+
+B.5 Client (Unit)
+                                            Table B5: Client
+ID      Use case                Test               Expected result                                  Result
+TC-51   CL-UC1, CL-UC2,         My package         Own package only; 1 waiting for approval;        Pass
+        CL-UC3, CL-UC8                             3 in progress; 7 approved; next 7 days listed
+                                                   in order
+TC-52   CL-UC1                  Client with no     Empty state, no endless loading                  Pass
+                                package
+
+
+
+                                                   45
+CT124-3-2-MAE                        MOBILE APP ENGINEERING                                SPACESHARKS APP
+
+
+
+
+B.6 Task Detail: Permissions and Actions (Unit)
+                           Table B6: Task detail: permissions and actions
+ID      Use case        Test                              Expected result                               Result
+TC-53   CL-UC5          Who can approve                   Client only, and only while Awaiting          Pass
+                                                          approval
+TC-54   ST-UC5,         Who can upload and hand           Assigned staff only                           Pass
+        ST-UC6          over
+TC-55   ST-UC1          Start work                        Only a To do task can be started              Pass
+TC-56   FR3             Owner vs client actions           Owner can edit, delete, request status;       Pass
+                                                          client cannot
+TC-57   CL-UC5          Client approves with a            Approved; comment saved in the history        Pass
+                        comment
+TC-58   CL-UC5          Client requests changes           Changes requested                             Pass
+TC-59   ST-UC5,         Start, upload, send for           Version 1, Awaiting approval, client          Pass
+        CL-UC8          approval                          alerted
+TC-60   Storage limit   Upload a file that is too         Error message shown, no crash                 Pass
+                        large
+TC-61   ST-UC6          Hand over to a colleague          Colleague list excludes yourself;             Pass
+                                                          handover pending
+TC-62   OM-UC9          Status request and reply          Staff get the request; owner gets the reply   Pass
+                                                          text
+TC-63   FR3             Owner deletes from the            Page shows "no longer exists"                 Pass
+                        detail page
+TC-64   ST-UC5          File type from the name           png, jpeg, mp4 recognised; unknown =          Pass
+                                                          generic
+
+
+
+B.7 Screens Driven Like a User (Widget)
+                                 Table B7: Screens driven like a user
+ID      Use case         Test                                   Expected result                         Result
+TC-65   FR1              App start                              Login screen with the                   Pass
+                                                                SPACESHARKS logo
+TC-66   FR1, FR17        Sign in with empty fields              "Enter your email." and "Enter          Pass
+                                                                your password."
+TC-67   FR1              Sign in with a wrong password          Error message under the form            Pass
+TC-68   FR1              Owner, staff and client sign in        Each lands on its own home screen       Pass
+                         and out in turn
+TC-69   FR1              Tap a demo account                     Email filled in                         Pass
+TC-70   CL-UC5           Client approves from the               Approve button disappears; task         Pass
+                         package page                           Approved
+
+
+
+
+                                                     46
+CT124-3-2-MAE                          MOBILE APP ENGINEERING                              SPACESHARKS APP
+
+
+
+ID      Use case           Test                                 Expected result                        Result
+TC-71   CL-UC5,            Request changes with no reason       "Please write something first."        Pass
+        FR17
+TC-72   CL-UC4, CL-        Client posts a comment               Comment shown with "Not seen           Pass
+        UC7                                                     yet"
+TC-73   FR3, FR17          Save an empty new task               Title, assignee and due date errors    Pass
+                                                                shown
+TC-74   FR2, FR17          Save a new package with 0 items      Name, account and "must be 1 to        Pass
+                                                                60" errors
+TC-75   OM-UC4,            Open the Workload tab                Team list and "Handovers (1            Pass
+        OM-UC7                                                  waiting)"
+TC-76   ST-UC6             Confirm a handover                   Count drops from 1 to 0 to confirm     Pass
+TC-77   ST-UC8             Flag overload                        Reason required; then the owner is     Pass
+                                                                alerted
+TC-78   Adaptive           Open the app on a 1280 px wide       Side navigation rail instead of the    Pass
+        design             screen                               bottom bar
+
+
+
+B.8 End to End on Android (Integration)
+                                     Table B8: End to end on Android
+ID      Use case       Test                                   Expected result                          Result
+TC-79   FR1, CL-       Every role signs in; client opens      Each home screen shown; "Please          Pass
+        UC8            alerts                                 review: Brand introduction post"
+                                                              alert listed
+TC-80   Full           Owner assigns, staff start, upload     Task Approved with version 1;            Pass
+        workflow       and send, client approves, owner       entry shown in the package's
+                       checks                                 approval log
+
+
+
+B.9 Task Detail Actions and Alerts (Widget)
+                                  Table B9: Task detail actions and alerts
+ID      Use case    Test                                    Expected result                            Result
+TC-81   ST-UC5      Staff tap Upload version, pick an       "Version 2 uploaded."; new file listed;    Pass
+                    image, add a note                       task at version 2
+TC-82   CL-UC8      Staff tap Send for approval and         Status Awaiting approval; button           Pass
+                    confirm                                 disappears
+TC-83   ST-UC6      Staff tap Hand over, choose Priya       Handover saved to Priya Nair               Pass
+                    Nair, write a note
+TC-84   OM-         Staff send a status update              Owner receives the text as an alert        Pass
+        UC9
+TC-85   OM-         Owner taps Request status               Assignee receives a Status request alert   Pass
+        UC9
+TC-86   FR3         Owner deletes a task from the           Task removed                               Pass
+                    menu and confirms
+
+
+                                                      47
+CT124-3-2-MAE                           MOBILE APP ENGINEERING                               SPACESHARKS APP
+
+
+
+ ID       Use case    Test                                    Expected result                         Result
+ TC-87    FR3         Owner opens Edit task from the          Edit form opens with the task's title   Pass
+                      menu                                    filled in
+ TC-88    CL-UC5      Client opens a task that is still in    No Approve and no Upload buttons        Pass
+                      progress
+ TC-89    FR15        Owner opens alerts and taps Mark        Overdue alert listed; all alerts read   Pass
+                      all read
+
+
+
+B.10 Firestore Security Rules (Firebase Emulator)
+Each test signs in as a role on the Firebase emulator and makes the same queries and writes as
+the app (assertSucceeds / assertFails).
+
+                                     Table B10: Firestore security rules
+ ID        Role              Test                                            Expected result          Result
+ TC-90     Signed out        Read packages, tasks, users                     All refused              Pass
+ TC-91     Owner             Read every collection; create packages,         All allowed              Pass
+                             tasks and users; edit tasks; mark
+                             comments seen
+ TC-92     Owner             Create and delete a task                        Allowed                  Pass
+ TC-93     Staff             Read own tasks, packages, comments,             All allowed              Pass
+                             approvals, versions, colleagues; upload a
+                             version; comment; hand over; alert the
+                             owner
+ TC-94     Staff             Confirm a handover                              Only the receiver may    Pass
+                                                                             confirm
+ TC-95     Staff             Create or delete tasks, create or edit          All refused              Pass
+                             packages
+ TC-96     Client            Read own package, its tasks, comments,          All allowed              Pass
+                             approvals, versions and own alerts
+ TC-97     Client            Read another client's package, tasks,           All refused              Pass
+                             comments, approvals, versions, alerts;
+                             read handovers
+ TC-98     Client            Approve, change the task status,                All allowed              Pass
+                             comment, alert staff, mark own alert read
+ TC-99     Client            Approve another client's task, approve as       All refused              Pass
+                             someone else, edit a task title, mark
+                             comments seen, upload, create tasks
+ TC-100    Everyone          Change own role to owner, or create an          Refused; editing own     Pass
+                             owner profile for yourself                      name allowed
+ TC-101    Owner vs          Delete comments, approvals, versions,           Owner allowed; staff     Pass
+           others            handovers                                       and client refused
+
+
+
+
+                                                         48
+CT124-3-2-MAE                     MOBILE APP ENGINEERING                          SPACESHARKS APP
+
+
+
+B.11 Regression Tests for Defects Found on Firebase (Unit)
+                  Table B11: Regression tests for defects found on Firebase
+ID       Defect   Test                                 Expected result                     Result
+TC-102   D12      Delete a task that has comments,     Its comments, approvals, versions   Pass
+                  an approval and a handover           and handovers are deleted too
+TC-103   D13      Health of a package created today    On track, not Behind                Pass
+TC-104   D14      Sign-in finishes after the login     No error                            Pass
+                  screen has closed
+TC-106   D15      Task created today after 5 PM        Due at 23:59 today, not already     Pass
+                                                       overdue
+
+
+
+
+                                                  49
+

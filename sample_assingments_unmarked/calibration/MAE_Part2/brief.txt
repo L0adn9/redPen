@@ -1,0 +1,3 @@
+CT124-3-2-MAE Mobile App Engineering - Group Assignment Part 2: Mobile System and Supporting Documentation (75 of the 100 assignment marks; assignment = 60% of the module). Level 2.
+NOTE: the official brief was not supplied. From the submission's cover page: Part 2 marks are problem solving and design 15, mobile client system 37, automated system testing 15, app demo and supporting documentation 8. The report, the app (source code and APK) and the app demo video are submitted; all group members take part in the app demonstration to the lecturer.
+This calibration marks the group report only.

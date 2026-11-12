@@ -1,0 +1,6 @@
+CT073-3-2-CSLLT Computer System Low Level Techniques - Individual Assignment (60% of the module). Level 2.
+NOTE: the official brief was not supplied. The requirements below are reconstructed from the submission's cover page and structure:
+- Develop a program in x86 assembly language (NASM) that demonstrates arithmetic operations (ADD and SUB), loops, and conditional and unconditional jumps, with input validation.
+- Research and critically analyse why assembly language is still relevant, where it is used, and its role in cyber security, digital forensics and malware analysis.
+- Document the system design (functions, flowcharts, data design), implementation, testing, a user manual and screenshots.
+- Use APA referencing. Students must obtain 50% overall to pass.

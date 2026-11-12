@@ -1,0 +1,6 @@
+CT124-3-2-MAE Part 2 (75 marks), split as stated on the submission's cover page:
+- Problem solving and design: 15 (marked from the report: problems and solutions, functional requirements, CRUD, database design, use cases, wireframes, architecture, design decisions)
+- Mobile client system: 37 (marked from the running app; live_session: the app is demonstrated to the lecturer)
+- Automated system testing: 15 (marked from the report's automated test plan, test cases, results and defects)
+- App demo and supporting documentation: 8 (the demo is presented live to the lecturer)
+No band descriptors are given. Use the APU grade bands: 80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail. Pass mark: 50.

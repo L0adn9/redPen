@@ -71,3 +71,27 @@ Marked `RentSmartKL_Member_Module_Report.docx` against the 5 documentation crite
 | Methodology | 35 | 29 | Sequential explanatory mixed methods with an objective-to-method table; Krejcie & Morgan (370 → 450) and G*Power (d = 0.8, 26 per group) are correct; kappa, Cronbach's alpha, SUS/TAM, thematic analysis, PDPA ethics, honest limitations. The "Phase 3" and "Data analysis" paragraphs have swapped content. |
 | Academic writing + referencing | 15 | 10 | 29 well-formed APA 7 references. Writing has many paraphrase-style glitches ("III-d stage explanatory mixed", "removal of arms around AI"). |
 | **Total** | 100 | **80** | **A+** (borderline) |
+
+## 6. CSLLT SmartSignal (CT073-3-2, individual, 60%)
+**No brief or rubric was supplied.** Requirements were reconstructed from the report's cover and structure, and 6 criteria were derived from them; the Examiner gets the same rubric. The NASM source wasn't in the folder, so nothing was run.
+
+| Criterion | Max | Mark | Why |
+|---|---|---|---|
+| Introduction and background | 10 | 8 | Register and system-call tables, clear project goals, 8 assumptions. |
+| Research and critical analysis | 25 | 19 | Good coverage (kernels, FFmpeg AVX-512, malware analysis, Ghidra, Stuxnet/WannaCry/Mirai) and an excellent hands-on reverse-engineering + binary-patching demo on its own binary. But section 2.2.1 "Embedded and Real-Time Systems" is a copy of 2.1, so that topic is missing; some garbled sentences. |
+| System design | 15 | 11 | Function table mapped to constructs, phase table, several flowcharts, data design. The phase-model text contradicts the assumptions (pedestrians cross in all-red vs "yellow continues"; emergency "extra amber" vs "all-red"). |
+| Implementation of required constructs | 25 | 21 | ADD/SUB, LOOP vs DEC/JNZ (explains the 127-byte LOOP limit), JE/JB/JG jumps, non-blocking input with poll/termios, range-checked input, each with code. |
+| Testing, user manual, screenshots | 15 | 13 | 18 test cases with expected/actual, edge cases (Ctrl+C, closed stdin, duplicate requests), full user manual, 10 pages of screenshots. |
+| Conclusion, references, presentation | 10 | 6 | The conclusion stops mid-sentence ("adjusting green time depending on"); about 14 APA references; AI declaration included. |
+| **Total** | 100 | **78** | **A** |
+
+## 7. MAE Part 2 Group 17 report (CT124-3-2, group, Part 2 = 75 marks)
+**No brief supplied**; the mark split is quoted from the report's own cover page. Only the two criteria that a report can show were marked. Mobile client system (37) needs the running app and the demo (8) is live, so both are left out.
+
+| Criterion | Max | Mark | Why |
+|---|---|---|---|
+| Problem solving and design | 15 | 13 | Problems/solutions per role tied to Part 1 research codes, 17 functional requirements, CRUD-by-role table enforced in app and Firestore rules, data model, 26-use-case diagram, wireframes for every role + tablet, MVVM with reasons, honest limitations. |
+| Automated system testing | 15 | 14 | Five test levels (unit, widget, Android integration, Firestore rules on the emulator, live end-to-end on Firebase), IDs mapped to requirements, 88.4% line coverage, CI on every push, 16 real defects found and fixed (2 security-rule gaps). Small count inconsistency (108 tests vs "106 test cases"). |
+| **Total (markable part)** | 30 | **27** | **90% (A+)** |
+
+Other members' names and TP numbers appear in this report and in the DSTR code. Remove them before the repo is made public.
