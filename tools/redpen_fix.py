@@ -3,7 +3,7 @@
 Uses the EXACT Redesign instructions from agents/fix/01-redesign.md (same text as the Gemini Enterprise step).
 Every action is optional: if its secrets are missing, the app shows a preview instead of failing.
 
-Secrets (environment or Streamlit secrets):
+Secrets (environment, Streamlit secrets, or redPen/.env):
   JIRA_BASE_URL (https://<site>.atlassian.net), JIRA_EMAIL, JIRA_API_TOKEN, JIRA_PROJECT (default RP)
   SMTP_HOST, SMTP_PORT (default 587), SMTP_USER, SMTP_PASSWORD, MAIL_FROM (default SMTP_USER)
 """
@@ -21,6 +21,7 @@ import uuid
 from email.message import EmailMessage
 
 from redpen_audit import ROOT, AuditError, api_key, call, parse
+from redpen_audit import _env as _env_or_dotenv
 
 FIX = ROOT / "agents" / "fix"
 POLICY = """Assessment design guide (summary):
@@ -32,7 +33,8 @@ POLICY = """Assessment design guide (summary):
 
 
 def _env(name, default=""):
-    return os.environ.get(name, default).strip()
+    """Environment / Streamlit secrets first, then redPen/.env (same lookup as the audit engine)."""
+    return (_env_or_dotenv(name) or default).strip()
 
 
 def instructions(filename):
