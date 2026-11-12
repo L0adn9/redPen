@@ -12,6 +12,7 @@ import io
 import json
 import os
 import pathlib
+import re
 import sys
 
 import streamlit as st
@@ -320,11 +321,13 @@ def show_fix(result, brief_text, name):
         c1, c2 = st.columns([3, 1], vertical_alignment="bottom")
         to = c1.text_input("Lecturer email", value=v.get("lecturer_email", "") if "@" in v.get("lecturer_email", "") and
                            "REPLACE" not in v.get("lecturer_email", "") else os.environ.get("DEMO_LECTURER_EMAIL", ""),
-                           placeholder="lecturer@university.edu.my")
+                           placeholder="lecturer@university.edu.my",
+                           help="With the judge password, RedPen really emails this address (the report, the revised brief "
+                                "and, for HIGH exposure, a calendar invitation). Use your own email to see it arrive.")
         approve = c2.button(f"Approve {pick}  →", type="primary", width="stretch")
         if not unlocked():
             ui('<div class="rp-muted" style="font-size:.8rem;margin:-.15rem 0 .1rem 0">🔒 Approve works for everyone and shows every follow-up below. '
-               'Writing the real Jira card needs the judge password (sidebar).</div>')
+               'Writing the real Jira card and emailing the lecturer need the judge password (sidebar).</div>')
     if approve:
         do_actions(v, red, opt, brief_text, to, name)
     if st.session_state.get(f"done-{name}"):
@@ -350,21 +353,57 @@ def do_actions(v, red, opt, brief_text, to, name):
         log.append(("Jira", "not configured here (set JIRA_* secrets). Card that would be created: "
                             f"**{v.get('module')} {v.get('assessment')}**, labels {', '.join(rf.jira_labels(v))}"))
     st.session_state[f"to-{name}"] = to
-    if rf.smtp_configured() and to and unlocked():
+    st.session_state.pop(f"sent-{name}", None)
+    if rf.smtp_configured() and unlocked() and re.fullmatch(r"[^@\s]+@[^@\s]+\.[^@\s]+", to or ""):
         try:
             att = [(f"{v.get('module')}_{v.get('assessment')}_revised.txt", revised.encode(), "text/plain")]
             if ics:
                 att.append(("redpen-review.ics", ics.encode(), "text/calendar"))
-            rf.send_email(to, rf.email_subject(v), rf.email_body(v, red, opt), att)
-            log.append(("Email", f"report sent to {to}" + (" with the review invite" if ics else "")))
+            rf.send_email(to, rf.email_subject(v), rf.email_body(v, red, opt), att, invite=ics)
+            st.session_state[f"sent-{name}"] = dt.datetime.now(dt.timezone(dt.timedelta(hours=8))).strftime("%H:%M")
+            log.append(("Email", f"**sent via Gmail** to {to}: report + revised brief" +
+                        (" + a calendar invitation" if ics else "") + ". Check the inbox."))
         except Exception as e:  # noqa: BLE001
             log.append(("Email", f"⚠️ {e}"))
+    elif rf.smtp_configured() and unlocked():
+        log.append(("Email", "not sent: type a lecturer email above (your own works) and approve again. Preview below."))
     else:
-        log.append(("Email", "ready in the outbox below: read it on screen or download it (.eml opens in any mail app)."))
+        log.append(("Email", "ready in the outbox below: read it on screen or download it (.eml opens in any mail app). "
+                             "With the judge password it is sent for real via Gmail."))
     if ics:
-        log.append(("Calendar", f"30-min T&L review for {rf.next_working_day_10am():%a %d %b, 10:00} MYT (in the outbox below)"))
+        when = f"{rf.next_working_day_10am():%a %d %b, 10:00} MYT"
+        log.append(("Calendar", f"**invitation sent**: 30-min T&L review on {when}; Gmail adds it to Google Calendar"
+                    if st.session_state.get(f"sent-{name}") else f"30-min T&L review for {when} (in the outbox below)"))
     log.append(("Revised brief", "ready to download below"))
     st.session_state[f"done-{name}"] = log
+
+
+def show_reaudit():
+    """The scheduled half of RedPen Audit: monthly re-audit results (data/reaudit/history.json, written by
+    tools/reaudit.py from the GitHub Actions schedule)."""
+    import reaudit
+    st.divider()
+    step("↻", "Monthly re-audit (scheduled)",
+         "Every stronger model can make last month's safe assessment unsafe. On the 1st of every month at 09:00 MYT, "
+         "RedPen re-runs the red team on every assessment in the register, comments the result on each Jira card and "
+         "emails an alert if exposure went up. No one presses a button.")
+    hist = reaudit.load_history()["runs"]
+    last = hist[-1] if hist else None
+    nxt = reaudit.next_run()
+    cards = [("Schedule", "1st of month, 09:00"), ("Next run", f"{nxt:%d %b %Y}"),
+             ("Last run", f"{last['date']} ({'scheduled' if last['trigger'] == 'schedule' else 'manual'})" if last else "not yet")]
+    ui('<div class="rp-grid rp-g3">' + "".join(
+        f'<div class="rp-card"><div class="rp-muted">{a}</div><div class="rp-stat" style="font-size:1.25rem">{esc(b)}</div></div>'
+        for a, b in cards) + '</div>')
+    if last:
+        arrow = {"same": "= no change", "up": "▲ went up", "down": "▼ went down"}
+        rows = [{"Assessment": r.get("assessment", r["name"]), "Last audit": f"{r['previous']} ({r.get('previous_date', '')})",
+                 "This run": r.get("exposure") or "failed", "Change": arrow.get(r.get("change"), "-"),
+                 "Copy-paster": f"{r.get('totals', {}).get('copy_paster', '-')}%", "Jira": r.get("jira", "-"),
+                 "Model": r.get("model", "-")} for r in last["results"]]
+        st.dataframe(rows, hide_index=True, width="stretch")
+    st.link_button("See the schedule and its runs on GitHub Actions ↗",
+                   "https://github.com/L0adn9/redPen/actions/workflows/monthly-reaudit.yml")
 
 
 def show_downloads(v, red, opt, brief_text, name):
@@ -400,7 +439,7 @@ def show_downloads(v, red, opt, brief_text, name):
         atts.append(("redpen-review.ics", ics.encode(), "text/calendar"))
     with st.container(border=True, key=f"rpbox-mail-{name}"):
         ui('<div class="rp-row" style="margin-bottom:.7rem"><span class="rp-label">Email to the lecturer</span>'
-           f'{badge("Report", "gray")}</div>'
+           f'{badge("Sent via Gmail · " + st.session_state[f"sent-{name}"] + " MYT", "green") if st.session_state.get(f"sent-{name}") else badge("Report", "gray")}</div>'
            '<div class="rp-mail-h">'
            f'<div>From</div><div>RedPen</div><div>To</div><div>{esc(to or "(lecturer email)")}</div>'
            f'<div>Subject</div><div style="font-weight:600">{esc(rf.email_subject(v))}</div>'
@@ -413,7 +452,8 @@ def show_downloads(v, red, opt, brief_text, name):
         e = rf.calendar_event(v, to)
         with st.container(border=True, key=f"rpbox-cal-{name}"):
             ui('<div class="rp-row" style="margin-bottom:.7rem"><span class="rp-label">Calendar · T&amp;L review meeting</span>'
-               f'{badge("Booked because exposure is HIGH", "red")}</div>'
+               f'{badge("Booked because exposure is HIGH", "red")}'
+               f'{" " + badge("Invitation sent", "green") if st.session_state.get(f"sent-{name}") else ""}</div>'
                f'<div class="rp-row" style="justify-content:flex-start;gap:.9rem">'
                f'<div class="rp-date"><div>{e["start"]:%b}</div><div>{e["start"]:%d}</div></div>'
                f'<div><div style="font-weight:600">{esc(e["title"])}</div>'
@@ -442,7 +482,7 @@ with st.sidebar:
     mode = st.radio("Mode", ["Saved audits (instant)", "Run a new audit"], index=0)
     st.divider()
     if os.environ.get("APP_PASSWORD") and not st.session_state.get("pw_ok"):
-        pw = st.text_input("Judge password", type="password", help="Unlocks the real Jira write and live audits.",
+        pw = st.text_input("Judge password", type="password", help="Unlocks the real Jira write, real email + calendar invitation, and live audits.",
                            placeholder="Enter password")
         ui('<div class="rp-muted" style="font-size:.76rem;margin-top:-.45rem">Press Enter to unlock.</div>')
         if pw:
@@ -451,7 +491,7 @@ with st.sidebar:
                 st.rerun()  # swap the field for the "Unlocked" badge straight away
             st.error("Wrong password")
     elif os.environ.get("APP_PASSWORD"):
-        ui(badge("🔓 Unlocked: real Jira + live audits", "green"))
+        ui(badge("🔓 Unlocked: real Jira, Gmail + live audits", "green"))
     if unlocked():
         with st.expander("API key (Gemini only)"):
             try:
@@ -524,6 +564,7 @@ if mode.startswith("Saved"):
             st.caption("Every lecturer approval creates or updates one card here. The Gemini Enterprise version uses the Jira Cloud connector.")
         except ra.AuditError as e:
             st.caption(f"Jira not reachable right now: {e}")
+    show_reaudit()
 else:
     if not unlocked():
         st.warning("Enter the judge password in the sidebar to run a live audit (each run uses 6 Gemini calls). "

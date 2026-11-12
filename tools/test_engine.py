@@ -377,6 +377,55 @@ class TestFix(unittest.TestCase):
         self.assertTrue("Asia%2FKuala_Lumpur" in link or "Asia/Kuala_Lumpur" in link)
         self.assertIn("Asia/Kuala_Lumpur", urllib.parse.unquote(link))
 
+    def test_calendar_invite_is_a_real_invitation(self):
+        ics = rf.ics_invite({"module": "CT074-3-2", "assessment": "A1", "exposure": "HIGH"}, "lect@uni.edu", "redpen@x.com")
+        for must in ("METHOD:REQUEST", "ORGANIZER;CN=RedPen:mailto:redpen@x.com", "mailto:lect@uni.edu", "RSVP=TRUE"):
+            self.assertIn(must, ics.replace("\r\n ", ""))
+        self.assertTrue(all(len(ln) <= 75 for ln in ics.split("\r\n")))  # RFC 5545 line length
+        self.assertRegex(ics, r"DTSTART:\d{8}T020000Z")  # 10:00 MYT = 02:00 UTC
+
+    def test_email_carries_the_invite_for_gmail(self):
+        sent = {}
+
+        class FakeSMTP:
+            def __init__(self, *a, **k): pass
+            def __enter__(self): return self
+            def __exit__(self, *a): pass
+            def starttls(self): pass
+            def login(self, *a): pass
+            def send_message(self, m): sent["m"] = m
+        ics = rf.ics_invite({"module": "M", "assessment": "A1", "exposure": "HIGH"}, "lect@uni.edu")
+        with mock.patch.dict(os.environ, {"SMTP_USER": "redpen@gmail.com", "SMTP_PASSWORD": "x"}), \
+                mock.patch.object(rf.smtplib, "SMTP", FakeSMTP):
+            self.assertTrue(rf.smtp_configured())
+            rf.send_email("lect@uni.edu", "s", "body", [("rev.txt", b"revised", "text/plain")], invite=ics)
+        parts = [(p.get_content_type(), p.get_param("method")) for p in sent["m"].walk()]
+        self.assertIn(("text/calendar", "REQUEST"), parts)  # what makes Gmail show Yes / Maybe / No
+        self.assertEqual(sent["m"]["From"], "RedPen <redpen@gmail.com>")
+
+
+class TestReaudit(unittest.TestCase):
+    def test_schedule_and_change(self):
+        import reaudit
+        self.assertEqual(reaudit.next_run(dt_myt(2026, 11, 13)).strftime("%Y-%m-%d %H:%M"), "2026-12-01 09:00")
+        self.assertEqual(reaudit.next_run(dt_myt(2026, 12, 31)).strftime("%Y-%m-%d"), "2027-01-01")
+        self.assertEqual(reaudit.change("MEDIUM", "HIGH"), "up")
+        self.assertEqual(reaudit.change("HIGH", "LOW"), "down")
+        self.assertEqual(reaudit.change("LOW", "LOW"), "same")
+
+    def test_register_folders_exist_and_match_saved_audits(self):
+        import reaudit
+        for name, folder in reaudit.REGISTER.items():
+            for f in ("brief.txt", "rubric.txt", "clo-map.txt"):
+                self.assertTrue((ROOT / folder / f).exists(), f"{folder}/{f}")
+            self.assertIn(name, ra.demo_runs())
+            self.assertIn(reaudit.previous(name, {"runs": []})["exposure"], ("HIGH", "MEDIUM", "LOW"))
+
+
+def dt_myt(y, m, d):
+    import datetime as dt
+    return dt.datetime(y, m, d, 12, 0, tzinfo=dt.timezone(dt.timedelta(hours=8)))
+
 
 def live():
     print("\n--- live: key check")

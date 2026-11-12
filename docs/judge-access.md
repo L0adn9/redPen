@@ -6,12 +6,14 @@
    - Scroll to **Fix**: redesign options (AIAS level, lane, extra marking time) → **Approve**.
    - The **outbox** below shows everything RedPen sends: the report email exactly as the lecturer gets it (download `.eml`), the review meeting (**Add to Google Calendar** or `.ics`), the revised brief and the verdict file.
    - **Judge password** (`[given in the submission form]`, enter it in the sidebar): Approve then writes a **real card to our Jira Cloud board** and reads it back live (key, status *Approved*, labels). The table at the bottom lists the board live from Jira. The password also unlocks live audits of your own brief.
+   - **Get the real email:** with the password on, type **your own email** in the *Lecturer email* box before Approve. RedPen sends you the report and revised brief via Gmail, and for HIGH exposure a calendar invitation that lands in your Google Calendar.
+   - **Monthly re-audit:** scroll to the bottom of Saved audits. RedPen re-audits the register on a schedule (GitHub Actions, 1st of every month 09:00 MYT) and comments each result on the Jira card.
 2. **Run it yourself (5 minutes):**
    ```bash
    git clone https://github.com/L0adn9/redPen && cd redPen
    pip install -r requirements.txt
    echo "OPENROUTER_API_KEY=sk-or-..." > .env          # or GEMINI_API_KEY=... ; Gemini models only
-   python3 tools/test_engine.py                         # 39 offline tests, no key needed
+   python3 tools/test_engine.py                         # 43 offline tests, no key needed
    python3 tools/redpen_audit.py --check                # key works?
    python3 tools/redpen_audit.py data/pilot-real/CCP/A1 # full audit of a real APU brief (~30 s)
    python3 tools/redpen_insight.py "Which CLOs in my programme are at risk?"

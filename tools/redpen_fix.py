@@ -5,7 +5,7 @@ Every action is optional: if its secrets are missing, the app shows a preview in
 
 Secrets (environment, Streamlit secrets, or redPen/.env):
   JIRA_BASE_URL (https://<site>.atlassian.net), JIRA_EMAIL, JIRA_API_TOKEN, JIRA_PROJECT (default RP)
-  SMTP_HOST, SMTP_PORT (default 587), SMTP_USER, SMTP_PASSWORD, MAIL_FROM (default SMTP_USER)
+  SMTP_USER, SMTP_PASSWORD (Gmail app password), SMTP_HOST (default smtp.gmail.com), SMTP_PORT (default 587), MAIL_FROM
 """
 import base64
 import datetime as dt
@@ -117,19 +117,25 @@ def next_working_day_10am():
     return dt.datetime(d.year, d.month, d.day, 10, 0)
 
 
-def ics_invite(v, attendee=""):
+def ics_invite(v, attendee="", organizer=""):
+    """The review meeting as an iCalendar invitation (METHOD:REQUEST). Sent inside the email, Gmail and Outlook show
+    it as a real invite (Yes / Maybe / No) and put it straight into the lecturer's calendar."""
     start = next_working_day_10am()
-    end = start + dt.timedelta(minutes=30)
-    f = "%Y%m%dT%H%M%S"
-    lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//RedPen//EN", "METHOD:REQUEST", "BEGIN:VEVENT",
-             f"UID:{uuid.uuid4()}@redpen", f"DTSTAMP:{dt.datetime.utcnow().strftime(f)}Z",
-             f"DTSTART;TZID=Asia/Kuala_Lumpur:{start.strftime(f)}", f"DTEND;TZID=Asia/Kuala_Lumpur:{end.strftime(f)}",
+    utc = lambda t: (t - dt.timedelta(hours=8)).strftime("%Y%m%dT%H%M%SZ")  # MYT is UTC+8, no daylight saving
+    organizer = organizer or _env("MAIL_FROM_ADDRESS") or _env("SMTP_USER") or "redpen@example.edu"
+    lines = ["BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//RedPen//EN", "METHOD:REQUEST", "CALSCALE:GREGORIAN",
+             "BEGIN:VEVENT", f"UID:{uuid.uuid4()}@redpen", f"DTSTAMP:{dt.datetime.utcnow():%Y%m%dT%H%M%SZ}",
+             f"DTSTART:{utc(start)}", f"DTEND:{utc(start + dt.timedelta(minutes=30))}",
              f"SUMMARY:RedPen review: {v.get('module')} {v.get('assessment')} ({v.get('exposure')})",
-             "DESCRIPTION:Review the approved assessment redesign with the T&L centre.",
-             "END:VEVENT", "END:VCALENDAR"]
-    if attendee:
-        lines.insert(-2, f"ATTENDEE;RSVP=TRUE:mailto:{attendee}")
-    return "\r\n".join(lines) + "\r\n"
+             "DESCRIPTION:Review the approved assessment redesign with the T&L centre. Booked by RedPen because "
+             "AI exposure is HIGH.", "LOCATION:Online", "STATUS:CONFIRMED", "SEQUENCE:0",
+             f"ORGANIZER;CN=RedPen:mailto:{organizer}"]
+    if attendee and "@" in attendee:
+        lines.append(f"ATTENDEE;CUTYPE=INDIVIDUAL;ROLE=REQ-PARTICIPANT;PARTSTAT=NEEDS-ACTION;RSVP=TRUE:mailto:{attendee}")
+    lines += ["BEGIN:VALARM", "ACTION:DISPLAY", "DESCRIPTION:RedPen review", "TRIGGER:-PT15M", "END:VALARM",
+              "END:VEVENT", "END:VCALENDAR"]
+    fold = lambda ln: "\r\n ".join(ln[i:i + 73] for i in range(0, len(ln), 73))  # RFC 5545: max 75 octets per line
+    return "\r\n".join(fold(ln) for ln in lines) + "\r\n"
 
 
 def calendar_event(v, attendee=""):
@@ -239,7 +245,7 @@ def jira_register(limit=50):
 
 # ---------------------------------------------------------------- Email (SMTP)
 def smtp_configured():
-    return all(_env(k) for k in ("SMTP_HOST", "SMTP_USER", "SMTP_PASSWORD"))
+    return all(_env(k) for k in ("SMTP_USER", "SMTP_PASSWORD"))  # SMTP_HOST defaults to smtp.gmail.com
 
 
 def build_email(to, subject, body, attachments=()):
@@ -262,12 +268,30 @@ def email_eml(to, subject, body, attachments=()):
     return msg.as_bytes()
 
 
-def send_email(to, subject, body, attachments=()):
-    msg = build_email(to, subject, body, attachments)
-    with smtplib.SMTP(_env("SMTP_HOST"), int(_env("SMTP_PORT", "587")), timeout=30) as s:
+def send_email(to, subject, body, attachments=(), invite=None):
+    """Send the report for real (Gmail: SMTP_HOST=smtp.gmail.com + an app password).
+
+    invite: an ics_invite() string. It goes in as a text/calendar METHOD=REQUEST part, so the lecturer's Gmail shows
+    a real calendar invitation and adds the review to their Google Calendar; it is also attached as a .ics file."""
+    msg = EmailMessage()
+    msg["From"] = _env("MAIL_FROM") or f"RedPen <{_env('SMTP_USER')}>"
+    msg["To"] = to
+    msg["Subject"] = subject
+    msg.set_content(body)
+    if invite:
+        msg.add_alternative(invite, subtype="calendar", params={"method": "REQUEST"})
+    for name, data, mime in attachments:
+        main, sub = mime.split("/", 1)
+        if main == "text":
+            msg.add_attachment(data.decode("utf-8", "replace") if isinstance(data, bytes) else data,
+                               subtype=sub, filename=name)
+        else:
+            msg.add_attachment(data, maintype=main, subtype=sub, filename=name)
+    with smtplib.SMTP(_env("SMTP_HOST", "smtp.gmail.com"), int(_env("SMTP_PORT", "587")), timeout=30) as s:
         s.starttls()
         s.login(_env("SMTP_USER"), _env("SMTP_PASSWORD"))
         s.send_message(msg)
+    return msg
 
 
 def demo_redesign(name):

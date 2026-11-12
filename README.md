@@ -5,7 +5,7 @@
 
 **APU Cloud Innovation Hackathon 2026** · Theme 2: Intelligent Automation & Digital Transformation (with links to Theme 3)
 **Team:** Hassan · Abdullah
-**Prototype (13 Nov):** Streamlit app running our agent prompts on Google Gemini (Flash and Pro), with Jira Cloud, email and calendar actions. **Final build (17 Nov):** the same prompts as Gemini Enterprise workflow agents + a chat agent, with Drive, Gmail, Calendar and Jira connectors. Google Antigravity used in development (see below).
+**Prototype (13 Nov):** Streamlit app running our agent prompts on Google Gemini (Flash and Pro). On approval it acts for real: a **Jira Cloud** card, a **Gmail** report and a **Google Calendar invitation**. A **monthly scheduled re-audit** (GitHub Actions) re-runs the red team with no one pressing a button. **Final build (17 Nov):** the same prompts as Gemini Enterprise workflow agents + a chat agent, with Drive, Gmail, Calendar and Jira connectors. Google Antigravity used in development (see below).
 
 **Try it:** run `streamlit run streamlit_app.py` (see [Try it](#try-it)). Architecture: [`docs/architecture.png`](docs/architecture.png).
 
@@ -62,9 +62,9 @@ flowchart LR
 
 **Connectors:** Google Drive (event triggers, briefs, verdicts, revised briefs), Gmail, Google Calendar (first-party); **Jira Cloud** (third-party: create/update issues = the exposure register).
 
-**Ready for Gemini Enterprise, not ported later:** the prototype runs the exact agent instructions that go into the workflows. [`agents/gemini-enterprise/`](agents/gemini-enterprise/README.md) holds a paste sheet generated from those files, a JSON schema per step, the Drive folder tree to upload, and a checker for every Gemini Enterprise run. We also tested the platform's worst case (a step that can only see the previous step's output) live: verdicts stay valid. 39 automated tests guard all of it (`python3 tools/test_engine.py`).
+**Ready for Gemini Enterprise, not ported later:** the prototype runs the exact agent instructions that go into the workflows. [`agents/gemini-enterprise/`](agents/gemini-enterprise/README.md) holds a paste sheet generated from those files, a JSON schema per step, the Drive folder tree to upload, and a checker for every Gemini Enterprise run. We also tested the platform's worst case (a step that can only see the previous step's output) live: verdicts stay valid. 43 automated tests guard all of it (`python3 tools/test_engine.py`).
 
-**How we used Antigravity:** we opened the repo in Google Antigravity and its agent (1) explained how the app, audit engine and fix module fit together, (2) built the register's **Download CSV** button now in the app, and (3) wrote and ran a unit test for the Google Calendar link (39 tests pass). Prompts, screenshots and results: [`docs/antigravity/`](docs/antigravity/).
+**How we used Antigravity:** we opened the repo in Google Antigravity and its agent (1) explained how the app, audit engine and fix module fit together, (2) built the register's **Download CSV** button now in the app, and (3) wrote and ran a unit test for the Google Calendar link. Prompts, screenshots and results: [`docs/antigravity/`](docs/antigravity/).
 
 ## 3. Research
 - **Assessment-design evidence:** the AI Assessment Scale (Perkins, Roe & Furze, 2025), the University of Sydney's two-lane approach (Semester 2 2025), the University of Bath's two-lane framework (from September 2026), and AUT's adaptation.
@@ -125,8 +125,10 @@ streamlit run streamlit_app.py
 - **Saved audits** (default) replay 9 full audits instantly, no key needed: 4 real APU briefs + 5 sample briefs, each with its redesign options.
 - **Approve** (anyone can click it) opens an **outbox** showing every follow-up as the lecturer receives it: the report email on screen (+ `.eml` download), the review meeting with an **Add to Google Calendar** button (+ `.ics`), the revised brief and the verdict file.
 - **Real Jira:** with the judge password (sidebar), Approve creates or updates a real card on our Jira Cloud board and the app reads it back live; the register at the bottom lists the board live from Jira.
+- **Real email and calendar:** with the judge password, type **your own email** in the lecturer field and Approve: RedPen emails you the report and the revised brief through Gmail, and for HIGH exposure a calendar invitation (Yes / Maybe / No) that Gmail adds to your Google Calendar.
+- **Monthly re-audit (scheduled):** [`.github/workflows/monthly-reaudit.yml`](.github/workflows/monthly-reaudit.yml) runs [`tools/reaudit.py`](tools/reaudit.py) at 09:00 MYT on the 1st of every month: it re-audits every real brief in the register on the current Gemini model, comments the result on each Jira card, and emails an alert if exposure went up. The app's **Monthly re-audit** panel shows the last run and what changed.
 - **Run a new audit:** upload any brief + rubric (+ CLO map) as PDF, DOCX or TXT (judge password).
-- Optional secrets: `APP_PASSWORD` (locks live runs), `JIRA_BASE_URL` / `JIRA_EMAIL` / `JIRA_API_TOKEN` (real Jira card on Approve), `SMTP_HOST` / `SMTP_USER` / `SMTP_PASSWORD` (real email with the revised brief and invite). Without them the app shows previews. Keys: [`docs/api-keys.md`](docs/api-keys.md).
-- Command line: `python3 tools/redpen_audit.py <folder with brief.txt rubric.txt clo-map.txt>` (audit), `python3 tools/redpen_insight.py "<question>"` (RedPen Insight chat agent over the register), `python3 tools/calibrate.py <folder>` (calibration), `python3 tools/test_engine.py` (39 offline tests).
+- Optional secrets: `APP_PASSWORD` (locks live runs), `JIRA_BASE_URL` / `JIRA_EMAIL` / `JIRA_API_TOKEN` (real Jira card on Approve), `SMTP_USER` / `SMTP_PASSWORD` (Gmail address + app password: real email with the revised brief and calendar invitation). Without them the app shows previews. Keys: [`docs/api-keys.md`](docs/api-keys.md).
+- Command line: `python3 tools/redpen_audit.py <folder with brief.txt rubric.txt clo-map.txt>` (audit), `python3 tools/redpen_insight.py "<question>"` (RedPen Insight chat agent over the register), `python3 tools/calibrate.py <folder>` (calibration), `python3 tools/reaudit.py` (monthly re-audit), `python3 tools/test_engine.py` (43 offline tests).
 
 Demo video: `[TODO: link]` · Hosted app: `[TODO: link]` · Judge access to Gemini Enterprise: [`docs/judge-access.md`](docs/judge-access.md)

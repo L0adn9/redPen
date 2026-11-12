@@ -363,18 +363,19 @@ def run_audit(brief, rubric, clo_map, module="MODULE", assessment="A1", lecturer
         t0 = time.time()
         text = version = None
         check_schema = not (mode == "passthrough" and name.startswith(("02-", "05-")))  # bundles have their own shape
-        for attempt in range(2):  # one retry if the JSON is broken or has the wrong shape
-            text, version = call(system, user, key, model_list)
+        for attempt in range(3):  # retry if the JSON is broken or has the wrong shape, starting on the next model
+            order = model_list[attempt % len(model_list):] + model_list[:attempt % len(model_list)]
+            text, version = call(system, user, key, order)
             try:
                 data, warn = parse(text, name)
             except AuditError:
-                if attempt == 1:
+                if attempt == 2:
                     raise
                 continue
             problems = schema_errors(name, data) if check_schema else []
             if not problems:
                 break
-            if attempt == 1:
+            if attempt == 2:
                 log["warnings"].append(f"{name}: output does not match its schema: {'; '.join(problems)}")
         if warn:
             log["warnings"].append(warn)
