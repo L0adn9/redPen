@@ -87,6 +87,8 @@ def email_subject(v):
 def email_body(v, redesign, opt):
     g, t = v.get("persona_grades", {}), v.get("persona_totals", {})
     clos = "\n".join(f"- {c.get('id')}: {c.get('text')} ({c.get('why')})" for c in v.get("clos_at_risk", [])) or "- none"
+    for k, n in (("copy_paster", "copy-paster"), ("prompt_engineer", "prompt engineer"), ("honest_helper", "honest helper")):
+        clos = clos.replace(k, n)
     return f"""Hi,
 
 {redesign.get('email_summary') or v.get('summary', '')}
