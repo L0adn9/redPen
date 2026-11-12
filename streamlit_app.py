@@ -162,7 +162,10 @@ def show_fix(result, brief_text, name):
     st.caption("Nothing is changed, logged or sent until the lecturer approves.")
     to = st.text_input("Lecturer email", value=v.get("lecturer_email", "") if "@" in v.get("lecturer_email", "") and
                        "REPLACE" not in v.get("lecturer_email", "") else os.environ.get("DEMO_LECTURER_EMAIL", ""))
-    if st.button(f"✅ Approve {pick}", type="primary", disabled=not unlocked()):
+    if not unlocked():
+        st.caption("🔒 Approve works for everyone and shows every follow-up below. Writing the real Jira card needs the "
+                   "judge password (sidebar).")
+    if st.button(f"✅ Approve {pick}", type="primary"):
         do_actions(v, red, opt, brief_text, to, name)
     if st.session_state.get(f"done-{name}"):
         show_downloads(v, red, opt, brief_text, name)
@@ -172,16 +175,22 @@ def do_actions(v, red, opt, brief_text, to, name):
     log = []
     revised = rf.revised_brief(brief_text, v, opt)
     ics = rf.ics_invite(v, to) if v.get("exposure") == "HIGH" else None
-    if rf.jira_configured():
+    st.session_state.pop(f"jira-{name}", None)
+    if rf.jira_configured() and unlocked():
         try:
             k, url, how = rf.jira_upsert(v, opt)
+            st.session_state[f"jira-{name}"] = k
             log.append(("Jira", f"{how} [{k}]({url}) in the Assessment Exposure Register, labels {', '.join(rf.jira_labels(v))}"))
         except ra.AuditError as e:
             log.append(("Jira", f"⚠️ {e}"))
+    elif rf.jira_configured():
+        log.append(("Jira", "preview only (enter the judge password in the sidebar to write the real card). Card: "
+                            f"**{v.get('module')} {v.get('assessment')}**, labels {', '.join(rf.jira_labels(v))}"))
     else:
         log.append(("Jira", "not configured here (set JIRA_* secrets). Card that would be created: "
                             f"**{v.get('module')} {v.get('assessment')}**, labels {', '.join(rf.jira_labels(v))}"))
-    if rf.smtp_configured() and to:
+    st.session_state[f"to-{name}"] = to
+    if rf.smtp_configured() and to and unlocked():
         try:
             att = [(f"{v.get('module')}_{v.get('assessment')}_revised.txt", revised.encode(), "text/plain")]
             if ics:
@@ -191,9 +200,9 @@ def do_actions(v, red, opt, brief_text, to, name):
         except Exception as e:  # noqa: BLE001
             log.append(("Email", f"⚠️ {e}"))
     else:
-        log.append(("Email", "not sent (no SMTP secrets or no address). Preview and download below."))
+        log.append(("Email", "ready in the outbox below: read it on screen or download it (.eml opens in any mail app)."))
     if ics:
-        log.append(("Calendar", f"30-min T&L review invite for {rf.next_working_day_10am():%a %d %b, 10:00} (download below)"))
+        log.append(("Calendar", f"30-min T&L review for {rf.next_working_day_10am():%a %d %b, 10:00} MYT (in the outbox below)"))
     log.append(("Revised brief", "ready to download below"))
     st.session_state[f"done-{name}"] = log
 
@@ -203,14 +212,55 @@ def show_downloads(v, red, opt, brief_text, name):
     for what, msg in st.session_state[f"done-{name}"]:
         st.markdown(f"- **{what}:** {msg}")
     base = f"{v.get('module')}_{v.get('assessment')}"
-    c1, c2, c3 = st.columns(3)
-    c1.download_button("Revised brief (.txt)", rf.revised_brief(brief_text, v, opt), f"{base}_revised.txt")
-    if v.get("exposure") == "HIGH":
-        c2.download_button("Review invite (.ics)", rf.ics_invite(v), "redpen-review.ics", mime="text/calendar")
-    c3.download_button("Verdict (.json)", json.dumps(v, indent=2), f"{base}_verdict.json", mime="application/json")
-    with st.expander("Email to the lecturer"):
-        st.markdown(f"**Subject:** {rf.email_subject(v)}")
+    to = st.session_state.get(f"to-{name}", "")
+    revised = rf.revised_brief(brief_text, v, opt)
+    ics = rf.ics_invite(v, to) if v.get("exposure") == "HIGH" else None
+
+    st.subheader("📬 Outbox: everything RedPen sent, as the lecturer receives it")
+    key = st.session_state.get(f"jira-{name}")
+    if key:
+        with st.container(border=True):
+            st.markdown("**Jira: Assessment Exposure Register** (read back live from Jira just now)")
+            try:
+                i = rf.jira_issue(key)
+                c1, c2, c3 = st.columns([1, 1, 3])
+                c1.metric("Card", i["key"])
+                c2.metric("Status", i["status"])
+                c3.markdown(f"**{i['summary']}**  \nLabels: " + " ".join(f"`{l}`" for l in i["labels"]) +
+                            f"  \nUpdated {i['updated']}")
+                st.link_button("Open the card in Jira", i["url"])
+            except ra.AuditError as e:
+                st.warning(f"Could not read the card back: {e}")
+
+    atts = [(f"{base}_revised.txt", revised.encode(), "text/plain")]
+    if ics:
+        atts.append(("redpen-review.ics", ics.encode(), "text/calendar"))
+    with st.container(border=True):
+        st.markdown("**Email to the lecturer**")
+        st.markdown(f"**To:** {to or '(lecturer email)'}  \n**Subject:** {rf.email_subject(v)}  \n"
+                    f"**Attachments:** " + ", ".join(a[0] for a in atts))
         st.text(rf.email_body(v, red, opt))
+        st.download_button("Download this email (.eml)", rf.email_eml(to, rf.email_subject(v), rf.email_body(v, red, opt), atts),
+                           f"{base}_redpen-report.eml", mime="message/rfc822", key=f"eml-{name}")
+
+    if ics:
+        e = rf.calendar_event(v, to)
+        with st.container(border=True):
+            st.markdown("**Calendar: T&L review meeting** (booked because exposure is HIGH)")
+            st.markdown(f"**{e['title']}**  \n{e['start']:%a %d %b %Y, %H:%M}–{e['end']:%H:%M} ({e['tz']}), 30 min  \n"
+                        f"Guests: {', '.join(e['guests'])}  \n{e['details']}")
+            c1, c2 = st.columns(2)
+            c1.link_button("Add to Google Calendar", rf.google_calendar_link(v, to))
+            c2.download_button("Download invite (.ics)", ics, "redpen-review.ics", mime="text/calendar", key=f"ics-{name}")
+
+    with st.container(border=True):
+        st.markdown("**Files**")
+        c1, c2 = st.columns(2)
+        c1.download_button("Revised brief (.txt)", revised, f"{base}_revised.txt", key=f"rev-{name}")
+        c2.download_button("Verdict (.json)", json.dumps(v, indent=2), f"{base}_verdict.json", mime="application/json",
+                           key=f"ver-{name}")
+        with st.expander("Preview the revised brief"):
+            st.text(revised[:6000])
 
 
 # ------------------------------------------------------------------ sidebar
@@ -268,6 +318,13 @@ if mode.startswith("Saved"):
                      "Exposure": v.get("exposure"), "Copy-paster": f"{v['persona_grades'].get('copy_paster')} ({v['persona_totals'].get('copy_paster')}%)",
                      "CLOs at risk": ", ".join(c.get("id", "") for c in v.get("clos_at_risk", [])) or "-"})
     st.dataframe(rows, hide_index=True, width="stretch")
+    if rf.jira_configured():
+        st.subheader("Live from Jira (RP board)")
+        try:
+            st.dataframe(rf.jira_register(), hide_index=True, width="stretch")
+            st.caption("Every lecturer approval creates or updates one card here. The Gemini Enterprise version uses the Jira Cloud connector.")
+        except ra.AuditError as e:
+            st.caption(f"Jira not reachable right now: {e}")
 else:
     if not unlocked():
         st.warning("Enter the password in the sidebar to run a live audit (each run uses 6 Gemini calls). "

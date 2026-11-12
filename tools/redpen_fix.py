@@ -130,6 +130,26 @@ def ics_invite(v, attendee=""):
     return "\r\n".join(lines) + "\r\n"
 
 
+def calendar_event(v, attendee=""):
+    """The review meeting as plain fields, for the in-app outbox."""
+    start = next_working_day_10am()
+    return {"title": f"RedPen review: {v.get('module')} {v.get('assessment')} ({v.get('exposure')})",
+            "start": start, "end": start + dt.timedelta(minutes=30), "tz": "Asia/Kuala_Lumpur",
+            "guests": [g for g in (attendee, "T&L centre") if g],
+            "details": "Review the approved assessment redesign with the T&L centre."}
+
+
+def google_calendar_link(v, attendee=""):
+    """Prefilled 'Add to Google Calendar' link: anyone can open it and see the exact event RedPen books."""
+    e = calendar_event(v, attendee)
+    f = "%Y%m%dT%H%M%S"
+    q = {"action": "TEMPLATE", "text": e["title"], "dates": f"{e['start']:{f}}/{e['end']:{f}}",
+         "ctz": e["tz"], "details": e["details"]}
+    if attendee and "@" in attendee:
+        q["add"] = attendee
+    return "https://calendar.google.com/calendar/render?" + urllib.parse.urlencode(q)
+
+
 # ---------------------------------------------------------------- Jira (Cloud REST v3)
 def jira_configured():
     return all(_env(k) for k in ("JIRA_BASE_URL", "JIRA_EMAIL", "JIRA_API_TOKEN"))
@@ -196,21 +216,52 @@ def jira_upsert(v, opt):
     return key, _env("JIRA_BASE_URL").rstrip("/") + f"/browse/{key}", how
 
 
+def jira_issue(key):
+    """Read an issue back from Jira (proof in the app that the card is real)."""
+    f = _jira("GET", f"/rest/api/3/issue/{key}?fields=summary,status,labels,updated")["fields"]
+    return {"key": key, "summary": f.get("summary"), "status": f.get("status", {}).get("name"),
+            "labels": f.get("labels", []), "updated": (f.get("updated") or "")[:16].replace("T", " "),
+            "url": _env("JIRA_BASE_URL").rstrip("/") + f"/browse/{key}"}
+
+
+def jira_register(limit=50):
+    """All register issues, newest first, live from Jira."""
+    project = _env("JIRA_PROJECT", "RP")
+    r = _jira("GET", "/rest/api/3/search/jql?" + urllib.parse.urlencode(
+        {"jql": f"project = {project} ORDER BY updated DESC", "fields": "summary,status,labels,updated",
+         "maxResults": limit}))
+    return [{"Key": i["key"], "Assessment": i["fields"].get("summary"), "Status": i["fields"]["status"]["name"],
+             "Labels": ", ".join(i["fields"].get("labels", [])),
+             "Updated": (i["fields"].get("updated") or "")[:16].replace("T", " ")} for i in r.get("issues", [])]
+
+
 # ---------------------------------------------------------------- Email (SMTP)
 def smtp_configured():
     return all(_env(k) for k in ("SMTP_HOST", "SMTP_USER", "SMTP_PASSWORD"))
 
 
-def send_email(to, subject, body, attachments=()):
+def build_email(to, subject, body, attachments=()):
     """attachments: [(filename, bytes, mime 'type/subtype')]"""
     msg = EmailMessage()
-    msg["From"] = _env("MAIL_FROM") or _env("SMTP_USER")
-    msg["To"] = to
+    msg["From"] = _env("MAIL_FROM") or _env("SMTP_USER") or "RedPen <redpen@example.edu>"
+    msg["To"] = to or "lecturer@example.edu"
     msg["Subject"] = subject
     msg.set_content(body)
     for name, data, mime in attachments:
         main, sub = mime.split("/", 1)
         msg.add_attachment(data, maintype=main, subtype=sub, filename=name)
+    return msg
+
+
+def email_eml(to, subject, body, attachments=()):
+    """The exact email as a .eml file (opens as a draft in Outlook / Apple Mail / Thunderbird), for the in-app outbox."""
+    msg = build_email(to, subject, body, attachments)
+    msg["X-Unsent"] = "1"
+    return msg.as_bytes()
+
+
+def send_email(to, subject, body, attachments=()):
+    msg = build_email(to, subject, body, attachments)
     with smtplib.SMTP(_env("SMTP_HOST"), int(_env("SMTP_PORT", "587")), timeout=30) as s:
         s.starttls()
         s.login(_env("SMTP_USER"), _env("SMTP_PASSWORD"))
