@@ -119,7 +119,7 @@ We built in parallel. The two workflows only meet at one shared contract, the [v
 ## Try it
 ```bash
 pip install -r requirements.txt
-echo "OPENROUTER_API_KEY=sk-or-..." > .env     # or GEMINI_API_KEY=... (Google AI Studio). Gemini models only.
+echo "OPENROUTER_API_KEY=sk-or-..." > .env     # Gemini models via OpenRouter
 streamlit run streamlit_app.py
 ```
 - **Saved audits** (default) replay 9 full audits instantly, no key needed: 4 real APU briefs + 5 sample briefs, each with its redesign options.

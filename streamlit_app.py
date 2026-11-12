@@ -495,12 +495,12 @@ with st.sidebar:
     elif os.environ.get("APP_PASSWORD"):
         ui(badge("🔓 Unlocked: real Jira, Gmail + live audits", "green"))
     if unlocked():
-        with st.expander("API key (Gemini only)"):
+        with st.expander("API key (OpenRouter · Gemini models)"):
             try:
                 st.caption(f"Backend: **{ra.backend()}** · models: {', '.join(ra.models())}")
             except ra.AuditError as e:
                 st.error(str(e))
-            new_key = st.text_input("Swap key (OpenRouter sk-or-… or Google AI Studio)", type="password")
+            new_key = st.text_input("Swap OpenRouter key (sk-or-…)", type="password")
             if st.button("Use this key") and new_key:
                 try:
                     ra.set_credentials(new_key)

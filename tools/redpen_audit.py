@@ -19,10 +19,10 @@ Use it from the terminal:
     python3 tools/redpen_audit.py data/sample-assessments/*/* --save-demo      # refresh data/demo-runs/
     python3 tools/redpen_audit.py data/real/X/A1 --out data/real/runs           # REAL briefs: keep out of git
 
-Keys: GEMINI_API_KEY (free Google AI Studio key, used FIRST) and/or OPENROUTER_API_KEY (paid; only cheap Flash-Lite
-models by default), in the environment, Streamlit secrets, or redPen/.env. REDPEN_BACKEND=openrouter|gemini forces one.
-Models: REDPEN_MODELS = comma list tried in order; on a 429 (quota) the step moves to the next model.
-The free tier gives ~20 requests/day per model and one audit = 6 requests, so the list spreads the load.
+Key: OPENROUTER_API_KEY (Gemini models via OpenRouter), in the environment, Streamlit secrets, or redPen/.env.
+Models: REDPEN_MODELS = comma list tried in order; on a 429 (quota) or a timeout the step moves to the next model.
+(The free Google AI Studio tier is NOT used: ~20 requests/day per model is too little for a demo. It only runs if
+someone sets REDPEN_BACKEND=gemini on purpose.)
 One audit takes under a minute on Flash, 3-6 minutes on Pro.
 """
 import argparse
@@ -41,10 +41,10 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 AUDIT = ROOT / "agents" / "audit"
 DEMO = ROOT / "data" / "demo-runs"
 API = "https://generativelanguage.googleapis.com/v1beta/models/{}:generateContent"
-# Cost order: the FREE Google AI Studio key first (same Flash model we calibrated), then the cheapest Gemini models on
-# OpenRouter (paid). Pro is never used unless REDPEN_MODELS asks for it.
-DEFAULT_MODELS = "gemini-3-flash-preview,gemini-3.5-flash"  # the free-tier models that answered reliably
-DEFAULT_OPENROUTER_MODELS = "google/gemini-3.1-flash-lite,google/gemini-2.5-flash-lite,google/gemini-3-flash-preview"
+# OpenRouter, the model we calibrated first (all saved audits ran on it), then cheaper Gemini fallbacks.
+# Pro is never used unless REDPEN_MODELS asks for it.
+DEFAULT_OPENROUTER_MODELS = "google/gemini-3-flash-preview,google/gemini-3.1-flash-lite,google/gemini-2.5-flash-lite"
+DEFAULT_MODELS = "gemini-3-flash-preview,gemini-3.5-flash"  # Google AI Studio: only with REDPEN_BACKEND=gemini
 OPENROUTER_API = "https://openrouter.ai/api/v1/chat/completions"
 PRO_MODEL = "google/gemini-4-argon"  # OpenRouter only; the free AI Studio key has no Pro quota
 PERSONAS = {"copy_paster": "02-persona-copy-paster.md",
@@ -68,25 +68,20 @@ class AuditError(RuntimeError):
 def models():
     """Models to try, in order. Only Google Gemini models are allowed (hackathon rule).
 
-    A name with "google/" goes to OpenRouter (paid); a bare "gemini-..." name goes to Google AI Studio (free key).
-    Default (REDPEN_BACKEND unset): free AI Studio models first if GEMINI_API_KEY exists, then cheap OpenRouter
-    models if OPENROUTER_API_KEY exists. REDPEN_BACKEND=gemini|openrouter uses only that one.
+    A name with "google/" goes to OpenRouter; a bare "gemini-..." name goes to Google AI Studio.
+    Default: OpenRouter only (DEFAULT_OPENROUTER_MODELS). Google AI Studio only with REDPEN_BACKEND=gemini.
     """
     choice = (os.environ.get("REDPEN_BACKEND") or "auto").strip().lower()
     raw = os.environ.get("REDPEN_MODELS", "").strip()
     if raw:
         names = [x.strip() for x in raw.split(",") if x.strip()]
-        if choice == "openrouter":
-            names = [m if "/" in m else "google/" + m for m in names]
-        elif choice == "gemini":
+        if choice == "gemini":  # free AI Studio tier, only on purpose
             names = [m.split("/", 1)[-1] for m in names]
+        else:  # default: everything goes through OpenRouter
+            names = [m if "/" in m else "google/" + m for m in names]
         return _guard(names)
-    out = []
-    if choice in ("auto", "gemini") and (_env("GEMINI_API_KEY") or choice == "gemini"):
-        out += [m.strip() for m in DEFAULT_MODELS.split(",")]
-    if choice in ("auto", "openrouter") and (_env("OPENROUTER_API_KEY") or choice == "openrouter"):
-        out += [m.strip() for m in DEFAULT_OPENROUTER_MODELS.split(",")]
-    return _guard(out or [m.strip() for m in DEFAULT_MODELS.split(",")])
+    default = DEFAULT_MODELS if choice == "gemini" else DEFAULT_OPENROUTER_MODELS
+    return _guard([m.strip() for m in default.split(",")])
 
 
 def provider(model):
@@ -101,7 +96,7 @@ def describe():
     """One line for logs and the app: which providers are on, in order."""
     order = []
     for m in models():
-        name = "OpenRouter (paid)" if provider(m) == "openrouter" else "Google AI Studio (free)"
+        name = "OpenRouter" if provider(m) == "openrouter" else "Google AI Studio"
         if name not in order:
             order.append(name)
     return " → ".join(order) + " | " + ", ".join(models())
@@ -148,7 +143,7 @@ def _env(name):
 
 
 def backend():
-    """Provider of the first model in the list: 'gemini' (AI Studio, free) or 'openrouter' (paid)."""
+    """Provider of the first model in the list: 'openrouter' (default) or 'gemini' (AI Studio, opt-in only)."""
     return provider(models()[0])
 
 

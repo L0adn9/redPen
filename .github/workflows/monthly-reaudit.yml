@@ -1,6 +1,6 @@
 # RedPen monthly re-audit: re-runs the AI red team on every assessment in the register, updates the Jira cards,
 # emails an alert if exposure went up, and commits the results (data/reaudit/history.json) that the app shows.
-# Repo secrets needed (Settings -> Secrets and variables -> Actions): GEMINI_API_KEY, JIRA_BASE_URL, JIRA_EMAIL,
+# Repo secrets needed (Settings -> Secrets and variables -> Actions): OPENROUTER_API_KEY, JIRA_BASE_URL, JIRA_EMAIL,
 # JIRA_API_TOKEN; optional SMTP_USER, SMTP_PASSWORD, REAUDIT_ALERT_EMAIL.
 name: Monthly re-audit
 
@@ -29,7 +29,6 @@ jobs:
         run: pip install jsonschema
       - name: Re-audit every assessment in the register
         env:
-          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           JIRA_BASE_URL: ${{ secrets.JIRA_BASE_URL }}
           JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}

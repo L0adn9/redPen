@@ -13,7 +13,7 @@ Runs from .github/workflows/monthly-reaudit.yml on the 1st of every month at 09:
   python3 tools/reaudit.py                 # every assessment in REGISTER
   python3 tools/reaudit.py CCP_A1 DSTR_LW1 # only these
   python3 tools/reaudit.py --no-jira       # audit only, no Jira/email
-Secrets: GEMINI_API_KEY (or OPENROUTER_API_KEY), JIRA_*, optional SMTP_USER/SMTP_PASSWORD + REAUDIT_ALERT_EMAIL.
+Secrets: OPENROUTER_API_KEY, JIRA_*, optional SMTP_USER/SMTP_PASSWORD + REAUDIT_ALERT_EMAIL.
 """
 import argparse
 import concurrent.futures as cf
