@@ -19,7 +19,8 @@ Use it from the terminal:
     python3 tools/redpen_audit.py data/sample-assessments/*/* --save-demo      # refresh data/demo-runs/
     python3 tools/redpen_audit.py data/real/X/A1 --out data/real/runs           # REAL briefs: keep out of git
 
-Needs GEMINI_API_KEY (environment, Streamlit secrets, or redPen/.env).
+Needs OPENROUTER_API_KEY (preferred: paid, no daily cap, has Pro) or GEMINI_API_KEY (free AI Studio key),
+in the environment, Streamlit secrets, or redPen/.env. REDPEN_BACKEND=openrouter|gemini forces one.
 Models: REDPEN_MODELS = comma list tried in order; on a 429 (quota) the step moves to the next model.
 The free tier gives ~20 requests/day per model and one audit = 6 requests, so the list spreads the load.
 One audit takes about 3-6 minutes.
@@ -41,6 +42,9 @@ AUDIT = ROOT / "agents" / "audit"
 DEMO = ROOT / "data" / "demo-runs"
 API = "https://generativelanguage.googleapis.com/v1beta/models/{}:generateContent"
 DEFAULT_MODELS = "gemini-3-flash-preview,gemini-3.8-flash,gemini-3.7-flash,gemini-3.5-flash"
+DEFAULT_OPENROUTER_MODELS = "google/gemini-3-flash-preview,google/gemini-3.8-flash,google/gemini-3.7-flash"
+OPENROUTER_API = "https://openrouter.ai/api/v1/chat/completions"
+PRO_MODEL = "google/gemini-4-argon"  # OpenRouter only; the free AI Studio key has no Pro quota
 PERSONAS = {"copy_paster": "02-persona-copy-paster.md",
             "prompt_engineer": "03-persona-prompt-engineer.md",
             "honest_helper": "04-persona-honest-helper.md"}
@@ -60,18 +64,37 @@ class AuditError(RuntimeError):
 
 
 def models():
+    if backend() == "openrouter":
+        raw = os.environ.get("REDPEN_MODELS", DEFAULT_OPENROUTER_MODELS)
+        return [m if "/" in m else "google/" + m for m in (x.strip() for x in raw.split(",")) if m]
     return [m.strip() for m in os.environ.get("REDPEN_MODELS", DEFAULT_MODELS).split(",") if m.strip()]
 
 
-def api_key():
-    if os.environ.get("GEMINI_API_KEY"):
-        return os.environ["GEMINI_API_KEY"]
+def _env(name):
+    if os.environ.get(name):
+        return os.environ[name]
     env = ROOT / ".env"
     if env.exists():
         for line in env.read_text().splitlines():
-            if line.startswith("GEMINI_API_KEY="):
+            if line.startswith(name + "="):
                 return line.split("=", 1)[1].strip()
-    raise AuditError("GEMINI_API_KEY not set (environment, Streamlit secrets, or redPen/.env)")
+    return ""
+
+
+def backend():
+    """'openrouter' if REDPEN_BACKEND says so or an OPENROUTER_API_KEY exists (and REDPEN_BACKEND isn't 'gemini')."""
+    choice = os.environ.get("REDPEN_BACKEND", "auto")
+    if choice in ("openrouter", "gemini"):
+        return choice
+    return "openrouter" if _env("OPENROUTER_API_KEY") else "gemini"
+
+
+def api_key():
+    name = "OPENROUTER_API_KEY" if backend() == "openrouter" else "GEMINI_API_KEY"
+    key = _env(name)
+    if not key:
+        raise AuditError(f"{name} not set (environment, Streamlit secrets, or redPen/.env)")
+    return key
 
 
 def instructions(filename):
@@ -83,10 +106,30 @@ def instructions(filename):
     return m.group(1).strip()
 
 
-def _post(model, body, key):
+def _post(model, system, user, key):
+    timeout = int(os.environ.get("REDPEN_TIMEOUT", "240"))
+    if backend() == "openrouter":
+        body = json.dumps({
+            "model": model,
+            "messages": [{"role": "system", "content": system}, {"role": "user", "content": user}],
+            "response_format": {"type": "json_object"},
+        }).encode()
+        req = urllib.request.Request(OPENROUTER_API, data=body, method="POST", headers={
+            "Content-Type": "application/json", "Authorization": f"Bearer {key}",
+            "X-Title": "RedPen"})
+        with urllib.request.urlopen(req, timeout=timeout) as r:
+            d = json.load(r)
+        if "error" in d:
+            raise KeyError(d["error"])
+        return d["choices"][0]["message"]["content"] or "", d.get("model", model)
+    body = json.dumps({
+        "systemInstruction": {"parts": [{"text": system}]},
+        "contents": [{"role": "user", "parts": [{"text": user}]}],
+        "generationConfig": {"responseMimeType": "application/json"},
+    }).encode()
     req = urllib.request.Request(API.format(model), data=body, method="POST", headers={
         "Content-Type": "application/json", "x-goog-api-key": key})
-    with urllib.request.urlopen(req, timeout=int(os.environ.get("REDPEN_TIMEOUT", "240"))) as r:
+    with urllib.request.urlopen(req, timeout=timeout) as r:
         d = json.load(r)
     parts = d["candidates"][0]["content"]["parts"]
     return "".join(p.get("text", "") for p in parts if not p.get("thought")), d.get("modelVersion", model)
@@ -94,17 +137,12 @@ def _post(model, body, key):
 
 def call(system, user, key, model_list=None):
     """One Gemini call. Moves down the model list on quota errors; retries server errors."""
-    body = json.dumps({
-        "systemInstruction": {"parts": [{"text": system}]},
-        "contents": [{"role": "user", "parts": [{"text": user}]}],
-        "generationConfig": {"responseMimeType": "application/json"},
-    }).encode()
     tried = []
     for rnd in range(2):  # second round after a pause, in case it was a per-minute limit
         for model in model_list or models():
             for attempt in range(3):
                 try:
-                    return _post(model, body, key)
+                    return _post(model, system, user, key)
                 except urllib.error.HTTPError as e:
                     msg = e.read().decode(errors="replace")[:200]
                     if e.code == 429:
