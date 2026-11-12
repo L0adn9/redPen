@@ -42,39 +42,44 @@ TONE = {"HIGH": "red", "MEDIUM": "amber", "LOW": "green"}
 # ------------------------------------------------------------------ styles (shadcn/ui look)
 st.markdown("""<style>
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Geist:wght@400;500;600;700&display=swap');
-:root{--bg:#110e0b;--fg:#f1eee7;--fg2:#d6d1c7;--card:#1b1613;--muted:#a39e94;--border:rgba(255,255,255,.09);--input:rgba(255,255,255,.18);
-  --subtle:rgba(255,255,255,.05);--primary:#e79551;--primary-fg:#15110d;--radius:14px;
+:root{--bg:#fcf9f2;--fg:#231b14;--fg2:#4a4039;--card:#fffdfa;--muted:#71675d;--border:#e3ddd3;--input:#c9bfb1;--subtle:#f3eee4;
+  --primary:#b65329;--primary-fg:#fffdfa;--radius:14px;--shadow:0 1px 3px rgba(35,27,20,.07),0 1px 2px -1px rgba(35,27,20,.07);
   --serif:'Fraunces',Georgia,serif;--sans:'Geist',ui-sans-serif,system-ui,sans-serif}
 html,body,[class*="st-"],.stMarkdown,button,input,textarea,select{font-family:var(--sans)!important}
 [data-testid="stIconMaterial"],[data-testid="stExpanderIcon"],.material-symbols-rounded{font-family:'Material Symbols Rounded'!important}
-.stApp{background:radial-gradient(1100px 520px at 50% -140px,rgba(231,149,81,.16),transparent 70%),var(--bg)!important}
-/* less empty space at the top (main + sidebar) */
-header[data-testid="stHeader"]{background:transparent!important;height:2.6rem}
-[data-testid="stMainBlockContainer"],.block-container{max-width:1080px;padding-top:2.6rem!important;padding-bottom:3rem}
-[data-testid="stSidebarHeader"]{height:2.4rem!important;min-height:0!important;padding:.6rem 1rem 0 1rem!important}
-[data-testid="stSidebarUserContent"]{padding-top:0!important}
-[data-testid="stSidebar"]{background:#16120f!important;border-right:1px solid var(--border)}
+.stApp{background:radial-gradient(1000px 480px at 50% -120px,rgba(182,83,41,.09),transparent 70%),var(--bg)!important}
+/* top spacing: main */
+header[data-testid="stHeader"]{background:transparent!important;height:2.5rem}
+[data-testid="stMainBlockContainer"],.block-container{max-width:1080px;padding-top:.2rem!important;padding-bottom:3rem}
+/* sidebar: collapse button sits on the brand row (top-right) instead of pushing the brand down */
+[data-testid="stSidebar"]{background:#f6f1e7!important;border-right:1px solid var(--border)}
+[data-testid="stSidebarHeader"]{position:absolute!important;top:1.15rem;right:.6rem;height:auto!important;min-height:0!important;
+  padding:0!important;margin:0!important;z-index:5;width:auto!important}
+[data-testid="stSidebarUserContent"]{padding-top:1.25rem!important}
+[data-testid="stSidebar"] [data-testid="stVerticalBlock"]{gap:.85rem}
 #MainMenu,footer,[data-testid="stDecoration"]{display:none!important}
 h1,h2,h3,h4{color:var(--fg);font-family:var(--serif)!important;letter-spacing:-.02em}
-/* inputs: always a visible border */
+/* inputs: always a clearly visible border */
 [data-baseweb="input"],[data-baseweb="select"]>div,[data-baseweb="textarea"]{
-  background:rgba(255,255,255,.042)!important;border:1px solid var(--input)!important;border-radius:10px!important}
+  background:#fff!important;border:1px solid var(--input)!important;border-radius:10px!important}
 [data-baseweb="input"]:focus-within,[data-baseweb="select"]>div:focus-within,[data-baseweb="textarea"]:focus-within{
-  border-color:var(--primary)!important;box-shadow:0 0 0 3px rgba(231,149,81,.18)!important}
+  border-color:var(--primary)!important;box-shadow:0 0 0 3px rgba(182,83,41,.15)!important}
 [data-baseweb="input"] input,[data-baseweb="base-input"],[data-baseweb="input"] button{background:transparent!important;border:none!important}
 [data-testid="stWidgetLabel"] p{font-size:.875rem!important;font-weight:500!important;color:var(--fg)!important}
-/* buttons: amber pill primary, outline secondary */
+/* buttons: terracotta pill primary, outline secondary */
 .stButton>button,.stDownloadButton>button,.stLinkButton>a{border-radius:999px!important;font-weight:500!important;font-size:.9rem!important;
-  min-height:2.5rem;border:1px solid var(--input)!important;background:rgba(255,255,255,.03)!important;color:var(--fg)!important}
+  min-height:2.5rem;border:1px solid var(--input)!important;background:#fff!important;color:var(--fg)!important;box-shadow:var(--shadow)}
 .stButton>button[kind="primary"]{background:var(--primary)!important;color:var(--primary-fg)!important;border-color:var(--primary)!important}
-.stButton>button[kind="primary"]:hover{filter:brightness(1.07)}
-.stButton>button[kind="secondary"]:hover,.stDownloadButton>button:hover,.stLinkButton>a:hover{background:rgba(255,255,255,.08)!important;
-  border-color:rgba(255,255,255,.28)!important;color:var(--fg)!important}
+.stButton>button[kind="primary"]:hover{filter:brightness(1.08)}
+.stButton>button[kind="secondary"]:hover,.stDownloadButton>button:hover,.stLinkButton>a:hover{background:var(--subtle)!important;
+  border-color:#b3a898!important;color:var(--fg)!important}
 /* containers, expanders, tables */
-[data-testid="stVerticalBlockBorderWrapper"]{border-radius:var(--radius)!important;border-color:var(--border)!important;background:var(--card)}
+[data-testid="stVerticalBlockBorderWrapper"]{border-radius:var(--radius)!important;border-color:var(--border)!important}
+[class*="st-key-rpbox"]{background:var(--card)!important;border:1px solid var(--border)!important;border-radius:var(--radius)!important;
+  box-shadow:var(--shadow);padding:1.1rem 1.2rem!important;gap:.75rem}
 [data-testid="stExpander"] details{border-radius:12px!important;border-color:var(--border)!important;background:var(--card)}
 [data-testid="stExpander"] summary{font-weight:500;font-size:.9rem}
-[data-testid="stDataFrame"]{border:1px solid var(--border);border-radius:12px;overflow:hidden}
+[data-testid="stDataFrame"]{border:1px solid var(--border);border-radius:12px;overflow:hidden;background:#fff}
 hr{margin:1.6rem 0!important;border-color:var(--border)!important}
 /* components */
 .rp-hero{margin:0 0 1.3rem 0}
@@ -85,20 +90,19 @@ hr{margin:1.6rem 0!important;border-color:var(--border)!important}
 .rp-badge{display:inline-flex;align-items:center;gap:.3rem;border:1px solid var(--border);border-radius:999px;padding:.08rem .6rem;
   font-size:.74rem;font-weight:500;line-height:1.35rem;background:var(--subtle);color:var(--fg2);white-space:nowrap}
 .rp-badge.solid{background:var(--primary);color:var(--primary-fg);border-color:var(--primary);font-weight:600}
-.rp-badge.red{background:rgba(239,68,68,.12);color:#fca5a5;border-color:rgba(239,68,68,.32)}
-.rp-badge.amber{background:rgba(245,158,11,.12);color:#fcd34d;border-color:rgba(245,158,11,.32)}
-.rp-badge.green{background:rgba(34,197,94,.12);color:#86efac;border-color:rgba(34,197,94,.3)}
+.rp-badge.red{background:#fef2f2;color:#b91c1c;border-color:#fecaca}
+.rp-badge.amber{background:#fffbeb;color:#b45309;border-color:#fde68a}
+.rp-badge.green{background:#f0fdf4;color:#15803d;border-color:#bbf7d0}
 .rp-badge.gray{background:var(--subtle);color:var(--fg2)}
 .rp-badge.lg{font-size:.82rem;padding:.2rem .75rem;font-weight:600}
-.rp-step{display:flex;gap:.85rem;align-items:flex-start;margin:2rem 0 .9rem 0}
-.rp-step-n{flex:none;width:2rem;height:2rem;border-radius:999px;background:rgba(231,149,81,.14);color:var(--primary);
-  border:1px solid rgba(231,149,81,.35);display:flex;align-items:center;justify-content:center;font-weight:600;font-size:.85rem;margin-top:.15rem}
-.rp-step-t{font-family:var(--serif);font-weight:600;font-size:1.45rem;letter-spacing:-.015em;line-height:1.25}
-.rp-card{border:1px solid var(--border);border-radius:var(--radius);padding:1.05rem 1.15rem;background:var(--card);
-  box-shadow:0 1px 3px rgba(0,0,0,.25);height:100%}
-.rp-card.tint-red{background:linear-gradient(180deg,rgba(239,68,68,.10),rgba(239,68,68,.02)),var(--card);border-color:rgba(239,68,68,.3)}
-.rp-card.tint-amber{background:linear-gradient(180deg,rgba(245,158,11,.10),rgba(245,158,11,.02)),var(--card);border-color:rgba(245,158,11,.3)}
-.rp-card.tint-green{background:linear-gradient(180deg,rgba(34,197,94,.09),rgba(34,197,94,.02)),var(--card);border-color:rgba(34,197,94,.28)}
+.rp-step{display:flex;gap:.85rem;align-items:flex-start;margin:1.9rem 0 .85rem 0}
+.rp-step-n{flex:none;width:2rem;height:2rem;border-radius:999px;background:rgba(182,83,41,.09);color:var(--primary);
+  border:1px solid rgba(182,83,41,.3);display:flex;align-items:center;justify-content:center;font-weight:600;font-size:.85rem;margin-top:.15rem}
+.rp-step-t{font-family:var(--serif);font-weight:600;font-size:1.45rem;letter-spacing:-.015em;line-height:1.25;color:var(--fg)}
+.rp-card{border:1px solid var(--border);border-radius:var(--radius);padding:1.05rem 1.15rem;background:var(--card);box-shadow:var(--shadow);height:100%}
+.rp-card.tint-red{background:linear-gradient(180deg,#fef4f2,var(--card));border-color:#f5c9c0}
+.rp-card.tint-amber{background:linear-gradient(180deg,#fff8eb,var(--card));border-color:#f3dca6}
+.rp-card.tint-green{background:linear-gradient(180deg,#f2fbf3,var(--card));border-color:#c4e8cb}
 .rp-row{display:flex;justify-content:space-between;align-items:center;gap:.6rem}
 .rp-grid{display:grid;gap:.75rem;margin:.75rem 0}
 .rp-g3{grid-template-columns:repeat(3,minmax(0,1fr))}.rp-g2{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -106,20 +110,20 @@ hr{margin:1.6rem 0!important;border-color:var(--border)!important}
 .rp-label{font-size:.875rem;font-weight:600;color:var(--fg)}
 .rp-grade{font-family:var(--serif);font-size:2.2rem;font-weight:600;letter-spacing:-.03em;margin:.3rem 0 .1rem 0;color:var(--fg)}
 .rp-grade span{font-family:var(--sans);font-size:1rem;font-weight:500;color:var(--muted);margin-left:.4rem}
-.rp-bar{position:relative;height:.4rem;border-radius:999px;background:rgba(255,255,255,.08);margin:.6rem 0 .55rem 0}
+.rp-bar{position:relative;height:.4rem;border-radius:999px;background:var(--subtle);margin:.6rem 0 .55rem 0}
 .rp-bar>i{position:absolute;left:0;top:0;bottom:0;border-radius:999px;background:var(--primary)}
-.rp-bar>b{position:absolute;top:-.28rem;bottom:-.28rem;width:2px;background:#f87171;border-radius:2px}
+.rp-bar>b{position:absolute;top:-.28rem;bottom:-.28rem;width:2px;background:#dc2626;border-radius:2px}
 .rp-title{font-family:var(--serif);font-size:1.6rem;font-weight:600;letter-spacing:-.02em;margin:.55rem 0 .3rem 0;color:var(--fg)}
 .rp-meta{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.75rem}
-.rp-alert{border:1px solid rgba(239,68,68,.3);background:rgba(239,68,68,.08);border-radius:12px;padding:.8rem 1rem;margin:.5rem 0;color:#fecaca}
-.rp-alert.ok{border-color:rgba(34,197,94,.3);background:rgba(34,197,94,.08);color:#bbf7d0}
+.rp-alert{border:1px solid #f5c9c0;background:#fef4f2;border-radius:12px;padding:.8rem 1rem;margin:.5rem 0;color:#8a2a17}
+.rp-alert.ok{border-color:#c4e8cb;background:#f2fbf3;color:#14532d}
 .rp-alert b{display:block;margin-bottom:.15rem;color:inherit}
-.rp-alert .rp-muted{color:inherit;opacity:.78}
+.rp-alert .rp-muted{color:inherit;opacity:.85}
 .rp-section-label{font-size:.74rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:1.2rem 0 .25rem 0}
 .rp-stat{font-family:var(--serif);font-size:1.75rem;font-weight:600;letter-spacing:-.02em;margin-top:.15rem;color:var(--fg)}
-.rp-pre{white-space:pre-wrap;font-size:.875rem;line-height:1.6;background:rgba(255,255,255,.03);border:1px solid var(--border);
+.rp-pre{white-space:pre-wrap;font-size:.875rem;line-height:1.6;background:#fff;border:1px solid var(--border);
   border-radius:12px;padding:.9rem 1rem;max-height:340px;overflow:auto;color:var(--fg2)}
-.rp-pre.plain{background:transparent;border:none;padding:0;max-height:420px;margin-bottom:.9rem}
+.rp-pre.plain{background:transparent;border:none;padding:0;max-height:none;overflow:visible;margin-bottom:.4rem}
 .rp-check{display:flex;gap:.55rem;align-items:flex-start;margin:.4rem 0;font-size:.9rem;color:var(--fg2)}
 .rp-check b{color:var(--fg)}
 .rp-check a{color:var(--primary)}
@@ -128,15 +132,16 @@ hr{margin:1.6rem 0!important;border-color:var(--border)!important}
 .rp-mail-h{display:grid;grid-template-columns:5.5rem 1fr;gap:.3rem .5rem;font-size:.875rem;padding-bottom:.75rem;
   border-bottom:1px solid var(--border);margin-bottom:.75rem;color:var(--fg2)}
 .rp-mail-h>div:nth-child(odd){color:var(--muted)}
-.rp-date{flex:none;width:3.6rem;border:1px solid var(--border);border-radius:10px;overflow:hidden;text-align:center;background:rgba(255,255,255,.03)}
+.rp-date{flex:none;width:3.6rem;border:1px solid var(--border);border-radius:10px;overflow:hidden;text-align:center;background:#fff}
 .rp-date>div:first-child{background:var(--primary);color:var(--primary-fg);font-size:.7rem;font-weight:700;padding:.12rem 0;text-transform:uppercase}
 .rp-date>div:last-child{font-family:var(--serif);font-size:1.4rem;font-weight:600;padding:.2rem 0;color:var(--fg)}
-.rp-brand{display:flex;align-items:center;gap:.6rem;margin:.1rem 0 .2rem 0}
+.rp-brand{display:flex;align-items:center;gap:.6rem;margin:0 0 .15rem 0;min-height:2rem}
 .rp-logo{width:2rem;height:2rem;border-radius:9px;background:var(--primary);display:flex;align-items:center;justify-content:center;font-size:1rem}
 .rp-brand span{font-family:var(--serif);font-size:1.3rem;font-weight:600;letter-spacing:-.01em;color:var(--fg)}
 .rp-flow{font-size:.8rem;color:var(--muted);line-height:1.95}
 .rp-flow b{color:var(--fg);font-weight:500}
 [data-testid="stSidebar"] [data-testid="stWidgetLabel"] p{font-size:.82rem!important}
+[data-testid="stSidebar"] hr{margin:.3rem 0!important}
 </style>""", unsafe_allow_html=True)
 
 
@@ -235,7 +240,7 @@ def show_verdict(result, is_real=None):
                      f'<div class="rp-bar"><i style="width:{min(total, 100)}%"></i><b style="left:{pass_mark}%"></b></div>'
                      f'<div class="rp-muted">{PERSONA_HELP[p]}</div></div>')
     ui(f'<div class="rp-grid rp-g3">{"".join(cards)}</div>'
-       f'<div class="rp-muted" style="font-size:.78rem;margin-top:-.2rem">Red tick = pass mark.</div>')
+       f'<div class="rp-muted" style="font-size:.78rem;margin-top:.15rem">Red tick on each bar = pass mark.</div>')
 
     if v.get("clos_at_risk"):
         ui('<div class="rp-section-label">Learning outcomes this assessment no longer reliably proves</div>')
@@ -309,14 +314,14 @@ def show_fix(result, brief_text, name):
        f'<div class="rp-pre">{pre(opt.get("revised_task_text", ""))}</div>')
 
     step(3, "Lecturer approval", "Human in the loop: nothing is changed, logged or sent until the lecturer approves.")
-    with st.container(border=True):
+    with st.container(border=True, key=f"rpbox-approve-{name}"):
         c1, c2 = st.columns([3, 1], vertical_alignment="bottom")
         to = c1.text_input("Lecturer email", value=v.get("lecturer_email", "") if "@" in v.get("lecturer_email", "") and
                            "REPLACE" not in v.get("lecturer_email", "") else os.environ.get("DEMO_LECTURER_EMAIL", ""),
                            placeholder="lecturer@university.edu.my")
-        approve = c2.button(f"✅ Approve {pick}", type="primary", width="stretch")
+        approve = c2.button(f"Approve {pick}  →", type="primary", width="stretch")
         if not unlocked():
-            ui('<div class="rp-muted" style="font-size:.8rem">🔒 Approve works for everyone and shows every follow-up below. '
+            ui('<div class="rp-muted" style="font-size:.8rem;margin:-.15rem 0 .1rem 0">🔒 Approve works for everyone and shows every follow-up below. '
                'Writing the real Jira card needs the judge password (sidebar).</div>')
     if approve:
         do_actions(v, red, opt, brief_text, to, name)
@@ -361,7 +366,7 @@ def do_actions(v, red, opt, brief_text, to, name):
 
 
 def show_downloads(v, red, opt, brief_text, name):
-    with st.container(border=True):
+    with st.container(border=True, key=f"rpbox-done-{name}"):
         ui('<div class="rp-row" style="justify-content:flex-start;gap:.5rem;margin-bottom:.3rem">'
            f'{badge("Approved", "green", "lg")}<span class="rp-label">RedPen did the follow-up</span></div>')
         ui("".join(f'<div class="rp-check"><span>✓</span><span><b>{esc(what)}:</b> {md_inline(msg)}</span></div>'
@@ -374,7 +379,7 @@ def show_downloads(v, red, opt, brief_text, name):
     step("✉", "Outbox", "Everything RedPen sent, exactly as the lecturer receives it.")
     key = st.session_state.get(f"jira-{name}")
     if key:
-        with st.container(border=True):
+        with st.container(border=True, key=f"rpbox-jira-{name}"):
             try:
                 i = rf.jira_issue(key)
                 ui(f'<div class="rp-row"><span class="rp-label">Jira · Assessment Exposure Register</span>'
@@ -391,7 +396,7 @@ def show_downloads(v, red, opt, brief_text, name):
     atts = [(f"{base}_revised.txt", revised.encode(), "text/plain")]
     if ics:
         atts.append(("redpen-review.ics", ics.encode(), "text/calendar"))
-    with st.container(border=True):
+    with st.container(border=True, key=f"rpbox-mail-{name}"):
         ui('<div class="rp-row" style="margin-bottom:.7rem"><span class="rp-label">Email to the lecturer</span>'
            f'{badge("Report", "gray")}</div>'
            '<div class="rp-mail-h">'
@@ -404,7 +409,7 @@ def show_downloads(v, red, opt, brief_text, name):
 
     if ics:
         e = rf.calendar_event(v, to)
-        with st.container(border=True):
+        with st.container(border=True, key=f"rpbox-cal-{name}"):
             ui('<div class="rp-row" style="margin-bottom:.7rem"><span class="rp-label">Calendar · T&amp;L review meeting</span>'
                f'{badge("Booked because exposure is HIGH", "red")}</div>'
                f'<div class="rp-row" style="justify-content:flex-start;gap:.9rem">'
@@ -418,7 +423,7 @@ def show_downloads(v, red, opt, brief_text, name):
             c2.download_button("Download invite (.ics)", ics, "redpen-review.ics", mime="text/calendar", key=f"ics-{name}",
                                width="stretch")
 
-    with st.container(border=True):
+    with st.container(border=True, key=f"rpbox-files-{name}"):
         ui('<div class="rp-label" style="margin-bottom:.6rem">Files</div>')
         c1, c2, _ = st.columns([1, 1, 1])
         c1.download_button("Revised brief (.txt)", revised, f"{base}_revised.txt", key=f"rev-{name}", width="stretch")
@@ -512,7 +517,7 @@ else:
                    "Saved audits work without it.")
         st.stop()
     step(1, "Audit a new assessment", "Upload a brief and its rubric (PDF, DOCX or TXT). Takes about 1–5 minutes.")
-    with st.container(border=True):
+    with st.container(border=True, key=f"rpbox-upload"):
         c1, c2 = st.columns(2)
         module = c1.text_input("Module code", "DEMO101")
         assessment = c2.text_input("Assessment", "A1")
