@@ -64,10 +64,46 @@ class AuditError(RuntimeError):
 
 
 def models():
+    """Model list for the current backend. Only Google Gemini models are allowed (hackathon rule)."""
     if backend() == "openrouter":
         raw = os.environ.get("REDPEN_MODELS", DEFAULT_OPENROUTER_MODELS)
-        return [m if "/" in m else "google/" + m for m in (x.strip() for x in raw.split(",")) if m]
-    return [m.strip() for m in os.environ.get("REDPEN_MODELS", DEFAULT_MODELS).split(",") if m.strip()]
+        out = [m if "/" in m else "google/" + m for m in (x.strip() for x in raw.split(",")) if m]
+    else:
+        raw = os.environ.get("REDPEN_MODELS", DEFAULT_MODELS)
+        out = [m.split("/", 1)[-1] for m in (x.strip() for x in raw.split(",")) if m]
+    bad = [m for m in out if not m.split("/", 1)[-1].startswith("gemini") or ("/" in m and not m.startswith("google/"))]
+    if bad:
+        raise AuditError(f"only Google Gemini models are allowed, got: {', '.join(bad)}")
+    return out
+
+
+def set_credentials(key, backend_name=None, model_list=None):
+    """Switch key/backend at runtime (e.g. from an app settings box), no restart needed.
+
+    backend_name: 'openrouter' or 'gemini'; if None it is guessed from the key ('sk-or-' = OpenRouter).
+    model_list: optional comma-separated Gemini models.
+    """
+    backend_name = backend_name or ("openrouter" if key.startswith("sk-or-") else "gemini")
+    if backend_name not in ("openrouter", "gemini"):
+        raise AuditError("backend must be 'openrouter' or 'gemini'")
+    os.environ["REDPEN_BACKEND"] = backend_name
+    os.environ["OPENROUTER_API_KEY" if backend_name == "openrouter" else "GEMINI_API_KEY"] = key.strip()
+    if model_list:
+        os.environ["REDPEN_MODELS"] = model_list
+    models()  # validate now
+
+
+def check_models():
+    """One tiny call per model. Returns [(model, 'OK 1.2s' or error)]. Use before a demo or after a key swap."""
+    key, out = api_key(), []
+    for m in models():
+        t0 = time.time()
+        try:
+            text, _ = call('Reply with JSON only.', 'Return {"ok": true}', key, [m])
+            out.append((m, f"OK {time.time() - t0:.1f}s" if '"ok"' in text else f"odd reply: {text[:60]}"))
+        except AuditError as e:
+            out.append((m, str(e)[:120]))
+    return out
 
 
 def _env(name):
@@ -281,15 +317,20 @@ def _save(result, out):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("folders", nargs="+", help="assessment folders with brief.txt, rubric.txt, clo-map.txt")
+    ap.add_argument("folders", nargs="*", help="assessment folders with brief.txt, rubric.txt, clo-map.txt")
+    ap.add_argument("--check", action="store_true", help="test the current key against every model, then exit")
     ap.add_argument("--out", default=str(ROOT / "data" / "dryrun"), help="where to save each run")
     ap.add_argument("--save-demo", action="store_true", help="also save to data/demo-runs/ (synthetic data only)")
     ap.add_argument("--email", help="lecturer email to put in the verdict")
     ap.add_argument("--date", default=dt.date.today().isoformat())
     ap.add_argument("--parallel", type=int, default=2)
     a = ap.parse_args()
+    print(f"Backend: {backend()} | models (in order): " + ", ".join(models()))
+    if a.check or not a.folders:
+        for m, status in check_models():
+            print(f"  {m}: {status}")
+        return 0
     key = api_key()
-    print("Models (in order): " + ", ".join(models()))
 
     def one(folder):
         folder = pathlib.Path(folder)
