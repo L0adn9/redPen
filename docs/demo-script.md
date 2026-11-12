@@ -1,4 +1,4 @@
-# Demo video script (about 3.5 min) · prototype submission, Fri 13 Nov 12 PM
+# Demo video script (about 3.5–4 min) · prototype submission, Fri 13 Nov 12 PM
 
 **Screen:** Abdullah drives the Streamlit app. **Voice:** split between both of you (H = Hassan, A = Abdullah).
 Record each scene as a separate clip, so one failure doesn't ruin the take. Hero assignment: **CT074 Concurrent Programming, Asia Pacific Airport** (a real APU brief, Saved audits → first item).
@@ -16,9 +16,10 @@ Numbers in **bold** come from our saved runs (`data/demo-runs/`, `data/pilot-rea
 | 2:10 | Assessment Exposure Register table | **A:** "We ran it on **4 real APU briefs** from this semester. **2 of 4 were passed by a straight copy-paste**, a third by a student using AI strategically. **4 learning outcomes across 2 modules** are no longer reliably proven." |
 | 2:25 | Scroll to **Monthly re-audit (scheduled)** → click *See the schedule on GitHub Actions* | **A:** "And it doesn't stop at one audit. On the first of every month RedPen re-runs the red team on every assessment by itself, on the newest Gemini model, comments the result on each Jira card and emails an alert if an assignment became unsafe. No one presses a button." |
 | 2:40 | Calibration slide | **A:** "Isn't this AI marking AI? We marked 7 real assignments independently first, then let our examiner mark them: **7 of 7 within one grade band, average gap 4.4 points**. It even caught a bug: the examiner was giving marks for a viva that never happened." |
-| 2:55 | Architecture slide (`docs/architecture.png`) | **H:** "The agents are plain instructions in our repo. The prototype runs them on Gemini; for the final we paste the same steps into Gemini Enterprise workflows, triggered from Drive, with an approval step and Jira, Gmail and Calendar actions. We used Google Antigravity to build and test parts of it." |
-| 3:10 | Slide: 3 and 6 months | **A:** "In 3 months, one programme's whole assessment bank is audited before the semester. In 6, every programme, re-audited every month, because every model release makes old assignments weaker." |
-| 3:20 | Title card | **Both:** "They catch students. We fix assignments. RedPen." |
+| 2:55 | Architecture slide (`docs/architecture.png`) | **H:** "The agents are plain instructions in our repo. The prototype runs them on Gemini; for the final we paste the same steps into Gemini Enterprise workflows, triggered from Drive, with an approval step and Jira, Gmail and Calendar actions. " |
+| 3:05 | Antigravity screenshots from `docs/antigravity/`: the CSV-button code change, then the **Download CSV** button live in the app, then the test run (39 tests OK) | **A:** "We developed it with Google Antigravity. Its agent read our whole repo, built this register export button and wrote and ran its own unit test. Every change it made is in the repo." |
+| 3:20 | Slide: 3 and 6 months | **A:** "In 3 months, one programme's whole assessment bank is audited before the semester. In 6, every programme, re-audited every month, because every model release makes old assignments weaker." |
+| 3:30 | Title card | **Both:** "They catch students. We fix assignments. RedPen." |
 
 **Before recording:** `git pull`; open the hosted app, enter the judge password; have a Gmail tab and a Google Calendar tab open on the email you'll type in.
 
