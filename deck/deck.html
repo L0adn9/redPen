@@ -3,18 +3,20 @@
 <head>
 <meta charset="utf-8">
 <title>RedPen Pitch Deck</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Geist:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
   @page { size: 1280px 720px; margin: 0; }
-  :root { --red:#c8102e; --ink:#0f172a; --muted:#475569; --soft:#f1f5f9; --line:#e2e8f0; --green:#15803d; --amber:#b45309; }
+  :root { --red:#b65329; --ink:#231b14; --muted:#71675d; --soft:#f3eee4; --line:#e3ddd3; --green:#15803d; --amber:#b45309; }
   * { box-sizing: border-box; }
-  html, body { margin:0; padding:0; background:#fff; color:var(--ink);
-    font-family: "Inter", "Segoe UI", "Noto Sans", "DejaVu Sans", Arial, sans-serif; }
+  html, body { margin:0; padding:0; background:#fcf9f2; color:var(--ink);
+    font-family: "Geist", "Inter", "Segoe UI", Arial, sans-serif; }
+  h1, h2, .big, .mid, .quote { font-family: "Fraunces", Georgia, serif; font-weight:600; }
   .slide { width:1280px; height:720px; padding:64px 80px; position:relative; overflow:hidden; page-break-after:always; break-after:page; }
   .slide:last-child { page-break-after:auto; }
   .kicker { color:var(--red); font-weight:800; letter-spacing:.12em; text-transform:uppercase; font-size:16px; margin-bottom:14px; }
   h1 { font-size:60px; line-height:1.05; margin:0 0 20px; letter-spacing:-.02em; }
   h2 { font-size:44px; line-height:1.1; margin:0 0 28px; letter-spacing:-.015em; }
-  p, li { font-size:24px; line-height:1.4; color:#1e293b; }
+  p, li { font-size:24px; line-height:1.4; color:#3a3029; }
   ul { margin:0; padding-left:28px; } li { margin:0 0 12px; }
   .muted { color:var(--muted); }
   .foot { position:absolute; left:80px; right:80px; bottom:30px; display:flex; justify-content:space-between; font-size:14px; color:#94a3b8; }
@@ -32,9 +34,9 @@
   th { font-size:15px; text-transform:uppercase; letter-spacing:.08em; color:var(--muted); }
   .pill { display:inline-block; padding:4px 14px; border-radius:999px; font-weight:800; font-size:17px; }
   .HIGH { background:#fee2e2; color:#b91c1c; } .MEDIUM { background:#fef3c7; color:#b45309; } .LOW { background:#dcfce7; color:#15803d; }
-  .shot { width:100%; border-radius:14px; border:1px solid var(--line); box-shadow:0 10px 30px rgba(15,23,42,.12); }
+  .shot { width:100%; border-radius:14px; border:1px solid var(--line); box-shadow:0 10px 30px rgba(35,27,20,.12); background:#fcf9f2; }
   .todo { background:#fef9c3; padding:2px 8px; border-radius:6px; }
-  .title-slide { background:linear-gradient(135deg,#fff 55%,#fde8ec 100%); }
+  .title-slide { background:radial-gradient(900px 500px at 85% 110%,#f3dccb 0%,#fcf9f2 70%); }
   .bar { height:8px; width:120px; background:var(--red); border-radius:4px; margin:26px 0; }
   .quote { font-size:34px; font-weight:800; line-height:1.25; }
 </style>
@@ -120,7 +122,7 @@
         <li>Verdict: <span class="pill HIGH">HIGH</span> and <b>CLO2 + CLO3</b> no longer reliably proven.</li>
       </ul>
     </div>
-    <img class="shot" src="img/app-verdict.png" style="height:600px;object-fit:cover;object-position:top" alt="Verdict screen">
+    <img class="shot" src="img/app-verdict.png" style="max-height:600px;object-fit:contain;object-position:top" alt="Verdict screen">
   </div>
   <div class="foot"><span>RedPen</span><span>6</span></div>
 </section>
@@ -137,7 +139,7 @@
         <li><b>Nothing happens until the lecturer approves.</b> Then: Jira register card, report email, review invite, revised brief.</li>
       </ul>
     </div>
-    <img class="shot" src="img/app-approve.png" style="height:600px;object-fit:cover;object-position:top" alt="Redesign and approval screen">
+    <img class="shot" src="img/app-approve.png" style="max-height:600px;object-fit:contain;object-position:top" alt="Redesign and approval screen">
   </div>
   <div class="foot"><span>RedPen</span><span>7</span></div>
 </section>
@@ -199,7 +201,7 @@
   <div class="grid3" style="margin-top:26px;gap:20px">
     <div class="card" style="padding:18px 22px"><p><b>Same prompts, generated</b> paste sheet: what we tested is exactly what we paste.</p></div>
     <div class="card" style="padding:18px 22px"><p><b>Worst case tested:</b> steps that only see the previous step still produce valid verdicts.</p></div>
-    <div class="card" style="padding:18px 22px"><p><b>32 automated tests</b>, a JSON schema per step, and a checker for every Gemini Enterprise run.</p></div>
+    <div class="card" style="padding:18px 22px"><p><b>38 automated tests</b>, a JSON schema per step, and a checker for every Gemini Enterprise run.</p></div>
   </div>
   <p style="margin-top:22px;font-size:20px"><b>Google Antigravity:</b> <span class="todo">[fill in: what we used it for]</span></p>
   <div class="foot"><span>RedPen</span><span>10</span></div>

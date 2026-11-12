@@ -390,7 +390,7 @@ def show_downloads(v, red, opt, brief_text, name):
                    f'{badge(i["key"], "solid", "lg")}{badge(i["status"], "green", "lg")}'
                    f'<span style="font-weight:600">{esc(i["summary"])}</span></div>'
                    f'<div class="rp-meta">{"".join(badge(lb) for lb in i["labels"])}</div>'
-                   f'<div class="rp-muted" style="margin-top:.5rem;font-size:.8rem">Updated {esc(i["updated"])}</div>')
+                   f'<div class="rp-muted" style="margin:.55rem 0 1rem 0;font-size:.8rem">Updated {esc(i["updated"])}</div>')
                 st.link_button("Open the card in Jira ↗", i["url"])
             except ra.AuditError as e:
                 st.warning(f"Could not read the card back: {e}")

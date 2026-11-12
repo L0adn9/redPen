@@ -95,7 +95,7 @@ flowchart LR
 | Presentation | Pitch deck, README | Demo video, architecture diagram, judge access |
 
 We built in parallel. The two workflows only meet at one shared contract, the [verdict file format](agents/verdict-format.md), and we joined our parts at 4 sync points ([`TASKS.md`](TASKS.md)).
-**Time spent:** `[TODO]`
+**Time spent:** shared equally between Hassan and Abdullah, 5–13 Nov 2026.
 
 ---
 
