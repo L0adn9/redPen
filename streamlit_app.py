@@ -252,8 +252,10 @@ def show_verdict(result, is_real=None):
     else:
         ui('<div class="rp-alert ok"><b>No learning outcomes at risk</b><div class="rp-muted">The AI students could not pass.</div></div>')
     if v.get("easy_criteria"):
+        easy = v["easy_criteria"]
+        more = f'<span class="rp-muted" style="font-size:.8rem;align-self:center">+{len(easy) - 3} more</span>' if len(easy) > 3 else ""
         ui('<div class="rp-section-label">Rubric criteria the AI met easily</div>'
-           f'<div class="rp-meta" style="margin-top:.4rem">{"".join(badge(c) for c in v["easy_criteria"])}</div>')
+           f'<div class="rp-meta" style="margin-top:.4rem">{"".join(badge(c) for c in easy[:3])}{more}</div>')
 
     st.write("")
     with st.expander("See what each AI student submitted and how the Examiner marked it"):
@@ -313,8 +315,9 @@ def show_fix(result, brief_text, name):
         ui('<div class="rp-section-label">Same learning outcomes, still assessed</div>' +
            "".join(f'<div class="rp-check"><span>✓</span><span><b>{esc(c.get("id"))}</b> · {esc(c.get("how"))}</span></div>'
                    for c in opt["clo_coverage"]))
-    ui('<div class="rp-section-label">Revised task text</div>'
-       f'<div class="rp-pre">{pre(opt.get("revised_task_text", ""))}</div>')
+    st.write("")
+    with st.expander("Read the revised task text"):
+        ui(f'<div class="rp-pre" style="margin:0">{pre(opt.get("revised_task_text", ""))}</div>')
 
     step(3, "Lecturer approval", "Human in the loop: nothing is changed, logged or sent until the lecturer approves.")
     with st.container(border=True, key=f"rpbox-approve-{name}"):
@@ -324,10 +327,10 @@ def show_fix(result, brief_text, name):
                            placeholder="lecturer@university.edu.my")
         approve = c2.button(f"Approve {pick}  →", type="primary", width="stretch")
         if not unlocked():
-            ui('<div class="rp-muted" style="font-size:.8rem;margin:-.15rem 0 .1rem 0">🔒 Approve works for everyone and shows every follow-up below. '
-               'Writing the real Jira card and emailing the lecturer need the judge password (sidebar).</div>')
+            ui('<div class="rp-muted" style="font-size:.8rem;margin:-.15rem 0 .1rem 0">🔒 Anyone can approve to see the follow-up. '
+               'The judge password makes the Jira card and email real.</div>')
         elif rf.smtp_configured():
-            ui('<div class="rp-muted" style="font-size:.8rem;margin:-.15rem 0 .1rem 0">✉️ RedPen really emails this address via Gmail (report, revised brief, calendar invitation). '
+            ui('<div class="rp-muted" style="font-size:.8rem;margin:-.15rem 0 .1rem 0">✉️ This address really gets the email. '
                'Type your own to see it arrive.</div>')
     if approve:
         do_actions(v, red, opt, brief_text, to, name)
@@ -344,12 +347,11 @@ def do_actions(v, red, opt, brief_text, to, name):
         try:
             k, url, how = rf.jira_upsert(v, opt)
             st.session_state[f"jira-{name}"] = k
-            log.append(("Jira", f"{how} [{k}]({url}) in the Assessment Exposure Register, labels {', '.join(rf.jira_labels(v))}"))
+            log.append(("Jira", f"{how} [{k}]({url}) in the exposure register"))
         except ra.AuditError as e:
             log.append(("Jira", f"⚠️ {e}"))
     elif rf.jira_configured():
-        log.append(("Jira", "preview only (enter the judge password in the sidebar to write the real card). Card: "
-                            f"**{v.get('module')} {v.get('assessment')}**, labels {', '.join(rf.jira_labels(v))}"))
+        log.append(("Jira", f"card **{v.get('module')} {v.get('assessment')}** ready (the judge password writes it for real)"))
     else:
         log.append(("Jira", "not configured here (set JIRA_* secrets). Card that would be created: "
                             f"**{v.get('module')} {v.get('assessment')}**, labels {', '.join(rf.jira_labels(v))}"))
@@ -362,20 +364,18 @@ def do_actions(v, red, opt, brief_text, to, name):
                 att.append(("redpen-review.ics", ics.encode(), "text/calendar"))
             rf.send_email(to, rf.email_subject(v), rf.email_body(v, red, opt), att, invite=ics)
             st.session_state[f"sent-{name}"] = dt.datetime.now(dt.timezone(dt.timedelta(hours=8))).strftime("%H:%M")
-            log.append(("Email", f"**sent via Gmail** to {to}: report + revised brief" +
-                        (" + a calendar invitation" if ics else "") + ". Check the inbox."))
+            log.append(("Email", f"**sent via Gmail** to {to}. Check the inbox."))
         except Exception as e:  # noqa: BLE001
             log.append(("Email", f"⚠️ {e}"))
     elif rf.smtp_configured() and unlocked():
-        log.append(("Email", "not sent: type a lecturer email above (your own works) and approve again. Preview below."))
+        log.append(("Email", "not sent: type an email above and approve again"))
     else:
-        log.append(("Email", "ready in the outbox below: read it on screen or download it (.eml opens in any mail app). "
-                             "With the judge password it is sent for real via Gmail."))
+        log.append(("Email", "ready in the outbox below (the judge password sends it for real)"))
     if ics:
         when = f"{rf.next_working_day_10am():%a %d %b, 10:00} MYT"
-        log.append(("Calendar", f"**invitation sent**: 30-min T&L review on {when}; Gmail adds it to Google Calendar"
-                    if st.session_state.get(f"sent-{name}") else f"30-min T&L review for {when} (in the outbox below)"))
-    log.append(("Revised brief", "ready to download below"))
+        log.append(("Calendar", f"**invitation sent** for a 30-min review, {when}"
+                    if st.session_state.get(f"sent-{name}") else f"30-min review booked for {when}"))
+    log.append(("Revised brief", "ready below"))
     st.session_state[f"done-{name}"] = log
 
 
@@ -385,9 +385,7 @@ def show_reaudit():
     import reaudit
     st.divider()
     step("↻", "Monthly re-audit (scheduled)",
-         "Every stronger model can make last month's safe assessment unsafe. On the 1st of every month at 09:00 MYT, "
-         "RedPen re-runs the red team on every assessment in the register, comments the result on each Jira card and "
-         "emails an alert if exposure went up. No one presses a button.")
+         "Runs by itself every month on the newest Gemini model, so a newly unsafe assessment is caught.")
     hist = reaudit.load_history()["runs"]
     last = hist[-1] if hist else None
     nxt = reaudit.next_run()
@@ -445,8 +443,9 @@ def show_downloads(v, red, opt, brief_text, name):
            '<div class="rp-mail-h">'
            f'<div>From</div><div>RedPen</div><div>To</div><div>{esc(to or "(lecturer email)")}</div>'
            f'<div>Subject</div><div style="font-weight:600">{esc(rf.email_subject(v))}</div>'
-           f'<div>Attached</div><div>{"".join(badge("📎 " + a[0]) + " " for a in atts)}</div></div>'
-           f'<div class="rp-pre plain">{pre(rf.email_body(v, red, opt))}</div>')
+           f'<div>Attached</div><div>{"".join(badge("📎 " + a[0]) + " " for a in atts)}</div></div>')
+        with st.expander("Read the full email"):
+            ui(f'<div class="rp-pre plain" style="margin:0">{pre(rf.email_body(v, red, opt))}</div>')
         st.download_button("Download this email (.eml)", rf.email_eml(to, rf.email_subject(v), rf.email_body(v, red, opt), atts),
                            f"{base}_redpen-report.eml", mime="message/rfc822", key=f"eml-{name}")
 
@@ -564,7 +563,7 @@ if mode.startswith("Saved"):
         ui('<div class="rp-section-label">Live from Jira · RP board</div>')
         try:
             st.dataframe(rf.jira_register(), hide_index=True, width="stretch")
-            st.caption("Every lecturer approval creates or updates one card here. The Gemini Enterprise version uses the Jira Cloud connector.")
+            st.caption("Each lecturer approval creates or updates one card here.")
         except ra.AuditError as e:
             st.caption(f"Jira not reachable right now: {e}")
     show_reaudit()
