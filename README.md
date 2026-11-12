@@ -64,13 +64,13 @@ flowchart LR
 
 **Ready for Gemini Enterprise, not ported later:** the prototype runs the exact agent instructions that go into the workflows. [`agents/gemini-enterprise/`](agents/gemini-enterprise/README.md) holds a paste sheet generated from those files, a JSON schema per step, the Drive folder tree to upload, and a checker for every Gemini Enterprise run. We also tested the platform's worst case (a step that can only see the previous step's output) live: verdicts stay valid. 39 automated tests guard all of it (`python3 tools/test_engine.py`).
 
-**How we used Antigravity:** we opened the repo in Google Antigravity and its agent (1) explained how the app, audit engine and fix module fit together, (2) built the register's **Download CSV** button now in the app, and (3) wrote and ran a unit test for the Google Calendar link (39 tests pass). Prompts, screenshots and results: [`docs/antigravity/`](docs/antigravity/). We also used Claude for planning and for the independent calibration reference marks.
+**How we used Antigravity:** we opened the repo in Google Antigravity and its agent (1) explained how the app, audit engine and fix module fit together, (2) built the register's **Download CSV** button now in the app, and (3) wrote and ran a unit test for the Google Calendar link (39 tests pass). Prompts, screenshots and results: [`docs/antigravity/`](docs/antigravity/).
 
 ## 3. Research
 - **Assessment-design evidence:** the AI Assessment Scale (Perkins, Roe & Furze, 2025), the University of Sydney's two-lane approach (Semester 2 2025), the University of Bath's two-lane framework (from September 2026), and AUT's adaptation.
 - **Malaysian context:** see the fact-check table in [`IDEA.md`](IDEA.md) §10. We only use each claim at the strength the source supports.
 - **Competition and positioning:** detection tools, including AI vivas, act *after* submission. RedPen acts *before* release, which is cheaper, less adversarial, and protects CLO evidence.
-- **Calibration ("isn't this just AI grading AI?"):** 7 real APU assignments (5 modules, used with the student's permission) were marked by hand by an independent marker (Claude, a different model family) **before** any Gemini run. Our Gemini Examiner then marked the same 7: **7 of 7 within one grade band, 5 of 7 the same grade, mean gap 4.4 percentage points.** These are cross-model reference marks, not lecturer marks; we say so.
+- **Calibration ("isn't this just AI grading AI?"):** 7 real APU assignments (5 modules, used with the student's permission) were marked by an independent AI marker from a different model family **before** any Gemini run. Our Gemini Examiner then marked the same 7: **7 of 7 within one grade band, 5 of 7 the same grade, mean gap 4.4 percentage points.** These are cross-model reference marks, not lecturer marks; we say so.
   - Calibration also found and fixed two real Examiner flaws: it was too generous (+16 points, round 1), and it gave marks for a face-to-face viva that never happened. A `live_session` flag now gives those criteria 0. Rounds and numbers: [`docs/calibration/results.md`](docs/calibration/results.md).
 
 ## 4. Impact
