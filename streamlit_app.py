@@ -65,6 +65,7 @@ h1,h2,h3,h4{color:var(--fg);font-family:var(--serif)!important;letter-spacing:-.
 [data-baseweb="input"]:focus-within,[data-baseweb="select"]>div:focus-within,[data-baseweb="textarea"]:focus-within{
   border-color:var(--primary)!important;box-shadow:0 0 0 3px rgba(182,83,41,.15)!important}
 [data-baseweb="input"] input,[data-baseweb="base-input"],[data-baseweb="input"] button{background:transparent!important;border:none!important}
+[data-testid="InputInstructions"]{display:none!important}
 [data-testid="stWidgetLabel"] p{font-size:.875rem!important;font-weight:500!important;color:var(--fg)!important}
 /* buttons: terracotta pill primary, outline secondary */
 .stButton>button,.stDownloadButton>button,.stLinkButton>a{border-radius:999px!important;font-weight:500!important;font-size:.9rem!important;
@@ -142,6 +143,7 @@ hr{margin:1.6rem 0!important;border-color:var(--border)!important}
 .rp-flow b{color:var(--fg);font-weight:500}
 [data-testid="stSidebar"] [data-testid="stWidgetLabel"] p{font-size:.82rem!important}
 [data-testid="stSidebar"] hr{margin:.3rem 0!important}
+[data-testid="stSidebar"] [data-testid="stExpander"] summary p{font-size:.85rem!important}
 </style>""", unsafe_allow_html=True)
 
 
@@ -440,11 +442,14 @@ with st.sidebar:
     mode = st.radio("Mode", ["Saved audits (instant)", "Run a new audit"], index=0)
     st.divider()
     if os.environ.get("APP_PASSWORD") and not st.session_state.get("pw_ok"):
-        pw = st.text_input("Judge password", type="password", help="Unlocks the real Jira write and live audits.")
+        pw = st.text_input("Judge password", type="password", help="Unlocks the real Jira write and live audits.",
+                           placeholder="Enter password")
+        ui('<div class="rp-muted" style="font-size:.76rem;margin-top:-.45rem">Press Enter to unlock.</div>')
         if pw:
             st.session_state.pw_ok = pw == os.environ["APP_PASSWORD"]
-            if not st.session_state.pw_ok:
-                st.error("Wrong password")
+            if st.session_state.pw_ok:
+                st.rerun()  # swap the field for the "Unlocked" badge straight away
+            st.error("Wrong password")
     elif os.environ.get("APP_PASSWORD"):
         ui(badge("🔓 Unlocked: real Jira + live audits", "green"))
     if unlocked():
