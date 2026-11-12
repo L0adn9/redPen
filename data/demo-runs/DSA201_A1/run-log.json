@@ -1,0 +1,37 @@
+{
+  "module": "DSA201",
+  "assessment": "A1",
+  "persona_label": "flash",
+  "models": {
+    "intake/examiner/verdict": "gemini-3.8-flash",
+    "personas": "gemini-3.8-flash"
+  },
+  "steps": {
+    "01-intake": {
+      "model": "gemini-3.8-flash",
+      "seconds": 50.7
+    },
+    "02-copy_paster": {
+      "model": "gemini-3.8-flash",
+      "seconds": 39.0
+    },
+    "02-prompt_engineer": {
+      "model": "gemini-3.8-flash",
+      "seconds": 75.1
+    },
+    "02-honest_helper": {
+      "model": "gemini-3.8-flash",
+      "seconds": 138.4
+    },
+    "05-examiner": {
+      "model": "gemini-3.8-flash",
+      "seconds": 123.8
+    },
+    "06-verdict": {
+      "model": "gemini-3.8-flash",
+      "seconds": 47.1
+    }
+  },
+  "warnings": [],
+  "total_seconds": 360.0
+}

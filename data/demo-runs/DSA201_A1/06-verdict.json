@@ -1,0 +1,45 @@
+{
+  "file_name": "DSA201_A1_flash_20261108.json",
+  "module": "DSA201",
+  "module_name": "Data Structures & Algorithms",
+  "assessment": "A1",
+  "brief_path": "/RedPen/Assessments/DSA201/A1/brief.txt",
+  "lecturer_email": "REPLACE_WITH_TEST_LECTURER_EMAIL",
+  "model": "flash",
+  "audit_date": "2026-11-08",
+  "exposure": "HIGH",
+  "persona_grades": {
+    "copy_paster": "A+",
+    "prompt_engineer": "A+",
+    "honest_helper": "A+"
+  },
+  "persona_totals": {
+    "copy_paster": 89,
+    "prompt_engineer": 95,
+    "honest_helper": 89
+  },
+  "pass_mark": 40,
+  "clos_at_risk": [
+    {
+      "id": "CLO1",
+      "text": "Explain the operation and complexity of standard sorting and searching algorithms",
+      "why": "The prompt engineer scored 19/20 on 'Explanation of algorithms'."
+    },
+    {
+      "id": "CLO2",
+      "text": "Analyse and justify the choice of data structure and algorithm for a given scenario",
+      "why": "The prompt engineer scored 28/30 on 'Justification for the scenario'."
+    },
+    {
+      "id": "CLO3",
+      "text": "Implement and test algorithms in a programming language",
+      "why": "The prompt engineer scored 24/25 on 'Implementation and testing'."
+    }
+  ],
+  "easy_criteria": [
+    "Explanation of algorithms",
+    "Justification for the scenario",
+    "Implementation and testing"
+  ],
+  "summary": "An unedited AI answer to this brief scored A+ (89%), well above the 40% pass mark. CLO1, CLO2, and CLO3 are no longer reliably evidenced."
+}

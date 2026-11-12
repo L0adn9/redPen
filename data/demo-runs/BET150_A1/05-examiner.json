@@ -1,0 +1,114 @@
+{
+  "marked_criteria": [
+    "Application of ethical theories",
+    "Critical analysis of the Malaysian context",
+    "Justified recommendations"
+  ],
+  "results": [
+    {
+      "persona": "copy_paster",
+      "scores": [
+        {
+          "criterion": "Application of ethical theories",
+          "score": 29,
+          "max": 35,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "Accurately articulates Kantian deontology and Utilitarianism, directly linking concepts like the categorical imperative and aggregate utility calculus to algorithmic management and rider welfare."
+        },
+        {
+          "criterion": "Critical analysis of the Malaysian context",
+          "score": 20,
+          "max": 25,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Clearly details the Malaysian context through the Employment Act 1955, EPF and SOCSO exclusions, and specific platform dynamics like Grab and ShopeeFood."
+        },
+        {
+          "criterion": "Justified recommendations",
+          "score": 21,
+          "max": 25,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Proposes three realistic, actionable recommendations tailored to Malaysia (SOCSO SPS, i-Saraan, minimum wage), each explicitly justified via the ethical theories analysed."
+        }
+      ],
+      "total_percent": 82,
+      "grade": "A+",
+      "passed": true
+    },
+    {
+      "persona": "prompt_engineer",
+      "scores": [
+        {
+          "criterion": "Application of ethical theories",
+          "score": 33,
+          "max": 35,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "Delivers a sophisticated, highly insightful analysis using Kant's Principle of Humanity alongside act and rule utilitarianism, thoroughly supported by academic literature."
+        },
+        {
+          "criterion": "Critical analysis of the Malaysian context",
+          "score": 24,
+          "max": 25,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Demonstrates outstanding contextual specificity, incorporating specific Malaysian statutes (Employment Act 1955, Act 789), B40 socioeconomic vulnerabilities, and local road realities."
+        },
+        {
+          "criterion": "Justified recommendations",
+          "score": 23,
+          "max": 25,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Offers exceptionally concrete and legally coherent recommendations that are tightly coupled to the theoretical arguments established in the essay."
+        }
+      ],
+      "total_percent": 94,
+      "grade": "A+",
+      "passed": true
+    },
+    {
+      "persona": "honest_helper",
+      "scores": [
+        {
+          "criterion": "Application of ethical theories",
+          "score": 28,
+          "max": 35,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "Effectively contrasts Kantian deontology with Freeman's stakeholder theory, clearly demonstrating how Malaysian platform practices infringe upon moral agency and stakeholder balance."
+        },
+        {
+          "criterion": "Critical analysis of the Malaysian context",
+          "score": 20,
+          "max": 25,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Provides a solid critique of local labor regulations, including the Employment Act 1955 and statutory contribution deficits affecting Malaysian gig couriers."
+        },
+        {
+          "criterion": "Justified recommendations",
+          "score": 20,
+          "max": 25,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Recommends actionable institutional steps such as SKSPS/i-Saraan co-contributions and floor wages, directly supported by stakeholder and Kantian rationales."
+        }
+      ],
+      "total_percent": 80,
+      "grade": "A+",
+      "passed": true
+    }
+  ]
+}

@@ -8,6 +8,7 @@ credentials*.json
 
 # Real (non-synthetic) data stays in Drive, not in the repo
 data/real/
+sample_assingments_unmarked/
 data/calibration/*real*
 data/pilot/briefs/
 *.pdf.raw
@@ -21,6 +22,8 @@ video/*.mov
 .vscode/
 .idea/
 
-# Pre-licence prompt test bench (Gemini API). Local only: the product is built in Gemini Enterprise.
-tools/dryrun.py
+# Local audit runs (tools/redpen_audit.py --out). Curated synthetic runs go in data/demo-runs/.
 data/dryrun/
+
+# Python
+__pycache__/

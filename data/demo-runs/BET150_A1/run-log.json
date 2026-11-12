@@ -1,0 +1,37 @@
+{
+  "module": "BET150",
+  "assessment": "A1",
+  "persona_label": "flash",
+  "models": {
+    "intake/examiner/verdict": "gemini-3.8-flash",
+    "personas": "gemini-3.8-flash"
+  },
+  "steps": {
+    "01-intake": {
+      "model": "gemini-3.8-flash",
+      "seconds": 28.6
+    },
+    "02-prompt_engineer": {
+      "model": "gemini-3.8-flash",
+      "seconds": 49.9
+    },
+    "02-copy_paster": {
+      "model": "gemini-3.8-flash",
+      "seconds": 68.1
+    },
+    "02-honest_helper": {
+      "model": "gemini-3.8-flash",
+      "seconds": 117.3
+    },
+    "05-examiner": {
+      "model": "gemini-3.8-flash",
+      "seconds": 69.4
+    },
+    "06-verdict": {
+      "model": "gemini-3.8-flash",
+      "seconds": 38.0
+    }
+  },
+  "warnings": [],
+  "total_seconds": 253.3
+}

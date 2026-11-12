@@ -1,0 +1,131 @@
+{
+  "module": "DBS202",
+  "module_name": "Database Systems",
+  "assessment": "A1",
+  "folder_path": "/RedPen/Assessments/DBS202/A1/",
+  "brief_path": "/RedPen/Assessments/DBS202/A1/brief.txt",
+  "lecturer_email": "REPLACE_WITH_TEST_LECTURER_EMAIL",
+  "ai_policy": "AI tools may be used only to check grammar and spelling. All design work must be your own.",
+  "pass_mark": 40,
+  "total_marks": 100,
+  "context": "The Student Affairs office runs a campus event booking service. Business rules:\n1. A student can book many events; an event can have many student bookings, up to the venue capacity.\n2. Each event is held in exactly one venue on one date and time slot; a venue hosts many events.\n3. Each event is organised by one club; a club organises many events. Each club has one advisor (a staff member).\n4. Some events charge a fee; payments are recorded per booking with a payment method and date.\n5. Students may join a waiting list when an event is full; the waiting list keeps the order of joining.\n\nUnnormalised booking record (as kept today in a spreadsheet):\nBookingID, StudentID, StudentName, StudentEmail, ProgrammeCode, ProgrammeName, EventID, EventTitle, EventDate, Slot, VenueID, VenueName, VenueCapacity, ClubID, ClubName, AdvisorStaffID, AdvisorName, Fee, PaymentMethod, PaymentDate",
+  "tasks": [
+    {
+      "id": "T1",
+      "text": "T1 (30 marks) Draw an ERD (crow's foot) for the business rules above. State all assumptions.",
+      "marks": 30
+    },
+    {
+      "id": "T2",
+      "text": "T2 (25 marks) Normalise the unnormalised booking record to 3NF, showing 1NF, 2NF and 3NF with the dependencies at each step.",
+      "marks": 25
+    },
+    {
+      "id": "T3",
+      "text": "T3 (25 marks) Write SQL to (a) create the tables for Event, Venue and Booking with keys and constraints, (b) list events that are fully booked, (c) show each club's total fee income for 2026.",
+      "marks": 25
+    },
+    {
+      "id": "T4",
+      "text": "T4 (20 marks) Reflection (max 500 words): explain two design decisions you changed after the Week 5 tutorial design review, and why.",
+      "marks": 20
+    }
+  ],
+  "selected_tasks": [
+    {
+      "id": "T1",
+      "text": "T1 (30 marks) Draw an ERD (crow's foot) for the business rules above. State all assumptions.",
+      "marks": 30
+    },
+    {
+      "id": "T2",
+      "text": "T2 (25 marks) Normalise the unnormalised booking record to 3NF, showing 1NF, 2NF and 3NF with the dependencies at each step.",
+      "marks": 25
+    },
+    {
+      "id": "T3",
+      "text": "T3 (25 marks) Write SQL to (a) create the tables for Event, Venue and Booking with keys and constraints, (b) list events that are fully booked, (c) show each club's total fee income for 2026.",
+      "marks": 25
+    }
+  ],
+  "rubric": [
+    {
+      "criterion": "ERD correctness and assumptions",
+      "max": 30,
+      "bands": "Band descriptors (apply to every criterion, as a share of that criterion's marks):\n- Excellent (80-100%): complete, accurate, insightful, specific to the scenario, well justified.\n- Good (65-79%): accurate and mostly complete, some specific justification.\n- Satisfactory (50-64%): generally correct but generic or partly incomplete.\n- Pass (40-49%): basic, with errors or significant gaps.\n- Fail (0-39%): missing, largely incorrect or irrelevant.",
+      "clos": [
+        "CLO1"
+      ],
+      "tasks": [
+        "T1"
+      ]
+    },
+    {
+      "criterion": "Normalisation to 3NF",
+      "max": 25,
+      "bands": "Band descriptors (apply to every criterion, as a share of that criterion's marks):\n- Excellent (80-100%): complete, accurate, insightful, specific to the scenario, well justified.\n- Good (65-79%): accurate and mostly complete, some specific justification.\n- Satisfactory (50-64%): generally correct but generic or partly incomplete.\n- Pass (40-49%): basic, with errors or significant gaps.\n- Fail (0-39%): missing, largely incorrect or irrelevant.",
+      "clos": [
+        "CLO2"
+      ],
+      "tasks": [
+        "T2"
+      ]
+    },
+    {
+      "criterion": "SQL implementation",
+      "max": 25,
+      "bands": "Band descriptors (apply to every criterion, as a share of that criterion's marks):\n- Excellent (80-100%): complete, accurate, insightful, specific to the scenario, well justified.\n- Good (65-79%): accurate and mostly complete, some specific justification.\n- Satisfactory (50-64%): generally correct but generic or partly incomplete.\n- Pass (40-49%): basic, with errors or significant gaps.\n- Fail (0-39%): missing, largely incorrect or irrelevant.",
+      "clos": [
+        "CLO3"
+      ],
+      "tasks": [
+        "T3"
+      ]
+    },
+    {
+      "criterion": "Reflection on design decisions",
+      "max": 20,
+      "bands": "Band descriptors (apply to every criterion, as a share of that criterion's marks):\n- Excellent (80-100%): complete, accurate, insightful, specific to the scenario, well justified.\n- Good (65-79%): accurate and mostly complete, some specific justification.\n- Satisfactory (50-64%): generally correct but generic or partly incomplete.\n- Pass (40-49%): basic, with errors or significant gaps.\n- Fail (0-39%): missing, largely incorrect or irrelevant.",
+      "clos": [
+        "CLO1"
+      ],
+      "tasks": [
+        "T4"
+      ]
+    }
+  ],
+  "clos": [
+    {
+      "id": "CLO1",
+      "text": "Design a conceptual data model that satisfies given business requirements",
+      "tasks": [
+        "T1",
+        "T4"
+      ],
+      "criteria": [
+        "ERD correctness and assumptions",
+        "Reflection on design decisions"
+      ]
+    },
+    {
+      "id": "CLO2",
+      "text": "Apply normalisation to produce a relational schema in 3NF",
+      "tasks": [
+        "T2"
+      ],
+      "criteria": [
+        "Normalisation to 3NF"
+      ]
+    },
+    {
+      "id": "CLO3",
+      "text": "Implement and query a relational database using SQL",
+      "tasks": [
+        "T3"
+      ],
+      "criteria": [
+        "SQL implementation"
+      ]
+    }
+  ]
+}

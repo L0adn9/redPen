@@ -1,0 +1,114 @@
+{
+  "marked_criteria": [
+    "Evidence of individual contribution",
+    "Risk analysis from team records",
+    "Response to peer feedback"
+  ],
+  "results": [
+    {
+      "persona": "copy_paster",
+      "scores": [
+        {
+          "criterion": "Evidence of individual contribution",
+          "score": 0,
+          "max": 35,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "Requires verifiable evidence; the provided commit hashes are invented and cannot be cross-checked against the module's GitHub repository history as required by the brief."
+        },
+        {
+          "criterion": "Risk analysis from team records",
+          "score": 0,
+          "max": 25,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Requires verifiable evidence; the analysis refers to invented meeting minutes that cannot be cross-checked against the signed records kept by the tutor."
+        },
+        {
+          "criterion": "Response to peer feedback",
+          "score": 0,
+          "max": 25,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "Requires verifiable evidence; the reflection is based on invented feedback comments that cannot be verified against the written forms returned to students in class."
+        }
+      ],
+      "total_percent": 0,
+      "grade": "F",
+      "passed": false
+    },
+    {
+      "persona": "prompt_engineer",
+      "scores": [
+        {
+          "criterion": "Evidence of individual contribution",
+          "score": 0,
+          "max": 35,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "Requires verifiable evidence; the commit hashes are invented and do not exist within the student's project repository records."
+        },
+        {
+          "criterion": "Risk analysis from team records",
+          "score": 0,
+          "max": 25,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Requires verifiable evidence; the risk analysis refers to meeting minutes that cannot be cross-checked against the tutor-signed records."
+        },
+        {
+          "criterion": "Response to peer feedback",
+          "score": 0,
+          "max": 25,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "Requires verifiable evidence; the response reflects on invented feedback rather than the evidence from the specific Week 8 lab forms."
+        }
+      ],
+      "total_percent": 0,
+      "grade": "F",
+      "passed": false
+    },
+    {
+      "persona": "honest_helper",
+      "scores": [
+        {
+          "criterion": "Evidence of individual contribution",
+          "score": 0,
+          "max": 35,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "Requires verifiable evidence; the student has only provided a plan and placeholders instead of the required evidence from their GitHub repository."
+        },
+        {
+          "criterion": "Risk analysis from team records",
+          "score": 0,
+          "max": 25,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Requires verifiable evidence; no analysis of an actual team risk was provided, only a template for how to conduct one."
+        },
+        {
+          "criterion": "Response to peer feedback",
+          "score": 0,
+          "max": 25,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "Requires verifiable evidence; the student failed to provide reflections on specific feedback received, instead providing an outline of their intent."
+        }
+      ],
+      "total_percent": 0,
+      "grade": "F",
+      "passed": false
+    }
+  ]
+}

@@ -1,0 +1,108 @@
+{
+  "module": "DAN301",
+  "module_name": "Data Analytics in Practice (Level 3)",
+  "assessment": "A2",
+  "folder_path": "/RedPen/Assessments/DAN301/A2/",
+  "brief_path": "/RedPen/Assessments/DAN301/A2/brief.txt",
+  "lecturer_email": "REPLACE_WITH_TEST_LECTURER_EMAIL",
+  "ai_policy": "AIAS Level 3 (AI Collaboration) for the report only; Part A is supervised with no AI.",
+  "pass_mark": 40,
+  "total_marks": 100,
+  "context": "In the Week 10 lab, each student receives a unique dataset generated from their student ID (campus canteen transactions, 6 months). The dataset is not available before or outside the lab.",
+  "tasks": [
+    {
+      "id": "T1",
+      "text": "T1 (40 marks) Part A, supervised in the Week 10 lab (no AI): clean your dataset and produce the three required summary figures. Your notebook is submitted at the end of the lab.",
+      "marks": 40
+    },
+    {
+      "id": "T2",
+      "text": "T2 (40 marks) Part B, report (take-home): using YOUR dataset's results from Part A, identify two patterns in canteen demand and recommend changes to opening hours or stock. Every claim must cite a value from your own Part A notebook.",
+      "marks": 40
+    },
+    {
+      "id": "T3",
+      "text": "T3 (20 marks) A 5-minute recorded walkthrough of your Part A notebook, in which you also make one change requested on the day of recording (the change is emailed to you when you start the recording window).",
+      "marks": 20
+    }
+  ],
+  "selected_tasks": [
+    {
+      "id": "T1",
+      "text": "T1 (40 marks) Part A, supervised in the Week 10 lab (no AI): clean your dataset and produce the three required summary figures. Your notebook is submitted at the end of the lab.",
+      "marks": 40
+    },
+    {
+      "id": "T2",
+      "text": "T2 (40 marks) Part B, report (take-home): using YOUR dataset's results from Part A, identify two patterns in canteen demand and recommend changes to opening hours or stock. Every claim must cite a value from your own Part A notebook.",
+      "marks": 40
+    }
+  ],
+  "rubric": [
+    {
+      "criterion": "Data cleaning and figures (supervised)",
+      "max": 40,
+      "bands": "- Excellent (80-100%): complete, accurate, insightful, specific to the scenario, well justified.\n- Good (65-79%): accurate and mostly complete, some specific justification.\n- Satisfactory (50-64%): generally correct but generic or partly incomplete.\n- Pass (40-49%): basic, with errors or significant gaps.\n- Fail (0-39%): missing, largely incorrect or irrelevant.",
+      "clos": [
+        "CLO1"
+      ],
+      "tasks": [
+        "T1"
+      ]
+    },
+    {
+      "criterion": "Evidence-based insights and recommendations",
+      "max": 40,
+      "bands": "- Excellent (80-100%): complete, accurate, insightful, specific to the scenario, well justified.\n- Good (65-79%): accurate and mostly complete, some specific justification.\n- Satisfactory (50-64%): generally correct but generic or partly incomplete.\n- Pass (40-49%): basic, with errors or significant gaps.\n- Fail (0-39%): missing, largely incorrect or irrelevant.",
+      "clos": [
+        "CLO2"
+      ],
+      "tasks": [
+        "T2"
+      ]
+    },
+    {
+      "criterion": "Walkthrough and live change",
+      "max": 20,
+      "bands": "- Excellent (80-100%): complete, accurate, insightful, specific to the scenario, well justified.\n- Good (65-79%): accurate and mostly complete, some specific justification.\n- Satisfactory (50-64%): generally correct but generic or partly incomplete.\n- Pass (40-49%): basic, with errors or significant gaps.\n- Fail (0-39%): missing, largely incorrect or irrelevant.",
+      "clos": [
+        "CLO3"
+      ],
+      "tasks": [
+        "T3"
+      ]
+    }
+  ],
+  "clos": [
+    {
+      "id": "CLO1",
+      "text": "Prepare and visualise real-world data using appropriate tools",
+      "tasks": [
+        "T1"
+      ],
+      "criteria": [
+        "Data cleaning and figures (supervised)"
+      ]
+    },
+    {
+      "id": "CLO2",
+      "text": "Derive evidence-based recommendations from data analysis",
+      "tasks": [
+        "T2"
+      ],
+      "criteria": [
+        "Evidence-based insights and recommendations"
+      ]
+    },
+    {
+      "id": "CLO3",
+      "text": "Explain and adapt an analysis workflow",
+      "tasks": [
+        "T3"
+      ],
+      "criteria": [
+        "Walkthrough and live change"
+      ]
+    }
+  ]
+}

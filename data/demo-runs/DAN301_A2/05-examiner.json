@@ -1,0 +1,86 @@
+{
+  "marked_criteria": [
+    "Data cleaning and figures (supervised)",
+    "Evidence-based insights and recommendations"
+  ],
+  "results": [
+    {
+      "persona": "copy_paster",
+      "scores": [
+        {
+          "criterion": "Data cleaning and figures (supervised)",
+          "score": 0,
+          "max": 40,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "This task requires cleaning a unique dataset assigned in a supervised lab session; generated code outside the lab cannot replace the supervised submission. This criterion requires verifiable evidence."
+        },
+        {
+          "criterion": "Evidence-based insights and recommendations",
+          "score": 12,
+          "max": 40,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "While basic operational recommendations are outlined, values cannot be cross-checked against the student's own Part A notebook. Per rubric guidelines, unverifiable data citations restrict the mark to the lowest band."
+        }
+      ],
+      "total_percent": 15,
+      "grade": "F",
+      "passed": false
+    },
+    {
+      "persona": "prompt_engineer",
+      "scores": [
+        {
+          "criterion": "Data cleaning and figures (supervised)",
+          "score": 0,
+          "max": 40,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "The task requires supervised execution on an in-class dataset generated from student ID. This criterion requires verifiable evidence."
+        },
+        {
+          "criterion": "Evidence-based insights and recommendations",
+          "score": 14,
+          "max": 40,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The report provides structured domain recommendations, but values cannot be cross-checked against the student's own Part A notebook. Without verifiable evidence from the student's lab notebook, the work remains in the lowest band."
+        }
+      ],
+      "total_percent": 18,
+      "grade": "F",
+      "passed": false
+    },
+    {
+      "persona": "honest_helper",
+      "scores": [
+        {
+          "criterion": "Data cleaning and figures (supervised)",
+          "score": 0,
+          "max": 40,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "No work was submitted for this criterion as indicated by the attempt text. Answers marked as not attempted receive 0 marks."
+        },
+        {
+          "criterion": "Evidence-based insights and recommendations",
+          "score": 0,
+          "max": 40,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The answer consists of generic templates containing placeholders for student evidence. Answers marked as requiring student evidence receive 0 marks."
+        }
+      ],
+      "total_percent": 0,
+      "grade": "F",
+      "passed": false
+    }
+  ]
+}

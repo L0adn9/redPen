@@ -1,0 +1,25 @@
+{
+  "file_name": "SEP310_A2_flash_20261108.json",
+  "module": "SEP310",
+  "module_name": "Software Engineering Project Management",
+  "assessment": "A2",
+  "brief_path": "/RedPen/Assessments/SEP310/A2/brief.txt",
+  "lecturer_email": "REPLACE_WITH_TEST_LECTURER_EMAIL",
+  "model": "flash",
+  "audit_date": "2026-11-08",
+  "exposure": "LOW",
+  "persona_grades": {
+    "copy_paster": "F",
+    "prompt_engineer": "F",
+    "honest_helper": "F"
+  },
+  "persona_totals": {
+    "copy_paster": 0,
+    "prompt_engineer": 0,
+    "honest_helper": 0
+  },
+  "pass_mark": 40,
+  "clos_at_risk": [],
+  "easy_criteria": [],
+  "summary": "The assessment is highly resistant to AI generation because it requires verifiable evidence from specific physical and digital records (GitHub, signed minutes, and lab forms). All AI personas failed to reach the 40% pass mark, scoring 0% due to the inability to generate authentic personal and team evidence."
+}

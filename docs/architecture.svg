@@ -1,0 +1,176 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="950" viewBox="0 0 1600 950" font-family="Inter, 'Segoe UI', Roboto, Arial, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#475569"/>
+    </marker>
+    <style>
+      .box { fill: #ffffff; stroke: #94a3b8; stroke-width: 1.5; }
+      .ai { fill: #fef2f2; stroke: #dc2626; stroke-width: 1.5; }
+      .human { fill: #eff6ff; stroke: #2563eb; stroke-width: 1.5; }
+      .act { fill: #f0fdf4; stroke: #16a34a; stroke-width: 1.5; }
+      .data { fill: #fffbeb; stroke: #d97706; stroke-width: 1.5; stroke-dasharray: 5 4; }
+      .group { fill: #f8fafc; stroke: #cbd5e1; stroke-width: 1.5; }
+      .ge { fill: #eef2ff; stroke: #4f46e5; stroke-width: 1.5; }
+      .h { font-size: 17px; font-weight: 700; fill: #0f172a; }
+      .t { font-size: 15px; fill: #334155; }
+      .s { font-size: 13px; fill: #64748b; }
+      .lane { font-size: 15px; font-weight: 700; fill: #475569; letter-spacing: 1px; }
+      .edge { stroke: #475569; stroke-width: 2; fill: none; marker-end: url(#arr); }
+      .edgel { font-size: 13px; fill: #475569; font-weight: 600; }
+    </style>
+  </defs>
+  <rect width="1600" height="950" fill="#ffffff"/>
+
+  <text x="40" y="48" font-size="28" font-weight="800" fill="#0f172a"><tspan fill="#dc2626">RedPen</tspan> architecture</text>
+  <text x="40" y="74" class="t">An AI red team attempts each assessment like students would, marks it against the real rubric, and proposes a fix the lecturer approves.</text>
+
+  <text x="40" y="112" class="lane">PROTOTYPE (13 NOV): STREAMLIT + GEMINI API, BUILT IN ANTIGRAVITY</text>
+
+  <rect x="40" y="290" width="160" height="90" rx="10" class="human"/>
+  <text x="120" y="328" text-anchor="middle" class="h">Lecturer</text>
+  <text x="120" y="352" text-anchor="middle" class="s">uploads the assessment</text>
+
+  <rect x="240" y="250" width="200" height="170" rx="10" class="box"/>
+  <text x="340" y="282" text-anchor="middle" class="h">Streamlit app</text>
+  <text x="340" y="310" text-anchor="middle" class="t">brief + rubric</text>
+  <text x="340" y="330" text-anchor="middle" class="t">+ CLO map</text>
+  <text x="340" y="362" text-anchor="middle" class="s">demo mode: replays</text>
+  <text x="340" y="380" text-anchor="middle" class="s">5 saved audits</text>
+  <text x="340" y="398" text-anchor="middle" class="s">(no API calls)</text>
+
+  <rect x="240" y="470" width="200" height="120" rx="10" class="box"/>
+  <text x="340" y="502" text-anchor="middle" class="h">Gemini API</text>
+  <text x="340" y="528" text-anchor="middle" class="t">4 Flash models</text>
+  <text x="340" y="550" text-anchor="middle" class="s">moves to the next model</text>
+  <text x="340" y="568" text-anchor="middle" class="s">when one hits its quota</text>
+
+  <rect x="480" y="130" width="520" height="500" rx="14" class="group"/>
+  <text x="500" y="158" class="h">Audit: red team</text>
+  <text x="985" y="158" text-anchor="end" class="s">tools/redpen_audit.py</text>
+
+  <rect x="500" y="175" width="480" height="58" rx="8" class="ai"/>
+  <text x="740" y="200" text-anchor="middle" class="h">Intake</text>
+  <text x="740" y="221" text-anchor="middle" class="s">reads tasks, rubric bands, CLOs, AI policy, pass mark</text>
+
+  <rect x="500" y="265" width="150" height="92" rx="8" class="ai"/>
+  <text x="575" y="290" text-anchor="middle" class="s">AI student 1</text>
+  <text x="575" y="313" text-anchor="middle" class="h">Copy-paster</text>
+  <text x="575" y="335" text-anchor="middle" class="s">pastes the brief,</text>
+  <text x="575" y="350" text-anchor="middle" class="s">submits as is</text>
+
+  <rect x="665" y="265" width="150" height="92" rx="8" class="ai"/>
+  <text x="740" y="290" text-anchor="middle" class="s">AI student 2</text>
+  <text x="740" y="313" text-anchor="middle" class="h">Prompt engineer</text>
+  <text x="740" y="335" text-anchor="middle" class="s">plans, drafts,</text>
+  <text x="740" y="350" text-anchor="middle" class="s">self-critiques</text>
+
+  <rect x="830" y="265" width="150" height="92" rx="8" class="ai"/>
+  <text x="905" y="290" text-anchor="middle" class="s">AI student 3</text>
+  <text x="905" y="313" text-anchor="middle" class="h">Honest helper</text>
+  <text x="905" y="335" text-anchor="middle" class="s">uses AI only as the</text>
+  <text x="905" y="350" text-anchor="middle" class="s">brief allows</text>
+
+  <rect x="500" y="390" width="480" height="58" rx="8" class="ai"/>
+  <text x="740" y="415" text-anchor="middle" class="h">Examiner</text>
+  <text x="740" y="436" text-anchor="middle" class="s">marks all three against the real rubric, like a lecturer with no AI detector</text>
+
+  <rect x="500" y="480" width="480" height="58" rx="8" class="ai"/>
+  <text x="740" y="505" text-anchor="middle" class="h">Verdict</text>
+  <text x="740" y="526" text-anchor="middle" class="s">exposure HIGH / MEDIUM / LOW + which CLOs are at risk</text>
+
+  <rect x="560" y="565" width="360" height="46" rx="8" class="data"/>
+  <text x="740" y="593" text-anchor="middle" class="t">verdict JSON (checked by check_verdict.py)</text>
+
+  <rect x="1040" y="130" width="520" height="500" rx="14" class="group"/>
+  <text x="1060" y="158" class="h">Fix: redesign and act</text>
+
+  <rect x="1060" y="175" width="480" height="58" rx="8" class="box"/>
+  <text x="1300" y="200" text-anchor="middle" class="h">HIGH or MEDIUM?</text>
+  <text x="1300" y="221" text-anchor="middle" class="s">LOW: logged, re-audited later</text>
+
+  <rect x="1060" y="265" width="480" height="92" rx="8" class="ai"/>
+  <text x="1300" y="295" text-anchor="middle" class="h">Redesign agent</text>
+  <text x="1300" y="320" text-anchor="middle" class="t">options that keep the same CLOs</text>
+  <text x="1300" y="342" text-anchor="middle" class="s">targets the criteria the AI students passed easily, with AIAS levels</text>
+
+  <rect x="1060" y="390" width="480" height="58" rx="8" class="human"/>
+  <text x="1300" y="415" text-anchor="middle" class="h">Lecturer approves</text>
+  <text x="1300" y="436" text-anchor="middle" class="s">nothing changes without a human yes</text>
+
+  <rect x="1060" y="480" width="110" height="80" rx="8" class="act"/>
+  <text x="1115" y="512" text-anchor="middle" class="h">Jira</text>
+  <text x="1115" y="534" text-anchor="middle" class="s">card on RP</text>
+  <text x="1115" y="550" text-anchor="middle" class="s">board</text>
+  <rect x="1183" y="480" width="110" height="80" rx="8" class="act"/>
+  <text x="1238" y="512" text-anchor="middle" class="h">Email</text>
+  <text x="1238" y="534" text-anchor="middle" class="s">audit report</text>
+  <rect x="1306" y="480" width="110" height="80" rx="8" class="act"/>
+  <text x="1361" y="512" text-anchor="middle" class="h">Calendar</text>
+  <text x="1361" y="534" text-anchor="middle" class="s">review invite</text>
+  <rect x="1430" y="480" width="110" height="80" rx="8" class="act"/>
+  <text x="1485" y="512" text-anchor="middle" class="h">Revised</text>
+  <text x="1485" y="534" text-anchor="middle" class="s">brief</text>
+  <text x="1485" y="550" text-anchor="middle" class="s">download</text>
+
+  <path d="M200,335 L236,335" class="edge"/>
+  <path d="M440,300 C460,300 460,204 496,204" class="edge"/>
+  <path d="M340,470 L340,424" class="edge"/>
+  <path d="M440,530 L476,530" class="edge"/>
+  <text x="458" y="520" text-anchor="middle" class="edgel">AI</text>
+  <path d="M740,233 L740,261" class="edge"/>
+  <path d="M600,233 L580,261" class="edge"/>
+  <path d="M880,233 L900,261" class="edge"/>
+  <path d="M575,357 L600,386" class="edge"/>
+  <path d="M740,357 L740,386" class="edge"/>
+  <path d="M905,357 L880,386" class="edge"/>
+  <path d="M740,448 L740,476" class="edge"/>
+  <path d="M740,538 L740,561" class="edge"/>
+  <path d="M920,588 L1020,588 L1020,204 L1056,204" class="edge" stroke-linejoin="round"/>
+  <text x="1012" y="410" text-anchor="middle" class="edgel" transform="rotate(-90 1012 410)">hand-off</text>
+  <path d="M1300,233 L1300,261" class="edge"/>
+  <path d="M1300,357 L1300,386" class="edge"/>
+  <path d="M1115,448 L1115,476" class="edge"/>
+  <path d="M1238,448 L1238,476" class="edge"/>
+  <path d="M1361,448 L1361,476" class="edge"/>
+  <path d="M1485,448 L1485,476" class="edge"/>
+
+  <line x1="40" y1="665" x2="1560" y2="665" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="40" y="700" class="lane">FINAL BUILD (17 NOV): THE SAME PROMPTS AS GEMINI ENTERPRISE AGENTS</text>
+
+  <rect x="40" y="720" width="360" height="150" rx="10" class="ge"/>
+  <text x="60" y="752" class="h">Audit workflow</text>
+  <text x="60" y="780" class="t">Trigger: new assessment in Drive,</text>
+  <text x="60" y="800" class="t">plus a monthly re-audit schedule</text>
+  <text x="60" y="828" class="s">6 Gemini Agent steps, same text as</text>
+  <text x="60" y="846" class="s">agents/audit/*.md</text>
+
+  <rect x="430" y="720" width="360" height="150" rx="10" class="ge"/>
+  <text x="450" y="752" class="h">Verdict in Drive</text>
+  <text x="450" y="780" class="t">/RedPen/Verdicts/*.json</text>
+  <text x="450" y="808" class="s">same contract as the prototype</text>
+  <text x="450" y="826" class="s">(agents/verdict-format.md)</text>
+
+  <rect x="820" y="720" width="360" height="150" rx="10" class="ge"/>
+  <text x="840" y="752" class="h">Fix workflow</text>
+  <text x="840" y="780" class="t">Trigger: new verdict file</text>
+  <text x="840" y="800" class="t">Condition, Redesign, Approval step</text>
+  <text x="840" y="828" class="s">Jira, Gmail, Calendar and Drive</text>
+  <text x="840" y="846" class="s">connector actions</text>
+
+  <rect x="1210" y="720" width="350" height="150" rx="10" class="ge"/>
+  <text x="1230" y="752" class="h">RedPen Insight (chat agent)</text>
+  <text x="1230" y="780" class="t">Answers over Jira + Drive:</text>
+  <text x="1230" y="800" class="t">"Which modules are HIGH?"</text>
+  <text x="1230" y="828" class="s">for programme leaders and QA</text>
+
+  <path d="M400,795 L426,795" class="edge"/>
+  <path d="M790,795 L816,795" class="edge"/>
+  <path d="M1180,795 L1206,795" class="edge"/>
+
+  <rect x="40" y="905" width="16" height="16" rx="3" class="ai"/><text x="64" y="918" class="s">AI agent step</text>
+  <rect x="190" y="905" width="16" height="16" rx="3" class="human"/><text x="214" y="918" class="s">human</text>
+  <rect x="300" y="905" width="16" height="16" rx="3" class="act"/><text x="324" y="918" class="s">action in a real tool</text>
+  <rect x="490" y="905" width="16" height="16" rx="3" class="data"/><text x="514" y="918" class="s">hand-off file</text>
+  <rect x="630" y="905" width="16" height="16" rx="3" class="ge"/><text x="654" y="918" class="s">Gemini Enterprise</text>
+  <text x="1560" y="918" text-anchor="end" class="s">Student work and real briefs stay in Drive, never in the repo.</text>
+</svg>

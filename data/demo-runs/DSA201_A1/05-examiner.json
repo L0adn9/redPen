@@ -1,0 +1,114 @@
+{
+  "marked_criteria": [
+    "Explanation of algorithms",
+    "Justification for the scenario",
+    "Implementation and testing"
+  ],
+  "results": [
+    {
+      "persona": "copy_paster",
+      "scores": [
+        {
+          "criterion": "Explanation of algorithms",
+          "score": 18,
+          "max": 20,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "All four algorithms are clearly explained with accurate mechanics and complete coverage of best, average, and worst-case complexities."
+        },
+        {
+          "criterion": "Justification for the scenario",
+          "score": 27,
+          "max": 30,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Strong, mathematically supported justification addressing the 250,000 record dataset, operation frequencies, and the necessity of sort stability."
+        },
+        {
+          "criterion": "Implementation and testing",
+          "score": 22,
+          "max": 25,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "Correct iterative binary search implementation on catalog dictionaries, backed by boundary, midpoint, and non-existent test cases with outputs."
+        }
+      ],
+      "total_percent": 89,
+      "grade": "A+",
+      "passed": true
+    },
+    {
+      "persona": "prompt_engineer",
+      "scores": [
+        {
+          "criterion": "Explanation of algorithms",
+          "score": 19,
+          "max": 20,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "Exceptionally clear and detailed explanation of operational mechanics alongside precise conditions for all time complexity scenarios."
+        },
+        {
+          "criterion": "Justification for the scenario",
+          "score": 28,
+          "max": 30,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Insightful justification linking the 250,000 scale to exact operation counts, memory limits for annual batching, and dual-index maintenance."
+        },
+        {
+          "criterion": "Implementation and testing",
+          "score": 24,
+          "max": 25,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "Robust code with type hints and case normalization, thoroughly tested for ISBN and title lookups across key boundary conditions."
+        }
+      ],
+      "total_percent": 95,
+      "grade": "A+",
+      "passed": true
+    },
+    {
+      "persona": "honest_helper",
+      "scores": [
+        {
+          "criterion": "Explanation of algorithms",
+          "score": 18,
+          "max": 20,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "Accurate descriptions of divide-and-conquer and iterative search mechanisms with sound explanations of best, average, and worst-case behaviors."
+        },
+        {
+          "criterion": "Justification for the scenario",
+          "score": 27,
+          "max": 30,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Well-argued recommendations focusing directly on data volume, annual batch memory requirements, and high-frequency logarithmic searching."
+        },
+        {
+          "criterion": "Implementation and testing",
+          "score": 22,
+          "max": 25,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "Clean and flexible Python implementation parameterized by search field, complete with appropriate test cases and terminal outputs."
+        }
+      ],
+      "total_percent": 89,
+      "grade": "A+",
+      "passed": true
+    }
+  ]
+}

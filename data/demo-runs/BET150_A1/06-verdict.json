@@ -1,0 +1,40 @@
+{
+  "file_name": "BET150_A1_flash_20261108.json",
+  "module": "BET150",
+  "module_name": "Business Ethics",
+  "assessment": "A1",
+  "brief_path": "/RedPen/Assessments/BET150/A1/brief.txt",
+  "lecturer_email": "REPLACE_WITH_TEST_LECTURER_EMAIL",
+  "model": "flash",
+  "audit_date": "2026-11-08",
+  "exposure": "HIGH",
+  "persona_grades": {
+    "copy_paster": "A+",
+    "prompt_engineer": "A+",
+    "honest_helper": "A+"
+  },
+  "persona_totals": {
+    "copy_paster": 82,
+    "prompt_engineer": 94,
+    "honest_helper": 80
+  },
+  "pass_mark": 40,
+  "clos_at_risk": [
+    {
+      "id": "CLO1",
+      "text": "Apply ethical theories to analyse business decisions",
+      "why": "The prompt engineer scored 33/35 on 'Application of ethical theories'."
+    },
+    {
+      "id": "CLO2",
+      "text": "Evaluate the responsibilities of organisations towards stakeholders in a Malaysian context",
+      "why": "The prompt engineer scored 47/50 across 'Critical analysis of the Malaysian context' and 'Justified recommendations'."
+    }
+  ],
+  "easy_criteria": [
+    "Application of ethical theories",
+    "Critical analysis of the Malaysian context",
+    "Justified recommendations"
+  ],
+  "summary": "An unedited AI answer to this brief scored A+ (82%), well above the 40% pass mark. CLO1 and CLO2 are no longer reliably evidenced."
+}

@@ -1,0 +1,127 @@
+{
+  "module": "SEP310",
+  "module_name": "Software Engineering Project Management",
+  "assessment": "A2",
+  "folder_path": "/RedPen/Assessments/SEP310/A2/",
+  "brief_path": "/RedPen/Assessments/SEP310/A2/brief.txt",
+  "lecturer_email": "REPLACE_WITH_TEST_LECTURER_EMAIL",
+  "ai_policy": "AIAS Level 2 (AI Planning). You may use AI to brainstorm and plan; all submitted text and evidence must be your own.",
+  "pass_mark": 40,
+  "total_marks": 100,
+  "context": "This portfolio accompanies your team project (A1). Your tutor signs your team's weekly meeting minutes in the lab, and your Git repository history is collected automatically by the module's GitHub Classroom.",
+  "tasks": [
+    {
+      "id": "T1",
+      "text": "Using your own commits from the team repository (minimum 15 commits, referenced by hash), explain how your individual contribution evolved across Sprints 1-3 and how it matched the sprint backlog.",
+      "marks": 35
+    },
+    {
+      "id": "T2",
+      "text": "Analyse ONE risk your team actually faced (as recorded in your signed meeting minutes) and evaluate how it was managed, using a risk management framework from the lectures.",
+      "marks": 25
+    },
+    {
+      "id": "T3",
+      "text": "Reflect on the peer feedback you received in the Week 8 lab review session (the written feedback forms are returned to you in class) and describe two concrete changes you made in response.",
+      "marks": 25
+    },
+    {
+      "id": "T4",
+      "text": "Professional presentation of the portfolio.",
+      "marks": 15
+    }
+  ],
+  "selected_tasks": [
+    {
+      "id": "T1",
+      "text": "Using your own commits from the team repository (minimum 15 commits, referenced by hash), explain how your individual contribution evolved across Sprints 1-3 and how it matched the sprint backlog.",
+      "marks": 35
+    },
+    {
+      "id": "T2",
+      "text": "Analyse ONE risk your team actually faced (as recorded in your signed meeting minutes) and evaluate how it was managed, using a risk management framework from the lectures.",
+      "marks": 25
+    },
+    {
+      "id": "T3",
+      "text": "Reflect on the peer feedback you received in the Week 8 lab review session (the written feedback forms are returned to you in class) and describe two concrete changes you made in response.",
+      "marks": 25
+    }
+  ],
+  "rubric": [
+    {
+      "criterion": "Evidence of individual contribution",
+      "max": 35,
+      "bands": "Excellent (80-100%): complete, accurate, insightful, specific to the scenario, well justified. Good (65-79%): accurate and mostly complete, some specific justification. Satisfactory (50-64%): generally correct but generic or partly incomplete. Pass (40-49%): basic, with errors or significant gaps. Fail (0-39%): missing, largely incorrect or irrelevant.",
+      "clos": [
+        "CLO1"
+      ],
+      "tasks": [
+        "T1"
+      ]
+    },
+    {
+      "criterion": "Risk analysis from team records",
+      "max": 25,
+      "bands": "Excellent (80-100%): complete, accurate, insightful, specific to the scenario, well justified. Good (65-79%): accurate and mostly complete, some specific justification. Satisfactory (50-64%): generally correct but generic or partly incomplete. Pass (40-49%): basic, with errors or significant gaps. Fail (0-39%): missing, largely incorrect or irrelevant.",
+      "clos": [
+        "CLO2"
+      ],
+      "tasks": [
+        "T2"
+      ]
+    },
+    {
+      "criterion": "Response to peer feedback",
+      "max": 25,
+      "bands": "Excellent (80-100%): complete, accurate, insightful, specific to the scenario, well justified. Good (65-79%): accurate and mostly complete, some specific justification. Satisfactory (50-64%): generally correct but generic or partly incomplete. Pass (40-49%): basic, with errors or significant gaps. Fail (0-39%): missing, largely incorrect or irrelevant.",
+      "clos": [
+        "CLO3"
+      ],
+      "tasks": [
+        "T3"
+      ]
+    },
+    {
+      "criterion": "Professional presentation",
+      "max": 15,
+      "bands": "Excellent (80-100%): complete, accurate, insightful, specific to the scenario, well justified. Good (65-79%): accurate and mostly complete, some specific justification. Satisfactory (50-64%): generally correct but generic or partly incomplete. Pass (40-49%): basic, with errors or significant gaps. Fail (0-39%): missing, largely incorrect or irrelevant.",
+      "clos": [],
+      "tasks": [
+        "T4"
+      ]
+    }
+  ],
+  "clos": [
+    {
+      "id": "CLO1",
+      "text": "Plan and track individual work within an agile software project",
+      "tasks": [
+        "T1"
+      ],
+      "criteria": [
+        "Evidence of individual contribution"
+      ]
+    },
+    {
+      "id": "CLO2",
+      "text": "Evaluate project risks and their management using appropriate frameworks",
+      "tasks": [
+        "T2"
+      ],
+      "criteria": [
+        "Risk analysis from team records"
+      ]
+    },
+    {
+      "id": "CLO3",
+      "text": "Reflect on professional practice and act on feedback",
+      "tasks": [
+        "T3"
+      ],
+      "criteria": [
+        "Response to peer feedback"
+      ]
+    }
+  ]
+}

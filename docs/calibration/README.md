@@ -5,7 +5,20 @@
 ## What you need
 3–5 real student answers that an APU lecturer has **already marked**, with the marks per criterion, plus the brief and rubric. Get them anonymised (no names or IDs) and with the lecturer's permission. Don't put them in the repo; keep them in Drive `/RedPen/Calibration/`.
 
-## Steps
+## Quick way (prototype): `tools/calibrate.py`
+1. Put each assignment in `data/real/calibration/<MODULE>_<ASSESSMENT>/` (gitignored) with `brief`, `rubric` (.txt, .pdf or .docx) and optional `clo-map.txt`.
+2. One subfolder per marked answer (`S1/`, `S2/`, ...) with `answer` (.txt, .pdf or .docx) and `marks.csv`:
+   ```
+   criterion,max,mark
+   Explanation of algorithms,20,14
+   ```
+   If only the total is known, use one line: `TOTAL,100,68`.
+3. Write who marked them in `data/real/calibration/reference-marker.txt`, e.g. `lecturer` or `Claude (cross-model check)`. It goes into the deck line, so be honest.
+4. Remove student names first. The tool masks TP numbers and emails itself.
+5. Run `python3 tools/calibrate.py data/real/calibration`. It prints each sample, the summary and the deck line, and saves `data/calibration/results-round1.csv` (marks only, safe to commit).
+6. If more than 1 in 5 is over one grade apart, tighten `agents/audit/05-examiner.md` and run with `--round 2`.
+
+## Steps (Gemini Enterprise)
 1. Create a copy of the Examiner step (or a small workflow): Intake on the brief → Examiner, where the "persona answer" is the real student answer.
 2. Record each criterion's lecturer mark and Examiner mark in `data/calibration/calibration-template.csv` (marks only, no student text).
 3. Compute, per sample: the total %, the grade for each, and whether they're **within one grade band**. Also compute the **mean absolute difference** in total %.

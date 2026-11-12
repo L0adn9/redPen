@@ -1,0 +1,121 @@
+{
+  "module": "BET150",
+  "module_name": "Business Ethics",
+  "assessment": "A1",
+  "folder_path": "/RedPen/Assessments/BET150/A1/",
+  "brief_path": "/RedPen/Assessments/BET150/A1/brief.txt",
+  "lecturer_email": "REPLACE_WITH_TEST_LECTURER_EMAIL",
+  "ai_policy": "not stated.",
+  "pass_mark": 40,
+  "total_marks": 100,
+  "context": "",
+  "tasks": [
+    {
+      "id": "T1",
+      "text": "Critically discuss the ethical issues raised by the gig economy (e.g. food delivery and e-hailing platforms) in Malaysia. Apply TWO ethical theories (for example utilitarianism, Kantian ethics, virtue ethics or stakeholder theory) to analyse the responsibilities of platforms towards their workers.",
+      "marks": 60
+    },
+    {
+      "id": "T2",
+      "text": "Recommend three actions platforms should take to act more ethically, and justify each using your analysis.",
+      "marks": 25
+    },
+    {
+      "id": "T3",
+      "text": "Academic writing and referencing (APA 7th, at least 8 academic sources).",
+      "marks": 15
+    }
+  ],
+  "selected_tasks": [
+    {
+      "id": "T1",
+      "text": "Critically discuss the ethical issues raised by the gig economy (e.g. food delivery and e-hailing platforms) in Malaysia. Apply TWO ethical theories (for example utilitarianism, Kantian ethics, virtue ethics or stakeholder theory) to analyse the responsibilities of platforms towards their workers.",
+      "marks": 60
+    },
+    {
+      "id": "T2",
+      "text": "Recommend three actions platforms should take to act more ethically, and justify each using your analysis.",
+      "marks": 25
+    }
+  ],
+  "rubric": [
+    {
+      "criterion": "Application of ethical theories",
+      "max": 35,
+      "bands": "Excellent (80-100%): complete, accurate, insightful, specific to the scenario, well justified.\nGood (65-79%): accurate and mostly complete, some specific justification.\nSatisfactory (50-64%): generally correct but generic or partly incomplete.\nPass (40-49%): basic, with errors or significant gaps.\nFail (0-39%): missing, largely incorrect or irrelevant.",
+      "clos": [
+        "CLO1"
+      ],
+      "tasks": [
+        "T1"
+      ]
+    },
+    {
+      "criterion": "Critical analysis of the Malaysian context",
+      "max": 25,
+      "bands": "Excellent (80-100%): complete, accurate, insightful, specific to the scenario, well justified.\nGood (65-79%): accurate and mostly complete, some specific justification.\nSatisfactory (50-64%): generally correct but generic or partly incomplete.\nPass (40-49%): basic, with errors or significant gaps.\nFail (0-39%): missing, largely incorrect or irrelevant.",
+      "clos": [
+        "CLO2"
+      ],
+      "tasks": [
+        "T1"
+      ]
+    },
+    {
+      "criterion": "Justified recommendations",
+      "max": 25,
+      "bands": "Excellent (80-100%): complete, accurate, insightful, specific to the scenario, well justified.\nGood (65-79%): accurate and mostly complete, some specific justification.\nSatisfactory (50-64%): generally correct but generic or partly incomplete.\nPass (40-49%): basic, with errors or significant gaps.\nFail (0-39%): missing, largely incorrect or irrelevant.",
+      "clos": [
+        "CLO2"
+      ],
+      "tasks": [
+        "T2"
+      ]
+    },
+    {
+      "criterion": "Academic writing and referencing",
+      "max": 15,
+      "bands": "Excellent (80-100%): complete, accurate, insightful, specific to the scenario, well justified.\nGood (65-79%): accurate and mostly complete, some specific justification.\nSatisfactory (50-64%): generally correct but generic or partly incomplete.\nPass (40-49%): basic, with errors or significant gaps.\nFail (0-39%): missing, largely incorrect or irrelevant.",
+      "clos": [
+        "CLO3"
+      ],
+      "tasks": [
+        "T3"
+      ]
+    }
+  ],
+  "clos": [
+    {
+      "id": "CLO1",
+      "text": "Apply ethical theories to analyse business decisions",
+      "tasks": [
+        "T1"
+      ],
+      "criteria": [
+        "Application of ethical theories"
+      ]
+    },
+    {
+      "id": "CLO2",
+      "text": "Evaluate the responsibilities of organisations towards stakeholders in a Malaysian context",
+      "tasks": [
+        "T1",
+        "T2"
+      ],
+      "criteria": [
+        "Critical analysis of the Malaysian context",
+        "Justified recommendations"
+      ]
+    },
+    {
+      "id": "CLO3",
+      "text": "Communicate arguments in academic writing with appropriate referencing",
+      "tasks": [
+        "T3"
+      ],
+      "criteria": [
+        "Academic writing and referencing"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "module": "DBS202",
+  "assessment": "A1",
+  "persona_label": "flash",
+  "models": {
+    "intake/examiner/verdict": "gemini-3.5-flash",
+    "personas": "gemini-3.5-flash"
+  },
+  "steps": {
+    "01-intake": {
+      "model": "gemini-3.6-flash",
+      "seconds": 20.2
+    },
+    "02-honest_helper": {
+      "model": "gemini-3.6-flash",
+      "seconds": 5.8
+    },
+    "02-copy_paster": {
+      "model": "gemini-3.6-flash",
+      "seconds": 16.6
+    },
+    "02-prompt_engineer": {
+      "model": "gemini-3.6-flash",
+      "seconds": 52.5
+    },
+    "05-examiner": {
+      "model": "gemini-3.6-flash",
+      "seconds": 44.1
+    },
+    "06-verdict": {
+      "model": "gemini-3.6-flash",
+      "seconds": 191.9
+    }
+  },
+  "warnings": [],
+  "total_seconds": 308.7
+}

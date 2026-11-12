@@ -1,0 +1,114 @@
+{
+  "marked_criteria": [
+    "ERD correctness and assumptions",
+    "Normalisation to 3NF",
+    "SQL implementation"
+  ],
+  "results": [
+    {
+      "persona": "copy_paster",
+      "scores": [
+        {
+          "criterion": "ERD correctness and assumptions",
+          "score": 26,
+          "max": 30,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "The ASCII Crow's Foot diagram accurately captures all required business entities and relationships including associative entities, accompanied by well-considered assumptions."
+        },
+        {
+          "criterion": "Normalisation to 3NF",
+          "score": 23,
+          "max": 25,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The normalisation steps from UNF to 3NF are clear, accurate, and properly detail all functional dependencies leading to fully normalised tables."
+        },
+        {
+          "criterion": "SQL implementation",
+          "score": 22,
+          "max": 25,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The DDL script correctly specifies all required keys and constraints, and the analytical SQL queries appropriately handle aggregations and table joins."
+        }
+      ],
+      "total_percent": 89,
+      "grade": "A+",
+      "passed": true
+    },
+    {
+      "persona": "prompt_engineer",
+      "scores": [
+        {
+          "criterion": "ERD correctness and assumptions",
+          "score": 27,
+          "max": 30,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "Provides a thorough structural specification and Crow's Foot mapping along with precise, practical business assumptions."
+        },
+        {
+          "criterion": "Normalisation to 3NF",
+          "score": 24,
+          "max": 25,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Demonstrates a comprehensive functional dependency analysis and provides a clear, step-by-step 3NF decomposition with explicit key designations."
+        },
+        {
+          "criterion": "SQL implementation",
+          "score": 23,
+          "max": 25,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The SQL implementation features well-structured DDL with appropriate constraints and highly accurate reporting queries."
+        }
+      ],
+      "total_percent": 93,
+      "grade": "A+",
+      "passed": true
+    },
+    {
+      "persona": "honest_helper",
+      "scores": [
+        {
+          "criterion": "ERD correctness and assumptions",
+          "score": 0,
+          "max": 30,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "Task marked as not attempted due to AI policy."
+        },
+        {
+          "criterion": "Normalisation to 3NF",
+          "score": 0,
+          "max": 25,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Task marked as not attempted due to AI policy."
+        },
+        {
+          "criterion": "SQL implementation",
+          "score": 0,
+          "max": 25,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "Task marked as not attempted due to AI policy."
+        }
+      ],
+      "total_percent": 0,
+      "grade": "F",
+      "passed": false
+    }
+  ]
+}

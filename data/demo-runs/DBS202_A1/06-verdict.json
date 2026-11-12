@@ -1,0 +1,45 @@
+{
+  "file_name": "DBS202_A1_flash_20261108.json",
+  "module": "DBS202",
+  "module_name": "Database Systems",
+  "assessment": "A1",
+  "brief_path": "/RedPen/Assessments/DBS202/A1/brief.txt",
+  "lecturer_email": "REPLACE_WITH_TEST_LECTURER_EMAIL",
+  "model": "flash",
+  "audit_date": "2026-11-08",
+  "exposure": "HIGH",
+  "persona_grades": {
+    "copy_paster": "A+",
+    "prompt_engineer": "A+",
+    "honest_helper": "F"
+  },
+  "persona_totals": {
+    "copy_paster": 89,
+    "prompt_engineer": 93,
+    "honest_helper": 0
+  },
+  "pass_mark": 40,
+  "clos_at_risk": [
+    {
+      "id": "CLO1",
+      "text": "Design a conceptual data model that satisfies given business requirements",
+      "why": "The prompt-engineer scored 27/30 on 'ERD correctness and assumptions'."
+    },
+    {
+      "id": "CLO2",
+      "text": "Apply normalisation to produce a relational schema in 3NF",
+      "why": "The prompt-engineer scored 24/25 on 'Normalisation to 3NF'."
+    },
+    {
+      "id": "CLO3",
+      "text": "Implement and query a relational database using SQL",
+      "why": "The prompt-engineer scored 23/25 on 'SQL implementation'."
+    }
+  ],
+  "easy_criteria": [
+    "ERD correctness and assumptions",
+    "Normalisation to 3NF",
+    "SQL implementation"
+  ],
+  "summary": "An unedited AI answer to this brief scored A+ (89%), well above the 40% pass mark. CLO1, CLO2, and CLO3 are no longer reliably evidenced."
+}

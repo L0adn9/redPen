@@ -1,0 +1,25 @@
+{
+  "file_name": "DAN301_A2_flash_20261108.json",
+  "module": "DAN301",
+  "module_name": "Data Analytics in Practice (Level 3)",
+  "assessment": "A2",
+  "brief_path": "/RedPen/Assessments/DAN301/A2/brief.txt",
+  "lecturer_email": "REPLACE_WITH_TEST_LECTURER_EMAIL",
+  "model": "flash",
+  "audit_date": "2026-11-08",
+  "exposure": "LOW",
+  "persona_grades": {
+    "copy_paster": "F",
+    "prompt_engineer": "F",
+    "honest_helper": "F"
+  },
+  "persona_totals": {
+    "copy_paster": 15,
+    "prompt_engineer": 18,
+    "honest_helper": 0
+  },
+  "pass_mark": 40,
+  "clos_at_risk": [],
+  "easy_criteria": [],
+  "summary": "AI attempts failed to pass this assessment, scoring a maximum of 18% (Grade F) against the 40% pass mark. The reliance on in-class dataset generation and supervised execution effectively protects the assessment integrity."
+}
