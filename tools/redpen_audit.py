@@ -23,7 +23,7 @@ Needs OPENROUTER_API_KEY (preferred: paid, no daily cap, has Pro) or GEMINI_API_
 in the environment, Streamlit secrets, or redPen/.env. REDPEN_BACKEND=openrouter|gemini forces one.
 Models: REDPEN_MODELS = comma list tried in order; on a 429 (quota) the step moves to the next model.
 The free tier gives ~20 requests/day per model and one audit = 6 requests, so the list spreads the load.
-One audit takes about 3-6 minutes.
+One audit takes under a minute on Flash, 3-6 minutes on Pro.
 """
 import argparse
 import concurrent.futures as cf
@@ -71,10 +71,7 @@ def models():
     else:
         raw = os.environ.get("REDPEN_MODELS", DEFAULT_MODELS)
         out = [m.split("/", 1)[-1] for m in (x.strip() for x in raw.split(",")) if m]
-    bad = [m for m in out if not m.split("/", 1)[-1].startswith("gemini") or ("/" in m and not m.startswith("google/"))]
-    if bad:
-        raise AuditError(f"only Google Gemini models are allowed, got: {', '.join(bad)}")
-    return out
+    return _guard(out)
 
 
 def set_credentials(key, backend_name=None, model_list=None):
@@ -99,7 +96,7 @@ def check_models():
     for m in models():
         t0 = time.time()
         try:
-            text, _ = call('Reply with JSON only.', 'Return {"ok": true}', key, [m])
+            text, _ = call('Reply with JSON only.', 'Return {"ok": true}', key, [m], quick=True)
             out.append((m, f"OK {time.time() - t0:.1f}s" if '"ok"' in text else f"odd reply: {text[:60]}"))
         except AuditError as e:
             out.append((m, str(e)[:120]))
@@ -171,34 +168,60 @@ def _post(model, system, user, key):
     return "".join(p.get("text", "") for p in parts if not p.get("thought")), d.get("modelVersion", model)
 
 
-def call(system, user, key, model_list=None):
-    """One Gemini call. Moves down the model list on quota errors; retries server errors."""
-    tried = []
+FATAL_HTTP = {401: "the API key was rejected (wrong or revoked key)",
+              402: "the OpenRouter account has no credit left",
+              403: "the API key is not allowed to use this model"}
+
+
+def _guard(model_list):
+    bad = [m for m in model_list if not m.split("/", 1)[-1].startswith("gemini")
+           or ("/" in m and not m.startswith("google/"))]
+    if bad:
+        raise AuditError(f"only Google Gemini models are allowed, got: {', '.join(bad)}")
+    return model_list
+
+
+def call(system, user, key, model_list=None, quick=False):
+    """One Gemini call. Moves down the model list on quota/timeouts; retries server errors.
+
+    Fails fast (no retries) when the key itself is the problem. Always raises AuditError, never a raw exception.
+    """
+    model_list = _guard(list(model_list or models()))
+    tried, retryable = [], False
     for rnd in range(2):  # second round after a pause, in case it was a per-minute limit
-        for model in model_list or models():
-            for attempt in range(3):
+        for model in model_list:
+            for attempt in range(1 if quick else 3):
                 try:
                     return _post(model, system, user, key)
                 except urllib.error.HTTPError as e:
-                    msg = e.read().decode(errors="replace")[:200]
+                    msg = e.read().decode(errors="replace")[:200].replace("\n", " ")
+                    if e.code in FATAL_HTTP:
+                        raise AuditError(f"{FATAL_HTTP[e.code]} (HTTP {e.code} from {model}). "
+                                         "Swap the key: see docs/api-keys.md")
                     if e.code == 429:
                         tried.append(f"{model}: quota")
+                        retryable = True
                         break  # next model
-                    if e.code in (500, 502, 503, 504) and attempt < 2:
-                        time.sleep(10 * (attempt + 1))
-                        continue
+                    if e.code in (500, 502, 503, 504):
+                        if attempt < 2 and not quick:
+                            time.sleep(5 * (attempt + 1))
+                            continue
+                        retryable = True
                     tried.append(f"{model}: HTTP {e.code} {msg}")
                     break
-                except (TimeoutError, OSError) as e:  # hung or overloaded model: try the next one
-                    tried.append(f"{model}: {type(e).__name__}")
+                except (TimeoutError, OSError) as e:  # hung, overloaded or offline: try the next model
+                    tried.append(f"{model}: {type(e).__name__} {e}"[:160])
+                    retryable = True
                     break
-                except (KeyError, IndexError) as e:  # empty or blocked answer
-                    if attempt < 2:
+                except (KeyError, IndexError, TypeError, ValueError) as e:  # empty, blocked or garbled answer
+                    if attempt < 2 and not quick:
                         continue
-                    tried.append(f"{model}: {e}")
+                    tried.append(f"{model}: bad response ({type(e).__name__}: {e})"[:160])
                     break
-        if rnd == 0:
-            time.sleep(30)
+        if rnd == 0 and retryable and not quick:
+            time.sleep(20)
+        else:
+            break
     raise AuditError("all models failed: " + "; ".join(tried))
 
 
@@ -217,18 +240,37 @@ def parse(text, step):
             raise AuditError(f"{step} did not return valid JSON: {e}")
 
 
+def label_for(model_list):
+    """'pro' if the first (main) model is a Pro-class Gemini model, else 'flash'."""
+    m = (model_list or ["flash"])[0].lower()
+    return "pro" if any(k in m for k in ("pro", "argon", "carbon", "ultra")) else "flash"
+
+
+def expected_exposure(totals, pass_mark):
+    """The exposure rule from agents/audit/06-verdict.md, computed in code as a cross-check."""
+    if (totals.get("copy_paster") or 0) >= pass_mark:
+        return "HIGH"
+    if (totals.get("prompt_engineer") or 0) >= pass_mark:
+        return "MEDIUM"
+    return "LOW"
+
+
 def run_audit(brief, rubric, clo_map, module="MODULE", assessment="A1", lecturer_email=None,
-              run_date=None, model_label="flash", on_step=None, key=None, model_list=None):
+              run_date=None, model_label=None, on_step=None, key=None, model_list=None):
     """Run the full Audit chain (6 API calls, ~3-6 min).
 
     on_step(step_name, data, seconds) is called after each step, on the caller's thread, in this order:
     01-intake, the three 02-<persona> steps as they finish, 05-examiner, 06-verdict.
     Step names and display titles: STEP_TITLES. Raises AuditError if every model fails.
     """
+    if not (brief or "").strip() or not (rubric or "").strip():
+        raise AuditError("the brief and the rubric are both required and must contain text")
     key = key or api_key()
+    model_list = _guard(list(model_list or models()))
+    model_label = model_label or label_for(model_list)
     run_date = run_date or dt.date.today().isoformat()
-    log = {"module": module, "assessment": assessment, "run_date": run_date,
-           "steps": {}, "warnings": []}
+    log = {"module": module, "assessment": assessment, "run_date": run_date, "model_label": model_label,
+           "models": model_list, "steps": {}, "warnings": []}
     steps = {}
 
     def step(name, system, user):
@@ -286,8 +328,25 @@ def run_audit(brief, rubric, clo_map, module="MODULE", assessment="A1", lecturer
     verdict = step("06-verdict", verdict_sys, json.dumps(
         {"intake": intake, "examiner": examiner, "run_date": run_date}, ensure_ascii=False))
     done("06-verdict")
+    if not isinstance(verdict, dict):
+        raise AuditError("the Verdict step did not return a JSON object")
+    # Fields the code knows for sure: never trust the model with them.
+    verdict["model"] = model_label
+    verdict["audit_date"] = run_date
     if lecturer_email:
         verdict["lecturer_email"] = lecturer_email
+    verdict.setdefault("lecturer_email", "")
+    if all(k in verdict for k in ("module", "assessment")):
+        verdict["file_name"] = f"{verdict['module']}_{verdict['assessment']}_{model_label}_{run_date.replace('-', '')}.json"
+    try:
+        want = expected_exposure(verdict.get("persona_totals", {}), float(verdict.get("pass_mark", 40)))
+        if verdict.get("exposure") != want:
+            log["warnings"].append(f"verdict said exposure {verdict.get('exposure')}, the rule gives {want}: corrected")
+            verdict["exposure"] = want
+            if want == "LOW":
+                verdict["clos_at_risk"] = []
+    except (TypeError, ValueError):
+        pass
 
     log["total_seconds"] = round(time.time() - t_start, 1)
     errs, warns = check(verdict)
@@ -324,7 +383,7 @@ def main():
     ap.add_argument("--email", help="lecturer email to put in the verdict")
     ap.add_argument("--date", default=dt.date.today().isoformat())
     ap.add_argument("--parallel", type=int, default=2)
-    ap.add_argument("--label", default="flash", help="model label written into the verdict: flash or pro")
+    ap.add_argument("--label", default=None, help="model label in the verdict (default: from the model list)")
     a = ap.parse_args()
     print(f"Backend: {backend()} | models (in order): " + ", ".join(models()))
     if a.check or not a.folders:
