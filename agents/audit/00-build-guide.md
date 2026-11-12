@@ -1,6 +1,8 @@
 # Audit workflow: build guide (Abdullah)
 
-Build in this order. Test after each step and don't move on until it works. Exact button names in Gemini Enterprise may differ slightly from the text below; the steps follow Google's Workflow Builder docs.
+Build in this order (for the top-5 build, 13–17 Nov). Test after each step and don't move on until it works.
+
+**Already proven in the prototype:** every instruction block below runs unchanged in `tools/redpen_audit.py` (29 s per audit on Flash, contract-clean). Before pasting into Gemini Enterprise, `python3 tools/test_engine.py` must pass. Compare each Gemini Enterprise verdict with the saved run in `data/demo-runs/<MODULE>_<ASSESSMENT>/06-verdict.json`. Exact button names in Gemini Enterprise may differ slightly from the text below; the steps follow Google's Workflow Builder docs.
 
 ## 0. App setup (Fri, ~30 min)
 1. Google Cloud console → search **Gemini Enterprise** → **Apps** → **Create app**. Location: **global**. Name: `RedPen`.
@@ -11,7 +13,7 @@ Build in this order. Test after each step and don't move on until it works. Exac
 6. Run your day-1 checks (#1, 2, 8, 9, 10 in `docs/day1-checklist.md`) and fill in the results.
 
 ## 1. Linear path, manual trigger (Fri)
-1. Open the app URL → **Agents → New agent → Workflow** (or *Build manually*). Name: **RedPen Audit (Pro)**.
+1. Open the app URL → **Agents → New agent → Workflow** (or *Build manually*). Name: **RedPen Audit**.
 2. **Trigger: Manual**, with one required input: `Assessment folder path` (e.g. `/RedPen/Assessments/DSA201/A1/`).
 3. Add **Gemini Agent** steps in order, pasting each file's instructions:
    1. `01-intake.md`: Drive restricted to `/RedPen/Assessments/`
@@ -24,10 +26,10 @@ Build in this order. Test after each step and don't move on until it works. Exac
    - If it can't see the Intake output, switch to [`fallback-pass-through.md`](fallback-pass-through.md) now, not on Saturday night.
 
 ## 2. Examiner + Verdict + save (Sat morning)
-1. Add `05-examiner.md` (model **Pro**) after the personas.
+1. Add `05-examiner.md` (model **Flash**: calibration showed Flash 7 of 7 within one grade band, Pro 5 of 7; see `docs/calibration/results.md`) after the personas.
 2. Add `06-verdict.md`.
 3. Add the **Drive upload** action (step 5 in `06-verdict.md`), saving to `/RedPen/Verdicts/`. Approve the review prompt.
-4. Run it on `DSA201/A1` and `DAN301/A2`. Paste each verdict into `python3 tools/check_verdict.py -` (Ctrl-D to finish) to check it matches the contract before Hassan's workflow reads it. Expect DSA201 to be HIGH or MEDIUM and DAN301 to be LOW. If DAN301 comes out HIGH, the Examiner is too generous: re-read rule 4.
+4. Run it on `DSA201/A1` and `DAN301/A2` (prototype results: HIGH and LOW). Paste each verdict into `python3 tools/check_verdict.py -` (Ctrl-D to finish) to check it matches the contract before Hassan's workflow reads it. Expect DSA201 to be HIGH or MEDIUM and DAN301 to be LOW. If DAN301 comes out HIGH, the Examiner is too generous: re-read rule 4.
 5. When it works, message Hassan: **"Verdict files are landing in /Verdicts/"**.
 
 ## 3. Calibration round 1 (Sat afternoon)
@@ -45,8 +47,8 @@ Drop the hero assignment in and watch it go Audit → verdict → Fix → Jira. 
 
 ## 6. Monthly schedule + Flash vs Pro (Sun)
 1. **Schedule trigger:** monthly, 1st Monday, 09:00, time zone **Asia/Kuala_Lumpur**. Input: the hero assignment folder, or the top 3 due soonest if a loop works (day-1 check #10).
-2. **Duplicate** the workflow as **RedPen Audit (Flash)**. Set the 3 persona steps to **Flash** and change `"model": "pro"` to `"model": "flash"` in the Verdict step. The Examiner stays **Pro**.
-3. Run both on the hero assignment. Screenshot both verdicts side by side (demo moment #2).
+2. **Duplicate** the workflow as **RedPen Audit (Pro students)**. Set the 3 persona steps to **Pro**; keep `"model": "pro"` in the Verdict step. The Examiner stays **Flash** in both copies, so only the AI students change.
+3. Run both on the hero assignment (CT074 CCP A1). Screenshot both verdicts side by side. For reference, the prototype's full-Pro run gave a different verdict on 2 of 4 real briefs (`data/pilot-real/runs/`).
 
 ## 7. Chat agent (Sun)
 Build `07-insight-chat-agent.md` after Hassan says "Jira connected".

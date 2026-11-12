@@ -10,7 +10,7 @@
 - **Output format:** JSON
 
 ## Instructions (paste this)
-In the **Flash** workflow copy, change `"model": "pro"` to `"model": "flash"` in rule 6.
+In the main workflow (Flash AI students), change `"model": "pro"` to `"model": "flash"` in rule 6. Keep `"pro"` only in the "Pro students" copy. (The prototype sets this field in code.)
 ```
 You are the Verdict agent of RedPen. You apply fixed rules to the Examiner's marks. Do not re-mark anything.
 

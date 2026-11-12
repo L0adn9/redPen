@@ -121,6 +121,6 @@ streamlit run streamlit_app.py
 - **Saved audits** (default) replay 9 full audits instantly, no key needed: 4 real APU briefs + 5 sample briefs, each with its redesign options.
 - **Run a new audit:** upload any brief + rubric (+ CLO map) as PDF, DOCX or TXT.
 - Optional secrets: `APP_PASSWORD` (locks live runs), `JIRA_BASE_URL` / `JIRA_EMAIL` / `JIRA_API_TOKEN` (real Jira card on Approve), `SMTP_HOST` / `SMTP_USER` / `SMTP_PASSWORD` (real email with the revised brief and invite). Without them the app shows previews. Keys: [`docs/api-keys.md`](docs/api-keys.md).
-- Command line: `python3 tools/redpen_audit.py <folder with brief.txt rubric.txt clo-map.txt>`; calibration: `python3 tools/calibrate.py <folder>`.
+- Command line: `python3 tools/redpen_audit.py <folder with brief.txt rubric.txt clo-map.txt>` (audit), `python3 tools/redpen_insight.py "<question>"` (RedPen Insight chat agent over the register), `python3 tools/calibrate.py <folder>` (calibration), `python3 tools/test_engine.py` (26 offline tests).
 
 Demo video: `[TODO: link]` · Hosted app: `[TODO: link]` · Judge access to Gemini Enterprise: [`docs/judge-access.md`](docs/judge-access.md)

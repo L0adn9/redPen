@@ -74,7 +74,7 @@ Approved redesign: {title}: AIAS level {n}, {lane} lane, about +{minutes} min ma
 Revised brief: /RedPen/Revised/{file}
 Jira: RP issue "{module} {assessment}"
 
-RedPen is a risk signal from simulated AI attempts marked by an AI examiner calibrated against lecturer marks. It does not assess any real student.
+RedPen is a risk signal from simulated AI attempts marked by an AI examiner calibrated against independent reference marks. It does not assess any real student.
 ```
 
 ### 4. Calendar: review meeting (HIGH only)
