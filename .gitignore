@@ -5,6 +5,7 @@ secrets*
 *.env
 client_secret*
 credentials*.json
+.streamlit/secrets.toml
 
 # Real (non-synthetic) data stays in Drive, not in the repo
 data/real/

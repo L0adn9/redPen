@@ -3,14 +3,15 @@
 ## Prototype (submitted 13 Nov)
 1. **Hosted app:** `[link: Streamlit Community Cloud]`. Open **Saved audits**: 9 full audits replay instantly with no key (4 real APU Level 2 briefs, 5 sample briefs).
    - Pick **CT074-3-2 A1 · Concurrent Programming**: three AI students attempt it, the Examiner marks them, verdict **HIGH**, CLO2 and CLO3 at risk.
-   - Scroll to **Fix**: redesign options (AIAS level, lane, extra marking time) → **Approve** → Jira card / email / calendar invite / revised brief.
-   - Live audits of your own brief: password `[given in the submission form]`.
+   - Scroll to **Fix**: redesign options (AIAS level, lane, extra marking time) → **Approve**.
+   - The **outbox** below shows everything RedPen sends: the report email exactly as the lecturer gets it (download `.eml`), the review meeting (**Add to Google Calendar** or `.ics`), the revised brief and the verdict file.
+   - **Judge password** (`[given in the submission form]`, enter it in the sidebar): Approve then writes a **real card to our Jira Cloud board** and reads it back live (key, status *Approved*, labels). The table at the bottom lists the board live from Jira. The password also unlocks live audits of your own brief.
 2. **Run it yourself (5 minutes):**
    ```bash
    git clone https://github.com/L0adn9/redPen && cd redPen
    pip install -r requirements.txt
    echo "OPENROUTER_API_KEY=sk-or-..." > .env          # or GEMINI_API_KEY=... ; Gemini models only
-   python3 tools/test_engine.py                         # 26 offline tests, no key needed
+   python3 tools/test_engine.py                         # 38 offline tests, no key needed
    python3 tools/redpen_audit.py --check                # key works?
    python3 tools/redpen_audit.py data/pilot-real/CCP/A1 # full audit of a real APU brief (~30 s)
    python3 tools/redpen_insight.py "Which CLOs in my programme are at risk?"
