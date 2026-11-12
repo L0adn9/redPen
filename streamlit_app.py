@@ -321,13 +321,14 @@ def show_fix(result, brief_text, name):
         c1, c2 = st.columns([3, 1], vertical_alignment="bottom")
         to = c1.text_input("Lecturer email", value=v.get("lecturer_email", "") if "@" in v.get("lecturer_email", "") and
                            "REPLACE" not in v.get("lecturer_email", "") else os.environ.get("DEMO_LECTURER_EMAIL", ""),
-                           placeholder="lecturer@university.edu.my",
-                           help="With the judge password, RedPen really emails this address (the report, the revised brief "
-                                "and, for HIGH exposure, a calendar invitation). Use your own email to see it arrive.")
+                           placeholder="lecturer@university.edu.my")
         approve = c2.button(f"Approve {pick}  →", type="primary", width="stretch")
         if not unlocked():
             ui('<div class="rp-muted" style="font-size:.8rem;margin:-.15rem 0 .1rem 0">🔒 Approve works for everyone and shows every follow-up below. '
                'Writing the real Jira card and emailing the lecturer need the judge password (sidebar).</div>')
+        elif rf.smtp_configured():
+            ui('<div class="rp-muted" style="font-size:.8rem;margin:-.15rem 0 .1rem 0">✉️ RedPen really emails this address via Gmail (report, revised brief, calendar invitation). '
+               'Type your own to see it arrive.</div>')
     if approve:
         do_actions(v, red, opt, brief_text, to, name)
     if st.session_state.get(f"done-{name}"):
@@ -390,17 +391,18 @@ def show_reaudit():
     hist = reaudit.load_history()["runs"]
     last = hist[-1] if hist else None
     nxt = reaudit.next_run()
-    cards = [("Schedule", "1st of month, 09:00"), ("Next run", f"{nxt:%d %b %Y}"),
-             ("Last run", f"{last['date']} ({'scheduled' if last['trigger'] == 'schedule' else 'manual'})" if last else "not yet")]
+    nice = lambda iso: f"{dt.date.fromisoformat(iso):%d %b %Y}".lstrip("0") if iso else ""
+    cards = [("Schedule", "1st of month, 09:00"), ("Next run", f"{nxt:%d %b %Y}".lstrip("0")),
+             ("Last run", f"{nice(last['date'])} · {'scheduled' if last['trigger'] == 'schedule' else 'manual'}" if last else "—")]
     ui('<div class="rp-grid rp-g3">' + "".join(
         f'<div class="rp-card"><div class="rp-muted">{a}</div><div class="rp-stat" style="font-size:1.25rem">{esc(b)}</div></div>'
         for a, b in cards) + '</div>')
     if last:
         arrow = {"same": "= no change", "up": "▲ went up", "down": "▼ went down"}
-        rows = [{"Assessment": r.get("assessment", r["name"]), "Last audit": f"{r['previous']} ({r.get('previous_date', '')})",
+        rows = [{"Assessment": r.get("assessment", r["name"]), "Last audit": f"{r['previous']} ({nice(r.get('previous_date'))})",
                  "This run": r.get("exposure") or "failed", "Change": arrow.get(r.get("change"), "-"),
                  "Copy-paster": f"{r.get('totals', {}).get('copy_paster', '-')}%", "Jira": r.get("jira", "-"),
-                 "Model": r.get("model", "-")} for r in last["results"]]
+                 "Model": str(r.get("model", "-")).split("/")[-1]} for r in last["results"]]
         st.dataframe(rows, hide_index=True, width="stretch")
     st.link_button("See the schedule and its runs on GitHub Actions ↗",
                    "https://github.com/L0adn9/redPen/actions/workflows/monthly-reaudit.yml")
@@ -452,8 +454,9 @@ def show_downloads(v, red, opt, brief_text, name):
         e = rf.calendar_event(v, to)
         with st.container(border=True, key=f"rpbox-cal-{name}"):
             ui('<div class="rp-row" style="margin-bottom:.7rem"><span class="rp-label">Calendar · T&amp;L review meeting</span>'
+               '<span style="display:inline-flex;gap:.4rem;flex-wrap:wrap;justify-content:flex-end">'
                f'{badge("Booked because exposure is HIGH", "red")}'
-               f'{" " + badge("Invitation sent", "green") if st.session_state.get(f"sent-{name}") else ""}</div>'
+               f'{badge("Invitation sent", "green") if st.session_state.get(f"sent-{name}") else ""}</span></div>'
                f'<div class="rp-row" style="justify-content:flex-start;gap:.9rem">'
                f'<div class="rp-date"><div>{e["start"]:%b}</div><div>{e["start"]:%d}</div></div>'
                f'<div><div style="font-weight:600">{esc(e["title"])}</div>'
