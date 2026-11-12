@@ -1,0 +1,3 @@
+CLO1 | Revise the appropriate research techniques of the proposed research | criteria: Research methodology
+CLO2 | Demonstrate an ability to apply different approaches to data collection to answer current problems | criteria: Research methodology
+CLO3 | Justify research direction on the investigation of current business or societal problems | criteria: Literature review, Comparison of similar systems

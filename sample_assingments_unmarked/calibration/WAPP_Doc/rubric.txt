@@ -1,0 +1,15 @@
+CT050-3-2-WAPP Web Applications - Group Assignment. This submission is one member's module report (Member module of "RentSmart KL").
+Group Assignment - Documentation (50%), group criteria, 10 marks each:
+- Introduction: 10
+- Storyboard & Design Documents: 10
+- Design & Modelling: 10
+- Implementation & Discussion: 10
+- Conclusion, Document Styles & Formatting: 10
+Group Assignment - Implementation (50%), individual criteria, marked from the running website and its presentation to the lecturer, 10 marks each:
+- Web Page Layout & Appearance: 10
+- User Authentication & Authorization: 10
+- Dynamic Content: 10
+- Insert, Update & Delete Records: 10
+- Form Validation, Navigation & Usability: 10
+What the final report should contain (from the brief): Introduction/Project Plan (objectives, scope, project schedule); Requirement Specification (audience modelling, use cases, flow charts, major functions); Design and Modelling (ERD, wireframes, navigation structure, with descriptions); Implementation (source code explanation incl. CSS, form validation, SQL); User Guidance (screenshots with descriptions); Conclusions (summary, lessons learned, future enhancements); References; Appendix (proposal). Format: Times New Roman 12, 1.5 spacing, justified.
+No band descriptors are given. Use the APU grade bands: 80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail. Pass mark: 50.

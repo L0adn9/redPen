@@ -48,3 +48,26 @@ Compiled with `g++ -std=c++17 -Wall -Wextra`: **0 warnings**; menu smoke test ru
 | **Part A total** | 15 | **11.5** | **77% (A)** |
 
 **Part B: face-to-face Q&A (15)**: not markable from the submission. It happens live with the lecturer, so no AI-written submission can earn it. This is a good RedPen example: half of this assessment is AI-resilient by design.
+
+## 4. WAPP Member Module Report (CT050-3-2, Documentation 50%)
+Marked `RentSmartKL_Member_Module_Report.docx` against the 5 documentation criteria. The Implementation half (website + presentation) can't be marked from a report.
+
+| Criterion | Max | Mark | Why |
+|---|---|---|---|
+| Introduction | 10 | 7 | Clear purpose, page/file table, three objectives, in/out of scope. No project schedule, which the brief asks for. |
+| Storyboard & Design Documents | 10 | 7 | Use case diagram + table, flow chart for the main feature, major functions. No audience modelling. |
+| Design & Modelling | 10 | 7 | Table/column/operation list, 4 wireframes, navigation map with description. Relies on the group ERD instead of showing one. |
+| Implementation & Discussion | 10 | 9 | Very thorough: shared helper, every SQL query (parameterised, scoped to the user), transaction for delete, validators table, all 3 CSS types, 31 test cases with 3 bugs found and fixed. |
+| Conclusion, Document Styles & Formatting | 10 | 6 | Good summary, lessons and future work. Only 5 references (all web docs); several garbled sentences and body text tagged as headings; a duplicated "Key code" line. |
+| **Total** | 50 | **36** | **72% (B+)** |
+
+## 5. RMCT Part 2: Literature Review & Methodology (CT098-3-2, 45%)
+**No official rubric was supplied** (only the module descriptor), so I derived 4 criteria from the CLOs; the Examiner gets the same rubric. The 15% presentation is live and not marked.
+
+| Criterion | Max | Mark | Why |
+|---|---|---|---|
+| Literature review | 35 | 28 | Three domains, mostly 2023–2025 empirical sources, each ends with an explicit gap linked to an objective. Some sentences misstate sources or are garbled ("cognitive leaching", Mollick & Mollick described backwards). |
+| Similar systems + gap | 15 | 13 | Three relevant systems, two comparison tables, clear feature gap. |
+| Methodology | 35 | 29 | Sequential explanatory mixed methods with an objective-to-method table; Krejcie & Morgan (370 → 450) and G*Power (d = 0.8, 26 per group) are correct; kappa, Cronbach's alpha, SUS/TAM, thematic analysis, PDPA ethics, honest limitations. The "Phase 3" and "Data analysis" paragraphs have swapped content. |
+| Academic writing + referencing | 15 | 10 | 29 well-formed APA 7 references. Writing has many paraphrase-style glitches ("III-d stage explanatory mixed", "removal of arms around AI"). |
+| **Total** | 100 | **80** | **A+** (borderline) |

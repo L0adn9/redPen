@@ -1,0 +1,8 @@
+CT098-3-2 Research Methods for Computing and Technology. Assessment: Project Proposal Part 2 (Literature Review & Methodology), 45% of the module. Target about 3,500 words.
+NOTE: no official marking scheme was supplied; the module descriptor gives only the components (Part 1 Introduction 40%, Part 2 Literature Review & Methodology 45%, Presentation 15%, the presentation is live). The criteria below are derived from the module's CLOs and are used for this calibration only.
+Criteria (100 marks):
+- Literature review: coverage, synthesis and critical analysis of current research, leading to the research direction [CLO3]: 35
+- Comparison of similar systems and identification of the research gap: 15
+- Research methodology: design, target users, sampling, data collection, analysis, ethics and limitations [CLO1, CLO2]: 35
+- Academic writing, structure and referencing (APA 7): 15
+No band descriptors are given. Use the APU grade bands: 80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail. Pass mark: 50.

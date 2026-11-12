@@ -1,0 +1,2 @@
+CLO1 | Develop a web application connected to a well-designed database using server and client-side scripting | tasks: website | criteria: all Implementation criteria
+CLO2 | Explain the design and solution which provide a systematic way to develop web applications | tasks: report | criteria: all Documentation criteria
