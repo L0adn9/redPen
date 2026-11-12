@@ -8,7 +8,11 @@ credentials*.json
 
 # Real (non-synthetic) data stays in Drive, not in the repo
 data/real/
-sample_assingments_unmarked/
+# Assignment uploads: videos are over GitHub's 100 MB limit; build outputs are not needed
+sample_assingments_unmarked/**/*.mp4
+sample_assingments_unmarked/**/*.exe
+sample_assingments_unmarked/**/*.o
+sample_assingments_unmarked/**/*.class
 data/calibration/*real*
 data/pilot/briefs/
 *.pdf.raw

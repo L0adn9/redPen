@@ -1,0 +1,10 @@
+TASK3_RESOURCES_V2
+CC01|0|Level 1 Lobby|0|1|40||
+CC02|0|Level 1 Lobby|0|0|0||
+CC03|0|Student Centre|0|0|0||
+DD01|1|Delivery Centre|0|0|0||
+SH01|2|Counter S1|0|0|0||
+SH02|2|Counter S2|0|0|0||
+DP01|3|Block A-C|0|0|0||
+DP02|3|Block D-F|0|0|0||
+DP03|3|Hostel Zone|0|0|0||

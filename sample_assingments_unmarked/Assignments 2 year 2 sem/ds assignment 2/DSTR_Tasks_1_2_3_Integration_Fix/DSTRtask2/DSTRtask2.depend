@@ -1,0 +1,63 @@
+# depslib dependency file v1.0
+1792482652 source:d:\downloads\dstr_tasks_1_2_3_integration_fix\dstrtask2\main.cpp
+	"Common.hpp"
+	"Task1.hpp"
+	"Task2.hpp"
+	"Task3.hpp"
+	"Task4.hpp"
+	"Task5.hpp"
+
+1792482650 d:\downloads\dstr_tasks_1_2_3_integration_fix\dstrtask2\common.hpp
+	<iostream>
+	<string>
+	<ctime>
+	<cctype>
+	<cstdlib>
+
+1792608894 d:\downloads\dstr_tasks_1_2_3_integration_fix\dstrtask2\task1.hpp
+	"Common.hpp"
+
+1792639282 d:\downloads\dstr_tasks_1_2_3_integration_fix\dstrtask2\task2.hpp
+	"Common.hpp"
+
+1792639282 d:\downloads\dstr_tasks_1_2_3_integration_fix\dstrtask2\task3.hpp
+	"Common.hpp"
+
+1792482652 d:\downloads\dstr_tasks_1_2_3_integration_fix\dstrtask2\task4.hpp
+	"Common.hpp"
+
+1792482652 d:\downloads\dstr_tasks_1_2_3_integration_fix\dstrtask2\task5.hpp
+	"Common.hpp"
+
+1792639282 source:d:\downloads\dstr_tasks_1_2_3_integration_fix\dstrtask2\task1.cpp
+	"Common.hpp"
+	"Task1.hpp"
+	"Task2.hpp"
+	"Task3.hpp"
+	"Task4.hpp"
+	"Task5.hpp"
+	<iomanip>
+	<fstream>
+
+1792657218 source:d:\downloads\dstr_tasks_1_2_3_integration_fix\dstrtask2\task2.cpp
+	"Task2.hpp"
+	"Task1.hpp"
+	"Task3.hpp"
+	"Task4.hpp"
+	<iomanip>
+	<fstream>
+
+1792639282 source:d:\downloads\dstr_tasks_1_2_3_integration_fix\dstrtask2\task3.cpp
+	"Task3.hpp"
+	"Task1.hpp"
+	"Task2.hpp"
+	"Task4.hpp"
+	<iomanip>
+	<fstream>
+
+1792482652 source:d:\downloads\dstr_tasks_1_2_3_integration_fix\dstrtask2\task4.cpp
+	"Task4.hpp"
+
+1792482652 source:d:\downloads\dstr_tasks_1_2_3_integration_fix\dstrtask2\task5.cpp
+	"Task5.hpp"
+
