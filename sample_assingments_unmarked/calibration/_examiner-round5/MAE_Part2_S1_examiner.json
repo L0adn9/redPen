@@ -1,0 +1,55 @@
+{
+  "marked_criteria": [
+    "Problem solving and design",
+    "Mobile client system",
+    "Automated system testing",
+    "App demo and supporting documentation"
+  ],
+  "results": [
+    {
+      "persona": "student",
+      "scores": [
+        {
+          "criterion": "Problem solving and design",
+          "score": 13,
+          "max": 15,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "The design documentation is comprehensive, mapping 26 use cases to functional requirements and a robust MVVM architecture. The main weakness is the lack of explicit justification for choosing Cloud Firestore's 'Spark' plan despite the 700KB limitation which impacts core reel/video functionality."
+        },
+        {
+          "criterion": "Mobile client system",
+          "score": 0,
+          "max": 37,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "Automated system testing",
+          "score": 14,
+          "max": 15,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "The testing report is exceptionally detailed, covering five levels including security rules and live Firebase end-to-end tests. A minor gap is the absence of performance or stress testing for the third-party holiday API integration, though coverage is high at 88.4%."
+        },
+        {
+          "criterion": "App demo and supporting documentation",
+          "score": 0,
+          "max": 8,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        }
+      ],
+      "total_percent": 36,
+      "grade": "F",
+      "passed": false
+    }
+  ],
+  "_model": "google/gemini-3-flash-preview"
+}

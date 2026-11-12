@@ -1,0 +1,146 @@
+{
+  "module": "CT073-3-2-CSLLT",
+  "module_name": "Computer System Low Level Techniques",
+  "assessment": "Individual Assignment",
+  "folder_path": "",
+  "brief_path": "",
+  "lecturer_email": "",
+  "ai_policy": "not stated",
+  "pass_mark": 50,
+  "total_marks": 100,
+  "context": "CT073-3-2-CSLLT Computer System Low Level Techniques - Individual Assignment (60% of the module). Level 2.\nNOTE: the official brief was not supplied. The requirements below are reconstructed from the submission's cover page and structure:",
+  "tasks": [
+    {
+      "id": "T1",
+      "text": "Develop a program in x86 assembly language (NASM) that demonstrates arithmetic operations (ADD and SUB), loops, and conditional and unconditional jumps, with input validation.",
+      "marks": 25
+    },
+    {
+      "id": "T2",
+      "text": "Research and critically analyse why assembly language is still relevant, where it is used, and its role in cyber security, digital forensics and malware analysis.",
+      "marks": 25
+    },
+    {
+      "id": "T3",
+      "text": "Document the system design (functions, flowcharts, data design), implementation, testing, a user manual and screenshots.",
+      "marks": 30
+    },
+    {
+      "id": "T4",
+      "text": "Use APA referencing. Students must obtain 50% overall to pass.",
+      "marks": 20
+    }
+  ],
+  "selected_tasks": [
+    {
+      "id": "T1",
+      "text": "Develop a program in x86 assembly language (NASM) that demonstrates arithmetic operations (ADD and SUB), loops, and conditional and unconditional jumps, with input validation.",
+      "marks": 25
+    },
+    {
+      "id": "T2",
+      "text": "Research and critically analyse why assembly language is still relevant, where it is used, and its role in cyber security, digital forensics and malware analysis.",
+      "marks": 25
+    },
+    {
+      "id": "T3",
+      "text": "Document the system design (functions, flowcharts, data design), implementation, testing, a user manual and screenshots.",
+      "marks": 30
+    }
+  ],
+  "rubric": [
+    {
+      "criterion": "Introduction and background (assembly language, architecture, system calls, project overview, assumptions)",
+      "max": 10,
+      "bands": "No band descriptors are given. Use the APU grade bands: 80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail. Pass mark: 50.",
+      "clos": [
+        "CLO"
+      ],
+      "tasks": [
+        "T4"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Research and critical analysis (relevance of assembly, areas of use, cyber security / forensics / malware analysis, case studies, practical demonstration)",
+      "max": 25,
+      "bands": "No band descriptors are given. Use the APU grade bands: 80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail. Pass mark: 50.",
+      "clos": [
+        "CLO"
+      ],
+      "tasks": [
+        "T2"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "System design (functionalities, flowcharts, data design)",
+      "max": 15,
+      "bands": "No band descriptors are given. Use the APU grade bands: 80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail. Pass mark: 50.",
+      "clos": [
+        "CLO"
+      ],
+      "tasks": [
+        "T3"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Implementation of the required constructs (ADD/SUB, loops, conditional and unconditional jumps, input validation) with explanation",
+      "max": 25,
+      "bands": "No band descriptors are given. Use the APU grade bands: 80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail. Pass mark: 50.",
+      "clos": [
+        "CLO"
+      ],
+      "tasks": [
+        "T1",
+        "T3"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Testing, user manual and screenshots",
+      "max": 15,
+      "bands": "No band descriptors are given. Use the APU grade bands: 80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail. Pass mark: 50.",
+      "clos": [
+        "CLO"
+      ],
+      "tasks": [
+        "T3"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Conclusion, references and presentation",
+      "max": 10,
+      "bands": "No band descriptors are given. Use the APU grade bands: 80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail. Pass mark: 50.",
+      "clos": [
+        "CLO"
+      ],
+      "tasks": [
+        "T4"
+      ],
+      "live_session": false
+    }
+  ],
+  "clos": [
+    {
+      "id": "CLO",
+      "text": "Low-level programming and analysis",
+      "tasks": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "criteria": [
+        "Introduction and background (assembly language, architecture, system calls, project overview, assumptions)",
+        "Research and critical analysis (relevance of assembly, areas of use, cyber security / forensics / malware analysis, case studies, practical demonstration)",
+        "System design (functionalities, flowcharts, data design)",
+        "Implementation of the required constructs (ADD/SUB, loops, conditional and unconditional jumps, input validation) with explanation",
+        "Testing, user manual and screenshots",
+        "Conclusion, references and presentation"
+      ]
+    }
+  ]
+}

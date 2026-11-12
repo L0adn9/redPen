@@ -1,0 +1,104 @@
+{
+  "module": "CT074-3-2",
+  "module_name": "Concurrent Programming",
+  "assessment": "Individual Assignment (System)",
+  "folder_path": "/RedPen/Assessments/CT074-3-2/Individual Assignment (System)/",
+  "brief_path": "/RedPen/Assessments/CT074-3-2/Individual Assignment (System)/brief.txt",
+  "lecturer_email": "",
+  "ai_policy": "not stated",
+  "pass_mark": 50,
+  "total_marks": 100,
+  "context": "Case Study\n\nAsia Pacific Airport\n\nYou have been tasked to simulate the operations of the airport.\n\n*******************************Basic Requirements******************************\n\n•   There is only 1 runway for all planes to land and depart.\n\n•   There can only be 3 airplanes on the airport grounds, including the runway. This is to\n    ensure that the aircraft does not collide with another aircraft on the runway or gates.\n•   Once an aircraft obtains permission to land, it should land on the runway, coast to the\n    assigned gate, dock to the gate, allow passengers to disembark, refill supplies and fuel,\n    receive new passengers, undock, coast to the assigned runway and take-off.\n•   Each step should take some time.\n•   As the airport is small, there is no waiting area on the ground for the planes to wait for a\n    gate to become available.\n\n*****************************Additional Requirements****************************\n\nThese events should happen concurrently:\n\n- Passengers disembarking/embarking from the 3 gates.\n\n- Refill supplies and cleaning of aircraft\n\nAs there is only 1 refuelling truck, this event should happen exclusively:\n\n- Refuelling of aircraft\n\nA congested scenario should be simulated where 2 planes are waiting to land while the 2 gates\nare occupied, and a 3rd plane comes in with fuel shortage, requiring emergency landing.\n\nState your assumptions and how you will implement them.\n\nInclude your own additional requirements based on assumptions made to simulate\nconcurrency concepts.\n\nThe Statistics\n\nAt the end of the simulation, i.e., when all planes have left the airport, the ATC manager\nshould do some sanity checks of the airport and print out some statistics on the run. The result\nof the sanity checks must be printed. You must\n\n•        Check that all gates are indeed empty.\n\n•        Print out statistics on\n\n         - Maximum/Average/Minimum waiting time for a plane.\n\n         - Number of planes served/Passengers boarded.",
+  "tasks": [
+    {
+      "id": "system",
+      "text": "Case Study\n\nAsia Pacific Airport\n\nYou have been tasked to simulate the operations of the airport.\n\n*******************************Basic Requirements******************************\n\n•   There is only 1 runway for all planes to land and depart.\n\n•   There can only be 3 airplanes on the airport grounds, including the runway. This is to\n    ensure that the aircraft does not collide with another aircraft on the runway or gates.\n•   Once an aircraft obtains permission to land, it should land on the runway, coast to the\n    assigned gate, dock to the gate, allow passengers to disembark, refill supplies and fuel,\n    receive new passengers, undock, coast to the assigned runway and take-off.\n•   Each step should take some time.\n•   As the airport is small, there is no waiting area on the ground for the planes to wait for a\n    gate to become available.\n\n*****************************Additional Requirements****************************\n\nThese events should happen concurrently:\n\n- Passengers disembarking/embarking from the 3 gates.\n\n- Refill supplies and cleaning of aircraft\n\nAs there is only 1 refuelling truck, this event should happen exclusively:\n\n- Refuelling of aircraft\n\nA congested scenario should be simulated where 2 planes are waiting to land while the 2 gates\nare occupied, and a 3rd plane comes in with fuel shortage, requiring emergency landing.\n\nState your assumptions and how you will implement them.\n\nInclude your own additional requirements based on assumptions made to simulate\nconcurrency concepts.\n\nThe Statistics\n\nAt the end of the simulation, i.e., when all planes have left the airport, the ATC manager\nshould do some sanity checks of the airport and print out some statistics on the run. The result\nof the sanity checks must be printed. You must\n\n•        Check that all gates are indeed empty.\n\n•        Print out statistics on\n\n         - Maximum/Average/Minimum waiting time for a plane.\n\n         - Number of planes served/Passengers boarded.\n\nDeliverables:\n\nFor this exercise, you are to model the ATC scenario and design a Java program to simulate\nactivity for the airport:\n\n    •    Altogether, all planes should try to land at the airport.\n\n    •    Use a random number generator, so a new airplane arrives every 0, 1, or 2 seconds.\n         (This might be accomplished by an appropriate statement sleep (rand.nextInt(2000));\n\n    •    Assume each plane can accommodate maximum 50 passengers.\n\n    •    Assume passengers are always ready to embark and disembark the terminal (i.e., no\n         capacity issues inside the passenger terminals).\n\nSample Output\n\nIn order to see what is happening dynamically you must have output from the passengers, the\nair traffic controller, and the pilots reporting all their major events.\n\nAdd information about which process/thread is doing the output. This way you can see if a\nprocess/thread acts for another, which is strictly forbidden, but is a common error for Java\nsolutions (objects are not processes!). An example of such incorrect behaviour is\nThread-ATC : Plane 5: Requesting permission to land!\nMainThread : ATC: Please wait and join the circle queue.\nThread-Passenger-8: I’m boarding Plane 2 now.\nWhere you can see that not only the ATC thread is acting for Plane 5, but also the main thread\nis acting for the ATC.\n\nImplementation\n\nYou should implement your simulation in Java.\nThe simulation run should not take more than 60 seconds to simulate.\n\nSubmission for System\n    •  Java files required to run the simulation.\n    •  Video of the simulation running. Maximum 5 minutes per person.\n          o Simulate scenarios as stated above.\n          o Show which requirements are met in the output and corresponding code.\nBoth code and presentation Zipped into a single zip file named TP0XXXXX CCP.zip\nNote: Report should NOT be zipped together with code and presentation.",
+      "marks": 100
+    }
+  ],
+  "selected_tasks": [
+    {
+      "id": "system",
+      "text": "Case Study\n\nAsia Pacific Airport\n\nYou have been tasked to simulate the operations of the airport.\n\n*******************************Basic Requirements******************************\n\n•   There is only 1 runway for all planes to land and depart.\n\n•   There can only be 3 airplanes on the airport grounds, including the runway. This is to\n    ensure that the aircraft does not collide with another aircraft on the runway or gates.\n•   Once an aircraft obtains permission to land, it should land on the runway, coast to the\n    assigned gate, dock to the gate, allow passengers to disembark, refill supplies and fuel,\n    receive new passengers, undock, coast to the assigned runway and take-off.\n•   Each step should take some time.\n•   As the airport is small, there is no waiting area on the ground for the planes to wait for a\n    gate to become available.\n\n*****************************Additional Requirements****************************\n\nThese events should happen concurrently:\n\n- Passengers disembarking/embarking from the 3 gates.\n\n- Refill supplies and cleaning of aircraft\n\nAs there is only 1 refuelling truck, this event should happen exclusively:\n\n- Refuelling of aircraft\n\nA congested scenario should be simulated where 2 planes are waiting to land while the 2 gates\nare occupied, and a 3rd plane comes in with fuel shortage, requiring emergency landing.\n\nState your assumptions and how you will implement them.\n\nInclude your own additional requirements based on assumptions made to simulate\nconcurrency concepts.\n\nThe Statistics\n\nAt the end of the simulation, i.e., when all planes have left the airport, the ATC manager\nshould do some sanity checks of the airport and print out some statistics on the run. The result\nof the sanity checks must be printed. You must\n\n•        Check that all gates are indeed empty.\n\n•        Print out statistics on\n\n         - Maximum/Average/Minimum waiting time for a plane.\n\n         - Number of planes served/Passengers boarded.\n\nDeliverables:\n\nFor this exercise, you are to model the ATC scenario and design a Java program to simulate\nactivity for the airport:\n\n    •    Altogether, all planes should try to land at the airport.\n\n    •    Use a random number generator, so a new airplane arrives every 0, 1, or 2 seconds.\n         (This might be accomplished by an appropriate statement sleep (rand.nextInt(2000));\n\n    •    Assume each plane can accommodate maximum 50 passengers.\n\n    •    Assume passengers are always ready to embark and disembark the terminal (i.e., no\n         capacity issues inside the passenger terminals).\n\nSample Output\n\nIn order to see what is happening dynamically you must have output from the passengers, the\nair traffic controller, and the pilots reporting all their major events.\n\nAdd information about which process/thread is doing the output. This way you can see if a\nprocess/thread acts for another, which is strictly forbidden, but is a common error for Java\nsolutions (objects are not processes!). An example of such incorrect behaviour is\nThread-ATC : Plane 5: Requesting permission to land!\nMainThread : ATC: Please wait and join the circle queue.\nThread-Passenger-8: I’m boarding Plane 2 now.\nWhere you can see that not only the ATC thread is acting for Plane 5, but also the main thread\nis acting for the ATC.\n\nImplementation\n\nYou should implement your simulation in Java.\nThe simulation run should not take more than 60 seconds to simulate.\n\nSubmission for System\n    •  Java files required to run the simulation.\n    •  Video of the simulation running. Maximum 5 minutes per person.\n          o Simulate scenarios as stated above.\n          o Show which requirements are met in the output and corresponding code.\nBoth code and presentation Zipped into a single zip file named TP0XXXXX CCP.zip\nNote: Report should NOT be zipped together with code and presentation.",
+      "marks": 100
+    }
+  ],
+  "rubric": [
+    {
+      "criterion": "Appropriateness of coding techniques used to implement design with appropriate comment lines in source codes *",
+      "max": 20,
+      "bands": "No band descriptors are given. Use the APU grade bands: 80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO2"
+      ],
+      "tasks": [
+        "system"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Appropriateness of the Java concurrent programming facilities used",
+      "max": 20,
+      "bands": "No band descriptors are given. Use the APU grade bands: 80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO2"
+      ],
+      "tasks": [
+        "system"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Program runs appropriately with basic requirements *",
+      "max": 20,
+      "bands": "No band descriptors are given. Use the APU grade bands: 80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO2"
+      ],
+      "tasks": [
+        "system"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Additional requirements met *",
+      "max": 20,
+      "bands": "No band descriptors are given. Use the APU grade bands: 80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO2"
+      ],
+      "tasks": [
+        "system"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Explanations of concurrency concepts implemented with relevant code samples *",
+      "max": 20,
+      "bands": "No band descriptors are given. Use the APU grade bands: 80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO2"
+      ],
+      "tasks": [
+        "system"
+      ],
+      "live_session": false
+    }
+  ],
+  "clos": [
+    {
+      "id": "CLO2",
+      "text": "Apply the concepts of concurrency and parallelism in the construction of a system using a suitable programming language",
+      "tasks": [
+        "system"
+      ],
+      "criteria": [
+        "Appropriateness of coding techniques used to implement design with appropriate comment lines in source codes *",
+        "Appropriateness of the Java concurrent programming facilities used",
+        "Program runs appropriately with basic requirements *",
+        "Additional requirements met *",
+        "Explanations of concurrency concepts implemented with relevant code samples *"
+      ]
+    }
+  ]
+}

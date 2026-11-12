@@ -1,0 +1,119 @@
+{
+  "module": "CT124-3-2-MAE",
+  "module_name": "Mobile App Engineering",
+  "assessment": "Group Assignment Part 2",
+  "folder_path": "/RedPen/Assessments/CT124-3-2-MAE/Group Assignment Part 2/",
+  "brief_path": "/RedPen/Assessments/CT124-3-2-MAE/Group Assignment Part 2/brief.txt",
+  "lecturer_email": "",
+  "ai_policy": "not stated",
+  "pass_mark": 50,
+  "total_marks": 75,
+  "context": "CT124-3-2-MAE Mobile App Engineering - Group Assignment Part 2: Mobile System and Supporting Documentation (75 of the 100 assignment marks; assignment = 60% of the module). Level 2.\nNOTE: the official brief was not supplied. From the submission's cover page: Part 2 marks are problem solving and design 15, mobile client system 37, automated system testing 15, app demo and supporting documentation 8. The report, the app (source code and APK) and the app demo video are submitted; all group members take part in the app demonstration to the lecturer.\nThis calibration marks the group report only.",
+  "tasks": [
+    {
+      "id": "T1",
+      "text": "Problem solving and design: 15 (marked from the report: problems and solutions, functional requirements, CRUD, database design, use cases, wireframes, architecture, design decisions)",
+      "marks": 15
+    },
+    {
+      "id": "T2",
+      "text": "Mobile client system: 37 (marked from the running app; live_session: the app is demonstrated to the lecturer)",
+      "marks": 37
+    },
+    {
+      "id": "T3",
+      "text": "Automated system testing: 15 (marked from the report's automated test plan, test cases, results and defects)",
+      "marks": 15
+    },
+    {
+      "id": "T4",
+      "text": "App demo and supporting documentation: 8 (the demo is presented live to the lecturer)",
+      "marks": 8
+    }
+  ],
+  "selected_tasks": [
+    {
+      "id": "T2",
+      "text": "Mobile client system: 37 (marked from the running app; live_session: the app is demonstrated to the lecturer)",
+      "marks": 37
+    },
+    {
+      "id": "T1",
+      "text": "Problem solving and design: 15 (marked from the report: problems and solutions, functional requirements, CRUD, database design, use cases, wireframes, architecture, design decisions)",
+      "marks": 15
+    },
+    {
+      "id": "T3",
+      "text": "Automated system testing: 15 (marked from the report's automated test plan, test cases, results and defects)",
+      "marks": 15
+    }
+  ],
+  "rubric": [
+    {
+      "criterion": "Problem solving and design",
+      "max": 15,
+      "bands": "marked from the report: problems and solutions, functional requirements, CRUD, database design, use cases, wireframes, architecture, design decisions. No band descriptors are given. Use the APU grade bands: 80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO"
+      ],
+      "tasks": [
+        "T1"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Mobile client system",
+      "max": 37,
+      "bands": "marked from the running app; live_session: the app is demonstrated to the lecturer. No band descriptors are given. Use the APU grade bands: 80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO"
+      ],
+      "tasks": [
+        "T2"
+      ],
+      "live_session": true
+    },
+    {
+      "criterion": "Automated system testing",
+      "max": 15,
+      "bands": "marked from the report's automated test plan, test cases, results and defects. No band descriptors are given. Use the APU grade bands: 80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO"
+      ],
+      "tasks": [
+        "T3"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "App demo and supporting documentation",
+      "max": 8,
+      "bands": "the demo is presented live to the lecturer. No band descriptors are given. Use the APU grade bands: 80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO"
+      ],
+      "tasks": [
+        "T4"
+      ],
+      "live_session": true
+    }
+  ],
+  "clos": [
+    {
+      "id": "CLO",
+      "text": "Design, build and test a mobile application",
+      "tasks": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "criteria": [
+        "Problem solving and design",
+        "Mobile client system",
+        "Automated system testing",
+        "App demo and supporting documentation"
+      ]
+    }
+  ]
+}

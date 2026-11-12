@@ -1,0 +1,65 @@
+{
+  "marked_criteria": [
+    "Appropriateness of coding techniques used to implement design with appropriate comment lines in source codes *",
+    "Appropriateness of the Java concurrent programming facilities used",
+    "Program runs appropriately with basic requirements *",
+    "Additional requirements met *",
+    "Explanations of concurrency concepts implemented with relevant code samples *"
+  ],
+  "results": [
+    {
+      "persona": "student",
+      "scores": [
+        {
+          "criterion": "Appropriateness of coding techniques used to implement design with appropriate comment lines in source codes *",
+          "score": 18,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The solution employs a very clean producer-consumer and observer architecture with clear Javadoc-style documentation for each class and method. The only minor weakness is the use of busy-waiting in the `ArrivalGenerator.waitForCongestion` method, which is less efficient than a signal-based approach."
+        },
+        {
+          "criterion": "Appropriateness of the Java concurrent programming facilities used",
+          "score": 19,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Excellent use of high-level facilities like `CompletableFuture` for thread communication and `AtomicReferenceArray` for lock-free gate management. The `RefuelTruck` implementation using `BlockingQueue` perfectly encapsulates the exclusivity requirement."
+        },
+        {
+          "criterion": "Program runs appropriately with basic requirements *",
+          "score": 20,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "All basic requirements are met, including the 1-runway and 3-airplane capacity limits, verified by the internal `Safety` monitor. The console output demonstrates a correct sequential flow from landing to takeoff for all 8 aircraft."
+        },
+        {
+          "criterion": "Additional requirements met *",
+          "score": 20,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The congestion scenario is explicitly triggered and managed, and the `RefuelTruck` thread ensures exclusive refuelling while ground crews work concurrently. The priority logic in `AirTrafficControl.pickNext` correctly handles the emergency fuel shortage requirement."
+        },
+        {
+          "criterion": "Explanations of concurrency concepts implemented with relevant code samples *",
+          "score": 16,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Explanations are provided via high-quality comments within the source code files, though the brief asks for a 'Report' which is not present as a separate document. The inline explanations are technically deep but do not fulfill the formal report structure usually expected for T1."
+        }
+      ],
+      "total_percent": 93,
+      "grade": "A+",
+      "passed": true
+    }
+  ],
+  "_model": "google/gemini-3-flash-preview"
+}

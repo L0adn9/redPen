@@ -1,0 +1,151 @@
+{
+  "module": "CT073-3-2-CSLLT",
+  "module_name": "Computer System Low Level Techniques",
+  "assessment": "Individual Assignment",
+  "folder_path": "/RedPen/Assessments/CT073-3-2-CSLLT/Individual Assignment/",
+  "brief_path": "/RedPen/Assessments/CT073-3-2-CSLLT/Individual Assignment/brief.txt",
+  "lecturer_email": "",
+  "ai_policy": "not stated",
+  "pass_mark": 50,
+  "total_marks": 100,
+  "context": "CT073-3-2-CSLLT Computer System Low Level Techniques - Individual Assignment (60% of the module). Level 2. NOTE: the official brief was not supplied. The requirements below are reconstructed from the submission's cover page and structure:",
+  "tasks": [
+    {
+      "id": "T1",
+      "text": "Develop a program in x86 assembly language (NASM) that demonstrates arithmetic operations (ADD and SUB), loops, and conditional and unconditional jumps, with input validation.",
+      "marks": 25
+    },
+    {
+      "id": "T2",
+      "text": "Research and critically analyse why assembly language is still relevant, where it is used, and its role in cyber security, digital forensics and malware analysis.",
+      "marks": 25
+    },
+    {
+      "id": "T3",
+      "text": "Document the system design (functions, flowcharts, data design), implementation, testing, a user manual and screenshots.",
+      "marks": 30
+    },
+    {
+      "id": "T4",
+      "text": "Introduction and background (assembly language, architecture, system calls, project overview, assumptions)",
+      "marks": 10
+    },
+    {
+      "id": "T5",
+      "text": "Conclusion, references and presentation (APA referencing)",
+      "marks": 10
+    }
+  ],
+  "selected_tasks": [
+    {
+      "id": "T1",
+      "text": "Develop a program in x86 assembly language (NASM) that demonstrates arithmetic operations (ADD and SUB), loops, and conditional and unconditional jumps, with input validation.",
+      "marks": 25
+    },
+    {
+      "id": "T2",
+      "text": "Research and critically analyse why assembly language is still relevant, where it is used, and its role in cyber security, digital forensics and malware analysis.",
+      "marks": 25
+    },
+    {
+      "id": "T3",
+      "text": "Document the system design (functions, flowcharts, data design), implementation, testing, a user manual and screenshots.",
+      "marks": 30
+    }
+  ],
+  "rubric": [
+    {
+      "criterion": "Introduction and background",
+      "max": 10,
+      "bands": "80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail",
+      "clos": [
+        "CLO1"
+      ],
+      "tasks": [
+        "T4"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Research and critical analysis",
+      "max": 25,
+      "bands": "80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail",
+      "clos": [
+        "CLO1"
+      ],
+      "tasks": [
+        "T2"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "System design",
+      "max": 15,
+      "bands": "80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail",
+      "clos": [
+        "CLO1"
+      ],
+      "tasks": [
+        "T3"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Implementation of the required constructs",
+      "max": 25,
+      "bands": "80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail",
+      "clos": [
+        "CLO1"
+      ],
+      "tasks": [
+        "T1"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Testing, user manual and screenshots",
+      "max": 15,
+      "bands": "80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail",
+      "clos": [
+        "CLO1"
+      ],
+      "tasks": [
+        "T3"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Conclusion, references and presentation",
+      "max": 10,
+      "bands": "80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail",
+      "clos": [
+        "CLO1"
+      ],
+      "tasks": [
+        "T5"
+      ],
+      "live_session": false
+    }
+  ],
+  "clos": [
+    {
+      "id": "CLO1",
+      "text": "Low-level programming and analysis",
+      "tasks": [
+        "T1",
+        "T2",
+        "T3",
+        "T4",
+        "T5"
+      ],
+      "criteria": [
+        "Introduction and background",
+        "Research and critical analysis",
+        "System design",
+        "Implementation of the required constructs",
+        "Testing, user manual and screenshots",
+        "Conclusion, references and presentation"
+      ]
+    }
+  ]
+}

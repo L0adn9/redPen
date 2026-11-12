@@ -1,0 +1,109 @@
+{
+  "module": "CT074-3-2",
+  "module_name": "Concurrent Programming",
+  "assessment": "Individual Assignment",
+  "folder_path": "/RedPen/Assessments/CT074-3-2/Individual Assignment/",
+  "brief_path": "/RedPen/Assessments/CT074-3-2/Individual Assignment/brief.txt",
+  "lecturer_email": "",
+  "ai_policy": "not stated",
+  "pass_mark": 50,
+  "total_marks": 100,
+  "context": "Asia Pacific Airport\n\nYou have been tasked to simulate the operations of the airport.\n\n*******************************Basic Requirements******************************\n\n•   There is only 1 runway for all planes to land and depart.\n\n•   There can only be 3 airplanes on the airport grounds, including the runway. This is to ensure that the aircraft does not collide with another aircraft on the runway or gates.\n•   Once an aircraft obtains permission to land, it should land on the runway, coast to the assigned gate, dock to the gate, allow passengers to disembark, refill supplies and fuel, receive new passengers, undock, coast to the assigned runway and take-off.\n•   Each step should take some time.\n•   As the airport is small, there is no waiting area on the ground for the planes to wait for a gate to become available.",
+  "tasks": [
+    {
+      "id": "T1",
+      "text": "Report (20%): Introduction and background, Explanation of the safety aspects of multi-threaded system implemented, Justification of coding techniques implemented, Depth of discussion of concurrency concepts.",
+      "marks": 20
+    },
+    {
+      "id": "T2",
+      "text": "System (25%): Basic Requirements simulation (Runway/Gate logic, disembark/embark cycle, timing), Additional Requirements simulation (Concurrency in gates/cleaning, exclusive refuelling, emergency landing scenario), Statistics/Sanity checks, and Video presentation.",
+      "marks": 25
+    }
+  ],
+  "selected_tasks": [
+    {
+      "id": "T2",
+      "text": "System (25%): Basic Requirements simulation (Runway/Gate logic, disembark/embark cycle, timing), Additional Requirements simulation (Concurrency in gates/cleaning, exclusive refuelling, emergency landing scenario), Statistics/Sanity checks, and Video presentation.\n\nBasic Requirements:\n• There is only 1 runway for all planes to land and depart.\n• There can only be 3 airplanes on the airport grounds, including the runway.\n• Once an aircraft obtains permission to land, it should land on the runway, coast to the assigned gate, dock to the gate, allow passengers to disembark, refill supplies and fuel, receive new passengers, undock, coast to the assigned runway and take-off.\n• Each step should take some time.\n• As the airport is small, there is no waiting area on the ground for the planes to wait for a gate to become available.\n\nAdditional Requirements:\nThese events should happen concurrently:\n- Passengers disembarking/embarking from the 3 gates.\n- Refill supplies and cleaning of aircraft\nAs there is only 1 refuelling truck, this event should happen exclusively:\n- Refuelling of aircraft\nA congested scenario should be simulated where 2 planes are waiting to land while the 2 gates are occupied, and a 3rd plane comes in with fuel shortage, requiring emergency landing.",
+      "marks": 25
+    }
+  ],
+  "rubric": [
+    {
+      "criterion": "Appropriateness of coding techniques used to implement design with appropriate comment lines in source codes *",
+      "max": 20,
+      "bands": "80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO2"
+      ],
+      "tasks": [
+        "T2"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Appropriateness of the Java concurrent programming facilities used",
+      "max": 20,
+      "bands": "80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO2"
+      ],
+      "tasks": [
+        "T2"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Program runs appropriately with basic requirements *",
+      "max": 20,
+      "bands": "80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO2"
+      ],
+      "tasks": [
+        "T2"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Additional requirements met *",
+      "max": 20,
+      "bands": "80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO2"
+      ],
+      "tasks": [
+        "T2"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Explanations of concurrency concepts implemented with relevant code samples *",
+      "max": 20,
+      "bands": "80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO2"
+      ],
+      "tasks": [
+        "T2"
+      ],
+      "live_session": false
+    }
+  ],
+  "clos": [
+    {
+      "id": "CLO2",
+      "text": "Apply the concepts of concurrency and parallelism in the construction of a system using a suitable programming language",
+      "tasks": [
+        "T2"
+      ],
+      "criteria": [
+        "Appropriateness of coding techniques used to implement design with appropriate comment lines in source codes *",
+        "Appropriateness of the Java concurrent programming facilities used",
+        "Program runs appropriately with basic requirements *",
+        "Additional requirements met *",
+        "Explanations of concurrency concepts implemented with relevant code samples *"
+      ]
+    }
+  ]
+}

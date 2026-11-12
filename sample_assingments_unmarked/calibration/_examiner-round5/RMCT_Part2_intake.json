@@ -1,0 +1,125 @@
+{
+  "module": "CT098-3-2",
+  "module_name": "Research Methods for Computing and Technology",
+  "assessment": "Project Proposal Part 2 (Literature Review & Methodology)",
+  "folder_path": "/RedPen/Assessments/CT098-3-2/Project Proposal Part 2 (Literature Review & Methodology)/",
+  "brief_path": "/RedPen/Assessments/CT098-3-2/Project Proposal Part 2 (Literature Review & Methodology)/brief.txt",
+  "lecturer_email": "",
+  "ai_policy": "not stated",
+  "pass_mark": 50,
+  "total_marks": 100,
+  "context": "The module covers aspects of research techniques, data analysis and the presentation of a research proposal and investigation as a preparation for students to complete their Investigation Report of final-year project. This module introduces Computing & IT students basic understanding and knowledge of the range of techniques and methods available for problem analysis and investigation. Problem is addressed through the creation of a software artefact.",
+  "tasks": [
+    {
+      "id": "T1",
+      "text": "Project Proposal (Literature Review & Methodology): Target about 3,500 words. Covering Literature review (coverage, synthesis and critical analysis of current research), Comparison of similar systems and identification of the research gap, and Research methodology (design, target users, sampling, data collection, analysis, ethics and limitations).",
+      "marks": 45
+    },
+    {
+      "id": "T2",
+      "text": "Project Proposal (Introduction)",
+      "marks": 40
+    },
+    {
+      "id": "T3",
+      "text": "Presentation",
+      "marks": 15
+    }
+  ],
+  "selected_tasks": [
+    {
+      "id": "T1",
+      "text": "Project Proposal (Literature Review & Methodology): Target about 3,500 words. Covering Literature review (coverage, synthesis and critical analysis of current research), Comparison of similar systems and identification of the research gap, and Research methodology (design, target users, sampling, data collection, analysis, ethics and limitations).",
+      "marks": 45
+    },
+    {
+      "id": "T2",
+      "text": "Project Proposal (Introduction)",
+      "marks": 40
+    }
+  ],
+  "rubric": [
+    {
+      "criterion": "Literature review: coverage, synthesis and critical analysis of current research, leading to the research direction",
+      "max": 35,
+      "bands": "80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO3"
+      ],
+      "tasks": [
+        "T1"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Comparison of similar systems and identification of the research gap",
+      "max": 15,
+      "bands": "80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO3"
+      ],
+      "tasks": [
+        "T1"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Research methodology: design, target users, sampling, data collection, analysis, ethics and limitations",
+      "max": 35,
+      "bands": "80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO1",
+        "CLO2"
+      ],
+      "tasks": [
+        "T1"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Academic writing, structure and referencing (APA 7)",
+      "max": 15,
+      "bands": "80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [],
+      "tasks": [
+        "T1"
+      ],
+      "live_session": false
+    }
+  ],
+  "clos": [
+    {
+      "id": "CLO1",
+      "text": "Revise the appropriate research techniques of the proposed research",
+      "tasks": [
+        "T1",
+        "T2"
+      ],
+      "criteria": [
+        "Research methodology"
+      ]
+    },
+    {
+      "id": "CLO2",
+      "text": "Demonstrate an ability to apply different approaches to the data collection to answer current business or societal problems",
+      "tasks": [
+        "T1"
+      ],
+      "criteria": [
+        "Research methodology"
+      ]
+    },
+    {
+      "id": "CLO3",
+      "text": "Justify research direction on the investigation of current business or societal problems",
+      "tasks": [
+        "T1",
+        "T3"
+      ],
+      "criteria": [
+        "Literature review",
+        "Comparison of similar systems"
+      ]
+    }
+  ]
+}

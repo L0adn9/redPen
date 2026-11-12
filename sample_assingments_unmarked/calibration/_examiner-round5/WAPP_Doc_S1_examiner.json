@@ -1,0 +1,115 @@
+{
+  "marked_criteria": [
+    "Introduction",
+    "Storyboard & Design Documents",
+    "Design & Modelling",
+    "Implementation & Discussion",
+    "Conclusion, Document Styles & Formatting",
+    "Web Page Layout & Appearance",
+    "User Authentication & Authorization",
+    "Dynamic Content",
+    "Insert, Update & Delete Records",
+    "Form Validation, Navigation & Usability"
+  ],
+  "results": [
+    {
+      "persona": "student",
+      "scores": [
+        {
+          "criterion": "Introduction",
+          "score": 7,
+          "max": 10,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The objectives and scope are clearly defined, but the project schedule/plan mentioned in the brief is missing from the report content. The introduction focuses solely on the Member module rather than the project as a whole."
+        },
+        {
+          "criterion": "Storyboard & Design Documents",
+          "score": 6,
+          "max": 10,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Wireframes are provided for the dashboard and lesson views, though they are somewhat basic. Audience modeling and full requirement specifications are only briefly touched upon."
+        },
+        {
+          "criterion": "Design & Modelling",
+          "score": 7,
+          "max": 10,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The navigation structure and use cases are well-mapped, but the ERD is mentioned as 'shared' without being visually presented in this specific report section. The logic for the lesson flow is sound."
+        },
+        {
+          "criterion": "Implementation & Discussion",
+          "score": 8,
+          "max": 10,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Excellent explanation of the shared helper class and the rationale for using HttpCacheability.NoCache. The code snippets are relevant, though a more detailed discussion on the SQL transaction for account deletion would strengthen the score."
+        },
+        {
+          "criterion": "Conclusion, Document Styles & Formatting",
+          "score": 8,
+          "max": 10,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The document is well-structured with a clear table of contents and professional formatting. The 'lessons learned' section is reflective and demonstrates good project management insight."
+        },
+        {
+          "criterion": "Web Page Layout & Appearance",
+          "score": 0,
+          "max": 10,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "User Authentication & Authorization",
+          "score": 0,
+          "max": 10,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "Dynamic Content",
+          "score": 0,
+          "max": 10,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "Insert, Update & Delete Records",
+          "score": 0,
+          "max": 10,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "Form Validation, Navigation & Usability",
+          "score": 0,
+          "max": 10,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        }
+      ],
+      "total_percent": 36,
+      "grade": "F",
+      "passed": false
+    }
+  ],
+  "_model": "google/gemini-3-flash-preview"
+}

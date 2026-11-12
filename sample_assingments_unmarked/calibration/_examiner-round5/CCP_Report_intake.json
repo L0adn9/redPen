@@ -1,0 +1,117 @@
+{
+  "module": "CT074-3-2",
+  "module_name": "Concurrent Programming",
+  "assessment": "Individual Assignment - Report",
+  "folder_path": "/RedPen/Assessments/CT074-3-2/Individual Assignment - Report/",
+  "brief_path": "/RedPen/Assessments/CT074-3-2/Individual Assignment - Report/brief.txt",
+  "lecturer_email": "",
+  "ai_policy": "not stated",
+  "pass_mark": 50,
+  "total_marks": 100,
+  "context": "Asia Pacific Airport. You have been tasked to simulate the operations of the airport. There is only 1 runway for all planes to land and depart. There can only be 3 airplanes on the airport grounds, including the runway. This is to ensure that the aircraft does not collide with another aircraft on the runway or gates. Once an aircraft obtains permission to land, it should land on the runway, coast to the assigned gate, dock to the gate, allow passengers to disembark, refill supplies and fuel, receive new passengers, undock, coast to the assigned runway and take-off. Each step should take some time. As the airport is small, there is no waiting area on the ground for the planes to wait for a gate to become available.",
+  "tasks": [
+    {
+      "id": "R1",
+      "text": "Introduction and background: Introduction and assumptions made.",
+      "marks": 20
+    },
+    {
+      "id": "R2",
+      "text": "Basic requirements met: List of requirements met. Short explanation of concurrency concepts (atomic statements, synchronization, etc) implemented. Code snippet of the Java concurrent programming facilities implemented.",
+      "marks": 30
+    },
+    {
+      "id": "R3",
+      "text": "Additional requirements met: List of requirements met. Short explanation of concurrency concepts (atomic statements, synchronization, etc) implemented. Code snippet of the Java concurrent programming facilities implemented.",
+      "marks": 30
+    },
+    {
+      "id": "R4",
+      "text": "Requirements which were NOT met: List of basic requirements. List of additional requirements.",
+      "marks": 20
+    }
+  ],
+  "selected_tasks": [
+    {
+      "id": "R2",
+      "text": "Basic requirements met: List of requirements met. Short explanation of concurrency concepts (atomic statements, synchronization, etc) implemented. Code snippet of the Java concurrent programming facilities implemented.",
+      "marks": 30
+    },
+    {
+      "id": "R3",
+      "text": "Additional requirements met: List of requirements met. Short explanation of concurrency concepts (atomic statements, synchronization, etc) implemented. Code snippet of the Java concurrent programming facilities implemented.",
+      "marks": 30
+    }
+  ],
+  "rubric": [
+    {
+      "criterion": "Assumptions",
+      "max": 20,
+      "bands": "80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail",
+      "clos": [
+        "CLO3"
+      ],
+      "tasks": [
+        "R1"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Explanation of the safety aspects of multi-threaded system implemented",
+      "max": 30,
+      "bands": "80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail",
+      "clos": [
+        "CLO3"
+      ],
+      "tasks": [
+        "R2",
+        "R3"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Justification of coding techniques implemented",
+      "max": 30,
+      "bands": "80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail",
+      "clos": [
+        "CLO3"
+      ],
+      "tasks": [
+        "R2",
+        "R3"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Depth of discussion of concurrency concepts",
+      "max": 20,
+      "bands": "80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail",
+      "clos": [
+        "CLO3"
+      ],
+      "tasks": [
+        "R2",
+        "R3"
+      ],
+      "live_session": false
+    }
+  ],
+  "clos": [
+    {
+      "id": "CLO3",
+      "text": "Explain the safety aspects of multi-threaded and parallel systems",
+      "tasks": [
+        "R1",
+        "R2",
+        "R3",
+        "R4"
+      ],
+      "criteria": [
+        "Assumptions",
+        "Explanation of the safety aspects of multi-threaded system implemented",
+        "Justification of coding techniques implemented",
+        "Depth of discussion of concurrency concepts"
+      ]
+    }
+  ]
+}
