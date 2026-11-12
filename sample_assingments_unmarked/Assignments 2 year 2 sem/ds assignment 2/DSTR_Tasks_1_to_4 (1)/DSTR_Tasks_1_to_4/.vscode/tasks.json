@@ -1,0 +1,14 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Build parcel system",
+      "type": "shell",
+      "command": "g++",
+      "args": ["-std=c++17", "-g", "-Wall", "${workspaceFolder}/*.cpp", "-o", "${workspaceFolder}/parcel_system"],
+      "options": { "cwd": "${workspaceFolder}" },
+      "group": { "kind": "build", "isDefault": true },
+      "problemMatcher": ["$gcc"]
+    }
+  ]
+}
