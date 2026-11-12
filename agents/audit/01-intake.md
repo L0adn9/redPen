@@ -38,7 +38,7 @@ OUTPUT: only valid JSON, no markdown fences, no extra text, in exactly this shap
   "context": "the scenario/background paragraph of the brief, copied exactly",
   "tasks": [{"id": "T1", "text": "...", "marks": 30}],
   "selected_tasks": [{"id": "T1", "text": "full exact task text", "marks": 30}],
-  "rubric": [{"criterion": "Explanation of algorithms", "max": 20, "bands": "copy of the band descriptors", "clos": ["CLO1"], "tasks": ["T1"]}],
+  "rubric": [{"criterion": "Explanation of algorithms", "max": 20, "bands": "copy of the band descriptors", "clos": ["CLO1"], "tasks": ["T1"], "live_session": false}],
   "clos": [{"id": "CLO1", "text": "...", "tasks": ["T1"], "criteria": ["Explanation of algorithms"]}]
 }
 
@@ -46,6 +46,7 @@ RULES:
 - If the pass mark is not stated, use 40.
 - If a value is missing from the files, use an empty string or empty list. Never guess.
 - Keep criterion names exactly as written in the rubric, because later steps match on them.
+- "live_session": true if the brief or rubric says this criterion is marked during a live session with the lecturer (face-to-face Q&A, viva, oral defence, live demonstration, presentation, in-class test). Otherwise false. A video the student records and submits is NOT a live session.
 ```
 
 ## Test

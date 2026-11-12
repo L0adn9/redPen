@@ -1,0 +1,65 @@
+{
+  "marked_criteria": [
+    "Appropriateness of coding techniques used to implement design with appropriate comment lines in source codes",
+    "Appropriateness of the Java concurrent programming facilities used",
+    "Program runs appropriately with basic requirements",
+    "Additional requirements met",
+    "Explanations of concurrency concepts implemented with relevant code samples"
+  ],
+  "results": [
+    {
+      "persona": "student",
+      "scores": [
+        {
+          "criterion": "Program runs appropriately with basic requirements",
+          "score": 20,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The implementation perfectly enforces the 3-plane limit and runway exclusivity while ensuring no waiting area is needed by pre-reserving gates. The provided log confirms the landing and docking sequence exactly matches the brief."
+        },
+        {
+          "criterion": "Additional requirements met",
+          "score": 19,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The main weakness is that the 'assumptions' requested in the task are mostly embedded within code comments rather than listed explicitly as a design statement. However, the simulation of the congestion scenario and the exclusive refueling truck logic is implemented with high precision."
+        },
+        {
+          "criterion": "Appropriateness of the Java concurrent programming facilities used",
+          "score": 20,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "There are no visible weaknesses here; the choice of CompletableFuture for ATC responses and AtomicReferenceArray for gate management shows a high-level understanding of non-blocking and asynchronous patterns. The use of semaphores for seat management and fair locks for the runway is technically sound."
+        },
+        {
+          "criterion": "Appropriateness of coding techniques used to implement design with appropriate comment lines in source codes",
+          "score": 20,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The code is exceptionally well-structured and follows professional modular standards. Every class includes clear Javadoc-style headers explaining the concurrency roles and thread identities, meeting all criteria for documentation."
+        },
+        {
+          "criterion": "Explanations of concurrency concepts implemented with relevant code samples",
+          "score": 13,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The main weakness is the absence of a formal report or dedicated explanation section; the student relies entirely on code comments to serve as the explanation. While the comments are high quality, they do not fulfill the requirement for a descriptive analysis with code samples as effectively as a standalone document would."
+        }
+      ],
+      "total_percent": 92,
+      "grade": "A+",
+      "passed": true
+    }
+  ],
+  "_model": "gemini-3-flash-preview"
+}

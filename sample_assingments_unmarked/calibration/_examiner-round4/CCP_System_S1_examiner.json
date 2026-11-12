@@ -1,0 +1,105 @@
+{
+  "marked_criteria": [
+    "Assumptions [LO3-PO6]",
+    "Explanation of the safety aspects of multi-threaded system implemented [LO3-PO6]",
+    "Justification of coding techniques implemented [LO3-PO6]",
+    "Depth of discussion of concurrency concepts [LO3-PO6]",
+    "Appropriateness of coding techniques used to implement design with appropriate comment lines in source codes *",
+    "Appropriateness of the Java concurrent programming facilities used.",
+    "Program runs appropriately with basic requirements *",
+    "Additional requirements met *",
+    "Explanations of concurrency concepts implemented with relevant code samples *"
+  ],
+  "results": [
+    {
+      "persona": "student",
+      "scores": [
+        {
+          "criterion": "Assumptions [LO3-PO6]",
+          "score": 0,
+          "max": 20,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The required report (T2) detailing system assumptions and introduction was not submitted. The code comments do not satisfy the specific requirement for a structured report."
+        },
+        {
+          "criterion": "Explanation of the safety aspects of multi-threaded system implemented [LO3-PO6]",
+          "score": 0,
+          "max": 30,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The required report (T2) explaining the safety aspects of the multi-threaded system was not submitted. No analysis of safety-critical sections was provided in a separate document."
+        },
+        {
+          "criterion": "Justification of coding techniques implemented [LO3-PO6]",
+          "score": 0,
+          "max": 30,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The student failed to submit the report (T2) required to justify the specific coding techniques chosen for the simulation. There is no evidence of comparative justification."
+        },
+        {
+          "criterion": "Depth of discussion of concurrency concepts [LO3-PO6]",
+          "score": 0,
+          "max": 20,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The required report (T2) for discussion of concurrency concepts was not provided. Deep conceptual analysis cannot be assessed from code comments alone."
+        },
+        {
+          "criterion": "Appropriateness of coding techniques used to implement design with appropriate comment lines in source codes *",
+          "score": 20,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The implementation uses highly appropriate techniques, including AtomicReferenceArray for gate management and fair Semaphores for the runway. The code is exceptionally well-commented and clear."
+        },
+        {
+          "criterion": "Appropriateness of the Java concurrent programming facilities used.",
+          "score": 20,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Masterful use of Java concurrency, employing CompletableFuture for non-blocking pilot communication and LongAdder for high-performance statistics collection. No weaknesses were identified in the selection of tools."
+        },
+        {
+          "criterion": "Program runs appropriately with basic requirements *",
+          "score": 20,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The console output confirms that the program executes the sequential landing/service/take-off process correctly for multiple planes. The ground capacity of 3 is strictly enforced by the ATC logic."
+        },
+        {
+          "criterion": "Additional requirements met *",
+          "score": 20,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "All additional requirements, including the fuel emergency scenario (Plane 6), the exclusive refueling truck, and concurrent gate services, are implemented and verified in the logs. The congestion scenario triggers as specified."
+        },
+        {
+          "criterion": "Explanations of concurrency concepts implemented with relevant code samples *",
+          "score": 18,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "While the required report is missing, the source code contains exhaustive Javadoc explaining the implementation of concepts like FIFO/starvation-prevention. The mark is slightly reduced for the lack of a structured report context."
+        }
+      ],
+      "total_percent": 49,
+      "grade": "D",
+      "passed": false
+    }
+  ],
+  "_model": "gemini-3-flash-preview"
+}

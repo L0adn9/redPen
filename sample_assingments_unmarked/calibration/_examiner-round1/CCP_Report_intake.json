@@ -1,0 +1,110 @@
+{
+  "module": "CT074-3-2",
+  "module_name": "Concurrent Programming",
+  "assessment": "Individual Assignment - Report",
+  "folder_path": "/RedPen/Assessments/CT074-3-2/Individual Assignment/",
+  "brief_path": "/RedPen/Assessments/CT074-3-2/Individual Assignment/brief.txt",
+  "lecturer_email": "",
+  "ai_policy": "not stated",
+  "pass_mark": 50,
+  "total_marks": 100,
+  "context": "Asia Pacific Airport\n\nYou have been tasked to simulate the operations of the airport.\n\nThere is only 1 runway for all planes to land and depart.\n\nThere can only be 3 airplanes on the airport grounds, including the runway. This is to\nensure that the aircraft does not collide with another aircraft on the runway or gates.\nOnce an aircraft obtains permission to land, it should land on the runway, coast to the\nassigned gate, dock to the gate, allow passengers to disembark, refill supplies and fuel,\nreceive new passengers, undock, coast to the assigned runway and take-off.\nEach step should take some time.\nAs the airport is small, there is no waiting area on the ground for the planes to wait for a\ngate to become available.",
+  "tasks": [
+    {
+      "id": "1",
+      "text": "Introduction and background (including Assumptions made)",
+      "marks": 20
+    },
+    {
+      "id": "2",
+      "text": "Explanation of the safety aspects of multi-threaded system implemented",
+      "marks": 30
+    },
+    {
+      "id": "3",
+      "text": "Justification of coding techniques implemented.",
+      "marks": 30
+    },
+    {
+      "id": "4",
+      "text": "Depth of discussion of concurrency concepts.",
+      "marks": 20
+    }
+  ],
+  "selected_tasks": [
+    {
+      "id": "2",
+      "text": "Explanation of the safety aspects of multi-threaded system implemented",
+      "marks": 30
+    },
+    {
+      "id": "3",
+      "text": "Justification of coding techniques implemented.",
+      "marks": 30
+    }
+  ],
+  "rubric": [
+    {
+      "criterion": "Assumptions [LO3-PO6]",
+      "max": 20,
+      "bands": "80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO3"
+      ],
+      "tasks": [
+        "1"
+      ]
+    },
+    {
+      "criterion": "Explanation of the safety aspects of multi-threaded system implemented [LO3-PO6]",
+      "max": 30,
+      "bands": "80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO3"
+      ],
+      "tasks": [
+        "2"
+      ]
+    },
+    {
+      "criterion": "Justification of coding techniques implemented [LO3-PO6]",
+      "max": 30,
+      "bands": "80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO3"
+      ],
+      "tasks": [
+        "3"
+      ]
+    },
+    {
+      "criterion": "Depth of discussion of concurrency concepts [LO3-PO6]",
+      "max": 20,
+      "bands": "80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO3"
+      ],
+      "tasks": [
+        "4"
+      ]
+    }
+  ],
+  "clos": [
+    {
+      "id": "CLO3",
+      "text": "Explain the safety aspects of multi-threaded and parallel systems",
+      "tasks": [
+        "1",
+        "2",
+        "3",
+        "4"
+      ],
+      "criteria": [
+        "Assumptions [LO3-PO6]",
+        "Explanation of the safety aspects of multi-threaded system implemented [LO3-PO6]",
+        "Justification of coding techniques implemented [LO3-PO6]",
+        "Depth of discussion of concurrency concepts [LO3-PO6]"
+      ]
+    }
+  ]
+}

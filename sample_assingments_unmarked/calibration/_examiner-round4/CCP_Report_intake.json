@@ -1,0 +1,117 @@
+{
+  "module": "CT074-3-2",
+  "module_name": "Concurrent Programming",
+  "assessment": "Report",
+  "folder_path": "/RedPen/Assessments/CT074-3-2/Report/",
+  "brief_path": "/RedPen/Assessments/CT074-3-2/Report/brief.txt",
+  "lecturer_email": "",
+  "ai_policy": "not stated",
+  "pass_mark": 50,
+  "total_marks": 100,
+  "context": "Asia Pacific Airport\n\nYou have been tasked to simulate the operations of the airport.",
+  "tasks": [
+    {
+      "id": "T1",
+      "text": "Introduction and assumptions made",
+      "marks": 20
+    },
+    {
+      "id": "T2",
+      "text": "Basic requirements met:\n• List of requirements met.\n- Short explanation of concurrency concepts (atomic statements, synchronization, etc) implemented.\n- Code snippet of the Java concurrent programming facilities implemented.",
+      "marks": 30
+    },
+    {
+      "id": "T3",
+      "text": "Additional requirements met:\n• List of requirements met.\n- Short explanation of concurrency concepts (atomic statements, synchronization, etc) implemented.\n- Code snippet of the Java concurrent programming facilities implemented.",
+      "marks": 30
+    },
+    {
+      "id": "T4",
+      "text": "Requirements which were NOT met:\n• List of basic requirements.\n• List of additional requirements",
+      "marks": 20
+    }
+  ],
+  "selected_tasks": [
+    {
+      "id": "T2",
+      "text": "Basic requirements met:\n• List of requirements met.\n- Short explanation of concurrency concepts (atomic statements, synchronization, etc) implemented.\n- Code snippet of the Java concurrent programming facilities implemented.",
+      "marks": 30
+    },
+    {
+      "id": "T3",
+      "text": "Additional requirements met:\n• List of requirements met.\n- Short explanation of concurrency concepts (atomic statements, synchronization, etc) implemented.\n- Code snippet of the Java concurrent programming facilities implemented.",
+      "marks": 30
+    }
+  ],
+  "rubric": [
+    {
+      "criterion": "Assumptions [LO3-PO6]",
+      "max": 20,
+      "bands": "80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO3"
+      ],
+      "tasks": [
+        "T1"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Explanation of the safety aspects of multi-threaded system implemented [LO3-PO6]",
+      "max": 30,
+      "bands": "80-100 excellent, 65-79 glass, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO3"
+      ],
+      "tasks": [
+        "T2",
+        "T3"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Justification of coding techniques implemented [LO3-PO6]",
+      "max": 30,
+      "bands": "80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO3"
+      ],
+      "tasks": [
+        "T2",
+        "T3"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Depth of discussion of concurrency concepts [LO3-PO6]",
+      "max": 20,
+      "bands": "80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO3"
+      ],
+      "tasks": [
+        "T2",
+        "T3"
+      ],
+      "live_session": false
+    }
+  ],
+  "clos": [
+    {
+      "id": "CLO3",
+      "text": "Explain the safety aspects of multi-threaded and parallel systems",
+      "tasks": [
+        "T1",
+        "T2",
+        "T3",
+        "T4"
+      ],
+      "criteria": [
+        "Assumptions [LO3-PO6]",
+        "Explanation of the safety aspects of multi-threaded system implemented [LO3-PO6]",
+        "Justification of coding techniques implemented [LO3-PO6]",
+        "Depth of discussion of concurrency concepts [LO3-PO6]"
+      ]
+    }
+  ]
+}

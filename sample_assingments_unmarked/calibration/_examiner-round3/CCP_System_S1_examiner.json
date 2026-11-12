@@ -1,0 +1,105 @@
+{
+  "marked_criteria": [
+    "Assumptions [LO3-PO6]",
+    "Explanation of the safety aspects of multi-threaded system implemented [LO3-PO6]",
+    "Justification of coding techniques implemented [LO3-PO6]",
+    "Depth of discussion of concurrency concepts [LO3-PO6]",
+    "Appropriateness of coding techniques used to implement design with appropriate comment lines in source codes *",
+    "Appropriateness of the Java concurrent programming facilities used.",
+    "Program runs appropriately with basic requirements *",
+    "Additional requirements met *",
+    "Explanations of concurrency concepts implemented with relevant code samples *"
+  ],
+  "results": [
+    {
+      "persona": "student",
+      "scores": [
+        {
+          "criterion": "Assumptions [LO3-PO6]",
+          "score": 0,
+          "max": 20,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The student failed to provide the required documentation report; assumptions are missing from the submission."
+        },
+        {
+          "criterion": "Explanation of the safety aspects of multi-threaded system implemented [LO3-PO6]",
+          "score": 0,
+          "max": 30,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "No report was submitted to explain the implementation's safety aspects, such as race condition prevention or deadlock management."
+        },
+        {
+          "criterion": "Justification of coding techniques implemented [LO3-PO6]",
+          "score": 0,
+          "max": 30,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The submission lacks a documentation section providing justification for the specific coding techniques selected for the simulation."
+        },
+        {
+          "criterion": "Depth of discussion of concurrency concepts [LO3-PO6]",
+          "score": 0,
+          "max": 20,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "There is no theoretical or practical discussion of concurrency concepts as requested in the documentation brief."
+        },
+        {
+          "criterion": "Appropriateness of coding techniques used to implement design with appropriate comment lines in source codes *",
+          "score": 16,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The design uses a fair semaphore for the runway, but the ATC's gate reservation logic uses a primitive boolean array instead of leveraging the available AtomicReferenceArray."
+        },
+        {
+          "criterion": "Appropriateness of the Java concurrent programming facilities used.",
+          "score": 17,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Sophisticated use of BlockingQueue and CompletableFuture is evident, though the reliance on Thread.sleep for critical timing is less precise than ScheduledExecutorService."
+        },
+        {
+          "criterion": "Program runs appropriately with basic requirements *",
+          "score": 18,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The simulation successfully enforces the 3-plane ground limit and sequential processes, though the execution ends prematurely before the 60s benchmark."
+        },
+        {
+          "criterion": "Additional requirements met *",
+          "score": 18,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Congestion and exclusive refueling are correctly implemented, but the emergency scenario trigger is tied to a specific plane index rather than emerging from dynamic state."
+        },
+        {
+          "criterion": "Explanations of concurrency concepts implemented with relevant code samples *",
+          "score": 10,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "While Javadoc is present, the student did not provide the required structured report containing specific explanations paired with illustrative code snippets."
+        }
+      ],
+      "total_percent": 40,
+      "grade": "D",
+      "passed": false
+    }
+  ],
+  "_model": "gemini-3-flash-preview"
+}

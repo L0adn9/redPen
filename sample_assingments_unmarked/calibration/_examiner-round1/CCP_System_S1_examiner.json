@@ -1,0 +1,65 @@
+{
+  "marked_criteria": [
+    "Program runs appropriately with basic requirements",
+    "Additional requirements met",
+    "Appropriateness of the Java concurrent programming facilities used",
+    "Appropriateness of coding techniques used to implement design with appropriate comment lines in source codes",
+    "Explanations of concurrency concepts implemented with relevant code samples"
+  ],
+  "results": [
+    {
+      "persona": "student",
+      "scores": [
+        {
+          "criterion": "Program runs appropriately with basic requirements",
+          "score": 20,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The flight sequence and resource limits are perfectly simulated; the code enforces the 3-plane ground limit via groundCount checks in ATC."
+        },
+        {
+          "criterion": "Additional requirements met",
+          "score": 20,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The congestion scenario is explicitly triggered in ArrivalGenerator.java, and concurrent passenger/crew activities are handled using threads and CountDownLatches."
+        },
+        {
+          "criterion": "Appropriateness of the Java concurrent programming facilities used",
+          "score": 20,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The use of CompletableFuture for non-blocking pilot communication and a fair Semaphore for the runway shows a sophisticated understanding of Java's concurrency library."
+        },
+        {
+          "criterion": "Appropriateness of coding techniques used to implement design with appropriate comment lines in source codes",
+          "score": 20,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Code is exceptionally modular and well-commented; features like the Watchdog for deadlock detection and Safety for invariant monitoring go beyond requirements."
+        },
+        {
+          "criterion": "Explanations of concurrency concepts implemented with relevant code samples",
+          "score": 20,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The source files include comprehensive class-level documentation that explains the application of concepts such as FIFO fairness and atomic updates."
+        }
+      ],
+      "total_percent": 100,
+      "grade": "A+",
+      "passed": true
+    }
+  ],
+  "_model": "gemini-3-flash-preview"
+}

@@ -1,0 +1,125 @@
+{
+  "marked_criteria": [
+    "Identify and address technical challenges",
+    "Use of appropriate data structures and algorithms",
+    "Implementation of functional requirements",
+    "Code quality: readability, efficiency and correctness",
+    "Quality of individual contribution to the integrated system",
+    "Innovation and creativity in the solution",
+    "Data structure selection and justification",
+    "Relevance of selected data structures to functionality",
+    "Justification of algorithms and operations",
+    "Understanding of efficiency, limitations and edge cases",
+    "Effectiveness of individual demonstration and responses"
+  ],
+  "results": [
+    {
+      "persona": "student",
+      "scores": [
+        {
+          "criterion": "Identify and address technical challenges",
+          "score": 3,
+          "max": 3,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The student identifies and solves the challenge of cross-module state synchronization via the syncRequestsWithParcels function, ensuring service records remain consistent with Task 1 status changes."
+        },
+        {
+          "criterion": "Use of appropriate data structures and algorithms",
+          "score": 3,
+          "max": 3,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The implementation of a manual Priority Queue for request scheduling and a Linked List for the storage store is highly appropriate for managing dynamic parcel data."
+        },
+        {
+          "criterion": "Implementation of functional requirements",
+          "score": 3,
+          "max": 3,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "All requirements for Task 2, including priority-based determination of the next request and persistent storage handling, are fully implemented."
+        },
+        {
+          "criterion": "Code quality: readability, efficiency and correctness",
+          "score": 2,
+          "max": 2,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The code follows professional standards with clean headers, consistent naming, and robust manual memory management within class destructors."
+        },
+        {
+          "criterion": "Quality of individual contribution to the integrated system",
+          "score": 2,
+          "max": 2,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "Task 2 is well-integrated with external modules through shared headers and logic that specifically calls resource allocation functions in Task 3."
+        },
+        {
+          "criterion": "Innovation and creativity in the solution",
+          "score": 2,
+          "max": 2,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "Implementing a file-based persistence layer (task2_requests.txt) that reconstructs the priority queue upon loading shows initiative beyond the basic requirements."
+        },
+        {
+          "criterion": "Data structure selection and justification",
+          "score": 4,
+          "max": 4,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The selection of a priority queue is perfectly suited for the requirement to handle 'urgency' and 'special handling' types; the logic is clearly defined in the priorityForService helper."
+        },
+        {
+          "criterion": "Relevance of selected data structures to functionality",
+          "score": 4,
+          "max": 4,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The data structures directly facilitate the core module needs: storage handles historical records, while the queue manages current operational flow."
+        },
+        {
+          "criterion": "Justification of algorithms and operations",
+          "score": 3,
+          "max": 3,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "Detailed logic is provided for status transitions and the determination of service types, justifying why certain routes are eligible for specific services."
+        },
+        {
+          "criterion": "Understanding of efficiency, limitations and edge cases",
+          "score": 2,
+          "max": 2,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The code effectively handles edge cases such as empty queues, duplicate requests, and cases where a parcel is removed or changed in another module."
+        },
+        {
+          "criterion": "Effectiveness of individual demonstration and responses",
+          "score": 0,
+          "max": 2,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "Requires verifiable evidence."
+        }
+      ],
+      "total_percent": 93,
+      "grade": "A+",
+      "passed": true
+    }
+  ],
+  "_model": "gemini-3-flash-preview"
+}
