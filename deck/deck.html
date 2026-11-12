@@ -185,18 +185,23 @@
 <!-- 10 Built on -->
 <section class="slide">
   <div class="kicker">How it's built</div>
-  <h2>Agents as plain instructions.<br>The prototype today, Gemini Enterprise next.</h2>
-  <div class="grid2">
+  <h2 style="font-size:40px">One set of agents. Prototype today,<br>Gemini Enterprise ready.</h2>
+  <div class="grid2" style="gap:32px">
     <div class="card">
-      <h3>Prototype (today)</h3>
-      <p>Streamlit app running our 7 agent prompts on <b>Google Gemini</b> (Flash and Pro). Jira Cloud register, email report, calendar invite, revised brief. Gemini-only guard; keys swappable live. Saved audits replay instantly.</p>
+      <h3>Prototype (today, on Google Gemini)</h3>
+      <p>8 agents: Intake, 3 AI students, Examiner, Verdict, Redesign, <b>Insight chat agent</b>. Lecturer approval → Jira register, email, calendar invite, revised brief. A full audit takes <b>~30 s</b>.</p>
     </div>
     <div class="card">
-      <h3>Final build (Gemini Enterprise)</h3>
-      <p><b>Audit workflow</b>: Drive event trigger + monthly schedule. <b>Fix workflow</b>: condition, approval step, Jira + Gmail + Calendar + Drive actions. <b>RedPen Insight</b> chat agent over Jira + Drive. Same prompts, pasted in.</p>
+      <h3>Gemini Enterprise (built for it, not ported later)</h3>
+      <p><b>Audit workflow</b> (Drive trigger + monthly schedule), <b>Fix workflow</b> (approval step + Jira, Gmail, Calendar, Drive actions), <b>Insight</b> chat agent over Jira + Drive.</p>
     </div>
   </div>
-  <p style="margin-top:28px;font-size:22px"><b>Google Antigravity:</b> <span class="todo">[fill in: what we used it for]</span></p>
+  <div class="grid3" style="margin-top:26px;gap:20px">
+    <div class="card" style="padding:18px 22px"><p><b>Same prompts, generated</b> paste sheet: what we tested is exactly what we paste.</p></div>
+    <div class="card" style="padding:18px 22px"><p><b>Worst case tested:</b> steps that only see the previous step still produce valid verdicts.</p></div>
+    <div class="card" style="padding:18px 22px"><p><b>32 automated tests</b>, a JSON schema per step, and a checker for every Gemini Enterprise run.</p></div>
+  </div>
+  <p style="margin-top:22px;font-size:20px"><b>Google Antigravity:</b> <span class="todo">[fill in: what we used it for]</span></p>
   <div class="foot"><span>RedPen</span><span>10</span></div>
 </section>
 

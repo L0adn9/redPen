@@ -9,6 +9,11 @@
 - **Calibration:** Flash 7/7 within one grade band, mean gap 4.4; Pro 5/7, 5.9. Examiner switched to Flash. `docs/calibration/results.md`.
 - **Docs:** README filled with real numbers, `docs/demo-script.md` updated, deck at `deck/deck.html` → `deck/RedPen-deck.pdf` (12 slides, 0.7 MB).
 
+## Added 12 Nov night
+- Engine hardened (fail-fast keys, schema check + retry per step, exposure rule enforced), **32 tests** (`tools/test_engine.py`).
+- **Gemini Enterprise kit:** `agents/gemini-enterprise/README.md`, `python3 tools/ge_pack.py` (paste sheet + Drive tree), `tools/ge_compare.py`, `--mode passthrough` tested live.
+- RedPen Insight backend: `tools/redpen_insight.py` (Hassan can add a chat box with `from redpen_insight import ask`).
+
 ## Still to do (in order)
 1. **Deploy to Streamlit Community Cloud** (user must log in with GitHub; repo must be public or app given access). Main file `streamlit_app.py`. Secrets: `OPENROUTER_API_KEY`, `APP_PASSWORD`, optional `JIRA_BASE_URL`/`JIRA_EMAIL`/`JIRA_API_TOKEN` (API token from id.atlassian.com, user creates it), `SMTP_*`, `DEMO_LECTURER_EMAIL`. Put the link in README "Try it".
 2. **Antigravity:** the user must actually use it (e.g. open the repo, ask it to explain/refactor something, generate a sample brief) and screenshot each use into `docs/antigravity/`, fill the table, then fill slide 10 in `deck/deck.html` and re-render:

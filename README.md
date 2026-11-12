@@ -62,6 +62,8 @@ flowchart LR
 
 **Connectors:** Google Drive (event triggers, briefs, verdicts, revised briefs), Gmail, Google Calendar (first-party); **Jira Cloud** (third-party: create/update issues = the exposure register).
 
+**Ready for Gemini Enterprise, not ported later:** the prototype runs the exact agent instructions that go into the workflows. [`agents/gemini-enterprise/`](agents/gemini-enterprise/README.md) holds a paste sheet generated from those files, a JSON schema per step, the Drive folder tree to upload, and a checker for every Gemini Enterprise run. We also tested the platform's worst case (a step that can only see the previous step's output) live: verdicts stay valid. 32 automated tests guard all of it (`python3 tools/test_engine.py`).
+
 **How we used Antigravity:** see [`docs/antigravity/`](docs/antigravity/).
 
 ## 3. Research
@@ -80,6 +82,8 @@ flowchart LR
   - **6 months:** every programme, with monthly re-audit trends.
   - The goal is fewer academic-misconduct cases and stronger evidence for the QAA mid-cycle review.
 - **Beyond APU:** every university faces this. RedPen is a reusable education agent.
+
+**Limits we're honest about:** a single audit can move one exposure level between runs (Concurrent Programming came out HIGH in one run and MEDIUM in another), so RedPen records the model and date on every verdict, and a decision that matters should rest on two runs. Calibration reference marks come from an independent AI marker, not lecturers; lecturer-marked calibration is the first step of the 3-month rollout.
 
 **Responsible use:** RedPen never sees student submissions or student data. A lecturer approves every change. Verdicts are a risk signal from simulated attempts, not an accusation against any student.
 
