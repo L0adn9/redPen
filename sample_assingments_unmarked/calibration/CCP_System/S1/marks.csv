@@ -1,0 +1,6 @@
+criterion,max,mark
+Appropriateness of coding techniques used to implement design with appropriate comment lines in source codes,20,17
+Appropriateness of the Java concurrent programming facilities used,20,18
+Program runs appropriately with basic requirements,20,18
+Additional requirements met,20,18
+Explanations of concurrency concepts implemented with relevant code samples,20,15

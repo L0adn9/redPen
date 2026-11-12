@@ -40,7 +40,7 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 AUDIT = ROOT / "agents" / "audit"
 DEMO = ROOT / "data" / "demo-runs"
 API = "https://generativelanguage.googleapis.com/v1beta/models/{}:generateContent"
-DEFAULT_MODELS = "gemini-3.8-flash,gemini-3.7-flash,gemini-3.5-flash,gemini-3-flash-preview"
+DEFAULT_MODELS = "gemini-3-flash-preview,gemini-3.8-flash,gemini-3.7-flash,gemini-3.5-flash"
 PERSONAS = {"copy_paster": "02-persona-copy-paster.md",
             "prompt_engineer": "03-persona-prompt-engineer.md",
             "honest_helper": "04-persona-honest-helper.md"}
@@ -86,7 +86,7 @@ def instructions(filename):
 def _post(model, body, key):
     req = urllib.request.Request(API.format(model), data=body, method="POST", headers={
         "Content-Type": "application/json", "x-goog-api-key": key})
-    with urllib.request.urlopen(req, timeout=600) as r:
+    with urllib.request.urlopen(req, timeout=int(os.environ.get("REDPEN_TIMEOUT", "240"))) as r:
         d = json.load(r)
     parts = d["candidates"][0]["content"]["parts"]
     return "".join(p.get("text", "") for p in parts if not p.get("thought")), d.get("modelVersion", model)
@@ -115,9 +115,11 @@ def call(system, user, key, model_list=None):
                         continue
                     tried.append(f"{model}: HTTP {e.code} {msg}")
                     break
-                except (urllib.error.URLError, TimeoutError, KeyError, IndexError) as e:
+                except (TimeoutError, OSError) as e:  # hung or overloaded model: try the next one
+                    tried.append(f"{model}: {type(e).__name__}")
+                    break
+                except (KeyError, IndexError) as e:  # empty or blocked answer
                     if attempt < 2:
-                        time.sleep(10)
                         continue
                     tried.append(f"{model}: {e}")
                     break

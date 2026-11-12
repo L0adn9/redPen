@@ -1,0 +1,1273 @@
+===== Airport.java =====
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.atomic.AtomicReferenceArray;
+
+/**
+ * Airport - the shared physical resources every thread competes for.
+ *
+ *  runway : ONE runway shared by landings and take-offs -> fair binary Semaphore (FIFO, no starvation).
+ *  gates  : the 3 gates; slot holds the docked Plane or null. Changed only with compareAndSet, so two
+ *           planes can never occupy the same gate even if a bug tried to put them there.
+ *  truck  : the single refuelling truck (a thread of its own).
+ */
+final class Airport {
+    final Semaphore runway = new Semaphore(1, true);
+    final AtomicReferenceArray<Plane> gates = new AtomicReferenceArray<Plane>(SimConfig.GATES);
+    final RefuelTruck truck = new RefuelTruck();
+    final Stats stats = new Stats();
+
+    int dockedGates() {
+        int n = 0;
+        for (int i = 0; i < gates.length(); i++) {
+            if (gates.get(i) != null) {
+                n++;
+            }
+        }
+        return n;
+    }
+
+    boolean allGatesEmpty() { return dockedGates() == 0; }
+}
+===== AirportSimulation.java =====
+import java.util.Random;
+
+/**
+ * Asia Pacific Airport - concurrent simulation (CT074-3-2 Individual Assignment).
+ *
+ * Threads in this program
+ *   Main              : only wires things together and waits - it never acts for anybody else
+ *   ATC               : air traffic controller (landing queue, ground permits, gates, final report)
+ *   Generator         : creates a new plane every 0, 1 or 2 seconds (also stages the congestion scenario)
+ *   Plane-N           : one pilot per aircraft
+ *   Passenger-PN-xx   : one thread per passenger
+ *   Supply-/Cleaning-Crew-PN, Refuel-Truck : ground services
+ *   Watchdog          : deadlock / stall detector
+ *   Logger-Writer     : serialises console output
+ *
+ * Run:  javac *.java   then   java AirportSimulation [randomSeed]
+ */
+public class AirportSimulation {
+
+    public static void main(String[] args) throws InterruptedException {
+        long seed = args.length > 0 ? Long.parseLong(args[0]) : 2026L;   // fixed default = reproducible demo; pass another number to vary the run
+        SimLog.start();
+        SimLog.log("=== Asia Pacific Airport simulation starting (random seed " + seed + ") ===");
+
+        Airport airport = new Airport();
+        Watchdog watchdog = new Watchdog();
+        AirTrafficControl atc = new AirTrafficControl(airport, SimConfig.TOTAL_PLANES, watchdog);
+
+        Thread watchdogThread = new Thread(watchdog, "Watchdog");
+        watchdogThread.setDaemon(true);
+        Thread truckThread = new Thread(airport.truck, "Refuel-Truck");
+        Thread atcThread = new Thread(atc, "ATC");
+        Thread generator = new Thread(new ArrivalGenerator(airport, atc, new Random(seed)), "Generator");
+
+        watchdogThread.start();
+        truckThread.start();
+        atcThread.start();
+        generator.start();
+
+        atcThread.join();        // ATC ends once every plane has left and the report is printed
+        generator.join();
+        truckThread.join();
+        watchdog.stop();
+        SimLog.log("=== Simulation finished ===");
+        SimLog.stop();
+    }
+
+    /**
+     * ArrivalGenerator - a new plane every 0, 1 or 2 seconds. Plane number EMERGENCY_PLANE_NO is held
+     * back until the congested situation of the brief really exists (2+ planes circling, 2+ gates
+     * occupied, ground full) and then arrives with a fuel shortage.
+     */
+    private static final class ArrivalGenerator implements Runnable {
+        private final Airport airport;
+        private final AirTrafficControl atc;
+        private final Random rng;
+
+        ArrivalGenerator(Airport airport, AirTrafficControl atc, Random rng) {
+            this.airport = airport;
+            this.atc = atc;
+            this.rng = rng;
+        }
+
+        public void run() {
+            for (int no = 1; no <= SimConfig.TOTAL_PLANES; no++) {
+                int fuel = 60 + rng.nextInt(41);                       // 60..100 %
+                if (no == SimConfig.EMERGENCY_PLANE_NO) {
+                    waitForCongestion();
+                    fuel = SimConfig.EMERGENCY_FUEL_PERCENT;
+                }
+                int arriving = 10 + rng.nextInt(SimConfig.MAX_PASSENGERS - 9);   // 10..50
+                int departing = 10 + rng.nextInt(SimConfig.MAX_PASSENGERS - 9);  // 10..50
+                Plane plane = new Plane(no, airport, atc, fuel, arriving, departing);
+                SimLog.log("Radar: new aircraft inbound -> Plane " + no);
+                new Thread(plane, "Plane-" + no).start();
+                if (no < SimConfig.TOTAL_PLANES) {
+                    SimConfig.pause(rng.nextInt(3) * 1000L);           // next arrival in 0, 1 or 2 s
+                }
+            }
+        }
+
+        private void waitForCongestion() {
+            long start = System.currentTimeMillis();
+            long deadline = start + 20_000;
+            while (System.currentTimeMillis() < deadline) {
+                // First 8 s: insist on EXACTLY the brief's picture (2 circling, 2 gates occupied, ground full).
+                // After that accept 2 or more occupied gates so the scenario can never stall the run.
+                boolean strict = System.currentTimeMillis() - start < 8_000;
+                int gates = airport.dockedGates();
+                boolean gatesOk = strict ? gates == SimConfig.CONGESTION_GATES : gates >= SimConfig.CONGESTION_GATES;
+                if (atc.circlingCount() >= SimConfig.CONGESTION_WAITING_MIN
+                        && gatesOk
+                        && atc.groundCount() >= SimConfig.GROUND_CAPACITY) {
+                    SimLog.log("SCENARIO: congestion confirmed - " + atc.circlingCount() + " planes circling, "
+                            + gates + " gates occupied, ground full. A plane with a fuel shortage now arrives!");
+                    return;
+                }
+                SimConfig.pause(50);
+            }
+            SimLog.log("SCENARIO: congestion not reached within 20s - releasing the emergency plane anyway.");
+        }
+    }
+}
+===== AirTrafficControl.java =====
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
+
+/**
+ * AirTrafficControl - the ATC manager thread ("ATC").
+ *
+ * Responsibilities
+ *  - Keeps the circle (holding) queue of planes that asked to land.
+ *  - Lets a plane land ONLY when fewer than GROUND_CAPACITY (3) aircraft are on the ground. This
+ *    permit is the airport-wide invariant that stops collisions on runway/gates.
+ *  - Gives MAYDAY (low-fuel) planes priority over everybody else in the circle.
+ *  - Reserves a gate at clearance time, so a cleared plane never needs to wait for a gate
+ *    (the airport has no waiting area on the ground).
+ *  - At the end performs the sanity checks and prints the statistics.
+ *
+ * Concurrency design: ONE ReentrantLock (fair) guards all ATC state; the ATC thread sleeps on the
+ * Condition 'changed' and is woken by a plane that requests landing, declares an emergency or
+ * departs. Replies to pilots travel through a CompletableFuture, so the pilot thread blocks
+ * without polling and the ATC thread never executes pilot code.
+ */
+final class AirTrafficControl implements Runnable {
+
+    /** One plane's request to land, waiting in the circle. */
+    private static final class Request {
+        final Plane plane;
+        final long seq;                 // arrival order (FIFO tie-breaker)
+        final long requestedAtMs;
+        boolean emergency;
+        boolean acknowledged;           // has the ATC thread already announced the MAYDAY?
+        final CompletableFuture<Integer> clearance = new CompletableFuture<Integer>();
+
+        Request(Plane plane, long seq, boolean emergency) {
+            this.plane = plane;
+            this.seq = seq;
+            this.emergency = emergency;
+            this.requestedAtMs = System.currentTimeMillis();
+        }
+    }
+
+    private final Airport airport;
+    private final int totalPlanes;
+    private final Watchdog watchdog;
+
+    private final ReentrantLock lock = new ReentrantLock(true);
+    private final Condition changed = lock.newCondition();
+
+    // ---- all fields below are guarded by 'lock' ------------------------------------------------
+    private final List<Request> circle = new ArrayList<Request>();
+    private final boolean[] gateReserved = new boolean[SimConfig.GATES];
+    private final List<Integer> departureNotices = new ArrayList<Integer>();
+    private int groundCount;
+    private int departed;
+    private long nextSeq;
+    private int lastBlockedSize = -1;
+
+    AirTrafficControl(Airport airport, int totalPlanes, Watchdog watchdog) {
+        this.airport = airport;
+        this.totalPlanes = totalPlanes;
+        this.watchdog = watchdog;
+    }
+
+    // ================================ called by PILOT threads ====================================
+
+    /** A pilot joins the circle. Returns a future that completes with the assigned gate number. */
+    CompletableFuture<Integer> requestLanding(Plane plane, boolean emergency) {
+        lock.lock();
+        try {
+            Request r = new Request(plane, nextSeq++, emergency);
+            circle.add(r);
+            changed.signalAll();          // wake the ATC thread
+            return r.clearance;
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    /** A circling pilot whose fuel dropped below the threshold escalates its request to MAYDAY. */
+    void declareEmergency(Plane plane) {
+        lock.lock();
+        try {
+            for (Request r : circle) {
+                if (r.plane == plane) {
+                    r.emergency = true;
+                }
+            }
+            changed.signalAll();
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    /** The pilot leaves the gate: its gate may be given to the next plane. */
+    void releaseGate(int gate) {
+        lock.lock();
+        try {
+            gateReserved[gate - 1] = false;
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    /** The plane has finished take-off: its ground permit is returned. */
+    void planeDeparted(Plane plane) {
+        lock.lock();
+        try {
+            groundCount--;
+            Safety.leave("ground");
+            departed++;
+            departureNotices.add(plane.number());
+            changed.signalAll();          // a ground slot is free -> wake the ATC thread
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    // ================================ read-only snapshots =======================================
+
+    int circlingCount() {
+        lock.lock();
+        try {
+            return circle.size();
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    int groundCount() {
+        lock.lock();
+        try {
+            return groundCount;
+        } finally {
+            lock.unlock();
+        }
+    }
+
+    // ================================ the ATC thread ============================================
+
+    public void run() {
+        SimLog.log("Air traffic control online. Runway open. Ground capacity "
+                + SimConfig.GROUND_CAPACITY + ", gates " + SimConfig.GATES + ".");
+        lock.lock();
+        try {
+            while (true) {
+                announceNotices();
+
+                if (!circle.isEmpty() && groundCount < SimConfig.GROUND_CAPACITY) {
+                    grantLanding(pickNext());
+                    continue;                       // look for more work before sleeping
+                }
+                if (departed == totalPlanes && circle.isEmpty()) {
+                    break;                          // everyone has left: end of the day
+                }
+                if (!circle.isEmpty() && circle.size() != lastBlockedSize) {
+                    lastBlockedSize = circle.size();
+                    SimLog.log("Ground is full (" + groundCount + "/" + SimConfig.GROUND_CAPACITY
+                            + "). Holding in the circle: " + circleDescription());
+                }
+                try {
+                    changed.await();                // sleep until something changes
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                    break;
+                }
+            }
+        } finally {
+            lock.unlock();
+        }
+        finalReport();
+        airport.truck.shutdown();
+    }
+
+    /** Called with the lock held: log MAYDAYs (once) and departures, using THIS thread's identity. */
+    private void announceNotices() {
+        for (Request r : circle) {
+            if (r.emergency && !r.acknowledged) {
+                r.acknowledged = true;
+                SimLog.log("MAYDAY received from Plane " + r.plane.number()
+                        + ". Plane " + r.plane.number() + " now has landing priority over all other traffic.");
+            }
+        }
+        for (Integer no : departureNotices) {
+            SimLog.log("Plane " + no + " has left our airspace. Ground " + groundCount + "/"
+                    + SimConfig.GROUND_CAPACITY + ".");
+        }
+        departureNotices.clear();
+    }
+
+    /** Emergency first, then first-come-first-served. */
+    private Request pickNext() {
+        Request best = null;
+        for (Request r : circle) {
+            if (best == null
+                    || (r.emergency && !best.emergency)
+                    || (r.emergency == best.emergency && r.seq < best.seq)) {
+                best = r;
+            }
+        }
+        circle.remove(best);
+        return best;
+    }
+
+    private void grantLanding(Request r) {
+        groundCount++;
+        Safety.enter("ground", SimConfig.GROUND_CAPACITY);
+        int gate = reserveGate();
+        long waited = System.currentTimeMillis() - r.requestedAtMs;
+        airport.stats.recordWait(r.plane.number(), waited);
+        if (r.emergency) {
+            airport.stats.emergencyLanding();
+        }
+        lastBlockedSize = -1;
+        SimLog.log("Plane " + r.plane.number() + ": cleared to land" + (r.emergency ? " [EMERGENCY PRIORITY]" : "")
+                + ". Assigned Gate " + gate + ". Ground " + groundCount + "/" + SimConfig.GROUND_CAPACITY
+                + ", still circling: " + circleDescription());
+        r.clearance.complete(gate);                 // wakes the pilot thread
+    }
+
+    private int reserveGate() {
+        for (int i = 0; i < gateReserved.length; i++) {
+            if (!gateReserved[i]) {
+                gateReserved[i] = true;
+                return i + 1;
+            }
+        }
+        // Cannot happen: at most 3 planes are on the ground and each holds at most one gate.
+        Safety.violation("no free gate although ground count is " + groundCount);
+        return 1;
+    }
+
+    private String circleDescription() {
+        if (circle.isEmpty()) {
+            return "none";
+        }
+        StringBuilder sb = new StringBuilder();
+        for (Request r : circle) {
+            if (sb.length() > 0) {
+                sb.append(", ");
+            }
+            sb.append("Plane ").append(r.plane.number());
+            if (r.emergency) {
+                sb.append("(MAYDAY)");
+            }
+        }
+        return sb.toString();
+    }
+
+    // ================================ sanity checks + statistics ================================
+
+    private void finalReport() {
+        Stats s = airport.stats;
+        SimLog.log("All planes have left. Starting end-of-day sanity checks...");
+        boolean ok = true;
+        ok &= check("All gates are empty", airport.allGatesEmpty());
+        ok &= check("No aircraft left on the ground (ground count = 0)", groundCount == 0);
+        ok &= check("Runway is free (permit returned)", airport.runway.availablePermits() == 1);
+        ok &= check("Refuel truck is idle", Safety.current("refuel-truck") == 0);
+        ok &= check("Planes served = planes expected (" + s.planesServed() + "/" + totalPlanes + ")",
+                s.planesServed() == totalPlanes);
+        ok &= check("Passengers disembarked = expected (" + s.paxDisembarked() + "/" + s.paxDisembarkPlanned() + ")",
+                s.paxDisembarked() == s.paxDisembarkPlanned());
+        ok &= check("Passengers boarded = expected (" + s.paxBoarded() + "/" + s.paxBoardPlanned() + ")",
+                s.paxBoarded() == s.paxBoardPlanned());
+        ok &= check("Peak aircraft on ground <= " + SimConfig.GROUND_CAPACITY + " (peak " + Safety.peak("ground") + ")",
+                Safety.peak("ground") <= SimConfig.GROUND_CAPACITY);
+        ok &= check("Peak aircraft on runway <= 1 (peak " + Safety.peak("runway") + ")", Safety.peak("runway") <= 1);
+        ok &= check("Peak refuel-truck users <= 1 (peak " + Safety.peak("refuel-truck") + ")",
+                Safety.peak("refuel-truck") <= 1);
+        long gatePeak = 0;
+        for (int g = 1; g <= SimConfig.GATES; g++) {
+            gatePeak = Math.max(gatePeak, Safety.peak("gate-" + g));
+        }
+        ok &= check("Peak planes at any single gate <= 1 (peak " + gatePeak + ")", gatePeak <= 1);
+        ok &= check("Safety violations recorded = 0 (found " + Safety.violations() + ")", Safety.violations() == 0);
+        ok &= check("Watchdog found no deadlock or stall", watchdog.isClean());
+        SimLog.log("SANITY CHECK RESULT: " + (ok ? "ALL CHECKS PASSED" : "*** SOME CHECKS FAILED ***"));
+
+        SimLog.log("================ STATISTICS ================");
+        SimLog.log(String.format(Locale.ENGLISH, "Waiting time to land  - minimum: %.2fs | average: %.2fs | maximum: %.2fs",
+                s.minWaitMs() / 1000.0, s.avgWaitMs() / 1000.0, s.maxWaitMs() / 1000.0));
+        for (java.util.Map.Entry<Integer, Long> e : s.waitByPlane().entrySet()) {
+            SimLog.log(String.format(Locale.ENGLISH, "   Plane %d waited %.2fs", e.getKey(), e.getValue() / 1000.0));
+        }
+        SimLog.log("Planes served        : " + s.planesServed());
+        SimLog.log("Emergency landings   : " + s.emergencies());
+        SimLog.log("Passengers boarded   : " + s.paxBoarded());
+        SimLog.log("Passengers deplaned  : " + s.paxDisembarked());
+        SimLog.log("============================================");
+    }
+
+    private boolean check(String what, boolean passed) {
+        SimLog.log("  [" + (passed ? "PASS" : "FAIL") + "] " + what);
+        return passed;
+    }
+}
+===== GroundCrew.java =====
+import java.util.concurrent.CountDownLatch;
+
+/**
+ * GroundCrew - the supply crew and the cleaning crew. Each is a separate thread per plane, so
+ * "refill supplies", "clean the cabin" and (via the truck) "refuel" all proceed at the same time
+ * on one aircraft, and across the three gates at once.
+ */
+final class GroundCrew implements Runnable {
+    enum Job { SUPPLIES, CLEANING }
+
+    private final Job job;
+    private final Plane plane;
+    private final int gate;
+    private final CountDownLatch serviceDone;
+
+    GroundCrew(Job job, Plane plane, int gate, CountDownLatch serviceDone) {
+        this.job = job;
+        this.plane = plane;
+        this.gate = gate;
+        this.serviceDone = serviceDone;
+    }
+
+    public void run() {
+        String what = job == Job.SUPPLIES ? "Restocking food and supplies on" : "Cleaning the cabin of";
+        SimLog.log(what + " Plane " + plane.number() + " at Gate " + gate + "...");
+        SimConfig.pause(job == Job.SUPPLIES ? SimConfig.SUPPLIES : SimConfig.CLEANING);
+        SimLog.log((job == Job.SUPPLIES ? "Supplies restocked" : "Cabin cleaned") + " for Plane " + plane.number() + ".");
+        serviceDone.countDown();
+    }
+}
+===== Passenger.java =====
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.Semaphore;
+
+/**
+ * Passenger - one thread per passenger. Many passengers (of several planes at different gates) walk
+ * through the gate doors AT THE SAME TIME: that is the "concurrent embark/disembark" requirement.
+ *
+ * Seat accounting: a plane owns a Semaphore with one permit per FREE seat (max 50).
+ *   disembark -> release()  (a seat becomes free)
+ *   embark    -> tryAcquire() (a seat is taken; failure would mean overbooking = safety violation)
+ */
+final class Passenger implements Runnable {
+    enum Kind { DISEMBARK, EMBARK }
+
+    private final Kind kind;
+    private final Plane plane;
+    private final int gate;
+    private final int index;     // 1..total
+    private final int total;
+    private final CountDownLatch done;
+
+    Passenger(Kind kind, Plane plane, int gate, int index, int total, CountDownLatch done) {
+        this.kind = kind;
+        this.plane = plane;
+        this.gate = gate;
+        this.index = index;
+        this.total = total;
+        this.done = done;
+    }
+
+    public void run() {
+        SimConfig.pause(SimConfig.PASSENGER);                     // walking through the door
+        Semaphore seats = plane.seats();
+        if (kind == Kind.DISEMBARK) {
+            seats.release();
+            plane.stats().passengerOff();
+        } else {
+            if (!seats.tryAcquire()) {
+                Safety.violation("Plane " + plane.number() + " overbooked (passenger " + index + ")");
+            }
+            plane.stats().passengerOn();
+        }
+        if (SimConfig.LOG_EVERY_PASSENGER || index <= 2 || index == total) {
+            SimLog.log("I'm " + (kind == Kind.DISEMBARK ? "getting off Plane " : "boarding Plane ")
+                    + plane.number() + " at Gate " + gate + " (" + index + "/" + total + ")"
+                    + (index == total ? " - last one" : ""));
+        }
+        done.countDown();                                          // tell the pilot one more is through
+    }
+}
+===== Plane.java =====
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Semaphore;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+
+/**
+ * Plane - one thread per aircraft; the thread IS the pilot. It performs the whole life-cycle:
+ *
+ *   request landing -> circle until cleared -> land -> coast to gate -> dock -> passengers get off
+ *   -> (refuel || restock || clean) -> passengers board -> undock -> coast to runway -> take off.
+ *
+ * Every log line a pilot prints is about the pilot's own plane; other actors (ATC, truck, crews,
+ * passengers) print their own events from their own threads.
+ */
+final class Plane implements Runnable {
+    private final int number;
+    private final Airport airport;
+    private final AirTrafficControl atc;
+    private final int arrivingPassengers;
+    private final int departingPassengers;
+    private final Semaphore seats;                // one permit per FREE seat
+    private volatile int fuel;                    // percent
+
+    Plane(int number, Airport airport, AirTrafficControl atc, int fuel, int arriving, int departing) {
+        this.number = number;
+        this.airport = airport;
+        this.atc = atc;
+        this.fuel = fuel;
+        this.arrivingPassengers = arriving;
+        this.departingPassengers = departing;
+        this.seats = new Semaphore(SimConfig.MAX_PASSENGERS - arriving);
+        airport.stats.planned(arriving, departing);
+    }
+
+    int number()      { return number; }
+    Semaphore seats() { return seats; }
+    Stats stats()     { return airport.stats; }
+    void fillTank()   { fuel = 100; }
+
+    private void say(String msg) { SimLog.log("Plane " + number + ": " + msg); }
+
+    public void run() {
+        long arrivedAt = System.currentTimeMillis();
+
+        // ---- 1. ask ATC for permission to land ---------------------------------------------------
+        boolean mayday = fuel < SimConfig.LOW_FUEL_PERCENT;
+        if (mayday) {
+            say("MAYDAY MAYDAY MAYDAY! Fuel shortage (" + fuel + "%). Requesting EMERGENCY landing!");
+        } else {
+            say("Requesting permission to land! (fuel " + fuel + "%, " + arrivingPassengers + " passengers on board)");
+        }
+        CompletableFuture<Integer> clearance = atc.requestLanding(this, mayday);
+
+        // ---- 2. circle until cleared, burning fuel; escalate to MAYDAY if it gets low -----------
+        int gate = circleUntilCleared(clearance, mayday);
+
+        // ---- 3. land (runway is exclusive) -----------------------------------------------------
+        say("Cleared! Waiting for the runway to land...");
+        useRunway("Touchdown! Landing on the runway.", "Landed, vacating the runway.", SimConfig.LAND);
+
+        // ---- 4. coast to the assigned gate and dock -------------------------------------------
+        say("Coasting to Gate " + gate + ".");
+        SimConfig.pause(SimConfig.COAST);
+        Safety.enter("gate-" + gate, 1);
+        if (!airport.gates.compareAndSet(gate - 1, null, this)) {   // atomic: only succeeds if gate is empty
+            Safety.violation("Gate " + gate + " already occupied when Plane " + number + " tried to dock");
+        }
+        SimConfig.pause(SimConfig.DOCK);
+        say("Docked at Gate " + gate + ". Doors open.");
+
+        // ---- 5. passengers get off (concurrent threads) -----------------------------------------
+        runPassengers(Passenger.Kind.DISEMBARK, arrivingPassengers, gate);
+        say("All " + arrivingPassengers + " passengers have disembarked.");
+
+        // ---- 6. refuel (exclusive truck) || restock || clean : three activities at once ----------
+        CountDownLatch services = new CountDownLatch(3);
+        new Thread(new GroundCrew(GroundCrew.Job.SUPPLIES, this, gate, services), "Supply-Crew-P" + number).start();
+        new Thread(new GroundCrew(GroundCrew.Job.CLEANING, this, gate, services), "Cleaning-Crew-P" + number).start();
+        int ahead = airport.truck.submit(new RefuelTruck.Job(this, gate, services));
+        say("Requested refuel truck" + (ahead > 0 ? " (" + ahead + " plane(s) ahead of me)" : "")
+                + ". Crews are working on my plane.");
+        awaitUninterruptibly(services);
+        say("Refuel, supplies and cleaning complete.");
+
+        // ---- 7. passengers board (concurrent threads) ---------------------------------------------
+        runPassengers(Passenger.Kind.EMBARK, departingPassengers, gate);
+        say("Boarding complete: " + departingPassengers + " passengers on board.");
+
+        // ---- 8. undock, coast to the runway, take off ------------------------------------------
+        SimConfig.pause(SimConfig.UNDOCK);
+        airport.gates.compareAndSet(gate - 1, this, null);          // free the gate (atomic)
+        Safety.leave("gate-" + gate);
+        atc.releaseGate(gate);
+        say("Undocked from Gate " + gate + ". Coasting to the runway.");
+        SimConfig.pause(SimConfig.COAST);
+        useRunway("Cleared for departure. Taking off!", "Airborne. Goodbye Asia Pacific Airport!", SimConfig.TAKEOFF);
+
+        // ---- 9. hand the ground permit back --------------------------------------------------
+        airport.stats.planeServed();
+        atc.planeDeparted(this);
+        say("Total time at/around the airport: "
+                + String.format("%.1f", (System.currentTimeMillis() - arrivedAt) / 1000.0) + "s.");
+    }
+
+    /** Holding pattern: block on the future in short ticks, burning fuel, and call MAYDAY when low. */
+    private int circleUntilCleared(CompletableFuture<Integer> clearance, boolean alreadyMayday) {
+        boolean mayday = alreadyMayday;
+        while (true) {
+            try {
+                return clearance.get((long) (SimConfig.HOLDING_TICK_MS * SimConfig.TIME_SCALE), TimeUnit.MILLISECONDS);
+            } catch (TimeoutException tick) {
+                fuel -= SimConfig.FUEL_BURN_PER_TICK;
+                if (!mayday && fuel < SimConfig.LOW_FUEL_PERCENT) {
+                    mayday = true;
+                    say("Fuel low (" + fuel + "%) while circling! Declaring MAYDAY.");
+                    atc.declareEmergency(this);
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+                throw new IllegalStateException("Pilot of Plane " + number + " interrupted", e);
+            } catch (ExecutionException e) {
+                throw new IllegalStateException(e);
+            }
+        }
+    }
+
+    /** Take the single runway (fair semaphore => FIFO), use it, and always give it back. */
+    private void useRunway(String onEntry, String onExit, int[] duration) {
+        airport.runway.acquireUninterruptibly();
+        try {
+            Safety.enter("runway", 1);
+            say(onEntry);
+            SimConfig.pause(duration);
+            say(onExit);
+        } finally {
+            Safety.leave("runway");
+            airport.runway.release();
+        }
+    }
+
+    private void runPassengers(Passenger.Kind kind, int count, int gate) {
+        CountDownLatch latch = new CountDownLatch(count);
+        String tag = kind == Passenger.Kind.DISEMBARK ? "D" : "B";
+        for (int i = 1; i <= count; i++) {
+            new Thread(new Passenger(kind, this, gate, i, count, latch), "Passenger-P" + number + "-" + tag + i).start();
+        }
+        awaitUninterruptibly(latch);
+    }
+
+    private static void awaitUninterruptibly(CountDownLatch latch) {
+        boolean interrupted = false;
+        while (latch.getCount() > 0) {
+            try {
+                latch.await();
+            } catch (InterruptedException e) {
+                interrupted = true;
+            }
+        }
+        if (interrupted) {
+            Thread.currentThread().interrupt();
+        }
+    }
+}
+===== RefuelTruck.java =====
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.LinkedBlockingQueue;
+
+/**
+ * RefuelTruck - the airport's ONLY refuelling truck, modelled as its own thread.
+ *
+ * Pilots put refuel jobs on a BlockingQueue; the single truck thread serves them one at a time, in
+ * order. Because there is exactly one consumer, refuelling is mutually exclusive by construction,
+ * and the queue is FIFO so no plane is starved. Safety.enter("refuel-truck", 1) double-checks it.
+ */
+final class RefuelTruck implements Runnable {
+
+    /** A request from a pilot. */
+    static final class Job {
+        final Plane plane;
+        final int gate;
+        final CountDownLatch serviceDone;
+        Job(Plane plane, int gate, CountDownLatch serviceDone) {
+            this.plane = plane;
+            this.gate = gate;
+            this.serviceDone = serviceDone;
+        }
+    }
+
+    private static final Job POISON = new Job(null, 0, null);
+    private final BlockingQueue<Job> jobs = new LinkedBlockingQueue<Job>();
+
+    /** Called by a pilot; returns how many jobs were already waiting (for the log message). */
+    int submit(Job job) {
+        int ahead = jobs.size();
+        jobs.add(job);
+        return ahead;
+    }
+
+    void shutdown() { jobs.add(POISON); }
+
+    public void run() {
+        SimLog.log("Refuel truck ready. Only one aircraft can be refuelled at a time.");
+        try {
+            while (true) {
+                Job job = jobs.take();                    // blocks while idle
+                if (job == POISON) {
+                    break;
+                }
+                Safety.enter("refuel-truck", 1);
+                SimLog.log("Refuelling Plane " + job.plane.number() + " at Gate " + job.gate
+                        + " (truck in exclusive use). Waiting in line: " + jobs.size());
+                SimConfig.pause(SimConfig.REFUEL);
+                job.plane.fillTank();
+                SimLog.log("Plane " + job.plane.number() + " refuelled to 100%. Truck is free again.");
+                Safety.leave("refuel-truck");
+                job.serviceDone.countDown();
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+}
+===== Safety.java =====
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.LongAccumulator;
+
+/**
+ * Safety - run-time invariant checker ("black box" for the airport).
+ *
+ * Every critical zone (runway, ground, refuel truck, ...) reports enter()/leave() with its allowed
+ * limit. The counters are lock-free atomics, so checking never slows or serialises the simulation.
+ * If a limit is ever exceeded the breach is logged and counted; the ATC prints the totals in its
+ * final sanity check, which turns "I think it is safe" into evidence.
+ */
+final class Safety {
+    private Safety() { }
+
+    private static final ConcurrentHashMap<String, AtomicInteger> CURRENT = new ConcurrentHashMap<String, AtomicInteger>();
+    private static final ConcurrentHashMap<String, LongAccumulator> PEAK = new ConcurrentHashMap<String, LongAccumulator>();
+    private static final AtomicInteger VIOLATIONS = new AtomicInteger();
+    private static final AtomicLong PROGRESS = new AtomicLong();
+
+    /** A thread enters a zone that may hold at most 'limit' occupants at once. */
+    static void enter(String zone, int limit) {
+        AtomicInteger c = CURRENT.computeIfAbsent(zone, k -> new AtomicInteger());
+        LongAccumulator p = PEAK.computeIfAbsent(zone, k -> new LongAccumulator(Math::max, 0));
+        int now = c.incrementAndGet();      // atomic read-modify-write: no lost updates
+        p.accumulate(now);
+        if (now > limit) {
+            violation("zone '" + zone + "' holds " + now + " but the limit is " + limit);
+        }
+    }
+
+    static void leave(String zone) {
+        CURRENT.get(zone).decrementAndGet();
+    }
+
+    static void violation(String what) {
+        VIOLATIONS.incrementAndGet();
+        SimLog.log("*** SAFETY VIOLATION: " + what);
+    }
+
+    static int violations()           { return VIOLATIONS.get(); }
+    static long peak(String zone)     { LongAccumulator p = PEAK.get(zone); return p == null ? 0 : p.get(); }
+    static int current(String zone)   { AtomicInteger c = CURRENT.get(zone); return c == null ? 0 : c.get(); }
+    static void progress()            { PROGRESS.incrementAndGet(); }
+    static long progressCount()       { return PROGRESS.get(); }
+}
+===== SimConfig.java =====
+/**
+ * SimConfig - every tunable number of the Asia Pacific Airport simulation lives here,
+ * so the behaviour can be changed (or scaled down for testing) in one place.
+ *
+ * Course : CT074-3-2 Concurrent Programming - Individual Assignment
+ */
+final class SimConfig {
+    private SimConfig() { }
+
+    // ---- Scenario sizes (taken from the case study) -------------------------------------------
+    static final int TOTAL_PLANES     = 8;  // every one of these planes must land, be serviced and leave
+    static final int GROUND_CAPACITY  = 3;  // max aircraft on the grounds INCLUDING the runway
+    static final int GATES            = 3;  // gates in Figure 1 of the brief
+    static final int MAX_PASSENGERS   = 50; // seats per aircraft
+
+    // ---- Congestion / emergency scenario -------------------------------------------------------
+    static final int EMERGENCY_PLANE_NO     = 6;  // the plane that arrives short of fuel
+    static final int CONGESTION_WAITING_MIN = 2;  // planes that must already be circling
+    static final int CONGESTION_GATES       = 2;  // gates that must be occupied (exactly) when the emergency plane arrives
+    static final int EMERGENCY_FUEL_PERCENT = 8;  // fuel on arrival for the emergency plane
+    static final int LOW_FUEL_PERCENT       = 20; // below this a circling pilot declares MAYDAY itself
+    static final int FUEL_BURN_PER_TICK     = 1;  // % of fuel burnt every holding-pattern tick
+    static final int HOLDING_TICK_MS        = 500;
+
+    // ---- Timing (milliseconds, min..max) – "each step should take some time" ---------------------
+    static final int[] LAND      = {900, 1200};
+    static final int[] COAST     = {700, 1000};
+    static final int[] DOCK      = {400, 600};
+    static final int[] PASSENGER = {100, 600};   // one passenger walking through the gate door
+    static final int[] SUPPLIES  = {800, 1200};
+    static final int[] CLEANING  = {800, 1200};
+    static final int[] REFUEL    = {1200, 1800};
+    static final int[] UNDOCK    = {400, 600};
+    static final int[] TAKEOFF   = {900, 1200};
+
+    /** 1.0 = real time. Lower it (e.g. 0.1) for very quick test runs. */
+    static final double TIME_SCALE = 1.0;
+
+    /** false = passengers print only their first two and last event per group (keeps the video readable). */
+    static final boolean LOG_EVERY_PASSENGER = false;
+
+    /** Safety net: the whole simulation must finish inside this (brief: 60 s). */
+    static final long WATCHDOG_STALL_MS = 15_000;
+
+    /** Sleep for a random time in [range[0], range[1]] ms; this is how a "step takes some time". */
+    static void pause(int[] range) {
+        int ms = range[0] + java.util.concurrent.ThreadLocalRandom.current().nextInt(range[1] - range[0] + 1);
+        pause((long) ms);
+    }
+
+    static void pause(long ms) {
+        try {
+            Thread.sleep((long) (ms * TIME_SCALE));
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt(); // preserve the interrupt status for the caller
+        }
+    }
+}
+===== SimLog.java =====
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
+
+/**
+ * SimLog - asynchronous console logger (producer/consumer).
+ *
+ * Every thread calls log(); the line is stamped with the NAME OF THE CALLING THREAD and the
+ * simulation clock, then handed to one dedicated writer thread through a BlockingQueue.
+ * Result: lines never interleave mid-sentence, and the output proves WHICH thread did WHAT
+ * (the brief forbids one thread printing on behalf of another).
+ */
+final class SimLog {
+    private SimLog() { }
+
+    private static final BlockingQueue<String> QUEUE = new LinkedBlockingQueue<String>();
+    private static final String POISON = "<<end-of-log>>";
+    private static final long START = System.nanoTime();
+    private static Thread writer;
+
+    static void start() {
+        writer = new Thread(new Runnable() {
+            public void run() {
+                try {
+                    while (true) {
+                        String line = QUEUE.take();
+                        if (POISON.equals(line)) {
+                            return;
+                        }
+                        System.out.println(line);
+                    }
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }
+        }, "Logger-Writer");
+        writer.start();
+    }
+
+    /** Thread-safe: stamping + enqueue are done together so timestamps stay in order. */
+    static void log(String message) {
+        Safety.progress(); // every log line counts as "the system is alive" for the watchdog
+        synchronized (QUEUE) {
+            double t = (System.nanoTime() - START) / 1e9;
+            QUEUE.add(String.format("[%6.2fs] %-20s: %s", t, Thread.currentThread().getName(), message));
+        }
+    }
+
+    /** Flush everything and stop the writer. */
+    static void stop() throws InterruptedException {
+        QUEUE.add(POISON);
+        writer.join();
+    }
+}
+===== Stats.java =====
+import java.util.Map;
+import java.util.concurrent.ConcurrentSkipListMap;
+import java.util.concurrent.atomic.LongAccumulator;
+import java.util.concurrent.atomic.LongAdder;
+
+/**
+ * Stats - thread-safe statistics collector. Many threads record at the same time without a single
+ * lock: LongAdder (striped counters, low contention) for sums, LongAccumulator for min/max.
+ */
+final class Stats {
+    private final LongAdder planesServed   = new LongAdder();
+    private final LongAdder paxDisembarked = new LongAdder();
+    private final LongAdder paxBoarded     = new LongAdder();
+    private final LongAdder paxDisembarkPlanned = new LongAdder();
+    private final LongAdder paxBoardPlanned     = new LongAdder();
+    private final LongAdder emergencies    = new LongAdder();
+    private final LongAdder totalWaitMs    = new LongAdder();
+    private final LongAdder waitSamples    = new LongAdder();
+    private final LongAccumulator maxWaitMs = new LongAccumulator(Math::max, Long.MIN_VALUE);
+    private final LongAccumulator minWaitMs = new LongAccumulator(Math::min, Long.MAX_VALUE);
+    private final ConcurrentSkipListMap<Integer, Long> waitByPlane = new ConcurrentSkipListMap<Integer, Long>();
+
+    void recordWait(int planeNo, long ms) {
+        totalWaitMs.add(ms);
+        waitSamples.increment();
+        maxWaitMs.accumulate(ms);
+        minWaitMs.accumulate(ms);
+        waitByPlane.put(planeNo, ms);
+    }
+
+    void planned(int disembark, int board) { paxDisembarkPlanned.add(disembark); paxBoardPlanned.add(board); }
+    void planeServed()      { planesServed.increment(); }
+    void passengerOff()     { paxDisembarked.increment(); }
+    void passengerOn()      { paxBoarded.increment(); }
+    void emergencyLanding() { emergencies.increment(); }
+
+    long planesServed()   { return planesServed.sum(); }
+    long paxDisembarked() { return paxDisembarked.sum(); }
+    long paxBoarded()     { return paxBoarded.sum(); }
+    long paxDisembarkPlanned() { return paxDisembarkPlanned.sum(); }
+    long paxBoardPlanned()     { return paxBoardPlanned.sum(); }
+    long emergencies()    { return emergencies.sum(); }
+    long maxWaitMs()      { return waitSamples.sum() == 0 ? 0 : maxWaitMs.get(); }
+    long minWaitMs()      { return waitSamples.sum() == 0 ? 0 : minWaitMs.get(); }
+    double avgWaitMs()    { long n = waitSamples.sum(); return n == 0 ? 0 : (double) totalWaitMs.sum() / n; }
+    Map<Integer, Long> waitByPlane() { return waitByPlane; }
+}
+===== Watchdog.java =====
+import java.lang.management.ManagementFactory;
+import java.lang.management.ThreadMXBean;
+
+/**
+ * Watchdog - daemon thread that guards against the two classic liveness failures:
+ *   1. Deadlock  : asks the JVM (ThreadMXBean) whether any threads wait on each other in a cycle.
+ *   2. Stall     : if no thread has logged anything for WATCHDOG_STALL_MS the system is stuck.
+ * Either finding is logged and remembered so the ATC can report it in the sanity checks.
+ */
+final class Watchdog implements Runnable {
+    private volatile boolean stopped;
+    private volatile boolean problemFound;
+
+    public void run() {
+        ThreadMXBean mx = ManagementFactory.getThreadMXBean();
+        long lastProgress = -1;
+        long lastChange = System.currentTimeMillis();
+        while (!stopped) {
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                break;
+            }
+            long[] deadlocked = mx.findDeadlockedThreads();
+            if (deadlocked != null) {
+                problemFound = true;
+                SimLog.log("WATCHDOG: DEADLOCK among " + deadlocked.length + " threads!");
+            }
+            long p = Safety.progressCount();
+            if (p != lastProgress) {
+                lastProgress = p;
+                lastChange = System.currentTimeMillis();
+            } else if (System.currentTimeMillis() - lastChange > SimConfig.WATCHDOG_STALL_MS) {
+                problemFound = true;
+                lastChange = System.currentTimeMillis();
+                SimLog.log("WATCHDOG: no progress for " + SimConfig.WATCHDOG_STALL_MS / 1000 + "s - possible stall!");
+            }
+        }
+    }
+
+    boolean isClean() { return !problemFound; }
+
+    void stop() { stopped = true; }
+}
+===== Console output of: java AirportSimulation (seed 2026) =====
+[  0.01s] main                : === Asia Pacific Airport simulation starting (random seed 2026) ===
+[  0.06s] Refuel-Truck        : Refuel truck ready. Only one aircraft can be refuelled at a time.
+[  0.06s] ATC                 : Air traffic control online. Runway open. Ground capacity 3, gates 3.
+[  0.06s] Generator           : Radar: new aircraft inbound -> Plane 1
+[  0.06s] Generator           : Radar: new aircraft inbound -> Plane 2
+[  0.06s] Plane-1             : Plane 1: Requesting permission to land! (fuel 88%, 11 passengers on board)
+[  0.06s] Plane-2             : Plane 2: Requesting permission to land! (fuel 95%, 46 passengers on board)
+[  0.07s] ATC                 : Plane 1: cleared to land. Assigned Gate 1. Ground 1/3, still circling: Plane 2
+[  0.07s] ATC                 : Plane 2: cleared to land. Assigned Gate 2. Ground 2/3, still circling: none
+[  0.07s] Plane-1             : Plane 1: Cleared! Waiting for the runway to land...
+[  0.07s] Plane-2             : Plane 2: Cleared! Waiting for the runway to land...
+[  0.07s] Plane-1             : Plane 1: Touchdown! Landing on the runway.
+[  1.06s] Generator           : Radar: new aircraft inbound -> Plane 3
+[  1.06s] Plane-3             : Plane 3: Requesting permission to land! (fuel 82%, 27 passengers on board)
+[  1.06s] ATC                 : Plane 3: cleared to land. Assigned Gate 3. Ground 3/3, still circling: none
+[  1.06s] Plane-3             : Plane 3: Cleared! Waiting for the runway to land...
+[  1.15s] Plane-1             : Plane 1: Landed, vacating the runway.
+[  1.15s] Plane-2             : Plane 2: Touchdown! Landing on the runway.
+[  1.15s] Plane-1             : Plane 1: Coasting to Gate 1.
+[  2.34s] Plane-2             : Plane 2: Landed, vacating the runway.
+[  2.34s] Plane-2             : Plane 2: Coasting to Gate 2.
+[  2.34s] Plane-3             : Plane 3: Touchdown! Landing on the runway.
+[  2.51s] Plane-1             : Plane 1: Docked at Gate 1. Doors open.
+[  2.78s] Passenger-P1-D2     : I'm getting off Plane 1 at Gate 1 (2/11)
+[  2.81s] Passenger-P1-D11    : I'm getting off Plane 1 at Gate 1 (11/11) - last one
+[  3.02s] Passenger-P1-D1     : I'm getting off Plane 1 at Gate 1 (1/11)
+[  3.06s] Generator           : Radar: new aircraft inbound -> Plane 4
+[  3.06s] Plane-4             : Plane 4: Requesting permission to land! (fuel 79%, 26 passengers on board)
+[  3.06s] ATC                 : Ground is full (3/3). Holding in the circle: Plane 4
+[  3.08s] Plane-1             : Plane 1: All 11 passengers have disembarked.
+[  3.09s] Plane-1             : Plane 1: Requested refuel truck. Crews are working on my plane.
+[  3.09s] Supply-Crew-P1      : Restocking food and supplies on Plane 1 at Gate 1...
+[  3.09s] Cleaning-Crew-P1    : Cleaning the cabin of Plane 1 at Gate 1...
+[  3.09s] Refuel-Truck        : Refuelling Plane 1 at Gate 1 (truck in exclusive use). Waiting in line: 0
+[  3.53s] Plane-3             : Plane 3: Landed, vacating the runway.
+[  3.53s] Plane-3             : Plane 3: Coasting to Gate 3.
+[  3.92s] Plane-2             : Plane 2: Docked at Gate 2. Doors open.
+[  4.08s] Passenger-P2-D1     : I'm getting off Plane 2 at Gate 2 (1/46)
+[  4.17s] Supply-Crew-P1      : Supplies restocked for Plane 1.
+[  4.29s] Cleaning-Crew-P1    : Cabin cleaned for Plane 1.
+[  4.35s] Passenger-P2-D2     : I'm getting off Plane 2 at Gate 2 (2/46)
+[  4.40s] Passenger-P2-D46    : I'm getting off Plane 2 at Gate 2 (46/46) - last one
+[  4.52s] Plane-2             : Plane 2: All 46 passengers have disembarked.
+[  4.52s] Supply-Crew-P2      : Restocking food and supplies on Plane 2 at Gate 2...
+[  4.52s] Cleaning-Crew-P2    : Cleaning the cabin of Plane 2 at Gate 2...
+[  4.52s] Plane-2             : Plane 2: Requested refuel truck. Crews are working on my plane.
+[  4.70s] Refuel-Truck        : Plane 1 refuelled to 100%. Truck is free again.
+[  4.71s] Refuel-Truck        : Refuelling Plane 2 at Gate 2 (truck in exclusive use). Waiting in line: 0
+[  4.71s] Plane-1             : Plane 1: Refuel, supplies and cleaning complete.
+[  4.89s] Passenger-P1-B17    : I'm boarding Plane 1 at Gate 1 (17/17) - last one
+[  4.90s] Plane-3             : Plane 3: Docked at Gate 3. Doors open.
+[  5.00s] Passenger-P1-B2     : I'm boarding Plane 1 at Gate 1 (2/17)
+[  5.00s] Passenger-P3-D2     : I'm getting off Plane 3 at Gate 3 (2/27)
+[  5.03s] Passenger-P3-D1     : I'm getting off Plane 3 at Gate 3 (1/27)
+[  5.06s] Generator           : Radar: new aircraft inbound -> Plane 5
+[  5.06s] Plane-5             : Plane 5: Requesting permission to land! (fuel 75%, 50 passengers on board)
+[  5.06s] ATC                 : Ground is full (3/3). Holding in the circle: Plane 4, Plane 5
+[  5.11s] Passenger-P3-D27    : I'm getting off Plane 3 at Gate 3 (27/27) - last one
+[  5.23s] Passenger-P1-B1     : I'm boarding Plane 1 at Gate 1 (1/17)
+[  5.29s] Plane-1             : Plane 1: Boarding complete: 17 passengers on board.
+[  5.42s] Cleaning-Crew-P2    : Cabin cleaned for Plane 2.
+[  5.49s] Plane-3             : Plane 3: All 27 passengers have disembarked.
+[  5.49s] Supply-Crew-P3      : Restocking food and supplies on Plane 3 at Gate 3...
+[  5.49s] Plane-3             : Plane 3: Requested refuel truck. Crews are working on my plane.
+[  5.49s] Cleaning-Crew-P3    : Cleaning the cabin of Plane 3 at Gate 3...
+[  5.71s] Supply-Crew-P2      : Supplies restocked for Plane 2.
+[  5.82s] Plane-1             : Plane 1: Undocked from Gate 1. Coasting to the runway.
+[  6.06s] Generator           : SCENARIO: congestion confirmed - 2 planes circling, 2 gates occupied, ground full. A plane with a fuel shortage now arrives!
+[  6.06s] Generator           : Radar: new aircraft inbound -> Plane 6
+[  6.07s] Generator           : Radar: new aircraft inbound -> Plane 7
+[  6.07s] Generator           : Radar: new aircraft inbound -> Plane 8
+[  6.07s] Plane-6             : Plane 6: MAYDAY MAYDAY MAYDAY! Fuel shortage (8%). Requesting EMERGENCY landing!
+[  6.07s] Plane-7             : Plane 7: Requesting permission to land! (fuel 75%, 23 passengers on board)
+[  6.07s] Plane-8             : Plane 8: Requesting permission to land! (fuel 97%, 42 passengers on board)
+[  6.07s] ATC                 : MAYDAY received from Plane 6. Plane 6 now has landing priority over all other traffic.
+[  6.07s] ATC                 : Ground is full (3/3). Holding in the circle: Plane 4, Plane 5, Plane 6(MAYDAY)
+[  6.07s] ATC                 : Ground is full (3/3). Holding in the circle: Plane 4, Plane 5, Plane 6(MAYDAY), Plane 7, Plane 8
+[  6.32s] Supply-Crew-P3      : Supplies restocked for Plane 3.
+[  6.34s] Cleaning-Crew-P3    : Cabin cleaned for Plane 3.
+[  6.42s] Refuel-Truck        : Plane 2 refuelled to 100%. Truck is free again.
+[  6.42s] Refuel-Truck        : Refuelling Plane 3 at Gate 3 (truck in exclusive use). Waiting in line: 0
+[  6.42s] Plane-2             : Plane 2: Refuel, supplies and cleaning complete.
+[  6.53s] Passenger-P2-B2     : I'm boarding Plane 2 at Gate 2 (2/21)
+[  6.60s] Passenger-P2-B21    : I'm boarding Plane 2 at Gate 2 (21/21) - last one
+[  6.60s] Plane-1             : Plane 1: Cleared for departure. Taking off!
+[  6.77s] Passenger-P2-B1     : I'm boarding Plane 2 at Gate 2 (1/21)
+[  6.99s] Plane-2             : Plane 2: Boarding complete: 21 passengers on board.
+[  7.49s] Plane-2             : Plane 2: Undocked from Gate 2. Coasting to the runway.
+[  7.69s] Plane-1             : Plane 1: Airborne. Goodbye Asia Pacific Airport!
+[  7.69s] Plane-1             : Plane 1: Total time at/around the airport: 7.6s.
+[  7.69s] ATC                 : Plane 1 has left our airspace. Ground 2/3.
+[  7.69s] ATC                 : Plane 6: cleared to land [EMERGENCY PRIORITY]. Assigned Gate 1. Ground 3/3, still circling: Plane 4, Plane 5, Plane 7, Plane 8
+[  7.69s] ATC                 : Ground is full (3/3). Holding in the circle: Plane 4, Plane 5, Plane 7, Plane 8
+[  7.69s] Plane-6             : Plane 6: Cleared! Waiting for the runway to land...
+[  7.69s] Plane-6             : Plane 6: Touchdown! Landing on the runway.
+[  7.93s] Refuel-Truck        : Plane 3 refuelled to 100%. Truck is free again.
+[  7.93s] Plane-3             : Plane 3: Refuel, supplies and cleaning complete.
+[  8.24s] Passenger-P3-B1     : I'm boarding Plane 3 at Gate 3 (1/13)
+[  8.30s] Passenger-P3-B13    : I'm boarding Plane 3 at Gate 3 (13/13) - last one
+[  8.33s] Passenger-P3-B2     : I'm boarding Plane 3 at Gate 3 (2/13)
+[  8.41s] Plane-3             : Plane 3: Boarding complete: 13 passengers on board.
+[  8.60s] Plane-6             : Plane 6: Landed, vacating the runway.
+[  8.60s] Plane-6             : Plane 6: Coasting to Gate 1.
+[  8.60s] Plane-2             : Plane 2: Cleared for departure. Taking off!
+[  8.88s] Plane-3             : Plane 3: Undocked from Gate 3. Coasting to the runway.
+[  9.50s] Plane-2             : Plane 2: Airborne. Goodbye Asia Pacific Airport!
+[  9.50s] Plane-2             : Plane 2: Total time at/around the airport: 9.4s.
+[  9.50s] ATC                 : Plane 2 has left our airspace. Ground 2/3.
+[  9.50s] ATC                 : Plane 4: cleared to land. Assigned Gate 2. Ground 3/3, still circling: Plane 5, Plane 7, Plane 8
+[  9.50s] ATC                 : Ground is full (3/3). Holding in the circle: Plane 5, Plane 7, Plane 8
+[  9.50s] Plane-4             : Plane 4: Cleared! Waiting for the runway to land...
+[  9.50s] Plane-4             : Plane 4: Touchdown! Landing on the runway.
+[  9.81s] Plane-6             : Plane 6: Docked at Gate 1. Doors open.
+[ 10.15s] Passenger-P6-D1     : I'm getting off Plane 6 at Gate 1 (1/22)
+[ 10.29s] Passenger-P6-D2     : I'm getting off Plane 6 at Gate 1 (2/22)
+[ 10.29s] Passenger-P6-D22    : I'm getting off Plane 6 at Gate 1 (22/22) - last one
+[ 10.41s] Plane-6             : Plane 6: All 22 passengers have disembarked.
+[ 10.41s] Supply-Crew-P6      : Restocking food and supplies on Plane 6 at Gate 1...
+[ 10.41s] Plane-6             : Plane 6: Requested refuel truck. Crews are working on my plane.
+[ 10.41s] Refuel-Truck        : Refuelling Plane 6 at Gate 1 (truck in exclusive use). Waiting in line: 0
+[ 10.41s] Cleaning-Crew-P6    : Cleaning the cabin of Plane 6 at Gate 1...
+[ 10.43s] Plane-4             : Plane 4: Landed, vacating the runway.
+[ 10.43s] Plane-4             : Plane 4: Coasting to Gate 2.
+[ 10.43s] Plane-3             : Plane 3: Cleared for departure. Taking off!
+[ 11.25s] Cleaning-Crew-P6    : Cabin cleaned for Plane 6.
+[ 11.60s] Supply-Crew-P6      : Supplies restocked for Plane 6.
+[ 11.62s] Plane-3             : Plane 3: Airborne. Goodbye Asia Pacific Airport!
+[ 11.62s] ATC                 : Plane 3 has left our airspace. Ground 2/3.
+[ 11.62s] Plane-3             : Plane 3: Total time at/around the airport: 10.6s.
+[ 11.62s] ATC                 : Plane 5: cleared to land. Assigned Gate 3. Ground 3/3, still circling: Plane 7, Plane 8
+[ 11.62s] ATC                 : Ground is full (3/3). Holding in the circle: Plane 7, Plane 8
+[ 11.62s] Plane-5             : Plane 5: Cleared! Waiting for the runway to land...
+[ 11.62s] Plane-5             : Plane 5: Touchdown! Landing on the runway.
+[ 11.82s] Refuel-Truck        : Plane 6 refuelled to 100%. Truck is free again.
+[ 11.82s] Plane-6             : Plane 6: Refuel, supplies and cleaning complete.
+[ 11.97s] Passenger-P6-B1     : I'm boarding Plane 6 at Gate 1 (1/38)
+[ 11.97s] Plane-4             : Plane 4: Docked at Gate 2. Doors open.
+[ 12.02s] Passenger-P6-B2     : I'm boarding Plane 6 at Gate 1 (2/38)
+[ 12.11s] Passenger-P4-D2     : I'm getting off Plane 4 at Gate 2 (2/26)
+[ 12.22s] Passenger-P4-D1     : I'm getting off Plane 4 at Gate 2 (1/26)
+[ 12.40s] Passenger-P6-B38    : I'm boarding Plane 6 at Gate 1 (38/38) - last one
+[ 12.42s] Plane-6             : Plane 6: Boarding complete: 38 passengers on board.
+[ 12.55s] Passenger-P4-D26    : I'm getting off Plane 4 at Gate 2 (26/26) - last one
+[ 12.55s] Plane-4             : Plane 4: All 26 passengers have disembarked.
+[ 12.55s] Supply-Crew-P4      : Restocking food and supplies on Plane 4 at Gate 2...
+[ 12.55s] Refuel-Truck        : Refuelling Plane 4 at Gate 2 (truck in exclusive use). Waiting in line: 0
+[ 12.55s] Plane-4             : Plane 4: Requested refuel truck. Crews are working on my plane.
+[ 12.55s] Cleaning-Crew-P4    : Cleaning the cabin of Plane 4 at Gate 2...
+[ 12.82s] Plane-5             : Plane 5: Landed, vacating the runway.
+[ 12.82s] Plane-5             : Plane 5: Coasting to Gate 3.
+[ 13.01s] Plane-6             : Plane 6: Undocked from Gate 1. Coasting to the runway.
+[ 13.50s] Supply-Crew-P4      : Supplies restocked for Plane 4.
+[ 13.50s] Cleaning-Crew-P4    : Cabin cleaned for Plane 4.
+[ 13.90s] Plane-6             : Plane 6: Cleared for departure. Taking off!
+[ 13.95s] Refuel-Truck        : Plane 4 refuelled to 100%. Truck is free again.
+[ 13.95s] Plane-4             : Plane 4: Refuel, supplies and cleaning complete.
+[ 14.10s] Passenger-P4-B2     : I'm boarding Plane 4 at Gate 2 (2/36)
+[ 14.26s] Passenger-P4-B36    : I'm boarding Plane 4 at Gate 2 (36/36) - last one
+[ 14.33s] Plane-5             : Plane 5: Docked at Gate 3. Doors open.
+[ 14.51s] Passenger-P4-B1     : I'm boarding Plane 4 at Gate 2 (1/36)
+[ 14.55s] Plane-4             : Plane 4: Boarding complete: 36 passengers on board.
+[ 14.64s] Passenger-P5-D2     : I'm getting off Plane 5 at Gate 3 (2/50)
+[ 14.68s] Passenger-P5-D1     : I'm getting off Plane 5 at Gate 3 (1/50)
+[ 14.86s] Plane-6             : Plane 6: Airborne. Goodbye Asia Pacific Airport!
+[ 14.86s] Plane-6             : Plane 6: Total time at/around the airport: 8.8s.
+[ 14.86s] ATC                 : Plane 6 has left our airspace. Ground 2/3.
+[ 14.86s] ATC                 : Plane 7: cleared to land. Assigned Gate 1. Ground 3/3, still circling: Plane 8
+[ 14.86s] ATC                 : Ground is full (3/3). Holding in the circle: Plane 8
+[ 14.86s] Plane-7             : Plane 7: Cleared! Waiting for the runway to land...
+[ 14.86s] Plane-7             : Plane 7: Touchdown! Landing on the runway.
+[ 14.93s] Passenger-P5-D50    : I'm getting off Plane 5 at Gate 3 (50/50) - last one
+[ 14.93s] Plane-5             : Plane 5: All 50 passengers have disembarked.
+[ 14.93s] Supply-Crew-P5      : Restocking food and supplies on Plane 5 at Gate 3...
+[ 14.93s] Refuel-Truck        : Refuelling Plane 5 at Gate 3 (truck in exclusive use). Waiting in line: 0
+[ 14.93s] Plane-5             : Plane 5: Requested refuel truck. Crews are working on my plane.
+[ 14.93s] Cleaning-Crew-P5    : Cleaning the cabin of Plane 5 at Gate 3...
+[ 15.04s] Plane-4             : Plane 4: Undocked from Gate 2. Coasting to the runway.
+[ 15.76s] Supply-Crew-P5      : Supplies restocked for Plane 5.
+[ 15.95s] Plane-7             : Plane 7: Landed, vacating the runway.
+[ 15.95s] Plane-7             : Plane 7: Coasting to Gate 1.
+[ 15.95s] Plane-4             : Plane 4: Cleared for departure. Taking off!
+[ 16.07s] Cleaning-Crew-P5    : Cabin cleaned for Plane 5.
+[ 16.27s] Refuel-Truck        : Plane 5 refuelled to 100%. Truck is free again.
+[ 16.27s] Plane-5             : Plane 5: Refuel, supplies and cleaning complete.
+[ 16.47s] Passenger-P5-B45    : I'm boarding Plane 5 at Gate 3 (45/45) - last one
+[ 16.77s] Passenger-P5-B2     : I'm boarding Plane 5 at Gate 3 (2/45)
+[ 16.78s] Passenger-P5-B1     : I'm boarding Plane 5 at Gate 3 (1/45)
+[ 16.88s] Plane-5             : Plane 5: Boarding complete: 45 passengers on board.
+[ 17.08s] Plane-4             : Plane 4: Airborne. Goodbye Asia Pacific Airport!
+[ 17.08s] Plane-4             : Plane 4: Total time at/around the airport: 14.0s.
+[ 17.08s] ATC                 : Plane 4 has left our airspace. Ground 2/3.
+[ 17.08s] ATC                 : Plane 8: cleared to land. Assigned Gate 2. Ground 3/3, still circling: none
+[ 17.08s] Plane-8             : Plane 8: Cleared! Waiting for the runway to land...
+[ 17.08s] Plane-8             : Plane 8: Touchdown! Landing on the runway.
+[ 17.32s] Plane-5             : Plane 5: Undocked from Gate 3. Coasting to the runway.
+[ 17.42s] Plane-7             : Plane 7: Docked at Gate 1. Doors open.
+[ 17.59s] Passenger-P7-D23    : I'm getting off Plane 7 at Gate 1 (23/23) - last one
+[ 17.80s] Passenger-P7-D1     : I'm getting off Plane 7 at Gate 1 (1/23)
+[ 17.93s] Passenger-P7-D2     : I'm getting off Plane 7 at Gate 1 (2/23)
+[ 18.02s] Plane-7             : Plane 7: All 23 passengers have disembarked.
+[ 18.02s] Supply-Crew-P7      : Restocking food and supplies on Plane 7 at Gate 1...
+[ 18.02s] Refuel-Truck        : Refuelling Plane 7 at Gate 1 (truck in exclusive use). Waiting in line: 0
+[ 18.02s] Plane-7             : Plane 7: Requested refuel truck. Crews are working on my plane.
+[ 18.02s] Cleaning-Crew-P7    : Cleaning the cabin of Plane 7 at Gate 1...
+[ 18.18s] Plane-8             : Plane 8: Landed, vacating the runway.
+[ 18.18s] Plane-8             : Plane 8: Coasting to Gate 2.
+[ 18.31s] Plane-5             : Plane 5: Cleared for departure. Taking off!
+[ 19.16s] Supply-Crew-P7      : Supplies restocked for Plane 7.
+[ 19.18s] Cleaning-Crew-P7    : Cabin cleaned for Plane 7.
+[ 19.28s] Plane-5             : Plane 5: Airborne. Goodbye Asia Pacific Airport!
+[ 19.28s] Plane-5             : Plane 5: Total time at/around the airport: 14.2s.
+[ 19.28s] ATC                 : Plane 5 has left our airspace. Ground 2/3.
+[ 19.32s] Refuel-Truck        : Plane 7 refuelled to 100%. Truck is free again.
+[ 19.32s] Plane-7             : Plane 7: Refuel, supplies and cleaning complete.
+[ 19.62s] Passenger-P7-B1     : I'm boarding Plane 7 at Gate 1 (1/34)
+[ 19.62s] Plane-8             : Plane 8: Docked at Gate 2. Doors open.
+[ 19.67s] Passenger-P7-B2     : I'm boarding Plane 7 at Gate 1 (2/34)
+[ 19.91s] Passenger-P7-B34    : I'm boarding Plane 7 at Gate 1 (34/34) - last one
+[ 19.93s] Plane-7             : Plane 7: Boarding complete: 34 passengers on board.
+[ 20.12s] Passenger-P8-D42    : I'm getting off Plane 8 at Gate 2 (42/42) - last one
+[ 20.18s] Passenger-P8-D2     : I'm getting off Plane 8 at Gate 2 (2/42)
+[ 20.20s] Passenger-P8-D1     : I'm getting off Plane 8 at Gate 2 (1/42)
+[ 20.21s] Plane-8             : Plane 8: All 42 passengers have disembarked.
+[ 20.21s] Supply-Crew-P8      : Restocking food and supplies on Plane 8 at Gate 2...
+[ 20.21s] Refuel-Truck        : Refuelling Plane 8 at Gate 2 (truck in exclusive use). Waiting in line: 0
+[ 20.21s] Plane-8             : Plane 8: Requested refuel truck. Crews are working on my plane.
+[ 20.21s] Cleaning-Crew-P8    : Cleaning the cabin of Plane 8 at Gate 2...
+[ 20.45s] Plane-7             : Plane 7: Undocked from Gate 1. Coasting to the runway.
+[ 21.04s] Cleaning-Crew-P8    : Cabin cleaned for Plane 8.
+[ 21.38s] Supply-Crew-P8      : Supplies restocked for Plane 8.
+[ 21.39s] Plane-7             : Plane 7: Cleared for departure. Taking off!
+[ 21.97s] Refuel-Truck        : Plane 8 refuelled to 100%. Truck is free again.
+[ 21.97s] Plane-8             : Plane 8: Refuel, supplies and cleaning complete.
+[ 22.16s] Passenger-P8-B1     : I'm boarding Plane 8 at Gate 2 (1/15)
+[ 22.30s] Passenger-P8-B2     : I'm boarding Plane 8 at Gate 2 (2/15)
+[ 22.40s] Passenger-P8-B15    : I'm boarding Plane 8 at Gate 2 (15/15) - last one
+[ 22.52s] Plane-7             : Plane 7: Airborne. Goodbye Asia Pacific Airport!
+[ 22.52s] Plane-7             : Plane 7: Total time at/around the airport: 16.5s.
+[ 22.52s] ATC                 : Plane 7 has left our airspace. Ground 1/3.
+[ 22.55s] Plane-8             : Plane 8: Boarding complete: 15 passengers on board.
+[ 22.96s] Plane-8             : Plane 8: Undocked from Gate 2. Coasting to the runway.
+[ 23.74s] Plane-8             : Plane 8: Cleared for departure. Taking off!
+[ 24.80s] Plane-8             : Plane 8: Airborne. Goodbye Asia Pacific Airport!
+[ 24.80s] ATC                 : Plane 8 has left our airspace. Ground 0/3.
+[ 24.80s] Plane-8             : Plane 8: Total time at/around the airport: 18.7s.
+[ 24.80s] ATC                 : All planes have left. Starting end-of-day sanity checks...
+[ 24.80s] ATC                 :   [PASS] All gates are empty
+[ 24.80s] ATC                 :   [PASS] No aircraft left on the ground (ground count = 0)
+[ 24.80s] ATC                 :   [PASS] Runway is free (permit returned)
+[ 24.80s] ATC                 :   [PASS] Refuel truck is idle
+[ 24.80s] ATC                 :   [PASS] Planes served = planes expected (8/8)
+[ 24.81s] ATC                 :   [PASS] Passengers disembarked = expected (247/247)
+[ 24.81s] ATC                 :   [PASS] Passengers boarded = expected (219/219)
+[ 24.81s] ATC                 :   [PASS] Peak aircraft on ground <= 3 (peak 3)
+[ 24.81s] ATC                 :   [PASS] Peak aircraft on runway <= 1 (peak 1)
+[ 24.81s] ATC                 :   [PASS] Peak refuel-truck users <= 1 (peak 1)
+[ 24.81s] ATC                 :   [PASS] Peak planes at any single gate <= 1 (peak 1)
+[ 24.81s] ATC                 :   [PASS] Safety violations recorded = 0 (found 0)
+[ 24.81s] ATC                 :   [PASS] Watchdog found no deadlock or stall
+[ 24.81s] ATC                 : SANITY CHECK RESULT: ALL CHECKS PASSED
+[ 24.81s] ATC                 : ================ STATISTICS ================
+[ 24.81s] ATC                 : Waiting time to land  - minimum: 0.00s | average: 4.30s | maximum: 11.02s
+[ 24.81s] ATC                 :    Plane 1 waited 0.00s
+[ 24.81s] ATC                 :    Plane 2 waited 0.01s
+[ 24.81s] ATC                 :    Plane 3 waited 0.00s
+[ 24.81s] ATC                 :    Plane 4 waited 6.44s
+[ 24.81s] ATC                 :    Plane 5 waited 6.55s
+[ 24.81s] ATC                 :    Plane 6 waited 1.62s
+[ 24.81s] ATC                 :    Plane 7 waited 8.80s
+[ 24.81s] ATC                 :    Plane 8 waited 11.02s
+[ 24.81s] ATC                 : Planes served        : 8
+[ 24.81s] ATC                 : Emergency landings   : 1
+[ 24.81s] ATC                 : Passengers boarded   : 219
+[ 24.81s] ATC                 : Passengers deplaned  : 247
+[ 24.81s] ATC                 : ============================================
+[ 24.81s] main                : === Simulation finished ===
+

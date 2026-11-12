@@ -1,0 +1,21 @@
+CT077-3-2-DSTR Data Structures - Lab Evaluation Work #2 (30 marks). Group C++ prototype, assessed individually.
+This calibration marks ONE student's own module (Task 2 - Parcel Service and Collection Management) in the context of the integrated system.
+
+A. Practical Skills - Problem-Solving Skills (program code), 15 marks:
+- Identify and address technical challenges: 3
+- Use of appropriate data structures and algorithms: 3
+- Implementation of functional requirements: 3
+- Code quality: readability, efficiency and correctness: 2
+- Quality of individual contribution to the integrated system: 2
+- Innovation and creativity in the solution: 2
+
+B. Q&A with Justification of Data Structures (face-to-face session), 15 marks:
+- Data structure selection and justification: 4
+- Relevance of selected data structures to functionality: 4
+- Justification of algorithms and operations: 3
+- Understanding of efficiency, limitations and edge cases: 2
+- Effectiveness of individual demonstration and responses: 2
+Part B happens live with the lecturer; nothing in the submission can earn these marks.
+
+No band descriptors are given. Use the APU grade bands: 80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail. Pass mark: 50.
+Rules: STL vector/list/stack/queue/priority_queue/deque may NOT replace the required structures. AI level: Yellow (restricted).

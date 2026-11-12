@@ -1,0 +1,5 @@
+criterion,max,mark
+Assumptions,20,16
+Explanation of the safety aspects of multi-threaded system implemented,30,24
+Justification of coding techniques implemented,30,23
+Depth of discussion of concurrency concepts,20,15

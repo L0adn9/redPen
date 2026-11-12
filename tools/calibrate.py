@@ -155,7 +155,11 @@ def main():
                                      "max": r["max"], "reference_mark": r["mark"],
                                      f"examiner_mark_round{a.round}": ex_by[m]["mark"] if m else "",
                                      "notes": "" if m else "criterion not found in Examiner output"})
-            ex_pct = pct(ex_rows) if ex_rows else res.get("total_percent", 0)
+            if only_total or not ex_rows:
+                ex_pct = pct(ex_rows) if ex_rows else res.get("total_percent", 0)
+            else:  # compare like for like: only the criteria the reference marker marked
+                hit = [ex_by[m] for m in (match(r["criterion"], ex_by) for r in ref) if m]
+                ex_pct = round(100 * sum(h["mark"] for h in hit) / sum(r["max"] for r in ref)) if hit else 0
             g_ref, g_ex = grade_for(ref_pct), grade_for(ex_pct)
             band_gap = abs(GRADES.index(g_ref) - GRADES.index(g_ex))
             summary.append({"sample": f"{adir.name}/{sdir.name}", "ref_pct": ref_pct, "ex_pct": ex_pct,
