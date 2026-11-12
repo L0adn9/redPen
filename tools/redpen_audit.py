@@ -139,6 +139,39 @@ def instructions(filename):
     return m.group(1).strip()
 
 
+SCHEMAS = ROOT / "agents" / "schemas"
+
+
+def schema_errors(step_name, data):
+    """Problems with a step's output vs agents/schemas/<step>.schema.json (the same schema set in Gemini Enterprise).
+    Returns [] if fine, or if the jsonschema package isn't installed."""
+    key = "02-persona" if step_name.startswith("02-") else step_name
+    path = SCHEMAS / f"{key}.schema.json"
+    try:
+        import jsonschema
+    except ImportError:
+        return []
+    if not path.exists():
+        return []
+    v = jsonschema.Draft202012Validator(json.loads(path.read_text(encoding="utf-8")))
+    return [f"{'/'.join(map(str, e.path)) or '(top)'}: {e.message}"[:200] for e in v.iter_errors(data)][:5]
+
+
+def passthrough_rules():
+    """The PASS-THROUGH paragraphs from agents/audit/fallback-pass-through.md, keyed by step name."""
+    text = (AUDIT / "fallback-pass-through.md").read_text(encoding="utf-8")
+    keys = {"Persona 1": "02-copy_paster", "Persona 2": "02-prompt_engineer", "Persona 3": "02-honest_helper",
+            "Examiner": "05-examiner", "Verdict": "06-verdict"}
+    out = {}
+    for m in re.finditer(r"^### (.+?)\n```\n(.*?)^```", text, re.S | re.M):
+        for k, step in keys.items():
+            if m.group(1).startswith(k):
+                out[step] = m.group(2).strip()
+    if len(out) != 5:
+        raise AuditError(f"fallback-pass-through.md: expected 5 rule blocks, found {sorted(out)}")
+    return out
+
+
 def _post(model, system, user, key):
     timeout = int(os.environ.get("REDPEN_TIMEOUT", "240"))
     if backend() == "openrouter":
@@ -256,34 +289,47 @@ def expected_exposure(totals, pass_mark):
 
 
 def run_audit(brief, rubric, clo_map, module="MODULE", assessment="A1", lecturer_email=None,
-              run_date=None, model_label=None, on_step=None, key=None, model_list=None):
+              run_date=None, model_label=None, on_step=None, key=None, model_list=None, mode="direct"):
     """Run the full Audit chain (6 API calls, ~3-6 min).
 
     on_step(step_name, data, seconds) is called after each step, on the caller's thread, in this order:
     01-intake, the three 02-<persona> steps as they finish, 05-examiner, 06-verdict.
     Step names and display titles: STEP_TITLES. Raises AuditError if every model fails.
+
+    mode="direct": each step gets exactly the inputs it needs (Gemini Enterprise steps can read any earlier step).
+    mode="passthrough": Gemini Enterprise worst case (day-1 check #13 fails): every step sees ONLY the previous
+    step's output, so the data travels as one growing bundle, using the paste-in rules from
+    agents/audit/fallback-pass-through.md. Steps run one after another, exactly as on the canvas.
     """
+    if mode not in ("direct", "passthrough"):
+        raise AuditError("mode must be 'direct' or 'passthrough'")
     if not (brief or "").strip() or not (rubric or "").strip():
         raise AuditError("the brief and the rubric are both required and must contain text")
     key = key or api_key()
     model_list = _guard(list(model_list or models()))
     model_label = model_label or label_for(model_list)
     run_date = run_date or dt.date.today().isoformat()
-    log = {"module": module, "assessment": assessment, "run_date": run_date, "model_label": model_label,
+    log = {"module": module, "assessment": assessment, "run_date": run_date, "model_label": model_label, "mode": mode,
            "models": model_list, "steps": {}, "warnings": []}
     steps = {}
 
     def step(name, system, user):
         t0 = time.time()
         text = version = None
-        for attempt in range(2):  # one retry if the JSON is broken
+        check_schema = not (mode == "passthrough" and name.startswith(("02-", "05-")))  # bundles have their own shape
+        for attempt in range(2):  # one retry if the JSON is broken or has the wrong shape
             text, version = call(system, user, key, model_list)
             try:
                 data, warn = parse(text, name)
-                break
             except AuditError:
                 if attempt == 1:
                     raise
+                continue
+            problems = schema_errors(name, data) if check_schema else []
+            if not problems:
+                break
+            if attempt == 1:
+                log["warnings"].append(f"{name}: output does not match its schema: {'; '.join(problems)}")
         if warn:
             log["warnings"].append(warn)
         secs = round(time.time() - t0, 1)
@@ -309,24 +355,51 @@ def run_audit(brief, rubric, clo_map, module="MODULE", assessment="A1", lecturer
         intake["lecturer_email"] = lecturer_email
     intake_json = json.dumps(intake, ensure_ascii=False)
 
-    with cf.ThreadPoolExecutor(3) as ex:
-        futs = {ex.submit(step, f"02-{p}", instructions(f), intake_json): p for p, f in PERSONAS.items()}
-        attempts = {}
-        for fut in cf.as_completed(futs):
-            attempts[futs[fut]] = fut.result()
-            done(f"02-{futs[fut]}")
-    attempts = {p: attempts[p] for p in PERSONAS}  # fixed order for the Examiner
+    if mode == "direct":
+        with cf.ThreadPoolExecutor(3) as ex:
+            futs = {ex.submit(step, f"02-{p}", instructions(f), intake_json): p for p, f in PERSONAS.items()}
+            attempts = {}
+            for fut in cf.as_completed(futs):
+                attempts[futs[fut]] = fut.result()
+                done(f"02-{futs[fut]}")
+        attempts = {p: attempts[p] for p in PERSONAS}  # fixed order for the Examiner
 
-    examiner = step("05-examiner", instructions("05-examiner.md"),
-                    json.dumps({"intake": intake, **attempts}, ensure_ascii=False))
-    done("05-examiner")
+        examiner = step("05-examiner", instructions("05-examiner.md"),
+                        json.dumps({"intake": intake, **attempts}, ensure_ascii=False))
+        done("05-examiner")
+        verdict_in = json.dumps({"intake": intake, "examiner": examiner, "run_date": run_date}, ensure_ascii=False)
+    else:
+        rules = passthrough_rules()
+        bundle_json = intake_json
+        for p, f in PERSONAS.items():
+            name = f"02-{p}"
+            bundle = step(name, instructions(f) + "\n\n" + rules[name], bundle_json)
+            if not isinstance(bundle, dict) or "attempts" not in bundle or p not in bundle.get("attempts", {}):
+                raise AuditError(f"{name} (pass-through) did not return the bundle with attempts.{p}")
+            if bundle.get("intake") != intake:
+                log["warnings"].append(f"{name}: the copied intake changed (copy drift)")
+            bundle["intake"] = intake  # what Gemini Enterprise would see is the drifted copy; we keep going honestly
+            steps[name] = {"persona": p, "answers": bundle["attempts"][p], "_bundle_keys": sorted(bundle["attempts"])}
+            bundle_json = json.dumps(bundle, ensure_ascii=False)
+            done(name)
+        missing = [p for p in PERSONAS if p not in json.loads(bundle_json)["attempts"]]
+        if missing:
+            raise AuditError(f"pass-through bundle lost attempts: {missing}")
+        out = step("05-examiner", instructions("05-examiner.md") + "\n\n" + rules["05-examiner"], bundle_json)
+        if not isinstance(out, dict) or "examiner" not in out or "meta" not in out:
+            raise AuditError("05-examiner (pass-through) did not return {meta, examiner}")
+        examiner = out["examiner"]
+        steps["05-examiner"] = examiner
+        done("05-examiner")
+        verdict_in = json.dumps(out, ensure_ascii=False)
 
     verdict_sys = instructions("06-verdict.md")
     if model_label != "pro":
         verdict_sys = verdict_sys.replace('model: "pro"', f'model: "{model_label}"').replace(
             '"model": "pro"', f'"model": "{model_label}"')
-    verdict = step("06-verdict", verdict_sys, json.dumps(
-        {"intake": intake, "examiner": examiner, "run_date": run_date}, ensure_ascii=False))
+    if mode == "passthrough":
+        verdict_sys += "\n\n" + passthrough_rules()["06-verdict"]
+    verdict = step("06-verdict", verdict_sys, verdict_in)
     done("06-verdict")
     if not isinstance(verdict, dict):
         raise AuditError("the Verdict step did not return a JSON object")
@@ -384,6 +457,8 @@ def main():
     ap.add_argument("--date", default=dt.date.today().isoformat())
     ap.add_argument("--parallel", type=int, default=2)
     ap.add_argument("--label", default=None, help="model label in the verdict (default: from the model list)")
+    ap.add_argument("--mode", choices=["direct", "passthrough"], default="direct",
+                    help="passthrough = Gemini Enterprise worst case: each step sees only the previous step")
     a = ap.parse_args()
     print(f"Backend: {backend()} | models (in order): " + ", ".join(models()))
     if a.check or not a.folders:
@@ -397,7 +472,7 @@ def main():
         module, assessment = folder.parent.name, folder.name
         txt = {n: (folder / n).read_text(encoding="utf-8") for n in ("brief.txt", "rubric.txt", "clo-map.txt")}
         res = run_audit(txt["brief.txt"], txt["rubric.txt"], txt["clo-map.txt"], module, assessment,
-                        lecturer_email=a.email, run_date=a.date, key=key, model_label=a.label,
+                        lecturer_email=a.email, run_date=a.date, key=key, model_label=a.label, mode=a.mode,
                         on_step=lambda n, d, s: print(f"  {module} {assessment} {n}: {s}s", flush=True))
         name = f"{module}_{assessment}"
         _save(res, pathlib.Path(a.out) / name)

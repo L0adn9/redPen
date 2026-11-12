@@ -1,0 +1,136 @@
+{
+  "marked_criteria": [
+    "Explanation of algorithms",
+    "Justification for the scenario",
+    "Implementation and testing",
+    "Presentation and referencing"
+  ],
+  "results": [
+    {
+      "persona": "copy_paster",
+      "scores": [
+        {
+          "criterion": "Explanation of algorithms",
+          "score": 13,
+          "max": 20,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "The descriptions are generic and fail to explicitly link the mechanics to the library scenario's specific data types. The mark is in the 'Satisfactory' band as it covers all complexities correctly but lacks depth."
+        },
+        {
+          "criterion": "Justification for the scenario",
+          "score": 21,
+          "max": 30,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Correctly identifies the need for stability in the stock report, though it overlooks the memory overhead of Merge Sort. The justification for Binary Search is sound but relies on basic math without deeper architectural consideration."
+        },
+        {
+          "criterion": "Implementation and testing",
+          "score": 17,
+          "max": 25,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The implementation is functional but uses a very basic integer list which doesn't represent a 'book record' effectively. Testing is present but lacks boundary checks for empty arrays or large indices."
+        },
+        {
+          "criterion": "Presentation and referencing",
+          "score": 0,
+          "max": 10,
+          "clos": [],
+          "justification": "The submission contains no formal referencing or APA 7th citations as required by the task. Total failure for this criterion."
+        }
+      ],
+      "total_percent": 60,
+      "grade": "C+",
+      "passed": true
+    },
+    {
+      "persona": "prompt_engineer",
+      "scores": [
+        {
+          "criterion": "Explanation of algorithms",
+          "score": 18,
+          "max": 20,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "Excellent detail, specifically quantifying operations for the 250k dataset which shows strong understanding. Only minor lack of detail on specific pivot strategies in Quick Sort prevents full marks."
+        },
+        {
+          "criterion": "Justification for the scenario",
+          "score": 27,
+          "max": 30,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Strong justification that considers index maintenance and the specific risks of O(n^2) in production. The reflection on Quick Sort vs Merge Sort shows higher-level analysis."
+        },
+        {
+          "criterion": "Implementation and testing",
+          "score": 22,
+          "max": 25,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "Uses a more realistic tuple-based data structure and a recursive implementation. Testing is clear and includes a boundary case, though it doesn't handle the 'unsorted input' error case."
+        },
+        {
+          "criterion": "Presentation and referencing",
+          "score": 9,
+          "max": 10,
+          "clos": [],
+          "justification": "Well-structured with clear headings and appropriate APA 7th citations for technical concepts. Nearly perfect presentation."
+        }
+      ],
+      "total_percent": 89,
+      "grade": "A+",
+      "passed": true
+    },
+    {
+      "persona": "honest_helper",
+      "scores": [
+        {
+          "criterion": "Explanation of algorithms",
+          "score": 12,
+          "max": 20,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "The explanation is brief and somewhat generic, barely meeting the 'Satisfactory' criteria due to a lack of scenario-specific insight. The complexity notation is correct but unexplained."
+        },
+        {
+          "criterion": "Justification for the scenario",
+          "score": 19,
+          "max": 30,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Covers the essential points regarding stability and log n search, but the analysis is thin. It lacks the 'insightful' quality needed for the higher bands."
+        },
+        {
+          "criterion": "Implementation and testing",
+          "score": 0,
+          "max": 25,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The answer contains a placeholder '[REQUIRES STUDENT'S OWN EVIDENCE]' for the data source, meaning the implementation cannot be verified against the required context. Scoring 0 as per Rule 5."
+        },
+        {
+          "criterion": "Presentation and referencing",
+          "score": 0,
+          "max": 10,
+          "clos": [],
+          "justification": "No APA referencing provided in the response."
+        }
+      ],
+      "total_percent": 36,
+      "grade": "F",
+      "passed": false
+    }
+  ]
+}

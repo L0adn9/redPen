@@ -1,0 +1,175 @@
+{
+  "module": "CCP",
+  "module_name": "Concurrent Programming",
+  "assessment": "A1",
+  "folder_path": "/RedPen/Assessments/CCP/A1/",
+  "brief_path": "/RedPen/Assessments/CCP/A1/brief.txt",
+  "lecturer_email": "",
+  "ai_policy": "not stated",
+  "pass_mark": 50,
+  "total_marks": 200,
+  "context": "Asia Pacific Airport\nYou have been tasked to simulate the operations of the airport.\n*******************************Basic Requirements******************************\n• There is only 1 runway for all planes to land and depart.\n• There can only be 3 airplanes on the airport grounds, including the runway. This is to\n ensure that the aircraft does not collide with another aircraft on the runway or gates.\n• Once an aircraft obtains permission to land, it should land on the runway, coast to the\n assigned gate, dock to the gate, allow passengers to disembark, refill supplies and fuel,\n receive new passengers, undock, coast to the assigned runway and take-off.\n• Each step should take some time.\n• As the airport is small, there is no waiting area on the ground for the planes to wait for a\n gate to become available.",
+  "tasks": [
+    {
+      "id": "T1",
+      "text": "Individual Assignment - System (25%): Design a Java program to simulate activity for the airport. Requirements include: 1 runway, max 3 planes on ground, full landing/docking/servicing/take-off cycle. Additional requirements: Concurrent disembarking/embarking at 3 gates, concurrent cleaning, exclusive refuelling (1 truck). Simulate a congested scenario (2 planes waiting, 2 gates occupied, 3rd plane emergency landing). Print sanity checks and statistics (waiting times, planes served). Provide Java files and a 5-minute video demonstration.",
+      "marks": 100
+    },
+    {
+      "id": "T2",
+      "text": "Individual Assignment - Report (20%): Documentation detailing system implementation and testing. 1. Introduction and assumptions. 2. Basic requirements met (list, explanation of concurrency concepts like atomic statements/synchronization, code snippets). 3. Additional requirements met (list, explanation, code snippets). 4. Requirements NOT met. Should not exceed 1500 words.",
+      "marks": 100
+    }
+  ],
+  "selected_tasks": [
+    {
+      "id": "T1",
+      "text": "Individual Assignment - System (25%): Design a Java program to simulate activity for the airport. Requirements include: 1 runway, max 3 planes on ground, full landing/docking/servicing/take-off cycle. Additional requirements: Concurrent disembarking/embarking at 3 gates, concurrent cleaning, exclusive refuelling (1 truck). Simulate a congested scenario (2 planes waiting, 2 gates occupied, 3rd plane emergency landing). Print sanity checks and statistics (waiting times, planes served). Provide Java files and a 5-minute video demonstration.",
+      "marks": 100
+    },
+    {
+      "id": "T2",
+      "text": "Individual Assignment - Report (20%): Documentation detailing system implementation and testing. 1. Introduction and assumptions. 2. Basic requirements met (list, explanation of concurrency concepts like atomic statements/synchronization, code snippets). 3. Additional requirements met (list, explanation, code snippets). 4. Requirements NOT met. Should not exceed 1500 words.",
+      "marks": 100
+    }
+  ],
+  "rubric": [
+    {
+      "criterion": "Assumptions [LO3-PO6]",
+      "max": 20,
+      "bands": "80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO3"
+      ],
+      "tasks": [
+        "T2"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Explanation of the safety aspects of multi-threaded system implemented [LO3-PO6]",
+      "max": 30,
+      "bands": "80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO3"
+      ],
+      "tasks": [
+        "T2"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Justification of coding techniques implemented [LO3-PO6]",
+      "max": 30,
+      "bands": "80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO3"
+      ],
+      "tasks": [
+        "T2"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Depth of discussion of concurrency concepts [LO3-PO6]",
+      "max": 20,
+      "bands": "80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO3"
+      ],
+      "tasks": [
+        "T2"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Appropriateness of coding techniques used to implement design with appropriate comment lines in source codes *",
+      "max": 20,
+      "bands": "80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO2"
+      ],
+      "tasks": [
+        "T1"
+      ],
+      "live_session": true
+    },
+    {
+      "criterion": "Appropriateness of the Java concurrent programming facilities used",
+      "max": 20,
+      "bands": "80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO2"
+      ],
+      "tasks": [
+        "T1"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Program runs appropriately with basic requirements *",
+      "max": 20,
+      "bands": "80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO2"
+      ],
+      "tasks": [
+        "T1"
+      ],
+      "live_session": true
+    },
+    {
+      "criterion": "Additional requirements met *",
+      "max": 20,
+      "bands": "80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO2"
+      ],
+      "tasks": [
+        "T1"
+      ],
+      "live_session": true
+    },
+    {
+      "criterion": "Explanations of concurrency concepts implemented with relevant code samples *",
+      "max": 20,
+      "bands": "80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO2"
+      ],
+      "tasks": [
+        "T1"
+      ],
+      "live_session": true
+    }
+  ],
+  "clos": [
+    {
+      "id": "CLO2",
+      "text": "Apply the concepts of concurrency and parallelism in the construction of a system using a suitable programming language",
+      "tasks": [
+        "T1"
+      ],
+      "criteria": [
+        "Appropriateness of coding techniques used to implement design with appropriate comment lines in source codes *",
+        "Appropriateness of the Java concurrent programming facilities used",
+        "Program runs appropriately with basic requirements *",
+        "Additional requirements met *",
+        "Explanations of concurrency concepts implemented with relevant code samples *"
+      ]
+    },
+    {
+      "id": "CLO3",
+      "text": "Explain the safety aspects of multi-threaded and parallel systems",
+      "tasks": [
+        "T2"
+      ],
+      "criteria": [
+        "Assumptions [LO3-PO6]",
+        "Explanation of the safety aspects of multi-threaded system implemented [LO3-PO6]",
+        "Justification of coding techniques implemented [LO3-PO6]",
+        "Depth of discussion of concurrency concepts [LO3-PO6]"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+{
+  "file_name": "DSA201_A1_flash_20261112.json",
+  "module": "DSA201",
+  "module_name": "Data Structures & Algorithms",
+  "assessment": "A1",
+  "brief_path": "/RedPen/Assessments/DSA201/A1/brief.txt",
+  "lecturer_email": "REPLACE_WITH_TEST_LECTURER_EMAIL",
+  "model": "flash",
+  "audit_date": "2026-11-12",
+  "exposure": "HIGH",
+  "persona_grades": {
+    "copy_paster": "C+",
+    "prompt_engineer": "A+",
+    "honest_helper": "F"
+  },
+  "persona_totals": {
+    "copy_paster": 60,
+    "prompt_engineer": 89,
+    "honest_helper": 36
+  },
+  "pass_mark": 40,
+  "clos_at_risk": [
+    {
+      "id": "CLO1",
+      "text": "Explain the operation and complexity of standard sorting and searching algorithms",
+      "why": "The prompt_engineer scored 18/20 on 'Explanation of algorithms'."
+    },
+    {
+      "id": "CLO2",
+      "text": "Analyse and justify the choice of data structure and algorithm for a given scenario",
+      "why": "The prompt_engineer scored 27/30 on 'Justification for the scenario'."
+    },
+    {
+      "id": "CLO3",
+      "text": "Implement and test algorithms in a programming language",
+      "why": "The prompt_engineer scored 22/25 on 'Implementation and testing'."
+    }
+  ],
+  "easy_criteria": [
+    "Explanation of algorithms",
+    "Justification for the scenario",
+    "Implementation and testing",
+    "Presentation and referencing"
+  ],
+  "summary": "An unedited AI answer to this brief scored C+ (60%), comfortably passing the 40% mark. With prompt engineering, the score rises to A+ (89%), meaning CLO1, CLO2, and CLO3 are no longer reliably evidenced."
+}

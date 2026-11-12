@@ -234,6 +234,75 @@ class TestSavedRuns(unittest.TestCase):
             self.assertGreater(len(ra.instructions(f)), 200, f)
 
 
+class TestGeminiEnterpriseReadiness(Env):
+    """The pass-through mode = Gemini Enterprise worst case, where a step only sees the previous step."""
+
+    def fake_passthrough_post(self, drift=False):
+        rules = ra.passthrough_rules()
+        intake = DEMO["01-intake"]
+
+        def post(model, system, user, key):
+            if system == ra.instructions("01-intake.md"):
+                return json.dumps(intake), model
+            for p, f in ra.PERSONAS.items():
+                if system.startswith(ra.instructions(f)):
+                    self.assertIn(rules[f"02-{p}"], system)
+                    inp = json.loads(user)
+                    bundle = {"intake": inp.get("intake", inp), "attempts": dict(inp.get("attempts", {}))}
+                    if drift:
+                        bundle["intake"] = dict(bundle["intake"], module="CHANGED")
+                    bundle["attempts"][p] = DEMO[f"02-{p}"]["answers"]
+                    return json.dumps(bundle), model
+            if system.startswith(ra.instructions("05-examiner.md")):
+                inp = json.loads(user)
+                self.assertEqual(sorted(inp["attempts"]), sorted(ra.PERSONAS))  # all three arrived via the bundle
+                return json.dumps({"meta": {"module": "DSA201"}, "examiner": DEMO["05-examiner"]}), model
+            self.assertIn(rules["06-verdict"], system)
+            self.assertIn('"meta"', user)
+            return json.dumps(DEMO["06-verdict"]), model
+        return post
+
+    def test_passthrough_chain(self):
+        order = []
+        with mock.patch.object(ra, "_post", side_effect=self.fake_passthrough_post()):
+            r = ra.run_audit("b", "r", "c", "DSA201", "A1", mode="passthrough", on_step=lambda n, d, s: order.append(n))
+        self.assertEqual(order, ["01-intake", "02-copy_paster", "02-prompt_engineer", "02-honest_helper",
+                                 "05-examiner", "06-verdict"])  # strictly sequential, like the canvas
+        self.assertTrue(r["log"]["contract"]["ok"])
+        self.assertEqual(r["steps"]["02-honest_helper"]["answers"], DEMO["02-honest_helper"]["answers"])
+
+    def test_passthrough_copy_drift_is_reported(self):
+        with mock.patch.object(ra, "_post", side_effect=self.fake_passthrough_post(drift=True)):
+            r = ra.run_audit("b", "r", "c", "DSA201", "A1", mode="passthrough")
+        self.assertTrue(any("copy drift" in w for w in r["log"]["warnings"]))
+
+    def test_passthrough_rules_found(self):
+        self.assertEqual(sorted(ra.passthrough_rules()), ["02-copy_paster", "02-honest_helper", "02-prompt_engineer",
+                                                          "05-examiner", "06-verdict"])
+
+    def test_schemas_accept_every_saved_output(self):
+        for n in ra.demo_runs():
+            for step, data in ra.load_demo(n)["steps"].items():
+                self.assertEqual(ra.schema_errors(step, data), [], f"{n} {step}")
+
+    def test_schema_catches_wrong_shape(self):
+        self.assertTrue(ra.schema_errors("06-verdict", {"exposure": "VERY HIGH"}))
+        self.assertTrue(ra.schema_errors("02-copy_paster", {"persona": "x", "answers": "not a list"}))
+
+    def test_wrong_shape_is_retried(self):
+        good = fake_post_from_demo()
+        state = {"n": 0}
+
+        def post(model, system, user, key):
+            state["n"] += 1
+            if state["n"] == 1:
+                return json.dumps({"module": "X"}), model  # valid JSON, wrong shape for Intake
+            return good(model, system, user, key)
+        with mock.patch.object(ra, "_post", side_effect=post):
+            r = ra.run_audit("b", "r", "c", "DSA201", "A1")
+        self.assertEqual(r["steps"]["01-intake"], DEMO["01-intake"])
+
+
 def live():
     print("\n--- live: key check")
     for m, s in ra.check_models():

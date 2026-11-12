@@ -1,0 +1,32 @@
+{
+  "type": "object",
+  "required": [
+    "persona",
+    "answers"
+  ],
+  "properties": {
+    "persona": {
+      "type": "string"
+    },
+    "answers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "task_id",
+          "answer"
+        ],
+        "properties": {
+          "task_id": {
+            "type": "string"
+          },
+          "answer": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RedPen 02-persona output"
+}

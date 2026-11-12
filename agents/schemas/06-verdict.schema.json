@@ -1,0 +1,72 @@
+{
+  "type": "object",
+  "required": [
+    "module",
+    "module_name",
+    "assessment",
+    "brief_path",
+    "lecturer_email",
+    "model",
+    "audit_date",
+    "exposure",
+    "persona_grades",
+    "persona_totals",
+    "pass_mark",
+    "clos_at_risk",
+    "easy_criteria",
+    "summary"
+  ],
+  "properties": {
+    "exposure": {
+      "enum": [
+        "HIGH",
+        "MEDIUM",
+        "LOW"
+      ]
+    },
+    "model": {
+      "enum": [
+        "flash",
+        "pro"
+      ]
+    },
+    "persona_grades": {
+      "type": "object",
+      "required": [
+        "copy_paster",
+        "prompt_engineer",
+        "honest_helper"
+      ],
+      "properties": {}
+    },
+    "persona_totals": {
+      "type": "object",
+      "required": [
+        "copy_paster",
+        "prompt_engineer",
+        "honest_helper"
+      ],
+      "properties": {}
+    },
+    "clos_at_risk": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "text",
+          "why"
+        ],
+        "properties": {}
+      }
+    },
+    "easy_criteria": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RedPen 06-verdict output"
+}

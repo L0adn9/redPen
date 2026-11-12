@@ -1,0 +1,20 @@
+{
+  "persona": "copy_paster",
+  "answers": [
+    {
+      "task_id": "T1",
+      "answer": "Algorithms Analysis\n\n1. Bubble Sort: This is a simple comparison-based algorithm that repeatedly steps through the list, compares adjacent elements, and swaps them if they are in the wrong order. This continues until the list is sorted.\n- Best Case: O(n) when the list is already sorted.\n- Average Case: O(n^2).\n- Worst Case: O(n^2).\n\n2. Merge Sort: A divide-and-conquer algorithm that divides the array into two halves, recursively sorts them, and then merges the sorted halves. \n- Best Case: O(n log n).\n- Average Case: O(n log n).\n- Worst Case: O(n log n).\n\n3. Quick Sort: Also a divide-and-conquer algorithm. It picks an element as a 'pivot' and partitions the array around the pivot, so elements smaller than the pivot are on the left and larger on the right.\n- Best Case: O(n log n).\n- Average Case: O(n log n).\n- Worst Case: O(n^2) (e.g., when the pivot is always the smallest or largest element).\n\n4. Binary Search: An efficient search algorithm that finds the position of a target value within a sorted array. It repeatedly divides the search interval in half.\n- Best Case: O(1) (target is the middle element).\n- Average Case: O(log n).\n- Worst Case: O(log n)."
+    },
+    {
+      "task_id": "T3",
+      "answer": "Algorithm Recommendation for University Library\n\nFor the University Library's database of 250,000 book records, the choice of algorithms is critical for system performance.\n\nSearching (ISBN and Title):\nI recommend using Binary Search. Searching is a high-frequency operation performed daily by staff and students. Since the library has 250,000 records, a Linear Search (O(n)) would take up to 250,000 comparisons. In contrast, Binary Search (O(log n)) requires a maximum of approximately 18 comparisons (log2(250,000) ≈ 17.9). For this to work, the library must maintain sorted indices for ISBNs and Titles. Given the high frequency of searches, the O(log n) efficiency is essential for a responsive user experience.\n\nSorting (Annual Stock Report):\nFor the annual stock report, I recommend Merge Sort. The stock report is an annual task (low frequency), but it involves a large dataset (250,000 records). Merge Sort is preferred over Quick Sort because it guarantees O(n log n) performance regardless of the initial order of the data, whereas Quick Sort could degrade to O(n^2). Additionally, Merge Sort is a stable sort. In a library context, stability is beneficial; for example, if we sort by publication year, books with the same year will remain in their original relative order (e.g., alphabetically by title), maintaining a clean report structure."
+    },
+    {
+      "task_id": "T4",
+      "answer": "```python\ndef binary_search(arr, target):\n    low = 0\n    high = len(arr) - 1\n    \n    while low <= high:\n        mid = (low + high) // 2\n        if arr[mid] == target:\n            return mid\n        elif arr[mid] < target:\n            low = mid + 1\n        else:\n            high = mid - 1\n    return -1\n\n# Test Cases\n# Representing a sorted list of ISBNs\nisbn_data = [1001, 1500, 2300, 4500, 5600, 7800, 8900, 9999]\n\n# Test 1: Search for an existing ISBN\nresult1 = binary_search(isbn_data, 4500)\nprint(f\"Searching for 4500: Index {result1}\")\n\n# Test 2: Search for an ISBN at the start\nresult2 = binary_search(isbn_data, 1001)\nprint(f\"Searching for 1001: Index {result2}\")\n\n# Test 3: Search for a non-existent ISBN\nresult3 = binary_search(isbn_data, 5000)\nprint(f\"Searching for 5000: Result {result3}\")\n```\n\nOutput:\nSearching for 4500: Index 3\nSearching for 1001: Index 0\nSearching for 5000: Result -1"
+    }
+  ],
+  "_bundle_keys": [
+    "copy_paster"
+  ]
+}

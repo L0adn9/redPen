@@ -1,0 +1,282 @@
+{
+  "marked_criteria": [
+    "Assumptions [LO3-PO6]",
+    "Explanation of the safety aspects of multi-threaded system implemented [LO3-PO6]",
+    "Justification of coding techniques implemented [LO3-PO6]",
+    "Depth of discussion of concurrency concepts [LO3-PO6]",
+    "Appropriateness of coding techniques used to implement design with appropriate comment lines in source codes *",
+    "Appropriateness of the Java concurrent programming facilities used",
+    "Program runs appropriately with basic requirements *",
+    "Additional requirements met *",
+    "Explanations of concurrency concepts implemented with relevant code samples *"
+  ],
+  "results": [
+    {
+      "persona": "copy_paster",
+      "scores": [
+        {
+          "criterion": "Assumptions [LO3-PO6]",
+          "score": 13,
+          "max": 20,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The main weakness is the lack of depth regarding operational constraints beyond the provided brief. A competent set of assumptions should address time-unit scaling or thread pool behavior more explicitly."
+        },
+        {
+          "criterion": "Explanation of the safety aspects of multi-threaded system implemented [LO3-PO6]",
+          "score": 19,
+          "max": 30,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The report identifies mutual exclusion but fails to explain how the interaction between different semaphores (grounds vs. runway) prevents a specific deadlock scenario. The explanation is descriptive rather than analytical."
+        },
+        {
+          "criterion": "Justification of coding techniques implemented [LO3-PO6]",
+          "score": 20,
+          "max": 30,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The justification for using sub-threads for concurrent operations is clear, but it lacks a discussion on why Semaphores were preferred over other primitives like Locks or Barriers for this specific logic."
+        },
+        {
+          "criterion": "Depth of discussion of concurrency concepts [LO3-PO6]",
+          "score": 12,
+          "max": 20,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The discussion is somewhat superficial, treating atomic statements as a requirement checklist rather than exploring the complexities of state visibility in a multi-core environment."
+        },
+        {
+          "criterion": "Appropriateness of coding techniques used to implement design with appropriate comment lines in source codes *",
+          "score": 0,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session."
+        },
+        {
+          "criterion": "Appropriateness of the Java concurrent programming facilities used",
+          "score": 15,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The use of Semaphores and LongAdder is highly appropriate for this resource-management problem. However, the manual thread creation within the task rather than using a fixed-size internal pool for services is a minor architectural weakness."
+        },
+        {
+          "criterion": "Program runs appropriately with basic requirements *",
+          "score": 0,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session."
+        },
+        {
+          "criterion": "Additional requirements met *",
+          "score": 0,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session."
+        },
+        {
+          "criterion": "Explanations of concurrency concepts implemented with relevant code samples *",
+          "score": 0,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session."
+        }
+      ],
+      "total_percent": 41,
+      "grade": "D",
+      "passed": false
+    },
+    {
+      "persona": "prompt_engineer",
+      "scores": [
+        {
+          "criterion": "Assumptions [LO3-PO6]",
+          "score": 16,
+          "max": 20,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The assumption regarding 'Atomic Ground Entry' is a strong, professional addition that clarifies the state machine of the simulation. It falls short of full marks by not defining the specific time-step simulation parameters."
+        },
+        {
+          "criterion": "Explanation of the safety aspects of multi-threaded system implemented [LO3-PO6]",
+          "score": 24,
+          "max": 30,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "Solid explanation of how Semaphores act as gatekeepers to prevent exceeding physical limits. The weakness is the brief treatment of potential starvation issues which are only mentioned in passing via the 'fairness' flag."
+        },
+        {
+          "criterion": "Justification of coding techniques implemented [LO3-PO6]",
+          "score": 24,
+          "max": 30,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The choice of CountDownLatch for intra-plane parallelism is well-justified as a way to reduce turnaround time. However, the lack of justification for choosing Thread over an Executor for the sub-tasks is a small gap."
+        },
+        {
+          "criterion": "Depth of discussion of concurrency concepts [LO3-PO6]",
+          "score": 17,
+          "max": 20,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "High quality discussion of performance trade-offs between synchronization and atomic variables (LongAdder). It misses a perfect score due to lack of discussion on the happens-before relationship in the servicing phase."
+        },
+        {
+          "criterion": "Appropriateness of coding techniques used to implement design with appropriate comment lines in source codes *",
+          "score": 0,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session."
+        },
+        {
+          "criterion": "Appropriateness of the Java concurrent programming facilities used",
+          "score": 18,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Excellent application of Semaphores, CountDownLatch, and LongAdder. Using a latch for concurrent sub-tasks is a superior implementation of the additional requirements compared to simple thread joins."
+        },
+        {
+          "criterion": "Program runs appropriately with basic requirements *",
+          "score": 0,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session."
+        },
+        {
+          "criterion": "Additional requirements met *",
+          "score": 0,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session."
+        },
+        {
+          "criterion": "Explanations of concurrency concepts implemented with relevant code samples *",
+          "score": 0,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session."
+        }
+      ],
+      "total_percent": 50,
+      "grade": "C",
+      "passed": true
+    },
+    {
+      "persona": "honest_helper",
+      "scores": [
+        {
+          "criterion": "Assumptions [LO3-PO6]",
+          "score": 15,
+          "max": 20,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "Clear assumptions regarding ground occupancy duration. The weakness is failing to explicitly state assumptions about the behavior of the emergency planes in terms of wait-time statistics."
+        },
+        {
+          "criterion": "Explanation of the safety aspects of multi-threaded system implemented [LO3-PO6]",
+          "score": 21,
+          "max": 30,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "Good connection between the binary semaphore and mutual exclusion. The primary weakness is that the safety of the 'exclusive refueling' is asserted but not deeply analyzed for edge cases where the truck might be leaked."
+        },
+        {
+          "criterion": "Justification of coding techniques implemented [LO3-PO6]",
+          "score": 21,
+          "max": 30,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The report justifies the sequence of acquisition, but it doesn't address the order of release, which is critical in preventing nested monitor-style deadlocks."
+        },
+        {
+          "criterion": "Depth of discussion of concurrency concepts [LO3-PO6]",
+          "score": 14,
+          "max": 20,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "Competent discussion of atomic operations and latches. The discussion on 'fairness' in the Semaphore is a bit limited and doesn't explain the trade-off in throughput vs. latency."
+        },
+        {
+          "criterion": "Appropriateness of coding techniques used to implement design with appropriate comment lines in source codes *",
+          "score": 0,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session."
+        },
+        {
+          "criterion": "Appropriateness of the Java concurrent programming facilities used",
+          "score": 17,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Proper use of CountDownLatch and Semaphores. The code is well-structured, although the use of a simple Thread for sub-tasks is less scalable than a Task-based approach."
+        },
+        {
+          "criterion": "Program runs appropriately with basic requirements *",
+          "score": 0,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session."
+        },
+        {
+          "criterion": "Additional requirements met *",
+          "score": 0,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session."
+        },
+        {
+          "criterion": "Explanations of concurrency concepts implemented with relevant code samples *",
+          "score": 0,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session."
+        }
+      ],
+      "total_percent": 44,
+      "grade": "D",
+      "passed": false
+    }
+  ]
+}

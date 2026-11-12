@@ -2,6 +2,8 @@
 
 Build in this order (for the top-5 build, 13–17 Nov). Test after each step and don't move on until it works.
 
+**Start with [`agents/gemini-enterprise/README.md`](../gemini-enterprise/README.md)**: run `python3 tools/ge_pack.py` and paste from the generated `PASTE-SHEET.md` (never from older copies). Check every test run with `python3 tools/ge_compare.py`.
+
 **Already proven in the prototype:** every instruction block below runs unchanged in `tools/redpen_audit.py` (29 s per audit on Flash, contract-clean). Before pasting into Gemini Enterprise, `python3 tools/test_engine.py` must pass. Compare each Gemini Enterprise verdict with the saved run in `data/demo-runs/<MODULE>_<ASSESSMENT>/06-verdict.json`. Exact button names in Gemini Enterprise may differ slightly from the text below; the steps follow Google's Workflow Builder docs.
 
 ## 0. App setup (Fri, ~30 min)

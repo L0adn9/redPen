@@ -1,0 +1,39 @@
+{
+  "type": "object",
+  "required": [
+    "options",
+    "recommended",
+    "email_summary"
+  ],
+  "properties": {
+    "options": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "aias_level",
+          "lane",
+          "clo_coverage",
+          "revised_task_text",
+          "extra_marking_minutes_per_student"
+        ],
+        "properties": {
+          "aias_level": {
+            "type": [
+              "number",
+              "string"
+            ]
+          },
+          "lane": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RedPen 07-redesign output"
+}

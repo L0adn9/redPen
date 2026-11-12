@@ -1,0 +1,47 @@
+{
+  "module": "CCP",
+  "assessment": "A1",
+  "run_date": "2026-11-12",
+  "model_label": "flash",
+  "mode": "passthrough",
+  "models": [
+    "google/gemini-3-flash-preview",
+    "google/gemini-3.8-flash",
+    "google/gemini-3.7-flash"
+  ],
+  "steps": {
+    "01-intake": {
+      "model": "google/gemini-3-flash-preview",
+      "seconds": 11.5
+    },
+    "02-copy_paster": {
+      "model": "google/gemini-3-flash-preview",
+      "seconds": 17.5
+    },
+    "02-prompt_engineer": {
+      "model": "google/gemini-3-flash-preview",
+      "seconds": 23.5
+    },
+    "02-honest_helper": {
+      "model": "google/gemini-3-flash-preview",
+      "seconds": 28.9
+    },
+    "05-examiner": {
+      "model": "google/gemini-3-flash-preview",
+      "seconds": 16.0
+    },
+    "06-verdict": {
+      "model": "google/gemini-3-flash-preview",
+      "seconds": 3.0
+    }
+  },
+  "warnings": [],
+  "total_seconds": 100.5,
+  "contract": {
+    "ok": true,
+    "errors": [],
+    "warnings": [
+      "lecturer_email looks unset: ''"
+    ]
+  }
+}

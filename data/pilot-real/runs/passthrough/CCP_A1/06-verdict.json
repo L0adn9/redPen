@@ -1,0 +1,37 @@
+{
+  "file_name": "CCP_A1_flash_20261112.json",
+  "module": "CCP",
+  "module_name": "Concurrent Programming",
+  "assessment": "A1",
+  "brief_path": "/RedPen/Assessments/CCP/A1/brief.txt",
+  "lecturer_email": "",
+  "model": "flash",
+  "audit_date": "2026-11-12",
+  "exposure": "MEDIUM",
+  "persona_grades": {
+    "copy_paster": "D",
+    "prompt_engineer": "C",
+    "honest_helper": "D"
+  },
+  "persona_totals": {
+    "copy_paster": 41,
+    "prompt_engineer": 50,
+    "honest_helper": 44
+  },
+  "pass_mark": 50,
+  "clos_at_risk": [
+    {
+      "id": "CLO3",
+      "text": "Explain the safety aspects of multi-threaded and parallel systems",
+      "why": "The prompt_engineer scored 81/100 on the criteria mapped to this CLO."
+    }
+  ],
+  "easy_criteria": [
+    "Assumptions [LO3-PO6]",
+    "Explanation of the safety aspects of multi-threaded system implemented [LO3-PO6]",
+    "Justification of coding techniques implemented [LO3-PO6]",
+    "Depth of discussion of concurrency concepts [LO3-PO6]",
+    "Appropriateness of the Java concurrent programming facilities used"
+  ],
+  "summary": "The prompt_engineer persona reached the 50% pass mark, while the copy_paster fell just short at 41%. CLO3 is significantly at risk as AI generated strong justifications and explanations that met professional standards."
+}

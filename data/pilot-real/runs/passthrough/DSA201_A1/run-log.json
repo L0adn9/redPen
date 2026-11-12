@@ -1,0 +1,47 @@
+{
+  "module": "DSA201",
+  "assessment": "A1",
+  "run_date": "2026-11-12",
+  "model_label": "flash",
+  "mode": "passthrough",
+  "models": [
+    "google/gemini-3-flash-preview",
+    "google/gemini-3.8-flash",
+    "google/gemini-3.7-flash"
+  ],
+  "steps": {
+    "01-intake": {
+      "model": "google/gemini-3-flash-preview",
+      "seconds": 6.4
+    },
+    "02-copy_paster": {
+      "model": "google/gemini-3-flash-preview",
+      "seconds": 11.5
+    },
+    "02-prompt_engineer": {
+      "model": "google/gemini-3-flash-preview",
+      "seconds": 17.2
+    },
+    "02-honest_helper": {
+      "model": "google/gemini-3-flash-preview",
+      "seconds": 22.8
+    },
+    "05-examiner": {
+      "model": "google/gemini-3-flash-preview",
+      "seconds": 7.6
+    },
+    "06-verdict": {
+      "model": "google/gemini-3-flash-preview",
+      "seconds": 3.1
+    }
+  },
+  "warnings": [],
+  "total_seconds": 68.6,
+  "contract": {
+    "ok": true,
+    "errors": [],
+    "warnings": [
+      "lecturer_email looks unset: 'REPLACE_WITH_TEST_LECTURER_EMAIL'"
+    ]
+  }
+}

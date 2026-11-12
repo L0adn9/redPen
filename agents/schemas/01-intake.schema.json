@@ -1,0 +1,93 @@
+{
+  "type": "object",
+  "required": [
+    "module",
+    "module_name",
+    "assessment",
+    "brief_path",
+    "ai_policy",
+    "pass_mark",
+    "tasks",
+    "selected_tasks",
+    "rubric",
+    "clos"
+  ],
+  "properties": {
+    "module": {
+      "type": "string"
+    },
+    "assessment": {
+      "type": "string"
+    },
+    "pass_mark": {
+      "type": [
+        "number",
+        "string"
+      ]
+    },
+    "tasks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "text"
+        ],
+        "properties": {}
+      }
+    },
+    "selected_tasks": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "text"
+        ],
+        "properties": {}
+      }
+    },
+    "rubric": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": [
+          "criterion",
+          "max"
+        ],
+        "properties": {
+          "criterion": {
+            "type": "string"
+          },
+          "max": {
+            "type": [
+              "number",
+              "string"
+            ]
+          },
+          "live_session": {
+            "type": [
+              "boolean",
+              "string"
+            ]
+          }
+        }
+      }
+    },
+    "clos": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "text"
+        ],
+        "properties": {}
+      }
+    }
+  },
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "RedPen 01-intake output"
+}

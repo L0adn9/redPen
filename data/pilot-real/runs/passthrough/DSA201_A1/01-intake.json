@@ -1,0 +1,150 @@
+{
+  "module": "DSA201",
+  "module_name": "Data Structures & Algorithms",
+  "assessment": "A1",
+  "folder_path": "/RedPen/Assessments/DSA201/A1/",
+  "brief_path": "/RedPen/Assessments/DSA201/A1/brief.txt",
+  "lecturer_email": "REPLACE_WITH_TEST_LECTURER_EMAIL",
+  "ai_policy": "not stated",
+  "pass_mark": 40,
+  "total_marks": 100,
+  "context": "A university library holds 250,000 book records. Staff need to search books by ISBN and by title, and to produce a list of books sorted by publication year for the annual stock report. You have been asked to recommend and implement suitable algorithms.",
+  "tasks": [
+    {
+      "id": "T1",
+      "text": "Explain how bubble sort, merge sort, quick sort and binary search work, including their best, average and worst-case time complexity.",
+      "marks": 20
+    },
+    {
+      "id": "T2",
+      "text": "Produce a comparison table of the four algorithms covering time complexity, space complexity and stability.",
+      "marks": 15
+    },
+    {
+      "id": "T3",
+      "text": "Recommend which sorting and searching algorithms the library should use for the stock report and for ISBN/title search. Justify your choice for this scenario, with reference to the data size and how often each operation runs.",
+      "marks": 30
+    },
+    {
+      "id": "T4",
+      "text": "Implement your chosen search algorithm in Python and show test cases with their outputs.",
+      "marks": 25
+    },
+    {
+      "id": "T5",
+      "text": "Presentation, structure and referencing (APA 7th).",
+      "marks": 10
+    }
+  ],
+  "selected_tasks": [
+    {
+      "id": "T3",
+      "text": "Recommend which sorting and searching algorithms the library should use for the stock report and for ISBN/title search. Justify your choice for this scenario, with reference to the data size and how often each operation runs.",
+      "marks": 30
+    },
+    {
+      "id": "T4",
+      "text": "Implement your chosen search algorithm in Python and show test cases with their outputs.",
+      "marks": 25
+    },
+    {
+      "id": "T1",
+      "text": "Explain how bubble sort, merge sort, quick sort and binary search work, including their best, average and worst-case time complexity.",
+      "marks": 20
+    }
+  ],
+  "rubric": [
+    {
+      "criterion": "Explanation of algorithms",
+      "max": 20,
+      "bands": "Excellent (80-100%): complete, accurate, insightful, specific to the scenario, well justified. Good (65-79%): accurate and mostly complete, some specific justification. Satisfactory (50-64%): generally correct but generic or partly incomplete. Pass (40-49%): basic, with errors or significant gaps. Fail (0-39%): missing, largely incorrect or irrelevant.",
+      "clos": [
+        "CLO1"
+      ],
+      "tasks": [
+        "T1"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Complexity comparison table",
+      "max": 15,
+      "bands": "Excellent (80-100%): complete, accurate, insightful, specific to the scenario, well justified. Good (65-79%): accurate and mostly complete, some specific justification. Satisfactory (50-64%): generally correct but generic or partly incomplete. Pass (40-49%): basic, with errors or significant gaps. Fail (0-39%): missing, largely incorrect or irrelevant.",
+      "clos": [
+        "CLO1"
+      ],
+      "tasks": [
+        "T2"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Justification for the scenario",
+      "max": 30,
+      "bands": "Excellent (80-100%): complete, accurate, insightful, specific to the scenario, well justified. Good (65-79%): accurate and mostly complete, some specific justification. Satisfactory (50-64%): generally correct but generic or partly incomplete. Pass (40-49%): basic, with errors or significant gaps. Fail (0-39%): missing, largely incorrect or irrelevant.",
+      "clos": [
+        "CLO2"
+      ],
+      "tasks": [
+        "T3"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Implementation and testing",
+      "max": 25,
+      "bands": "Excellent (80-100%): complete, accurate, insightful, specific to the scenario, well justified. Good (65-79%): accurate and mostly complete, some specific justification. Satisfactory (50-64%): generally correct but generic or partly incomplete. Pass (40-49%): basic, with errors or significant gaps. Fail (0-39%): missing, largely incorrect or irrelevant.",
+      "clos": [
+        "CLO3"
+      ],
+      "tasks": [
+        "T4"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Presentation and referencing",
+      "max": 10,
+      "bands": "Excellent (80-100%): complete, accurate, insightful, specific to the scenario, well justified. Good (65-79%): accurate and mostly complete, some specific justification. Satisfactory (50-64%): generally correct but generic or partly incomplete. Pass (40-49%): basic, with errors or significant gaps. Fail (0-39%): missing, largely incorrect or irrelevant.",
+      "clos": [],
+      "tasks": [
+        "T5"
+      ],
+      "live_session": false
+    }
+  ],
+  "clos": [
+    {
+      "id": "CLO1",
+      "text": "Explain the operation and complexity of standard sorting and searching algorithms",
+      "tasks": [
+        "T1",
+        "T2"
+      ],
+      "criteria": [
+        "Explanation of algorithms",
+        "Complexity comparison table"
+      ]
+    },
+    {
+      "id": "CLO2",
+      "text": "Analyse and justify the choice of data structure and algorithm for a given scenario",
+      "tasks": [
+        "T3"
+      ],
+      "criteria": [
+        "Justification for the scenario"
+      ]
+    },
+    {
+      "id": "CLO3",
+      "text": "Implement and test algorithms in a programming language",
+      "tasks": [
+        "T4"
+      ],
+      "criteria": [
+        "Implementation and testing"
+      ]
+    }
+  ]
+}
