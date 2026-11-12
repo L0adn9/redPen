@@ -19,8 +19,8 @@ Use it from the terminal:
     python3 tools/redpen_audit.py data/sample-assessments/*/* --save-demo      # refresh data/demo-runs/
     python3 tools/redpen_audit.py data/real/X/A1 --out data/real/runs           # REAL briefs: keep out of git
 
-Needs OPENROUTER_API_KEY (preferred: paid, no daily cap, has Pro) or GEMINI_API_KEY (free AI Studio key),
-in the environment, Streamlit secrets, or redPen/.env. REDPEN_BACKEND=openrouter|gemini forces one.
+Keys: GEMINI_API_KEY (free Google AI Studio key, used FIRST) and/or OPENROUTER_API_KEY (paid; only cheap Flash-Lite
+models by default), in the environment, Streamlit secrets, or redPen/.env. REDPEN_BACKEND=openrouter|gemini forces one.
 Models: REDPEN_MODELS = comma list tried in order; on a 429 (quota) the step moves to the next model.
 The free tier gives ~20 requests/day per model and one audit = 6 requests, so the list spreads the load.
 One audit takes under a minute on Flash, 3-6 minutes on Pro.
@@ -41,8 +41,10 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 AUDIT = ROOT / "agents" / "audit"
 DEMO = ROOT / "data" / "demo-runs"
 API = "https://generativelanguage.googleapis.com/v1beta/models/{}:generateContent"
-DEFAULT_MODELS = "gemini-3-flash-preview,gemini-3.8-flash,gemini-3.7-flash,gemini-3.5-flash"
-DEFAULT_OPENROUTER_MODELS = "google/gemini-3-flash-preview,google/gemini-3.8-flash,google/gemini-3.7-flash"
+# Cost order: the FREE Google AI Studio key first (same Flash model we calibrated), then the cheapest Gemini models on
+# OpenRouter (paid). Pro is never used unless REDPEN_MODELS asks for it.
+DEFAULT_MODELS = "gemini-3-flash-preview,gemini-3.5-flash"  # the free-tier models that answered reliably
+DEFAULT_OPENROUTER_MODELS = "google/gemini-3.1-flash-lite,google/gemini-2.5-flash-lite,google/gemini-3-flash-preview"
 OPENROUTER_API = "https://openrouter.ai/api/v1/chat/completions"
 PRO_MODEL = "google/gemini-4-argon"  # OpenRouter only; the free AI Studio key has no Pro quota
 PERSONAS = {"copy_paster": "02-persona-copy-paster.md",
@@ -64,14 +66,45 @@ class AuditError(RuntimeError):
 
 
 def models():
-    """Model list for the current backend. Only Google Gemini models are allowed (hackathon rule)."""
-    if backend() == "openrouter":
-        raw = os.environ.get("REDPEN_MODELS", DEFAULT_OPENROUTER_MODELS)
-        out = [m if "/" in m else "google/" + m for m in (x.strip() for x in raw.split(",")) if m]
-    else:
-        raw = os.environ.get("REDPEN_MODELS", DEFAULT_MODELS)
-        out = [m.split("/", 1)[-1] for m in (x.strip() for x in raw.split(",")) if m]
-    return _guard(out)
+    """Models to try, in order. Only Google Gemini models are allowed (hackathon rule).
+
+    A name with "google/" goes to OpenRouter (paid); a bare "gemini-..." name goes to Google AI Studio (free key).
+    Default (REDPEN_BACKEND unset): free AI Studio models first if GEMINI_API_KEY exists, then cheap OpenRouter
+    models if OPENROUTER_API_KEY exists. REDPEN_BACKEND=gemini|openrouter uses only that one.
+    """
+    choice = (os.environ.get("REDPEN_BACKEND") or "auto").strip().lower()
+    raw = os.environ.get("REDPEN_MODELS", "").strip()
+    if raw:
+        names = [x.strip() for x in raw.split(",") if x.strip()]
+        if choice == "openrouter":
+            names = [m if "/" in m else "google/" + m for m in names]
+        elif choice == "gemini":
+            names = [m.split("/", 1)[-1] for m in names]
+        return _guard(names)
+    out = []
+    if choice in ("auto", "gemini") and (_env("GEMINI_API_KEY") or choice == "gemini"):
+        out += [m.strip() for m in DEFAULT_MODELS.split(",")]
+    if choice in ("auto", "openrouter") and (_env("OPENROUTER_API_KEY") or choice == "openrouter"):
+        out += [m.strip() for m in DEFAULT_OPENROUTER_MODELS.split(",")]
+    return _guard(out or [m.strip() for m in DEFAULT_MODELS.split(",")])
+
+
+def provider(model):
+    return "openrouter" if "/" in model else "gemini"
+
+
+def _key_for(model):
+    return _env("OPENROUTER_API_KEY" if provider(model) == "openrouter" else "GEMINI_API_KEY")
+
+
+def describe():
+    """One line for logs and the app: which providers are on, in order."""
+    order = []
+    for m in models():
+        name = "OpenRouter (paid)" if provider(m) == "openrouter" else "Google AI Studio (free)"
+        if name not in order:
+            order.append(name)
+    return " → ".join(order) + " | " + ", ".join(models())
 
 
 def set_credentials(key, backend_name=None, model_list=None):
@@ -115,19 +148,19 @@ def _env(name):
 
 
 def backend():
-    """'openrouter' if REDPEN_BACKEND says so or an OPENROUTER_API_KEY exists (and REDPEN_BACKEND isn't 'gemini')."""
-    choice = os.environ.get("REDPEN_BACKEND", "auto")
-    if choice in ("openrouter", "gemini"):
-        return choice
-    return "openrouter" if _env("OPENROUTER_API_KEY") else "gemini"
+    """Provider of the first model in the list: 'gemini' (AI Studio, free) or 'openrouter' (paid)."""
+    return provider(models()[0])
 
 
 def api_key():
-    name = "OPENROUTER_API_KEY" if backend() == "openrouter" else "GEMINI_API_KEY"
-    key = _env(name)
-    if not key:
-        raise AuditError(f"{name} not set (environment, Streamlit secrets, or redPen/.env)")
-    return key
+    """Checks that every provider in the model list has a key; returns the first model's key."""
+    ms = models()
+    missing = sorted({("OPENROUTER_API_KEY" if provider(m) == "openrouter" else "GEMINI_API_KEY")
+                      for m in ms if not _key_for(m)})
+    usable = [m for m in ms if _key_for(m)]
+    if not usable:
+        raise AuditError(f"{' and '.join(missing)} not set (environment, Streamlit secrets, or redPen/.env)")
+    return _key_for(usable[0])
 
 
 def instructions(filename):
@@ -173,8 +206,12 @@ def passthrough_rules():
 
 
 def _post(model, system, user, key):
-    timeout = int(os.environ.get("REDPEN_TIMEOUT", "240"))
-    if backend() == "openrouter":
+    key = _key_for(model)
+    if not key:
+        raise AuditError(f"no key for {model}")
+    default_timeout = "240" if provider(model) == "openrouter" else "90"  # free tier sometimes hangs: give up sooner
+    timeout = int(os.environ.get("REDPEN_TIMEOUT", default_timeout))
+    if provider(model) == "openrouter":
         body = json.dumps({
             "model": model,
             "messages": [{"role": "system", "content": system}, {"role": "user", "content": user}],
@@ -220,17 +257,26 @@ def call(system, user, key, model_list=None, quick=False):
     Fails fast (no retries) when the key itself is the problem. Always raises AuditError, never a raw exception.
     """
     model_list = _guard(list(model_list or models()))
-    tried, retryable = [], False
+    tried, retryable, dead = [], False, set()  # dead = providers whose key was rejected
     for rnd in range(2):  # second round after a pause, in case it was a per-minute limit
         for model in model_list:
+            if provider(model) in dead:
+                continue
+            if not _key_for(model):
+                tried.append(f"{model}: no key")
+                continue
             for attempt in range(1 if quick else 3):
                 try:
                     return _post(model, system, user, key)
                 except urllib.error.HTTPError as e:
                     msg = e.read().decode(errors="replace")[:200].replace("\n", " ")
                     if e.code in FATAL_HTTP:
-                        raise AuditError(f"{FATAL_HTTP[e.code]} (HTTP {e.code} from {model}). "
-                                         "Swap the key: see docs/api-keys.md")
+                        fatal = f"{FATAL_HTTP[e.code]} (HTTP {e.code} from {model}). Swap the key: see docs/api-keys.md"
+                        dead.add(provider(model))
+                        if not any(provider(m) not in dead and _key_for(m) for m in model_list):
+                            raise AuditError(fatal)
+                        tried.append(fatal)
+                        break
                     if e.code == 429:
                         tried.append(f"{model}: quota")
                         retryable = True
@@ -460,7 +506,7 @@ def main():
     ap.add_argument("--mode", choices=["direct", "passthrough"], default="direct",
                     help="passthrough = Gemini Enterprise worst case: each step sees only the previous step")
     a = ap.parse_args()
-    print(f"Backend: {backend()} | models (in order): " + ", ".join(models()))
+    print("Models (in order): " + describe())
     if a.check or not a.folders:
         for m, status in check_models():
             print(f"  {m}: {status}")

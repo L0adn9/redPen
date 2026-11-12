@@ -2,14 +2,17 @@
 
 RedPen only calls **Google Gemini** models (hackathon rule). `tools/redpen_audit.py` refuses any other model.
 
-Two ways to reach Gemini; the engine picks one automatically:
+Two ways to reach Gemini, used **cheapest first**:
 
-| Backend | Key name | Notes |
-|---|---|---|
-| OpenRouter | `OPENROUTER_API_KEY` (starts `sk-or-`) | Used whenever this key is set. Paid per token, no daily cap, has Pro (`google/gemini-4-argon`). |
-| Google AI Studio | `GEMINI_API_KEY` | Free tier: about 20 calls a day per model, no Pro. One audit = 6 calls. |
+| Order | Provider | Key name | Models (default) | Cost |
+|---|---|---|---|---|
+| 1 | Google AI Studio | `GEMINI_API_KEY` | `gemini-3-flash-preview` (the model we calibrated), `gemini-3.5-flash` | **Free** (about 20 calls/day per model; one audit = 6 calls) |
+| 2 | OpenRouter | `OPENROUTER_API_KEY` (starts `sk-or-`) | `google/gemini-3.1-flash-lite`, `google/gemini-2.5-flash-lite`, then `google/gemini-3-flash-preview` | Paid, about $0.001–0.005 per audit |
 
-Force one with `REDPEN_BACKEND=openrouter` or `REDPEN_BACKEND=gemini`. Change the model list with `REDPEN_MODELS` (comma-separated, tried in order; a model that's out of quota or hangs is skipped).
+The engine tries the free models first and only moves to OpenRouter when the free ones are out of quota, hang, or the free key
+is rejected. **Pro (`google/gemini-4-argon`) is never used unless you ask for it** with `REDPEN_MODELS=google/gemini-4-argon`
+(it costs about 4× Flash). `REDPEN_BACKEND=gemini` = free only; `REDPEN_BACKEND=openrouter` = paid only.
+`REDPEN_MODELS` (comma-separated) overrides the list: `google/...` names go to OpenRouter, bare `gemini-...` names to AI Studio.
 
 ## Where keys go
 - **Local:** `redPen/.env` (gitignored), one per line: `OPENROUTER_API_KEY=...` or `GEMINI_API_KEY=...`. The file is re-read on every audit, so editing it takes effect on the next run, no restart.

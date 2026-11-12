@@ -303,6 +303,69 @@ class TestGeminiEnterpriseReadiness(Env):
         self.assertEqual(r["steps"]["01-intake"], DEMO["01-intake"])
 
 
+class TestCostOrder(Env):
+    """Free Google key first, cheap OpenRouter models second, Pro never by default."""
+
+    def env(self, **kw):
+        base = {"REDPEN_BACKEND": "", "REDPEN_MODELS": "", "GEMINI_API_KEY": "", "OPENROUTER_API_KEY": ""}
+        base.update(kw)
+        return mock.patch.dict(os.environ, base)
+
+    def test_free_first_then_cheap(self):
+        with self.env(GEMINI_API_KEY="AIza", OPENROUTER_API_KEY="sk-or-x"), mock.patch.object(ra, "ROOT", pathlib.Path("/x")):
+            ms = ra.models()
+        self.assertEqual(ra.provider(ms[0]), "gemini")
+        self.assertIn("google/gemini-3.1-flash-lite", ms)
+        self.assertFalse(any(k in m for m in ms for k in ("argon", "carbon", "pro")))
+
+    def test_only_paid_key(self):
+        with self.env(OPENROUTER_API_KEY="sk-or-x"), mock.patch.object(ra, "ROOT", pathlib.Path("/x")):
+            ms = ra.models()
+        self.assertTrue(all(ra.provider(m) == "openrouter" for m in ms))
+        self.assertEqual(ms[0], "google/gemini-3.1-flash-lite")  # cheapest first
+
+    def test_free_quota_falls_back_to_paid(self):
+        used = []
+
+        def post(model, s, u, k):
+            used.append(model)
+            if ra.provider(model) == "gemini":
+                raise http_error(429)
+            return "{}", model
+        with self.env(GEMINI_API_KEY="AIza", OPENROUTER_API_KEY="sk-or-x"), mock.patch.object(ra, "ROOT", pathlib.Path("/x")), \
+                mock.patch.object(ra, "_post", side_effect=post):
+            self.assertEqual(ra.call("s", "u", "k")[1], "google/gemini-3.1-flash-lite")
+        self.assertEqual(used[:2], ["gemini-3-flash-preview", "gemini-3.5-flash"])
+
+    def test_bad_free_key_still_uses_paid(self):
+        def post(model, s, u, k):
+            if ra.provider(model) == "gemini":
+                raise http_error(401)
+            return "{}", model
+        with self.env(GEMINI_API_KEY="bad", OPENROUTER_API_KEY="sk-or-x"), mock.patch.object(ra, "ROOT", pathlib.Path("/x")), \
+                mock.patch.object(ra, "_post", side_effect=post):
+            self.assertEqual(ra.provider(ra.call("s", "u", "k")[1]), "openrouter")
+
+    def test_each_model_gets_its_own_key(self):
+        sent = {}
+
+        def fake_urlopen(req, timeout=0):
+            sent[req.full_url] = req.headers
+            raise http_error(429)
+        with self.env(GEMINI_API_KEY="AIza-free", OPENROUTER_API_KEY="sk-or-paid"), \
+                mock.patch.object(ra, "ROOT", pathlib.Path("/x")), mock.patch.object(ra.urllib.request, "urlopen", fake_urlopen):
+            self.assertRaises(ra.AuditError, ra.call, "s", "u", "ignored")
+        for url, h in sent.items():
+            if "openrouter" in url:
+                self.assertEqual(h.get("Authorization"), "Bearer sk-or-paid")
+            else:
+                self.assertEqual(h.get("X-goog-api-key"), "AIza-free")
+
+    def test_no_keys_clear_error(self):
+        with self.env(), mock.patch.object(ra, "ROOT", pathlib.Path("/x")):
+            self.assertRaises(ra.AuditError, ra.api_key)
+
+
 def live():
     print("\n--- live: key check")
     for m, s in ra.check_models():
