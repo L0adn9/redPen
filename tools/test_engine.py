@@ -12,11 +12,13 @@ import sys
 import time
 import unittest
 import urllib.error
+import urllib.parse
 from unittest import mock
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "tools"))
 import redpen_audit as ra  # noqa: E402
+import redpen_fix as rf  # noqa: E402
 from check_verdict import check  # noqa: E402
 
 DEMO = ra.load_demo("DSA201_A1")["steps"]
@@ -364,6 +366,16 @@ class TestCostOrder(Env):
     def test_no_keys_clear_error(self):
         with self.env(), mock.patch.object(ra, "ROOT", pathlib.Path("/x")):
             self.assertRaises(ra.AuditError, ra.api_key)
+
+
+class TestFix(unittest.TestCase):
+    def test_google_calendar_link(self):
+        v = {"module": "DSA201", "assessment": "A1", "exposure": "HIGH"}
+        link = rf.google_calendar_link(v)
+        self.assertIn("calendar.google.com", link)
+        self.assertIn("DSA201", link)
+        self.assertTrue("Asia%2FKuala_Lumpur" in link or "Asia/Kuala_Lumpur" in link)
+        self.assertIn("Asia/Kuala_Lumpur", urllib.parse.unquote(link))
 
 
 def live():

@@ -11,7 +11,7 @@
    git clone https://github.com/L0adn9/redPen && cd redPen
    pip install -r requirements.txt
    echo "OPENROUTER_API_KEY=sk-or-..." > .env          # or GEMINI_API_KEY=... ; Gemini models only
-   python3 tools/test_engine.py                         # 38 offline tests, no key needed
+   python3 tools/test_engine.py                         # 39 offline tests, no key needed
    python3 tools/redpen_audit.py --check                # key works?
    python3 tools/redpen_audit.py data/pilot-real/CCP/A1 # full audit of a real APU brief (~30 s)
    python3 tools/redpen_insight.py "Which CLOs in my programme are at risk?"

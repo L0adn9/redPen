@@ -509,6 +509,14 @@ if mode.startswith("Saved"):
         [("Assessments audited", len(rows)), ("HIGH exposure", high),
          ("Real APU briefs passed by copy-paste", f"{real_pass} of {len(PILOT)}")]) + '</div>')
     st.dataframe(rows, hide_index=True, width="stretch")
+    import csv
+
+    csv_buf = io.StringIO()
+    if rows:
+        writer = csv.DictWriter(csv_buf, fieldnames=list(rows[0].keys()))
+        writer.writeheader()
+        writer.writerows(rows)
+    st.download_button("Download CSV", csv_buf.getvalue(), "redpen-register.csv", mime="text/csv")
     if rf.jira_configured():
         ui('<div class="rp-section-label">Live from Jira · RP board</div>')
         try:
