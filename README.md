@@ -5,9 +5,9 @@
 
 **APU Cloud Innovation Hackathon 2026** · Theme 2: Intelligent Automation & Digital Transformation (with links to Theme 3)
 **Team:** Hassan · Abdullah
-**Built with:** Gemini Enterprise (workflow agents + chat agent), Google Drive, Gmail, Google Calendar, Jira Cloud, Google Antigravity
+**Prototype (13 Nov):** Streamlit app running our agent prompts on Google Gemini (Flash and Pro), with Jira Cloud, email and calendar actions. **Final build (17 Nov):** the same prompts as Gemini Enterprise workflow agents + a chat agent, with Drive, Gmail, Calendar and Jira connectors. Built with Google Antigravity.
 
-> 🚧 Draft, being filled in during the hackathon. Sections marked `[TODO]` are completed with our real pilot results before submission.
+**Try it:** run `streamlit run streamlit_app.py` (see [Try it](#try-it)). Architecture: [`docs/architecture.png`](docs/architecture.png).
 
 ---
 
@@ -26,7 +26,7 @@ RedPen runs inside **Gemini Enterprise** as two workflow agents and a chat agent
 1. **RedPen Audit** (workflow). Triggered when a lecturer drops a brief into Drive, and re-run **monthly** on a schedule.
    - **Intake** reads the brief, rubric and CLO map.
    - **Three simulated students** attempt the highest-mark tasks: a *copy-paster*, a *prompt engineer*, and an *honest student using AI as allowed*.
-   - An **Examiner** agent, calibrated against real lecturer marks, grades them on the real rubric.
+   - An **Examiner** agent grades them on the real rubric, like a lecturer with no AI detector (calibrated, see Research).
    - The **Verdict** step outputs an **AI-Exposure level (HIGH / MEDIUM / LOW)** and the **CLOs no longer reliably evidenced**, then saves a verdict file to Drive.
 2. **RedPen Fix** (workflow). Triggered by the new verdict file.
    - For HIGH or MEDIUM exposure, a **Redesign** agent proposes 2–3 redesigns that **still test the same CLOs**, each labelled with an AI Assessment Scale level and a two-lane position.
@@ -62,19 +62,19 @@ flowchart LR
 
 **Connectors:** Google Drive (event triggers, briefs, verdicts, revised briefs), Gmail, Google Calendar (first-party); **Jira Cloud** (third-party: create/update issues = the exposure register).
 
-**How we used Antigravity:** see [`docs/antigravity/`](docs/antigravity/). `[TODO: summarise]`
+**How we used Antigravity:** see [`docs/antigravity/`](docs/antigravity/).
 
 ## 3. Research
 - **Assessment-design evidence:** the AI Assessment Scale (Perkins, Roe & Furze, 2025), the University of Sydney's two-lane approach (Semester 2 2025), the University of Bath's two-lane framework (from September 2026), and AUT's adaptation.
 - **Malaysian context:** see the fact-check table in [`IDEA.md`](IDEA.md) §10. We only use each claim at the strength the source supports.
 - **Competition and positioning:** detection tools, including AI vivas, act *after* submission. RedPen acts *before* release, which is cheaper, less adversarial, and protects CLO evidence.
-- **Interviews:** `[TODO: N APU lecturers interviewed, key findings, quote]`
-- **Calibration:** `[TODO: "N of N within one grade band, mean difference X marks"]`; method in [`docs/calibration/`](docs/calibration/README.md).
+- **Calibration ("isn't this just AI grading AI?"):** 7 real APU assignments (5 modules, used with the student's permission) were marked by hand by an independent marker (Claude, a different model family) **before** any Gemini run. Our Gemini Examiner then marked the same 7: **7 of 7 within one grade band, 5 of 7 the same grade, mean gap 4.4 percentage points.** These are cross-model reference marks, not lecturer marks; we say so.
+  - Calibration also found and fixed two real Examiner flaws: it was too generous (+16 points, round 1), and it gave marks for a face-to-face viva that never happened. A `live_session` flag now gives those criteria 0. Rounds and numbers: [`docs/calibration/results.md`](docs/calibration/results.md).
 
 ## 4. Impact
-- **Pilot on real APU briefs:** `[TODO: X of N passable by an unedited AI answer; Y CLOs across Z modules no longer reliably evidenced]`
+- **Pilot on 4 real APU briefs** (Level 2, Semester 2 2026): **2 of 4 were passed by an unedited copy-paste of the brief into Gemini** (Concurrent Programming: A, 77%; Data Structures Lab 1: C, 50% at a 50% pass mark), and a third (Data Structures Lab 2) was passed with an A+ on its written part by a student using AI strategically. **4 CLOs across 2 modules are no longer reliably evidenced.** The one LOW result (Web Applications) is LOW because half its marks come from a live demonstration, which is exactly the kind of redesign RedPen recommends. Runs: [`data/pilot-real/`](data/pilot-real/).
 - **Model drift:** `[TODO: e.g. "the same brief scored C with Flash and B+ with Pro"]`. This is why RedPen re-audits monthly.
-- **Time:** `[TODO: minutes per RedPen audit vs a lecturer's estimate for a manual audit + redesign]`
+- **Time:** one full audit (6 agent steps) takes **under a minute on Gemini Flash** and 3–6 minutes on Pro; the redesign adds one more call.
 - **Rollout:**
   - **3 months:** one programme's full assessment bank audited before the semester starts.
   - **6 months:** every programme, with monthly re-audit trends.
@@ -106,9 +106,21 @@ We built in parallel. The two workflows only meet at one shared contract, the [v
 | [`data/sample-assessments/`](data/sample-assessments/) | 5 synthetic test assessments (brief, rubric, CLO map) |
 | [`data/fake-verdicts/`](data/fake-verdicts/) | Example verdict files (HIGH, LOW) |
 | [`data/policy/`](data/policy/) | Assessment-design knowledge for the Redesign and chat agents |
-| [`data/calibration/`](data/calibration/), [`data/pilot/`](data/pilot/) | Templates for our evidence |
+| [`streamlit_app.py`](streamlit_app.py), [`tools/`](tools/) | Prototype app, audit engine (`redpen_audit.py`), fix actions (`redpen_fix.py`), calibration (`calibrate.py`), verdict checker |
+| [`data/pilot-real/`](data/pilot-real/), [`data/demo-runs/`](data/demo-runs/) | Pilot on real APU briefs; saved audits for the app |
+| [`data/calibration/`](data/calibration/) | Calibration results per round |
 | [`docs/`](docs/) | Day-1 checklist, demo script, judge access, Antigravity log, outreach, bugs |
 | [`deck/`](deck/) | Pitch deck outline and final PDF |
 
 ## Try it
-See [`docs/judge-access.md`](docs/judge-access.md). Demo video: `[TODO: link]`
+```bash
+pip install -r requirements.txt
+echo "OPENROUTER_API_KEY=sk-or-..." > .env     # or GEMINI_API_KEY=... (Google AI Studio). Gemini models only.
+streamlit run streamlit_app.py
+```
+- **Saved audits** (default) replay 9 full audits instantly, no key needed: 4 real APU briefs + 5 sample briefs, each with its redesign options.
+- **Run a new audit:** upload any brief + rubric (+ CLO map) as PDF, DOCX or TXT.
+- Optional secrets: `APP_PASSWORD` (locks live runs), `JIRA_BASE_URL` / `JIRA_EMAIL` / `JIRA_API_TOKEN` (real Jira card on Approve), `SMTP_HOST` / `SMTP_USER` / `SMTP_PASSWORD` (real email with the revised brief and invite). Without them the app shows previews. Keys: [`docs/api-keys.md`](docs/api-keys.md).
+- Command line: `python3 tools/redpen_audit.py <folder with brief.txt rubric.txt clo-map.txt>`; calibration: `python3 tools/calibrate.py <folder>`.
+
+Demo video: `[TODO: link]` · Hosted app: `[TODO: link]` · Judge access to Gemini Enterprise: [`docs/judge-access.md`](docs/judge-access.md)

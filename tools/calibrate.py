@@ -80,10 +80,21 @@ def read_marks(path):
     return rows
 
 
+def _norm(s):
+    s = re.sub(r"\(.*?\)|\[.*?\]|\*", " ", s.lower())       # drop "(...)", "[LO3-PO6]", "*"
+    return " ".join(re.findall(r"[a-z0-9]+", s))
+
+
 def match(name, options):
-    norm = {o.lower().strip(): o for o in options}
-    hit = difflib.get_close_matches(name.lower().strip(), list(norm), n=1, cutoff=0.5)
-    return norm[hit[0]] if hit else None
+    """Best Examiner criterion for a reference criterion: fuzzy match on the core words, then word overlap."""
+    norm = {_norm(o): o for o in options}
+    n = _norm(name)
+    hit = difflib.get_close_matches(n, list(norm), n=1, cutoff=0.5)
+    if hit:
+        return norm[hit[0]]
+    words = set(n.split())
+    best = max(norm, key=lambda o: len(words & set(o.split())), default=None)
+    return norm[best] if best and len(words & set(best.split())) >= 2 else None
 
 
 def pct(rows, key="mark"):
