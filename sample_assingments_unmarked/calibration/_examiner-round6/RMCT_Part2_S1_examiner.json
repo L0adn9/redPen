@@ -1,0 +1,54 @@
+{
+  "marked_criteria": [
+    "Literature review: coverage, synthesis and critical analysis of current research, leading to the research direction",
+    "Comparison of similar systems and identification of the research gap",
+    "Research methodology: design, target users, sampling, data collection, analysis, ethics and limitations",
+    "Academic writing, structure and referencing (APA 7)"
+  ],
+  "results": [
+    {
+      "persona": "student",
+      "scores": [
+        {
+          "criterion": "Literature review: coverage, synthesis and critical analysis of current research, leading to the research direction",
+          "score": 25,
+          "max": 35,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The main weakness is that the submission is roughly half of the required 3,500-word target, resulting in a compressed discussion where key studies (such as Bastani et al., 2025 and Kosmyna et al., 2025) are summarized in single sentences rather than critically analyzed in depth. Nevertheless, the review is well-structured across three relevant domains and synthesizes recent literature effectively to justify the research objectives."
+        },
+        {
+          "criterion": "Comparison of similar systems and identification of the research gap",
+          "score": 12,
+          "max": 15,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The main weakness is that the in-text evaluation of the three systems in Section 2.4 is very brief (one short paragraph per system) and lacks architectural or technical depth, while Tables 1 and 2 are detached and placed at the end of the document. However, the selection of CS50 Duck, CodeHelp, and CodeAid is highly appropriate, and the feature matrix clearly isolates the research gap that CritIQ-Assist addresses."
+        },
+        {
+          "criterion": "Research methodology: design, target users, sampling, data collection, analysis, ethics and limitations",
+          "score": 25,
+          "max": 35,
+          "clos": [
+            "CLO1",
+            "CLO2"
+          ],
+          "justification": "The main weakness is the missing Figure 1 (only a text placeholder is present) and a structural mix-up in Section 3.3 where data analysis procedures (SPSS, regression, thematic analysis) are written under 'Usability questionnaire and interviews' while data collection instruments (SUS, TAM, interview protocols) are placed under 'Data analysis'. Despite this, the three-phase sequential mixed-methods design, sampling justifications (Krejcie & Morgan, G*Power), telemetry metrics, ethics, and limitations are thorough and well-aligned with the objectives."
+        },
+        {
+          "criterion": "Academic writing, structure and referencing (APA 7)",
+          "score": 10,
+          "max": 15,
+          "clos": [],
+          "justification": "The main weakness is poor document formatting and awkward phrasing (likely from heavy paraphrasing, such as 'cognitive leaching' and 'use of III-d stage explanatory mixed include'), alongside all tables being dumped at the very end of the paper after the references and Figure 1 being omitted entirely. However, the APA 7th in-text citations and reference list are comprehensive, current, and accurately formatted."
+        }
+      ],
+      "total_percent": 72,
+      "grade": "B+",
+      "passed": true
+    }
+  ],
+  "_model": "google/gemini-4-argon"
+}

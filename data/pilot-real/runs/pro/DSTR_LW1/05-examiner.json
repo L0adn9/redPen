@@ -1,0 +1,282 @@
+{
+  "marked_criteria": [
+    "Utilization of data structures (Technical Proficiency)",
+    "Implementation of relevant algorithms (Technical Proficiency)",
+    "Demonstrates understanding of data structures/algorithms used (Comprehensive Understanding)",
+    "Justifies choices of structures/algorithms (Insightful Justification)",
+    "Theoretical Explanation (data structures, algorithms)",
+    "Input Output Screenshots",
+    "Summary Discussions (incl. time and space complexity)",
+    "Conclusion & Reflection",
+    "Content Organization"
+  ],
+  "results": [
+    {
+      "persona": "copy_paster",
+      "scores": [
+        {
+          "criterion": "Utilization of data structures (Technical Proficiency)",
+          "score": 2,
+          "max": 4,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The main weakness is that `LinkedListSystem` lacks a destructor (`~LinkedListSystem()`) to free dynamically allocated `Node` objects, causing a memory leak, and both implementations are combined into class snippets without `main()` or file loading for Datasets 1, 2, and 3. It achieves a satisfactory band (50%) for implementing custom array (`Patient* arr`) and singly linked list (`Node* head`) containers without STL."
+        },
+        {
+          "criterion": "Implementation of relevant algorithms (Technical Proficiency)",
+          "score": 2,
+          "max": 4,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The main weakness is that the code only implements `bubbleSortByCost`, `binarySearchByCost`, and `linearSearchCare`, completely omitting the C++ code for patient demographic categorization, age-group cost aggregation, and multi-criteria filtering. The implemented sorting and searching functions are syntactically valid and earn a satisfactory mark."
+        },
+        {
+          "criterion": "Demonstrates understanding of data structures/algorithms used (Comprehensive Understanding)",
+          "score": 0,
+          "max": 4,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "requires verifiable evidence: Submission Guidelines #1 mandates a 30-minute video recording where all members present and explain the development process in detail, which cannot be verified from invented text."
+        },
+        {
+          "criterion": "Justifies choices of structures/algorithms (Insightful Justification)",
+          "score": 2,
+          "max": 3,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The main weakness is that it does not justify why Bubble Sort ($O(n^2)$) was chosen over more suitable algorithms for 3,000 records, nor why payloads were swapped instead of pointers in the linked list. However, it provides a good comparison of contiguous memory locality in arrays versus $O(1)$ dynamic insertion and 8-byte pointer overhead in linked lists."
+        },
+        {
+          "criterion": "Theoretical Explanation (data structures, algorithms)",
+          "score": 2,
+          "max": 3,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The main weakness is that the explanation is very brief (two bullet points instead of the 2–4 pages specified in Appendix 1) and does not explain how demographic aggregation or multi-criteria searches manipulate the structures. It gives a clear, accurate overview of $O(1)$ index arithmetic versus $O(k)$ pointer dereferencing."
+        },
+        {
+          "criterion": "Input Output Screenshots",
+          "score": 1,
+          "max": 3,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The main weakness is that no actual graphical screenshots of a running console program are provided (only two short plain-text mockups), and sorting benchmark outputs are missing from this section. It earns a pass mark for formatting the sample output clearly."
+        },
+        {
+          "criterion": "Summary Discussions (incl. time and space complexity)",
+          "score": 2,
+          "max": 3,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The main weakness is that the analysis is compressed into three short bullet points rather than an extensive 5–15 page discussion, and lacks step-count analysis for sorting. It correctly contrasts $O(n^2)$ Bubble Sort execution times, $O(\\log n)$ vs $O(n)$ search times, and the 192 KB vs 216 KB memory footprint."
+        },
+        {
+          "criterion": "Conclusion & Reflection",
+          "score": 2,
+          "max": 3,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The main weakness is that the section is a single short paragraph that lacks personal reflection on the development process or team challenges. It accurately summarizes structural suitability and proposes relevant future work using Merge Sort and Binary Search Trees."
+        },
+        {
+          "criterion": "Content Organization",
+          "score": 2,
+          "max": 3,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The main weakness is that theWorkload Matrix lacks authentic signatures and the document does not meet the depth required by the Appendix 1 page guidelines. Nonetheless, it follows all required headings in a logical sequence with APA references."
+        }
+      ],
+      "total_percent": 50,
+      "grade": "C",
+      "passed": true
+    },
+    {
+      "persona": "prompt_engineer",
+      "scores": [
+        {
+          "criterion": "Utilization of data structures (Technical Proficiency)",
+          "score": 3,
+          "max": 4,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The main weakness is that the code omits file I/O logic for loading Datasets 1, 2, and 3 and does not show the `main()` drivers for the two separate programs. The custom `PatientArray` (with dynamic capacity doubling and destructor) and `PatientSLL` (`Node` pointers) are well-structured and strictly avoid STL containers."
+        },
+        {
+          "criterion": "Implementation of relevant algorithms (Technical Proficiency)",
+          "score": 3,
+          "max": 4,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The main weakness is that the C++ code for calculating the demographic billing tables (Tasks 4 and 5) and range-scan searches is omitted from the code listing, showing only `getAgeGroup()`. However, the implementation of array `quickSortCost`, pointer-rewiring SLL `mergeSort`, `binarySearchAge`, and `linearSearchCare` with step counters is technically sound."
+        },
+        {
+          "criterion": "Demonstrates understanding of data structures/algorithms used (Comprehensive Understanding)",
+          "score": 0,
+          "max": 4,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "requires verifiable evidence: Submission Guidelines #1 requires a video recording where all team members participate and explain their code and workload distribution, which is absent and only summarized in text."
+        },
+        {
+          "criterion": "Justifies choices of structures/algorithms (Insightful Justification)",
+          "score": 3,
+          "max": 3,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "No notable weakness within the scope of the written justification: the answer thoroughly justifies pairing in-place QuickSort with contiguous arrays and pointer-manipulating top-down MergeSort with singly linked lists to avoid payload copying and backward-traversal issues. It also connects structural choices directly to MetroHealth's triage and archiving workflow."
+        },
+        {
+          "criterion": "Theoretical Explanation (data structures, algorithms)",
+          "score": 2,
+          "max": 3,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The main weakness is that the section is much shorter than the 2–4 pages stipulated in Appendix 1 and does not detail the algorithmic mechanics of Binary Search or Linear Search. Its explanation of `base_address + i * sizeof(Patient)` indexing and tortoise-and-hare (`slow`/`fast` pointer) list splitting in MergeSort is clear and accurate."
+        },
+        {
+          "criterion": "Input Output Screenshots",
+          "score": 1,
+          "max": 3,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The main weakness is that actual window screenshots of a compiled C++ executable are replaced with ASCII text blocks, and individual dataset tables for Facilities A, B, and C are condensed into a single summary line. The formatted tables do, however, cover both demographic outputs and 50-run benchmark metrics."
+        },
+        {
+          "criterion": "Summary Discussions (incl. time and space complexity)",
+          "score": 2,
+          "max": 3,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The main weakness is that the discussion is concise rather than the 5–15 pages of in-depth analysis required by Appendix 1, and it only tests one dataset size ($N=3,000$). The analysis of comparison counts (38,410 vs 34,192) against actual execution time (412.4 us vs 895.7 us) due to CPU cache misses and the 72N vs 80N byte space calculation is strong."
+        },
+        {
+          "criterion": "Conclusion & Reflection",
+          "score": 2,
+          "max": 3,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The main weakness is that it is briefer than the 1–2 page requirement and does not evaluate the limitations of the clinical recommendations. It offers a thoughtful reflection on debugging odd-length SLL sublists in MergeSort and proposes concrete future improvements using Hash Tables and AVL Trees."
+        },
+        {
+          "criterion": "Content Organization",
+          "score": 2,
+          "max": 3,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The main weakness is the absence of a dedicated 1-page cover sheet and physical signatures in the Workload Matrix Table as required by Appendix 1. The report otherwise follows the specified section structure cleanly with proper formatting and references."
+        }
+      ],
+      "total_percent": 60,
+      "grade": "C+",
+      "passed": true
+    },
+    {
+      "persona": "honest_helper",
+      "scores": [
+        {
+          "criterion": "Utilization of data structures (Technical Proficiency)",
+          "score": 0,
+          "max": 4,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "Not attempted; marked '[NOT ATTEMPTED WITH AI: policy forbids it]'."
+        },
+        {
+          "criterion": "Implementation of relevant algorithms (Technical Proficiency)",
+          "score": 0,
+          "max": 4,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "Not attempted; marked '[NOT ATTEMPTED WITH AI: policy forbids it]'."
+        },
+        {
+          "criterion": "Demonstrates understanding of data structures/algorithms used (Comprehensive Understanding)",
+          "score": 0,
+          "max": 4,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "Not attempted; marked '[NOT ATTEMPTED WITH AI: policy forbids it]'."
+        },
+        {
+          "criterion": "Justifies choices of structures/algorithms (Insightful Justification)",
+          "score": 0,
+          "max": 3,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "Not attempted; marked '[NOT ATTEMPTED WITH AI: policy forbids it]'."
+        },
+        {
+          "criterion": "Theoretical Explanation (data structures, algorithms)",
+          "score": 0,
+          "max": 3,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Not attempted; marked '[NOT ATTEMPTED WITH AI: policy forbids it]'."
+        },
+        {
+          "criterion": "Input Output Screenshots",
+          "score": 0,
+          "max": 3,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Not attempted; marked '[NOT ATTEMPTED WITH AI: policy forbids it]'."
+        },
+        {
+          "criterion": "Summary Discussions (incl. time and space complexity)",
+          "score": 0,
+          "max": 3,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Not attempted; marked '[NOT ATTEMPTED WITH AI: policy forbids it]'."
+        },
+        {
+          "criterion": "Conclusion & Reflection",
+          "score": 0,
+          "max": 3,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Not attempted; marked '[NOT ATTEMPTED WITH AI: policy forbids it]'."
+        },
+        {
+          "criterion": "Content Organization",
+          "score": 0,
+          "max": 3,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Not attempted; marked '[NOT ATTEMPTED WITH AI: policy forbids it]'."
+        }
+      ],
+      "total_percent": 0,
+      "grade": "F",
+      "passed": false
+    }
+  ]
+}

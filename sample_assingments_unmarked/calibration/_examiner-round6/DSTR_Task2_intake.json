@@ -5,52 +5,32 @@
   "folder_path": "/RedPen/Assessments/CT077-3-2-DSTR/Lab Evaluation Work #2/",
   "brief_path": "/RedPen/Assessments/CT077-3-2-DSTR/Lab Evaluation Work #2/brief.txt",
   "lecturer_email": "",
-  "ai_policy": "AI Usage Level for This Coursework: ● Yellow (Restricted Use)\nLimited use of generative AI is allowed for specific purposes only (e.g., brainstorming ideas, clarifying concepts, or language refinement). AI must not be used to generate substantive content for submission. You must clearly acknowledge any AI use according to the course guidelines.",
+  "ai_policy": "AI Usage Level for This Coursework: ● Yellow (Restricted Use)\nLimited use of generative AI is allowed for specific purposes only (e.g., brainstorming ideas, clarifying concepts, or language refinement). AI must not be used to generate substantive content for submission. You must clearly acknowledge any AI use according to the course guidelines.\nThe following uses of GenAI are NOT permitted:\n• Complete or Partial Solution Generation: GenAI must not be used to generate the complete assignment solution or substantial portions of the C++ implementation.\n• Core Data Structure Implementation: You must not use GenAI to design or generate the implementation of the required data structures, including the core operations of stacks, queues, circular queues, priority queues, or the optional tree/BST.\n• Core Algorithm & Program Logic Generation: You must not use GenAI to design, implement, or write the core algorithms, processing logic, workflows, or decision-making logic required by your assigned functionality.\n• Data Structure Selection & Justification: You must make your own decisions about which data structure is appropriate for each task. GenAI must not be used to provide the final data structure selection or the justification that you submit as your own.\n• Automated Code Tracing: GenAI must not be used to generate step-by-step code traces, dry runs, state changes, or execution tables required for your assessment.\n• Complexity & Performance Analysis: GenAI must not be used to generate the final Big-O time or space complexity analysis and justification for your own implementation.\n• F2F Q&A Preparation as a Substitute for Understanding: Students must not use GenAI to generate memorised answers for the individual F2F Q&A. During the Q&A, students are expected to demonstrate their own understanding of their code, data structures, algorithms, design decisions, and individual contribution.\n• Individual Contribution: GenAI must not be used to create work that the student claims as their own individual contribution.",
   "pass_mark": 50,
   "total_marks": 30,
   "context": "APU is introducing a Smart Campus Parcel Collection and Delivery Management System to manage the increasing number of parcels received for students and staff.\nThe campus receives parcels from different delivery companies every day. Parcels may need to be received at the campus delivery centre, registered into the system, sorted for collection or delivery, assigned to collection counters or delivery personnel, collected by students or staff, and returned to the sender when necessary.\nDuring peak periods, hundreds of parcels may be processed within a short period. The system must therefore provide an efficient way to manage parcels and ensure that important operational information is maintained accurately.\nThe system should support different operational situations, including managing parcels waiting to be processed, managing parcels requiring different levels of attention, allocating collection and delivery resources efficiently, recording recent staff activities, locating parcel information, managing parcel records, and handling exceptional situations such as missing parcels, unavailable resources, incorrect collection information and cancelled requests.\nThe university requires an integrated system that applies appropriate data structures and algorithms to manage these operations efficiently.\nYour team is required to develop a C++ prototype for the Smart Campus Parcel Collection and Delivery Management System.",
   "tasks": [
     {
-      "id": "Task 1",
-      "text": "Task 1 – Parcel Intake, Sorting and Processing Module\nThis module manages parcels when they arrive at the campus delivery centre. It is responsible for registering parcels, maintaining their information, sorting them according to their next required action, and managing parcels waiting to be processed.\n\nParcel Information\n• Parcel ID\n• Recipient ID\n• Recipient Name\n• Delivery Company\n• Parcel Type\n• Arrival Date/Time\n• Parcel Status\n\nPossible parcel types: Standard Parcel, Large Parcel, Fragile Parcel, Document and Special-Handling Parcel. Possible statuses include Received, Pending, Processing, Ready for Collection, Out for Delivery, Collected, Returned, Missing and Cancelled.\n\nFunctional Requirements\n1. Register a New Parcel\nAllow staff to register a parcel on arrival. Assign a unique Parcel ID, record recipient and delivery information, parcel type and arrival date/time, assign an initial status, and prevent incomplete or duplicate registration.\n\n2. Maintain and Locate Parcel Records\nMaintain registered parcel records and allow staff to display, search for and view selected parcels, including relevant details and current status.\n\n3. Sort and Process Incoming Parcels\nClassify and process incoming parcels according to their next required action. A parcel may be prepared for recipient collection, assigned for campus delivery, sent for special handling, processed for return to sender, or placed on hold for investigation. Update status and route the parcel to the appropriate next stage.\n\n4. Update or Remove Parcel Records\nAllow appropriate parcel information to be updated when circumstances change, including status changes, collection, delivery, return or cancellation. Invalid operations must be prevented.\n\n5. Handle Exceptional Parcel Conditions\nHandle duplicate Parcel IDs, invalid recipient information, missing parcel information, a parcel reported as missing, searching for a non-existent parcel, processing an already completed parcel, and attempting to process an empty collection.\n\nExpected Core Output\n• Parcel registration record\n• List of pending parcels\n• Parcel selected for processing\n• Updated parcel status\n• Processed/completed/missing/returned parcel records",
-      "marks": 6
+      "id": "Part A code",
+      "text": "Task 2 – Parcel Service and Collection Management Module\nAfter a parcel has been received and registered, it may require different services before the parcel process is completed. Examples include recipient collection, campus delivery, special handling, re-delivery and return to sender. This module manages service requests from creation until completion, cancellation or return.\n\nService Request Information\n• Request ID\n• Parcel ID\n• Recipient ID\n• Recipient Name\n• Service Type\n• Request Date/Time\n• Request Status\nPossible service types: Recipient Collection, Campus Delivery, Special Handling, Return to Sender and Re-delivery. Possible statuses: Pending, Processing, Completed, Cancelled and Returned.\n\nFunctional Requirements\n1. Create a Service Request\nAllow authorised staff to create a service request for a registered parcel. Assign a unique Request ID, associate it with an existing Parcel ID, record recipient and service information, assign an initial status, and prevent invalid or duplicate requests.\n\n2. Maintain Active Service Requests\nMaintain active service requests and allow staff to display requests awaiting action. Requests should be added, viewed, processed and removed when completed or cancelled.\n\n3. Determine the Next Request to be Handled\nDetermine which active service request should be processed next according to processing conditions defined by the team. The team may consider service type, urgency, request time, recipient requirements or special handling and must justify its rule.\n\n4. Process and Update Service Requests\nProcess a selected request and update its status. Record completion, cancellation or return information, update the associated parcel where appropriate, and prevent completed or cancelled requests from being processed again.\n\n5. Handle Exceptional Service Conditions\nHandle an empty set of active requests, invalid Request ID or Parcel ID, cancelled requests, incorrect recipient or collection information, equivalent processing conditions, attempts to process a completed request, and invalid service operations.\n\nExpected Core Output\n• Active service requests\n• Selected request details\n• Next request selected for processing\n• Updated request status\n• Completed/cancelled/returned service requests\n\n3. Data Structure Requirements\nThe data structure to be used for each task is NOT prescribed. Your team must analyse the requirements of each task and determine the most appropriate data structure and algorithm.\nData Structure | Requirement\nStack | Compulsory\nQueue | Compulsory\nCircular Queue | Compulsory\nPriority Queue | Compulsory\nBinary Tree or Binary Search Tree (BST) | Compulsory\n\n7. C++ Implementation Requirements\nThe system must be implemented using C++.\nStudents must implement the required data structures themselves. The following STL containers are NOT allowed as substitutes for the required structures:\n• vector\n• list\n• stack\n• queue\n• priority_queue\n• deque\nOther built-in container classes should not be used to bypass the learning requirements.\nCode should demonstrate meaningful identifiers, modular programming, appropriate comments, clear class/function organisation, validation/error handling, correctness and reasonable efficiency.",
+      "marks": 15
     },
     {
-      "id": "Task 2",
-      "text": "Task 2 – Parcel Service and Collection Management Module\nAfter a parcel has been received and registered, it may require different services before the parcel process is completed. Examples include recipient collection, campus delivery, special handling, re-delivery and return to sender. This module manages service requests from creation until completion, cancellation or return.\n\nService Request Information\n• Request ID\n• Parcel ID\n• Recipient ID\n• Recipient Name\n• Service Type\n• Request Date/Time\n• Request Status\nPossible service types: Recipient Collection, Campus Delivery, Special Handling, Return to Sender and Re-delivery. Possible statuses: Pending, Processing, Completed, Cancelled and Returned.\n\nFunctional Requirements\n1. Create a Service Request\nAllow authorised staff to create a service request for a registered parcel. Assign a unique Request ID, associate it with an existing Parcel ID, record recipient and service information, assign an initial status, and prevent invalid or duplicate requests.\n\n2. Maintain Active Service Requests\nMaintain active service requests and allow staff to display requests awaiting action. Requests should be added, viewed, processed and removed when completed or cancelled.\n\n3. Determine the Next Request to be Handled\nDetermine which active service request should be processed next according to processing conditions defined by the team. The team may consider service type, urgency, request time, recipient requirements or special handling and must justify its rule.\n\n4. Process and Update Service Requests\nProcess a selected request and update its status. Record completion, cancellation or return information, update the associated parcel where appropriate, and prevent completed or cancelled requests from being processed again.\n\n5. Handle Exceptional Service Conditions\nHandle an empty set of active requests, invalid Request ID or Parcel ID, cancelled requests, incorrect recipient or collection information, equivalent processing conditions, attempts to process a completed request, and invalid service operations.\n\nExpected Core Output\n• Active service requests\n• Selected request details\n• Next request selected for processing\n• Updated request status\n• Completed/cancelled/returned service requests",
-      "marks": 6
-    },
-    {
-      "id": "Task 3",
-      "text": "Task 3 – Collection Counter and Delivery Resource Management Module\nThis module manages collection counters and delivery resources. It must manage resource availability and allocate parcels or service requests to appropriate resources while maintaining accurate resource information.\n\nResource Information\n• Resource ID\n• Resource Type\n• Location, where applicable\n• Current Status\n• Current Parcel/Request\n• Number of Transactions Handled\nResource types may include Collection Counter, Delivery Desk, Special-Handling Counter and Delivery Personnel. Possible statuses include Available, Occupied, Unavailable and Maintenance.\n\nFunctional Requirements\n1. Register and Maintain Collection and Delivery Resources\nAllow staff to register and maintain collection counters and delivery personnel. Each resource should have a unique identifier, type and current status.\n\n2. Display Current Resource Availability\nProvide an up-to-date view of available, occupied and unavailable resources, including the parcel or request currently assigned where applicable.\n\n3. Assign a Parcel or Service Request\nAssign a parcel or service request to an appropriate available collection counter or delivery resource according to allocation rules defined by the team. Update the assignment and resource status.\n\n4. Update Resource Status\nAllow a resource to be marked occupied, available, unavailable or otherwise changed. Associated assignment information must remain consistent.\n\n5. Handle Resource Allocation Exceptions\nHandle all resources being occupied, no suitable resource being available, a resource becoming unavailable during processing, invalid Resource ID, selection of an unavailable resource, duplicate active assignment, or invalid release/update operation.\n\nExpected Core Output\n• Resource list\n• Current resource status\n• Parcel/resource assignment\n• Current resource handling each request\n• Resource utilisation/assignment information",
-      "marks": 6
-    },
-    {
-      "id": "Task 4",
-      "text": "Task 4 – Parcel Activity and Record Management Module\nThis module maintains a history of important activities performed during parcel processing. It should allow staff to review what happened to a parcel and, where permitted, reverse an appropriate recent operation.\n\nActivity Information\n• Activity ID\n• Parcel ID\n• Request ID, where applicable\n• Activity Type\n• Date/Time\n• Previous Status\n• New Status\n• Staff/User ID, where appropriate\nPossible activities include Parcel Registration, Parcel Update, Service Request Creation, Resource Assignment, Status Change, Collection Confirmation, Cancellation and Return Processing.\n\nFunctional Requirements\n1. Record Parcel-Related Activities\nRecord important activities performed during parcel processing, with sufficient information to identify the parcel, activity and relevant time or sequence.\n\n2. Display Activity History\nAllow staff to display recent activities and the activity history for a selected parcel, including the order in which activities occurred.\n\n3. Retrieve and Review Previous Activities\nAllow staff to select a parcel and review previous activities, including processing sequence, previous status, most recent activity and relevant request or resource information.\n\n4. Reverse or Undo an Appropriate Recent Activity\nProvide a mechanism for reversing an appropriate recent activity where permitted. Identify the activity, confirm eligibility, restore relevant information and update related parcel/request/resource status where necessary.\n\n5. Handle Activity-History Exceptions\nHandle no activity history, invalid Parcel ID, an activity that cannot be reversed, an activity already reversed, invalid activity selection, or an operation that would result in an invalid parcel status.\n\nExpected Core Output\n• Activity records\n• Recent activity history\n• Selected parcel activity trace\n• Current parcel status\n• Result of a valid reversal/undo operation",
-      "marks": 6
-    },
-    {
-      "id": "Task 5",
-      "text": "Task 5 – Parcel Category Organisation Module\nThis module manages the organization and retrieval of parcel information. It allows staff to organize parcel records according to a selected key and efficiently insert, search, display, update and remove parcel information.\n\nThe team must select an appropriate organization key based on the requirements of the system. Possible organization keys include Parcel ID, Recipient ID, Delivery Company, Parcel Category or Service Type.\n\nThe selected data structure implementation must be meaningfully integrated into the parcel management system and must support the required operations.\n\nParcel Information\n\nEach parcel record may contain:\n\n    •     Parcel ID\n    •     Recipient ID\n    •     Recipient Name\n    •     Delivery Company\n    •     Parcel Category\n    •     Service Type\n    •     Parcel Status\n    •     Arrival Date/Time\n\nThe team should determine which field is used as the organization/search key and ensure that the selected key is suitable for the implemented data structure.\n\nFunctional Requirements\n\n1. Create and Maintain the Parcel Organization Structure\n\nAllow staff to create and maintain the tree-based organization structure for parcel records. Each parcel record should contain sufficient information to identify the parcel and support the selected organization key.\n\n2. Insert a New Parcel Record\n\nAllow staff to insert a new parcel record into the selected data structure. The system should validate the parcel information and prevent invalid or duplicate records where the selected key requires uniqueness.\n\n3. Search for a Parcel or Category\n\nAllow staff to search for a specified parcel record or organization key. The system should display the relevant parcel information when the record is found and provide an appropriate message when the requested record does not exist.\n\n4. Display and Traverse Parcel Records\n\nAllow staff to display the stored parcel information using an appropriate traversal method. The team should select and implement a suitable traversal method based on the purpose of the operation.\n\nThe team should explain why the selected traversal method is appropriate for the required output.\n\n5. Update or Remove a Parcel Record\n\nAllow authorized staff to update or remove a selected parcel record. The operation must maintain the properties and structure of the selected tree implementation.\n\n6. Handle Exceptional Conditions\n\nThe system should handle appropriate exceptional conditions, including:\n\n    •     Empty data structure\n    •     Duplicate parcel or organization key\n    •     Searching for a non-existent parcel\n    •     Invalid Parcel ID or organization key\n    •     Attempting to delete a non-existent record\n    •     Attempting to update a non-existent record\n    •     Invalid parcel information\n    •     Removing a record that affects the data structure\n\nExpected Core Output\n\nThe system should be able to produce:\n\n    •     Parcel organization structure\n    •     Newly inserted parcel record\n    •     Search result for a selected parcel or key\n    •     Traversal output of stored parcel records\n    •     Updated parcel record\n    •     Result of a valid deletion operation\n    •     Appropriate messages for invalid or unsuccessful operations",
-      "marks": 6
+      "id": "Part B Q&A",
+      "text": "Q&A with Justification of Data Structures (Face to face session)\nData structure selection; relevance; algorithms/operations; efficiency; limitations; edge cases; individual demonstration; code.\nDuring the individual evaluation, students may be asked to trace code, explain an operation, discuss time complexity, identify an edge case, explain a design decision, or make a small modification to demonstrate understanding.",
+      "marks": 15
     }
   ],
   "selected_tasks": [
     {
-      "id": "Task 2",
-      "text": "Task 2 – Parcel Service and Collection Management Module\nAfter a parcel has been received and registered, it may require different services before the parcel process is completed. Examples include recipient collection, campus delivery, special handling, re-delivery and return to sender. This module manages service requests from creation until completion, cancellation or return.\n\nService Request Information\n• Request ID\n• Parcel ID\n• Recipient ID\n• Recipient Name\n• Service Type\n• Request Date/Time\n• Request Status\nPossible service types: Recipient Collection, Campus Delivery, Special Handling, Return to Sender and Re-delivery. Possible statuses: Pending, Processing, Completed, Cancelled and Returned.\n\nFunctional Requirements\n1. Create a Service Request\nAllow authorised staff to create a service request for a registered parcel. Assign a unique Request ID, associate it with an existing Parcel ID, record recipient and service information, assign an initial status, and prevent invalid or duplicate requests.\n\n2. Maintain Active Service Requests\nMaintain active service requests and allow staff to display requests awaiting action. Requests should be added, viewed, processed and removed when completed or cancelled.\n\n3. Determine the Next Request to be Handled\nDetermine which active service request should be processed next according to processing conditions defined by the team. The team may consider service type, urgency, request time, recipient requirements or special handling and must justify its rule.\n\n4. Process and Update Service Requests\nProcess a selected request and update its status. Record completion, cancellation or return information, update the associated parcel where appropriate, and prevent completed or cancelled requests from being processed again.\n\n5. Handle Exceptional Service Conditions\nHandle an empty set of active requests, invalid Request ID or Parcel ID, cancelled requests, incorrect recipient or collection information, equivalent processing conditions, attempts to process a completed request, and invalid service operations.\n\nExpected Core Output\n• Active service requests\n• Selected request details\n• Next request selected for processing\n• Updated request status\n• Completed/cancelled/returned service requests",
-      "marks": 6
+      "id": "Part A code",
+      "text": "Task 2 – Parcel Service and Collection Management Module\nAfter a parcel has been received and registered, it may require different services before the parcel process is completed. Examples include recipient collection, campus delivery, special handling, re-delivery and return to sender. This module manages service requests from creation until completion, cancellation or return.\n\nService Request Information\n• Request ID\n• Parcel ID\n• Recipient ID\n• Recipient Name\n• Service Type\n• Request Date/Time\n• Request Status\nPossible service types: Recipient Collection, Campus Delivery, Special Handling, Return to Sender and Re-delivery. Possible statuses: Pending, Processing, Completed, Cancelled and Returned.\n\nFunctional Requirements\n1. Create a Service Request\nAllow authorised staff to create a service request for a registered parcel. Assign a unique Request ID, associate it with an existing Parcel ID, record recipient and service information, assign an initial status, and prevent invalid or duplicate requests.\n\n2. Maintain Active Service Requests\nMaintain active service requests and allow staff to display requests awaiting action. Requests should be added, viewed, processed and removed when completed or cancelled.\n\n3. Determine the Next Request to be Handled\nDetermine which active service request should be processed next according to processing conditions defined by the team. The team may consider service type, urgency, request time, recipient requirements or special handling and must justify its rule.\n\n4. Process and Update Service Requests\nProcess a selected request and update its status. Record completion, cancellation or return information, update the associated parcel where appropriate, and prevent completed or cancelled requests from being processed again.\n\n5. Handle Exceptional Service Conditions\nHandle an empty set of active requests, invalid Request ID or Parcel ID, cancelled requests, incorrect recipient or collection information, equivalent processing conditions, attempts to process a completed request, and invalid service operations.\n\nExpected Core Output\n• Active service requests\n• Selected request details\n• Next request selected for processing\n• Updated request status\n• Completed/cancelled/returned service requests\n\n3. Data Structure Requirements\nThe data structure to be used for each task is NOT prescribed. Your team must analyse the requirements of each task and determine the most appropriate data structure and algorithm.\nData Structure | Requirement\nStack | Compulsory\nQueue | Compulsory\nCircular Queue | Compulsory\nPriority Queue | Compulsory\nBinary Tree or Binary Search Tree (BST) | Compulsory\n\n7. C++ Implementation Requirements\nThe system must be implemented using C++.\nStudents must implement the required data structures themselves. The following STL containers are NOT allowed as substitutes for the required structures:\n• vector\n• list\n• stack\n• queue\n• priority_queue\n• deque\nOther built-in container classes should not be used to bypass the learning requirements.\nCode should demonstrate meaningful identifiers, modular programming, appropriate comments, clear class/function organisation, validation/error handling, correctness and reasonable efficiency.",
+      "marks": 15
     },
     {
-      "id": "Task 1",
-      "text": "Task 1 – Parcel Intake, Sorting and Processing Module\nThis module manages parcels when they arrive at the campus delivery centre. It is responsible for registering parcels, maintaining their information, sorting them according to their next required action, and managing parcels waiting to be processed.\n\nParcel Information\n• Parcel ID\n• Recipient ID\n• Recipient Name\n• Delivery Company\n• Parcel Type\n• Arrival Date/Time\n• Parcel Status\n\nPossible parcel types: Standard Parcel, Large Parcel, Fragile Parcel, Document and Special-Handling Parcel. Possible statuses include Received, Pending, Processing, Ready for Collection, Out for Delivery, Collected, Returned, Missing and Cancelled.\n\nFunctional Requirements\n1. Register a New Parcel\nAllow staff to register a parcel on arrival. Assign a unique Parcel ID, record recipient and delivery information, parcel type and arrival date/time, assign an initial status, and prevent incomplete or duplicate registration.\n\n2. Maintain and Locate Parcel Records\nMaintain registered parcel records and allow staff to display, search for and view selected parcels, including relevant details and current status.\n\n3. Sort and Process Incoming Parcels\nClassify and process incoming parcels according to their next required action. A parcel may be prepared for recipient collection, assigned for campus delivery, sent for special handling, processed for return to sender, or placed on hold for investigation. Update status and route the parcel to the appropriate next stage.\n\n4. Update or Remove Parcel Records\nAllow appropriate parcel information to be updated when circumstances change, including status changes, collection, delivery, return or cancellation. Invalid operations must be prevented.\n\n5. Handle Exceptional Parcel Conditions\nHandle duplicate Parcel IDs, invalid recipient information, missing parcel information, a parcel reported as missing, searching for a non-existent parcel, processing an already completed parcel, and attempting to process an empty collection.\n\nExpected Core Output\n• Parcel registration record\n• List of pending parcels\n• Parcel selected for processing\n• Updated parcel status\n• Processed/completed/missing/returned parcel records",
-      "marks": 6
-    },
-    {
-      "id": "Task 5",
-      "text": "Task 5 – Parcel Category Organisation Module\nThis module manages the organization and retrieval of parcel information. It allows staff to organize parcel records according to a selected key and efficiently insert, search, display, update and remove parcel information.\n\nThe team must select an appropriate organization key based on the requirements of the system. Possible organization keys include Parcel ID, Recipient ID, Delivery Company, Parcel Category or Service Type.\n\nThe selected data structure implementation must be meaningfully integrated into the parcel management system and must support the required operations.\n\nParcel Information\n\nEach parcel record may contain:\n\n    •     Parcel ID\n    •     Recipient ID\n    •     Recipient Name\n    •     Delivery Company\n    •     Parcel Category\n    •     Service Type\n    •     Parcel Status\n    •     Arrival Date/Time\n\nThe team should determine which field is used as the organization/search key and ensure that the selected key is suitable for the implemented data structure.\n\nFunctional Requirements\n\n1. Create and Maintain the Parcel Organization Structure\n\nAllow staff to create and maintain the tree-based organization structure for parcel records. Each parcel record should contain sufficient information to identify the parcel and support the selected organization key.\n\n2. Insert a New Parcel Record\n\nAllow staff to insert a new parcel record into the selected data structure. The system should validate the parcel information and prevent invalid or duplicate records where the selected key requires uniqueness.\n\n3. Search for a Parcel or Category\n\nAllow staff to search for a specified parcel record or organization key. The system should display the relevant parcel information when the record is found and provide an appropriate message when the requested record does not exist.\n\n4. Display and Traverse Parcel Records\n\nAllow staff to display the stored parcel information using an appropriate traversal method. The team should select and implement a suitable traversal method based on the purpose of the operation.\n\nThe team should explain why the selected traversal method is appropriate for the required output.\n\n5. Update or Remove a Parcel Record\n\nAllow authorized staff to update or remove a selected parcel record. The operation must maintain the properties and structure of the selected tree implementation.\n\n6. Handle Exceptional Conditions\n\nThe system should handle appropriate exceptional conditions, including:\n\n    •     Empty data structure\n    •     Duplicate parcel or organization key\n    •     Searching for a non-existent parcel\n    •     Invalid Parcel ID or organization key\n    •     Attempting to delete a non-existent record\n    •     Attempting to update a non-existent record\n    •     Invalid parcel information\n    •     Removing a record that affects the data structure\n\nExpected Core Output\n\nThe system should be able to produce:\n\n    •     Parcel organization structure\n    •     Newly inserted parcel record\n    •     Search result for a selected parcel or key\n    •     Traversal output of stored parcel records\n    •     Updated parcel record\n    •     Result of a valid deletion operation\n    •     Appropriate messages for invalid or unsuccessful operations",
-      "marks": 6
+      "id": "Part B Q&A",
+      "text": "Q&A with Justification of Data Structures (Face to face session)\nData structure selection; relevance; algorithms/operations; efficiency; limitations; edge cases; individual demonstration; code.\nDuring the individual evaluation, students may be asked to trace code, explain an operation, discuss time complexity, identify an edge case, explain a design decision, or make a small modification to demonstrate understanding.",
+      "marks": 15
     }
   ],
   "rubric": [
@@ -62,11 +42,7 @@
         "CLO3"
       ],
       "tasks": [
-        "Task 1",
-        "Task 2",
-        "Task 3",
-        "Task 4",
-        "Task 5"
+        "Part A code"
       ],
       "live_session": false
     },
@@ -78,11 +54,7 @@
         "CLO3"
       ],
       "tasks": [
-        "Task 1",
-        "Task 2",
-        "Task 3",
-        "Task 4",
-        "Task 5"
+        "Part A code"
       ],
       "live_session": false
     },
@@ -94,11 +66,7 @@
         "CLO3"
       ],
       "tasks": [
-        "Task 1",
-        "Task 2",
-        "Task 3",
-        "Task 4",
-        "Task 5"
+        "Part A code"
       ],
       "live_session": false
     },
@@ -110,11 +78,7 @@
         "CLO3"
       ],
       "tasks": [
-        "Task 1",
-        "Task 2",
-        "Task 3",
-        "Task 4",
-        "Task 5"
+        "Part A code"
       ],
       "live_session": false
     },
@@ -126,11 +90,7 @@
         "CLO3"
       ],
       "tasks": [
-        "Task 1",
-        "Task 2",
-        "Task 3",
-        "Task 4",
-        "Task 5"
+        "Part A code"
       ],
       "live_session": false
     },
@@ -142,11 +102,7 @@
         "CLO3"
       ],
       "tasks": [
-        "Task 1",
-        "Task 2",
-        "Task 3",
-        "Task 4",
-        "Task 5"
+        "Part A code"
       ],
       "live_session": false
     },
@@ -158,11 +114,7 @@
         "CLO3"
       ],
       "tasks": [
-        "Task 1",
-        "Task 2",
-        "Task 3",
-        "Task 4",
-        "Task 5"
+        "Part B Q&A"
       ],
       "live_session": true
     },
@@ -174,11 +126,7 @@
         "CLO3"
       ],
       "tasks": [
-        "Task 1",
-        "Task 2",
-        "Task 3",
-        "Task 4",
-        "Task 5"
+        "Part B Q&A"
       ],
       "live_session": true
     },
@@ -190,11 +138,7 @@
         "CLO3"
       ],
       "tasks": [
-        "Task 1",
-        "Task 2",
-        "Task 3",
-        "Task 4",
-        "Task 5"
+        "Part B Q&A"
       ],
       "live_session": true
     },
@@ -206,11 +150,7 @@
         "CLO3"
       ],
       "tasks": [
-        "Task 1",
-        "Task 2",
-        "Task 3",
-        "Task 4",
-        "Task 5"
+        "Part B Q&A"
       ],
       "live_session": true
     },
@@ -222,11 +162,7 @@
         "CLO3"
       ],
       "tasks": [
-        "Task 1",
-        "Task 2",
-        "Task 3",
-        "Task 4",
-        "Task 5"
+        "Part B Q&A"
       ],
       "live_session": true
     }
@@ -236,11 +172,8 @@
       "id": "CLO3",
       "text": "Demonstrate a solid understanding of how to write solutions using various data structures and algorithms",
       "tasks": [
-        "Task 1",
-        "Task 2",
-        "Task 3",
-        "Task 4",
-        "Task 5"
+        "Part A code",
+        "Part B Q&A"
       ],
       "criteria": [
         "Identify and address technical challenges",

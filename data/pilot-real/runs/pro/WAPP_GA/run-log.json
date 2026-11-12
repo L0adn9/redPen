@@ -1,0 +1,42 @@
+{
+  "module": "WAPP",
+  "assessment": "GA",
+  "run_date": "2026-11-12",
+  "steps": {
+    "01-intake": {
+      "model": "google/gemini-4-argon",
+      "seconds": 68.1
+    },
+    "02-copy_paster": {
+      "model": "google/gemini-4-argon",
+      "seconds": 35.4
+    },
+    "02-prompt_engineer": {
+      "model": "google/gemini-4-argon",
+      "seconds": 55.4
+    },
+    "02-honest_helper": {
+      "model": "google/gemini-4-argon",
+      "seconds": 168.4
+    },
+    "05-examiner": {
+      "model": "google/gemini-4-argon",
+      "seconds": 35.2
+    },
+    "06-verdict": {
+      "model": "google/gemini-4-argon",
+      "seconds": 8.4
+    }
+  },
+  "warnings": [
+    "02-copy_paster: ignored 2 chars of extra text after the JSON"
+  ],
+  "total_seconds": 280.2,
+  "contract": {
+    "ok": true,
+    "errors": [],
+    "warnings": [
+      "lecturer_email looks unset: ''"
+    ]
+  }
+}

@@ -1,0 +1,188 @@
+{
+  "module": "CT050-3-2-WAPP",
+  "module_name": "Web Applications",
+  "assessment": "Group Assignment",
+  "folder_path": "/RedPen/Assessments/CT050-3-2-WAPP/Group Assignment/",
+  "brief_path": "/RedPen/Assessments/CT050-3-2-WAPP/Group Assignment/brief.txt",
+  "lecturer_email": "",
+  "ai_policy": "not stated",
+  "pass_mark": 50,
+  "total_marks": 100,
+  "context": "As one of the members of a Web Application Development Team that consists of 3 or 4 students, you are assigned to design and develop a complete Web-based Learning System using .Net technology.\n\nThe objective is to create a website that will serve as a platform for registered and non-registered users looking for digital learning resources, which refer to digital resources such as web applications that engage students in learning activities and support students' learning goals. Online learning activities include but are not limited to synchronous and asynchronous online discussions, online self-assessments, virtual labs, simulations, problem-solving, and interactive learning objects.\n\nThe website must demonstrate database connectivity, client/ server processing, and good usage of multimedia elements. The team will entirely determine the website’s title, scope, and contents. You are expected to have a local database, apply good interface design principles, and a fully functional navigation feature. The usage of a website template that suits the web application theme is allowed in this assignment.",
+  "tasks": [
+    {
+      "id": "website",
+      "text": "REQUIREMENTS\n\nThe website must fulfill the following criteria, i.e., it should:\n\n    ▪     Consist of interlinked webpages.\n    ▪     Contain proper examples of appropriate usage of the HTML5 elements.\n    ▪     Demonstrate Cascading Stylesheet (CSS) usages, this may be by providing:\n              - External CSS\n              - Internal CSS\n              - Inline style\n              - Combination of the above\n    ▪     Provide good quality content.\n    ▪     Demonstrate database connectivity to perform at least all the following operations:\n              - Insert new records\n              - Display records\n              - Update/ modify records\n              - Delete records\n    ▪     Contain a registration page for new members.\n    ▪     Contain registered member modules (require a valid login) to manage their activities.\n    ▪     Contain administrator module (require a valid login) to manage the website content and\n          database.\n    ▪     Perform form validation.\n    ▪     Provide appropriate navigation support.\n    ▪     Perform proper file organization and naming convention.\n\nNote: The usage of web page creation tools is permitted.",
+      "marks": 50
+    },
+    {
+      "id": "report",
+      "text": "DOCUMENTATION\n\n1. PROPOSAL REPORT\n\n    ▪     Submission dateline: Week 7\n\n          Groups are required to submit a proposal report which consists of the following:\n             ➢ Website Title\n             ➢ Objectives\n             ➢ Mission Statement\n             ➢ Audience Modelling\n             ➢ Project Scope\n\n2. FINAL REPORT\n\n    The documentation should include the following:\n\n    ▪     Format:\n             - Type face: Times New Roman. Boldface, italics & lines can be used for\n                emphasizing and to enhance readability.\n             - Font size: 12(except titles and headings).\n             - Spacing: 1.5 lines between texts of a paragraph.\n             - Alignment: justify.\n             - Headers and footers can be used.\n             - Numbered.\n             - Binding: APU standard for Level 2\n             - Cover page, your cover page should contain the following items\n                   » Group Member’s Name and ID.\n                   » Intake code.\n                   » Subject.\n                   » Project Title.\n                   » Date Assigned (the date the report was handed out).\n                   » Date Completed (the date the report is due to be handed in).\n                   » APU logo\n\n\n    ▪     Recommended Content\n             - Table of Contents\n                   » The table of contents should have the topic title and reference page\n                      number attached to each topic.\n             - Introduction/ Project Plan\n                   » This section introduces your project including the objectives, scopes,\n                      and project schedule.\n             - Requirement Specification\n                   » This section defines the audience modeling, use cases, flow charts, and\n                      major functions of the web.\n             - Design and Modeling\n                  » Provide Entity Relationship Diagram (ERD), Wireframes for major\n                      layouts of the web pages, and Website Navigational Structure. All\n                      components must be provided along with appropriate descriptions.\n             - Implementation\n                  » Provide a detailed explanation of the source code of the major web\n                      application features. This includes CSS for web page styling, form\n                      validation, and SQL queries for database connectivity.\n                  »\n             - User Guidance\n                  » Screenshots of the web pages with an appropriate description.\n             - Conclusions (summary, lesson learned, and future enhancements)\n             - References\n             - Appendix\n                 » Proposal Report\n\n    ▪     Note: Full source code should not be included in the documentation.\n\nFINAL REPORT SUBMISSION\n   ▪ The complete Web site and report are to be submitted in Moodle.",
+      "marks": 50
+    }
+  ],
+  "selected_tasks": [
+    {
+      "id": "website",
+      "text": "REQUIREMENTS\n\nThe website must fulfill the following criteria, i.e., it should:\n\n    ▪     Consist of interlinked webpages.\n    ▪     Contain proper examples of appropriate usage of the HTML5 elements.\n    ▪     Demonstrate Cascading Stylesheet (CSS) usages, this may be by providing:\n              - External CSS\n              - Internal CSS\n              - Inline style\n              - Combination of the above\n    ▪     Provide good quality content.\n    ▪     Demonstrate database connectivity to perform at least all the following operations:\n              - Insert new records\n              - Display records\n              - Update/ modify records\n              - Delete records\n    ▪     Contain a registration page for new members.\n    ▪     Contain registered member modules (require a valid login) to manage their activities.\n    ▪     Contain administrator module (require a valid login) to manage the website content and\n          database.\n    ▪     Perform form validation.\n    ▪     Provide appropriate navigation support.\n    ▪     Perform proper file organization and naming convention.\n\nNote: The usage of web page creation tools is permitted.",
+      "marks": 50
+    },
+    {
+      "id": "report",
+      "text": "DOCUMENTATION\n\n1. PROPOSAL REPORT\n\n    ▪     Submission dateline: Week 7\n\n          Groups are required to submit a proposal report which consists of the following:\n             ➢ Website Title\n             ➢ Objectives\n             ➢ Mission Statement\n             ➢ Audience Modelling\n             ➢ Project Scope\n\n2. FINAL REPORT\n\n    The documentation should include the following:\n\n    ▪     Format:\n             - Type face: Times New Roman. Boldface, italics & lines can be used for\n                emphasizing and to enhance readability.\n             - Font size: 12(except titles and headings).\n             - Spacing: 1.5 lines between texts of a paragraph.\n             - Alignment: justify.\n             - Headers and footers can be used.\n             - Numbered.\n             - Binding: APU standard for Level 2\n             - Cover page, your cover page should contain the following items\n                   » Group Member’s Name and ID.\n                   » Intake code.\n                   » Subject.\n                   » Project Title.\n                   » Date Assigned (the date the report was handed out).\n                   » Date Completed (the date the report is due to be handed in).\n                   » APU logo\n\n\n    ▪     Recommended Content\n             - Table of Contents\n                   » The table of contents should have the topic title and reference page\n                      number attached to each topic.\n             - Introduction/ Project Plan\n                   » This section introduces your project including the objectives, scopes,\n                      and project schedule.\n             - Requirement Specification\n                   » This section defines the audience modeling, use cases, flow charts, and\n                      major functions of the web.\n             - Design and Modeling\n                  » Provide Entity Relationship Diagram (ERD), Wireframes for major\n                      layouts of the web pages, and Website Navigational Structure. All\n                      components must be provided along with appropriate descriptions.\n             - Implementation\n                  » Provide a detailed explanation of the source code of the major web\n                      application features. This includes CSS for web page styling, form\n                      validation, and SQL queries for database connectivity.\n                  »\n             - User Guidance\n                  » Screenshots of the web pages with an appropriate description.\n             - Conclusions (summary, lesson learned, and future enhancements)\n             - References\n             - Appendix\n                 » Proposal Report\n\n    ▪     Note: Full source code should not be included in the documentation.\n\nFINAL REPORT SUBMISSION\n   ▪ The complete Web site and report are to be submitted in Moodle.",
+      "marks": 50
+    }
+  ],
+  "rubric": [
+    {
+      "criterion": "Introduction",
+      "max": 10,
+      "bands": "No band descriptors are given. Use the APU grade bands: 80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO2"
+      ],
+      "tasks": [
+        "report"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Storyboard & Design Documents",
+      "max": 10,
+      "bands": "No band descriptors are given. Use the APU grade bands: 80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO2"
+      ],
+      "tasks": [
+        "report"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Design & Modelling",
+      "max": 10,
+      "bands": "No band descriptors are given. Use the APU grade bands: 80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO2"
+      ],
+      "tasks": [
+        "report"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Implementation & Discussion",
+      "max": 10,
+      "bands": "No band descriptors are given. Use the APU grade bands: 80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO2"
+      ],
+      "tasks": [
+        "report"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Conclusion, Document Styles & Formatting",
+      "max": 10,
+      "bands": "No band descriptors are given. Use the APU grade bands: 80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO2"
+      ],
+      "tasks": [
+        "report"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Web Page Layout & Appearance",
+      "max": 10,
+      "bands": "No band descriptors are given. Use the APU grade bands: 80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO1"
+      ],
+      "tasks": [
+        "website"
+      ],
+      "live_session": true
+    },
+    {
+      "criterion": "User Authentication & Authorization",
+      "max": 10,
+      "bands": "No band descriptors are given. Use the APU grade bands: 80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO1"
+      ],
+      "tasks": [
+        "website"
+      ],
+      "live_session": true
+    },
+    {
+      "criterion": "Dynamic Content",
+      "max": 10,
+      "bands": "No band descriptors are given. Use the APU grade bands: 80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO1"
+      ],
+      "tasks": [
+        "website"
+      ],
+      "live_session": true
+    },
+    {
+      "criterion": "Insert, Update & Delete Records",
+      "max": 10,
+      "bands": "No band descriptors are given. Use the APU grade bands: 80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO1"
+      ],
+      "tasks": [
+        "website"
+      ],
+      "live_session": true
+    },
+    {
+      "criterion": "Form Validation, Navigation & Usability",
+      "max": 10,
+      "bands": "No band descriptors are given. Use the APU grade bands: 80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO1"
+      ],
+      "tasks": [
+        "website"
+      ],
+      "live_session": true
+    }
+  ],
+  "clos": [
+    {
+      "id": "CLO1",
+      "text": "Develop a web application that is connected to a well-designed database by using server and client-side scripting language based on the current web standards. (C6, PLO2)",
+      "tasks": [
+        "website"
+      ],
+      "criteria": [
+        "Web Page Layout & Appearance",
+        "User Authentication & Authorization",
+        "Dynamic Content",
+        "Insert, Update & Delete Records",
+        "Form Validation, Navigation & Usability"
+      ]
+    },
+    {
+      "id": "CLO2",
+      "text": "Explain the design and solution which provide a systematic way to develop web applications. (A3, PLO5)",
+      "tasks": [
+        "report"
+      ],
+      "criteria": [
+        "Introduction",
+        "Storyboard & Design Documents",
+        "Design & Modelling",
+        "Implementation & Discussion",
+        "Conclusion, Document Styles & Formatting"
+      ]
+    }
+  ]
+}

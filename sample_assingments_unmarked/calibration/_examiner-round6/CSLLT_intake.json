@@ -28,7 +28,7 @@
     {
       "id": "T4",
       "text": "Use APA referencing. Students must obtain 50% overall to pass.",
-      "marks": 20
+      "marks": 10
     }
   ],
   "selected_tasks": [
@@ -57,6 +57,9 @@
         "CLO"
       ],
       "tasks": [
+        "T1",
+        "T2",
+        "T3",
         "T4"
       ],
       "live_session": false

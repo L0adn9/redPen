@@ -25,6 +25,21 @@ Examiner model: `gemini-3-flash-preview` (the only Flash model answering that da
 | WAPP report | 72 | 72 | B+ / B+ |
 | **Result** | | | **7 of 7 within one grade band, 5 of 7 same grade, mean gap 4.4 points (Examiner +3.9 on average)** |
 
+## Round 6: same prompt on Gemini Pro (`google/gemini-4-argon`)
+
+| Sample | Reference | Flash (r5) | Pro (r6) |
+|---|---|---|---|
+| CCP Report | 78 | 76 | 77 |
+| CCP System | 86 | 93 | 68 (gave 0/20 for the video-based criterion) |
+| CSLLT | 78 | 90 | 80 |
+| DSTR LW2 Task 2 | 77 | 85 | 87 |
+| MAE Part 2 | 90 | 90 | 90 |
+| RMCT Part 2 | 80 | 82 | 72 |
+| WAPP report | 72 | 72 | 70 |
+| **Within one grade / mean gap** | | **7 of 7 / 4.4** | **5 of 7 / 5.9** (Pro 2.4 lower on average) |
+
+**Decision:** the Examiner runs on **Flash** (better agreement, faster, cheaper). Pro is stricter and treats a submitted video as missing evidence.
+
 RMCT, CSLLT and MAE had no official marking scheme in our files, so both markers used the same rubric derived from the module descriptor or the report's cover page.
 
 \* Round 4 docked the student for not building other team members' modules. The prompt now says not to.

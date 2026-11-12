@@ -1,0 +1,310 @@
+{
+  "marked_criteria": [
+    "Introduction",
+    "Storyboard & Design Documents",
+    "Design & Modelling",
+    "Implementation & Discussion",
+    "Conclusion, Document Styles & Formatting",
+    "Web Page Layout & Appearance",
+    "User Authentication & Authorization",
+    "Dynamic Content",
+    "Insert, Update & Delete Records",
+    "Form Validation, Navigation & Usability"
+  ],
+  "results": [
+    {
+      "persona": "copy_paster",
+      "scores": [
+        {
+          "criterion": "Introduction",
+          "score": 6,
+          "max": 10,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The objectives, scope, and schedule are covered only briefly in short bullet points without sufficient project context or detailed planning. The section includes a basic 14-week schedule and links to the proposal mission statement in the appendix, placing it in the satisfactory band."
+        },
+        {
+          "criterion": "Storyboard & Design Documents",
+          "score": 4,
+          "max": 10,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Actual visual wireframes, flowcharts, and use case diagrams are completely missing, replaced by brief one-sentence text summaries. While audience modelling and major functions are listed under '2. REQUIREMENT SPECIFICATION', the lack of visual storyboard and design documents limits this to a low pass."
+        },
+        {
+          "criterion": "Design & Modelling",
+          "score": 5,
+          "max": 10,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "There are no actual diagrams for the ERD or website navigational structure, and relationship cardinalities are not explained. However, the schema for four tables (`Users`, `Resources`, `Assessments`, `Discussions`) with primary and foreign keys is listed clearly enough to earn a low satisfactory mark."
+        },
+        {
+          "criterion": "Implementation & Discussion",
+          "score": 5,
+          "max": 10,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The User Guidance section completely lacks screenshots of the web pages, and the report's implementation section only summarizes CSS, validation, and SQL in three short bullet points without walking through the code snippets provided in the website task. This earns a borderline satisfactory mark."
+        },
+        {
+          "criterion": "Conclusion, Document Styles & Formatting",
+          "score": 6,
+          "max": 10,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The conclusion, lessons learned, and future enhancements are superficial one-sentence bullet points, and there are only two references. The report does include a structured cover page, table of contents, and appendix proposal, placing it in the satisfactory band."
+        },
+        {
+          "criterion": "Web Page Layout & Appearance",
+          "score": 0,
+          "max": 10,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "User Authentication & Authorization",
+          "score": 0,
+          "max": 10,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "Dynamic Content",
+          "score": 0,
+          "max": 10,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "Insert, Update & Delete Records",
+          "score": 0,
+          "max": 10,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "Form Validation, Navigation & Usability",
+          "score": 0,
+          "max": 10,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        }
+      ],
+      "total_percent": 26,
+      "grade": "F",
+      "passed": false
+    },
+    {
+      "persona": "prompt_engineer",
+      "scores": [
+        {
+          "criterion": "Introduction",
+          "score": 7,
+          "max": 10,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The project schedule is compressed into a single line rather than a detailed project plan or Gantt chart. Nonetheless, the title, mission statement, numbered objectives, and scope for different user tiers are well articulated in Section 1."
+        },
+        {
+          "criterion": "Storyboard & Design Documents",
+          "score": 5,
+          "max": 10,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Visual wireframes and use case diagrams are omitted in favor of short prose descriptions. However, the answer provides a clear text-based process flow ('User requests `/Member/SelfAssessment.aspx` -> Server checks `Session[\"UserRole\"]`...') alongside audience modelling and actor functions."
+        },
+        {
+          "criterion": "Design & Modelling",
+          "score": 6,
+          "max": 10,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Visual diagrams for the ERD and navigation tree are missing, represented only by text lists. It earns a satisfactory mark because it explicitly defines five relational tables with primary/foreign keys and states the 1:M relationships between `LearningResource`, `Quizzes`, and `Users`."
+        },
+        {
+          "criterion": "Implementation & Discussion",
+          "score": 6,
+          "max": 10,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Section 5 (User Guidance) contains no actual screenshots of the web application, and Section 4 discusses the implementation only at a high level without explaining line-by-line code snippets in the report body. The technical explanations of three-tier CSS, dual-layer validation, and ADO.NET parameterized queries are solid."
+        },
+        {
+          "criterion": "Conclusion, Document Styles & Formatting",
+          "score": 7,
+          "max": 10,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The appendix only summarizes the Week 7 proposal in one sentence instead of attaching it in full, and the reference list is very brief. The reflection on viewstate conflicts inside an `UpdatePanel` and the document structure (cover page, TOC, formatting note) are well done."
+        },
+        {
+          "criterion": "Web Page Layout & Appearance",
+          "score": 0,
+          "max": 10,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "User Authentication & Authorization",
+          "score": 0,
+          "max": 10,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "Dynamic Content",
+          "score": 0,
+          "max": 10,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "Insert, Update & Delete Records",
+          "score": 0,
+          "max": 10,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "Form Validation, Navigation & Usability",
+          "score": 0,
+          "max": 10,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        }
+      ],
+      "total_percent": 31,
+      "grade": "F",
+      "passed": false
+    },
+    {
+      "persona": "honest_helper",
+      "scores": [
+        {
+          "criterion": "Introduction",
+          "score": 5,
+          "max": 10,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The project schedule is left as an unattempted placeholder ('[REQUIRES STUDENT'S OWN EVIDENCE: Team Gantt chart...]'), earning 0 for that component. The remaining parts—website title, mission statement, objectives, audience modelling, and scope—are clearly written and earn half marks."
+        },
+        {
+          "criterion": "Storyboard & Design Documents",
+          "score": 3,
+          "max": 10,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "All visual models (Use Case Diagram, Flowcharts, and Wireframes) are marked '[REQUIRES STUDENT'S OWN EVIDENCE...]' and receive 0. Only the brief text descriptions of audience modelling and the three major functions can be credited."
+        },
+        {
+          "criterion": "Design & Modelling",
+          "score": 4,
+          "max": 10,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The Crow's Foot ERD, wireframes, and Website Navigational Structure diagram are all missing ('[REQUIRES STUDENT'S OWN EVIDENCE...]'). Credit is awarded only for the normalized five-table database schema definition (`Users`, `Resources`, `Quizzes`, `QuizAttempts`, `Discussions`)."
+        },
+        {
+          "criterion": "Implementation & Discussion",
+          "score": 4,
+          "max": 10,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The entire User Guidance section with annotated screenshots is missing ('[REQUIRES STUDENT'S OWN EVIDENCE...]'), and the implementation discussion does not walk through specific code snippets in detail. The conceptual summary of CSS, ASP.NET validators, and parameterized `SqlClient` queries earns a low pass."
+        },
+        {
+          "criterion": "Conclusion, Document Styles & Formatting",
+          "score": 2,
+          "max": 10,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The Cover Page, Table of Contents, Lessons Learned, and Appendix Proposal Report are all unattempted placeholders ('[REQUIRES STUDENT'S OWN EVIDENCE...]'). Only the brief summary, future enhancements, and two references are present."
+        },
+        {
+          "criterion": "Web Page Layout & Appearance",
+          "score": 0,
+          "max": 10,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "User Authentication & Authorization",
+          "score": 0,
+          "max": 10,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "Dynamic Content",
+          "score": 0,
+          "max": 10,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "Insert, Update & Delete Records",
+          "score": 0,
+          "max": 10,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "Form Validation, Navigation & Usability",
+          "score": 0,
+          "max": 10,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        }
+      ],
+      "total_percent": 18,
+      "grade": "F",
+      "passed": false
+    }
+  ]
+}

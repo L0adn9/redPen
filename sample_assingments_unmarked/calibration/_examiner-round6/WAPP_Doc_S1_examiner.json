@@ -1,0 +1,115 @@
+{
+  "marked_criteria": [
+    "Introduction",
+    "Storyboard & Design Documents",
+    "Design & Modelling",
+    "Implementation & Discussion",
+    "Conclusion, Document Styles & Formatting",
+    "Web Page Layout & Appearance",
+    "User Authentication & Authorization",
+    "Dynamic Content",
+    "Insert, Update & Delete Records",
+    "Form Validation, Navigation & Usability"
+  ],
+  "results": [
+    {
+      "persona": "student",
+      "scores": [
+        {
+          "criterion": "Introduction",
+          "score": 6,
+          "max": 10,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The introduction omits the required project schedule and is rather brief, though it clearly defines the Member module's three objectives, in-scope/out-of-scope boundaries, and database table interactions ('Provide interactive learning through lessons and the ability to assess oneself...')."
+        },
+        {
+          "criterion": "Storyboard & Design Documents",
+          "score": 7,
+          "max": 10,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Explicit audience modelling is omitted from Section 2 (which starts directly at '2.1 Use cases') and visual figures are only referenced by caption in the text extract, though the use case table, major functions, wireframes, and navigational structure are clearly explained."
+        },
+        {
+          "criterion": "Design & Modelling",
+          "score": 6,
+          "max": 10,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "Section 3.1 states 'The module uses the group's shared ERD and database' without providing an actual ERD diagram or explaining table relationships/keys, although the columns and CRUD operations for all five tables (Users, Lessons, Checkpoints, Progress, ChecklistItems) are systematically documented."
+        },
+        {
+          "criterion": "Implementation & Discussion",
+          "score": 9,
+          "max": 10,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "While HTML5 semantic layout elements are only briefly touched upon via the '<video controls>' tag, the implementation discussion is exceptionally thorough, detailing parameterized SQL queries, ASP.NET client/server validation controls, CSS types, and 31 test cases alongside a complete user guide."
+        },
+        {
+          "criterion": "Conclusion, Document Styles & Formatting",
+          "score": 7,
+          "max": 10,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The cover page omits required details (Group Member's Name and ID, Intake code, Date Assigned, Date Completed) and the Proposal Report appendix is missing, but the conclusion (summary, lessons learned, future enhancements) and APA references are well-written and insightful."
+        },
+        {
+          "criterion": "Web Page Layout & Appearance",
+          "score": 0,
+          "max": 10,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "User Authentication & Authorization",
+          "score": 0,
+          "max": 10,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "Dynamic Content",
+          "score": 0,
+          "max": 10,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "Insert, Update & Delete Records",
+          "score": 0,
+          "max": 10,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "Form Validation, Navigation & Usability",
+          "score": 0,
+          "max": 10,
+          "clos": [
+            "CLO1"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        }
+      ],
+      "total_percent": 35,
+      "grade": "F",
+      "passed": false
+    }
+  ],
+  "_model": "google/gemini-4-argon"
+}

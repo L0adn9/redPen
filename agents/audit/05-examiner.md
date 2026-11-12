@@ -4,7 +4,7 @@
 
 ## Settings in Gemini Enterprise
 - **Step type:** Gemini Agent
-- **Model:** **always Pro**, in both the Pro and Flash workflow copies. The marker must stay the same so that only the persona model changes.
+- **Model:** **always Flash**, in both workflow copies, so only the persona model changes. Calibration (docs/calibration/results.md): Flash 7 of 7 within one grade band of the reference marks (mean gap 4.4), Pro 5 of 7 (mean gap 5.9, stricter).
 - **Connected apps / knowledge:** none. Optionally upload `rubric-marking-guidance.txt` as knowledge if the lecturer gives you extra marking notes.
 - **Input:** Intake JSON (`rubric`, `selected_tasks`, `pass_mark`, `ai_policy`) + the three persona outputs.
 - **Output format:** JSON

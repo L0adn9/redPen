@@ -1,0 +1,38 @@
+{
+  "file_name": "CT074-3-2_A1_pro_20261112.json",
+  "module": "CT074-3-2",
+  "module_name": "Concurrent Programming",
+  "assessment": "A1",
+  "brief_path": "/RedPen/Assessments/CCP/A1/brief.txt",
+  "lecturer_email": "",
+  "model": "pro",
+  "audit_date": "2026-11-12",
+  "exposure": "MEDIUM",
+  "persona_grades": {
+    "copy_paster": "F",
+    "prompt_engineer": "C",
+    "honest_helper": "D"
+  },
+  "persona_totals": {
+    "copy_paster": 39,
+    "prompt_engineer": 56,
+    "honest_helper": 44
+  },
+  "pass_mark": 50,
+  "clos_at_risk": [
+    {
+      "id": "CLO3",
+      "text": "Explain the safety aspects of multi-threaded and parallel systems",
+      "why": "The prompt-engineer scored 24/30 on 'Explanation of the safety aspects of multi-threaded system implemented [LO3-PO6]'."
+    }
+  ],
+  "easy_criteria": [
+    "Assumptions [LO3-PO6]",
+    "Explanation of the safety aspects of multi-threaded system implemented [LO3-PO6]",
+    "Justification of coding techniques implemented [LO3-PO6]",
+    "Depth of discussion of concurrency concepts [LO3-PO6]",
+    "Appropriateness of coding techniques used to implement design with appropriate comment lines in source codes *",
+    "Appropriateness of the Java concurrent programming facilities used"
+  ],
+  "summary": "While an unedited AI answer failed at 39% due to missing video evidence, a prompt-engineered AI response scored C (56%), passing the 50% threshold on the strength of the written report and code alone. Consequently, CLO3 is no longer reliably evidenced."
+}

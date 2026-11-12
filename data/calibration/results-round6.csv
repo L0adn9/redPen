@@ -1,0 +1,8 @@
+sample,reference_marker,reference_pct,reference_grade,examiner_pct,examiner_grade,grade_bands_apart
+CCP_Report/S1,"Claude (independent marking, cross-model check)",78,A,77,A,0
+CCP_System/S1,"Claude (independent marking, cross-model check)",86,A+,68,B,3
+CSLLT/S1,"Claude (independent marking, cross-model check)",78,A,80,A+,1
+DSTR_Task2/S1,"Claude (independent marking, cross-model check)",77,A,87,A+,1
+MAE_Part2/S1,"Claude (independent marking, cross-model check)",90,A+,90,A+,0
+RMCT_Part2/S1,"Claude (independent marking, cross-model check)",80,A+,72,B+,2
+WAPP_Doc/S1,"Claude (independent marking, cross-model check)",72,B+,70,B+,0

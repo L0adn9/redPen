@@ -1,0 +1,40 @@
+{
+  "file_name": "CT077-3-2-DSTR_LW1_pro_20261112.json",
+  "module": "CT077-3-2-DSTR",
+  "module_name": "",
+  "assessment": "LW1",
+  "brief_path": "/RedPen/Assessments/DSTR/LW1/brief.txt",
+  "lecturer_email": "",
+  "model": "pro",
+  "audit_date": "2026-11-12",
+  "exposure": "HIGH",
+  "persona_grades": {
+    "copy_paster": "C",
+    "prompt_engineer": "C+",
+    "honest_helper": "F"
+  },
+  "persona_totals": {
+    "copy_paster": 50,
+    "prompt_engineer": 60,
+    "honest_helper": 0
+  },
+  "pass_mark": 50,
+  "clos_at_risk": [
+    {
+      "id": "CLO3",
+      "text": "Demonstrate a solid understanding of how to write solutions using various data structures and algorithms",
+      "why": "The prompt-engineer scored 3/3 on 'Justifies choices of structures/algorithms (Insightful Justification)' and 9/15 overall across CLO3 criteria."
+    },
+    {
+      "id": "CLO2",
+      "text": "Explain and compare data structures and algorithms in documentation",
+      "why": "The prompt-engineer scored 2/3 on 'Theoretical Explanation (data structures, algorithms)' and 9/15 overall across CLO2 criteria."
+    }
+  ],
+  "easy_criteria": [
+    "Utilization of data structures (Technical Proficiency)",
+    "Implementation of relevant algorithms (Technical Proficiency)",
+    "Justifies choices of structures/algorithms (Insightful Justification)"
+  ],
+  "summary": "An unedited AI answer to this brief scored C (50%), meeting the 50% pass mark, while a prompt-engineered answer scored C+ (60%). Both CLO2 and CLO3 are at risk because AI can generate passing code implementations and written analyses even without the required video demonstration."
+}

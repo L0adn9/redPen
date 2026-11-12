@@ -73,7 +73,7 @@ flowchart LR
 
 ## 4. Impact
 - **Pilot on 4 real APU briefs** (Level 2, Semester 2 2026): **2 of 4 were passed by an unedited copy-paste of the brief into Gemini** (Concurrent Programming: A, 77%; Data Structures Lab 1: C, 50% at a 50% pass mark), and a third (Data Structures Lab 2) was passed with an A+ on its written part by a student using AI strategically. **4 CLOs across 2 modules are no longer reliably evidenced.** The one LOW result (Web Applications) is LOW because half its marks come from a live demonstration, which is exactly the kind of redesign RedPen recommends. Runs: [`data/pilot-real/`](data/pilot-real/).
-- **Model drift:** `[TODO: e.g. "the same brief scored C with Flash and B+ with Pro"]`. This is why RedPen re-audits monthly.
+- **The model matters:** the same 4 briefs audited end to end on Gemini Pro gave a different verdict on 2 of 4 (Concurrent Programming HIGH → MEDIUM, Data Structures Lab 2 MEDIUM → LOW; Pro's examiner marks more strictly). So every verdict records its model, and RedPen re-audits monthly. Runs: [`data/pilot-real/runs/`](data/pilot-real/runs/).
 - **Time:** one full audit (6 agent steps) takes **under a minute on Gemini Flash** and 3–6 minutes on Pro; the redesign adds one more call.
 - **Rollout:**
   - **3 months:** one programme's full assessment bank audited before the semester starts.

@@ -1,0 +1,40 @@
+{
+  "module": "DSTR",
+  "assessment": "LW1",
+  "run_date": "2026-11-12",
+  "steps": {
+    "01-intake": {
+      "model": "google/gemini-4-argon",
+      "seconds": 85.2
+    },
+    "02-honest_helper": {
+      "model": "google/gemini-4-argon",
+      "seconds": 7.4
+    },
+    "02-copy_paster": {
+      "model": "google/gemini-4-argon",
+      "seconds": 49.7
+    },
+    "02-prompt_engineer": {
+      "model": "google/gemini-4-argon",
+      "seconds": 127.8
+    },
+    "05-examiner": {
+      "model": "google/gemini-4-argon",
+      "seconds": 40.2
+    },
+    "06-verdict": {
+      "model": "google/gemini-4-argon",
+      "seconds": 9.8
+    }
+  },
+  "warnings": [],
+  "total_seconds": 263.0,
+  "contract": {
+    "ok": true,
+    "errors": [],
+    "warnings": [
+      "lecturer_email looks unset: ''"
+    ]
+  }
+}

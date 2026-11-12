@@ -1,0 +1,282 @@
+{
+  "marked_criteria": [
+    "Assumptions [LO3-PO6]",
+    "Explanation of the safety aspects of multi-threaded system implemented [LO3-PO6]",
+    "Justification of coding techniques implemented [LO3-PO6]",
+    "Depth of discussion of concurrency concepts [LO3-PO6]",
+    "Appropriateness of coding techniques used to implement design with appropriate comment lines in source codes *",
+    "Appropriateness of the Java concurrent programming facilities used",
+    "Program runs appropriately with basic requirements *",
+    "Additional requirements met *",
+    "Explanations of concurrency concepts implemented with relevant code samples *"
+  ],
+  "results": [
+    {
+      "persona": "copy_paster",
+      "scores": [
+        {
+          "criterion": "Assumptions [LO3-PO6]",
+          "score": 13,
+          "max": 20,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The report states assumptions regarding plane arrivals, passenger grouping, and gate limits, but fails to explicitly include own custom additional requirements based on those assumptions as requested by the brief. The assumption that passenger embarking and disembarking can be grouped into a single sleep statement also oversimplifies the specification."
+        },
+        {
+          "criterion": "Explanation of the safety aspects of multi-threaded system implemented [LO3-PO6]",
+          "score": 16,
+          "max": 30,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "Safety aspects such as deadlock avoidance, circular wait, and race conditions are only briefly asserted rather than explained in depth. Moreover, the code contains a subtle flaw in its monitor wait loop (`while (queue.peek() != this || !groundCap.tryAcquire()) queue.wait(100);`), which can leak semaphore permits if an emergency plane preempts the head of the queue after a permit was acquired."
+        },
+        {
+          "criterion": "Justification of coding techniques implemented [LO3-PO6]",
+          "score": 16,
+          "max": 30,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The report lists the Java classes used (`Semaphore`, `ReentrantLock`, `ArrayBlockingQueue`), but provides minimal justification for why those specific facilities were chosen over alternatives or why `ReentrantLock` was used without `try-finally` blocks."
+        },
+        {
+          "criterion": "Depth of discussion of concurrency concepts [LO3-PO6]",
+          "score": 11,
+          "max": 20,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The discussion of concurrency concepts is brief and bulleted, lacking theoretical depth on how monitors, fairness, and atomic operations work under the hood. Snippets are included, but their interaction is only described at a surface level."
+        },
+        {
+          "criterion": "Appropriateness of coding techniques used to implement design with appropriate comment lines in source codes *",
+          "score": 9,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The source code contains zero comment lines, directly failing the rubric requirement for appropriate comments. Additionally, the `Plane` thread hardcodes `System.out.println(\"Thread-ATC : Granted landing...\")` inside its own `run()` method, which violates the brief's strict rule against one thread acting or printing on behalf of another."
+        },
+        {
+          "criterion": "Appropriateness of the Java concurrent programming facilities used",
+          "score": 12,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "While `Semaphore`, `ReentrantLock`, and `PriorityBlockingQueue` are appropriate facilities, `ReentrantLock.unlock()` is not placed in a `finally` block, and polling `queue.wait(100)` inside a synchronized block on a concurrent queue is poor practice."
+        },
+        {
+          "criterion": "Program runs appropriately with basic requirements *",
+          "score": 0,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "requires verifiable evidence: The brief requires a 5-minute video of the simulation running to verify that basic requirements are met dynamically, and the submission only contains a written script and invented text output."
+        },
+        {
+          "criterion": "Additional requirements met *",
+          "score": 0,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "requires verifiable evidence: Verification that the additional requirements and congested emergency scenario run properly requires the submitted video demonstration, which is absent."
+        },
+        {
+          "criterion": "Explanations of concurrency concepts implemented with relevant code samples *",
+          "score": 0,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "requires verifiable evidence: This T1 criterion assesses the student's explanation of the concurrency concepts and corresponding code in the required video presentation, which was not provided."
+        }
+      ],
+      "total_percent": 39,
+      "grade": "F",
+      "passed": false
+    },
+    {
+      "persona": "prompt_engineer",
+      "scores": [
+        {
+          "criterion": "Assumptions [LO3-PO6]",
+          "score": 17,
+          "max": 20,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The report clearly articulates system assumptions and explicitly defines a custom concurrency requirement (pre-allocating ground permits before runway acquisition to prevent departure deadlocks). A minor weakness is that the arrival interval in code (`rand.nextInt(1500)`) slightly deviates from the 0, 1, or 2 seconds (`nextInt(2000)`) stated in the brief."
+        },
+        {
+          "criterion": "Explanation of the safety aspects of multi-threaded system implemented [LO3-PO6]",
+          "score": 24,
+          "max": 30,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The report provides a strong explanation of circular wait prevention, starvation avoidance using fair semaphores, and thread signaling via `CountDownLatch`. However, it overlooks a flaw in its own implementation: `ATC` blocks at `groundCap.acquire()` *after* polling a plane from `landingQueue`, meaning an emergency plane arriving while all 3 gates are full cannot preempt the one plane already polled by ATC."
+        },
+        {
+          "criterion": "Justification of coding techniques implemented [LO3-PO6]",
+          "score": 23,
+          "max": 30,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "Coding techniques such as `CountDownLatch` for direct thread handoff, `AtomicInteger` (CAS) for lock-free statistics, and `Thread.join()` as a barrier are well-justified. The main weakness is the lack of justification for grouping passengers into a single thread rather than individual passenger threads as shown in the brief's sample output (`Thread-Passenger-8`)."
+        },
+        {
+          "criterion": "Depth of discussion of concurrency concepts [LO3-PO6]",
+          "score": 16,
+          "max": 20,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The discussion demonstrates solid depth covering mutual exclusion, bounded buffers, fork-join parallelism, and hardware-level Compare-And-Swap operations. It stops slightly short of full marks because it does not discuss potential exception-handling safety around semaphore releases."
+        },
+        {
+          "criterion": "Appropriateness of coding techniques used to implement design with appropriate comment lines in source codes *",
+          "score": 15,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The code properly separates `ATC`, `Plane`, `PaxGroup`, and `Crew` into distinct threads that strictly log their own actions, and includes concise inline comments. The main weakness is grouping all passengers into one `PaxGroup` thread rather than individual passenger threads, alongside sparse commenting in the main simulation loop."
+        },
+        {
+          "criterion": "Appropriateness of the Java concurrent programming facilities used",
+          "score": 16,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The combination of fair `Semaphore`s, `ArrayBlockingQueue`, `PriorityBlockingQueue`, and `CountDownLatch` is well-chosen and avoids low-level `wait/notify` pitfalls. However, `ATC` acquiring `groundCap` after removing an element from `landingQueue` undermines the priority queue during congestion."
+        },
+        {
+          "criterion": "Program runs appropriately with basic requirements *",
+          "score": 0,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "requires verifiable evidence: The brief requires a video recording of the simulation running to demonstrate that the program executes appropriately, which cannot be satisfied by text alone."
+        },
+        {
+          "criterion": "Additional requirements met *",
+          "score": 0,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "requires verifiable evidence: Demonstrating the additional requirements in action requires the 5-minute video submission stipulated in Task 1."
+        },
+        {
+          "criterion": "Explanations of concurrency concepts implemented with relevant code samples *",
+          "score": 0,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "requires verifiable evidence: This criterion maps to the Task 1 video presentation where the student must show which requirements are met in the output and corresponding code."
+        }
+      ],
+      "total_percent": 56,
+      "grade": "C",
+      "passed": true
+    },
+    {
+      "persona": "honest_helper",
+      "scores": [
+        {
+          "criterion": "Assumptions [LO3-PO6]",
+          "score": 13,
+          "max": 20,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The report clearly lists four relevant assumptions covering gate capacity, emergency priority, passenger readiness, and thread identity. However, it omits the brief's requirement to include custom additional requirements based on the assumptions made."
+        },
+        {
+          "criterion": "Explanation of the safety aspects of multi-threaded system implemented [LO3-PO6]",
+          "score": 18,
+          "max": 30,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The report explains guarded wait loops, spurious wakeups, and race condition prevention well, though the discussion is somewhat concise. Furthermore, in the code, `Plane.compareTo` only compares `emergency` status and ignores arrival order, meaning normal waiting planes have no FIFO fairness guarantee."
+        },
+        {
+          "criterion": "Justification of coding techniques implemented [LO3-PO6]",
+          "score": 19,
+          "max": 30,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The justifications for monitors, fair semaphores, and `Thread.join()` barriers are accurate and directly tied to the code snippets. However, the report does not justify why `MainThread` prints the ATC Manager statistics at the end of `main()` instead of a dedicated ATC thread."
+        },
+        {
+          "criterion": "Depth of discussion of concurrency concepts [LO3-PO6]",
+          "score": 13,
+          "max": 20,
+          "clos": [
+            "CLO3"
+          ],
+          "justification": "The discussion covers semaphores, monitors, fork-join, and priority queues accurately, but remains brief and lacks deeper analysis of deadlock conditions or testing results (which were left as a placeholder for student evidence)."
+        },
+        {
+          "criterion": "Appropriateness of coding techniques used to implement design with appropriate comment lines in source codes *",
+          "score": 10,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The source code has no comments at all, failing the rubric's explicit requirement for comment lines. In addition, the `main` thread prints `Thread-ATC-Manager : ...` directly, violating the brief's rule against the main thread acting for the ATC."
+        },
+        {
+          "criterion": "Appropriateness of the Java concurrent programming facilities used",
+          "score": 14,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The code uses `Semaphore`, `PriorityBlockingQueue`, `ConcurrentLinkedQueue`, and `AtomicInteger` effectively. However, wrapping thread-safe collections (`PriorityBlockingQueue`, `ConcurrentLinkedQueue`, `AtomicInteger`) inside `synchronized` monitor methods (`requestLanding`, `depart`) is redundant and mixes concurrency paradigms unnecessarily."
+        },
+        {
+          "criterion": "Program runs appropriately with basic requirements *",
+          "score": 0,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The video demonstration and runtime output were explicitly marked as `[REQUIRES STUDENT'S OWN EVIDENCE]` and not attempted."
+        },
+        {
+          "criterion": "Additional requirements met *",
+          "score": 0,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The video verification of the simulation running the additional scenarios was marked as `[REQUIRES STUDENT'S OWN EVIDENCE]` and not provided."
+        },
+        {
+          "criterion": "Explanations of concurrency concepts implemented with relevant code samples *",
+          "score": 0,
+          "max": 20,
+          "clos": [
+            "CLO2"
+          ],
+          "justification": "The 5-minute video walkthrough explaining the output and corresponding code was marked as `[REQUIRES STUDENT'S OWN EVIDENCE]` and omitted."
+        }
+      ],
+      "total_percent": 44,
+      "grade": "D",
+      "passed": false
+    }
+  ]
+}

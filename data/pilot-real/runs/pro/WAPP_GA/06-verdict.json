@@ -1,0 +1,25 @@
+{
+  "file_name": "CT050-3-2-WAPP_GA_pro_20261112.json",
+  "module": "CT050-3-2-WAPP",
+  "module_name": "WEB APPLICATIONS",
+  "assessment": "GA",
+  "brief_path": "/RedPen/Assessments/WAPP/GA/brief.txt",
+  "lecturer_email": "",
+  "model": "pro",
+  "audit_date": "2026-11-12",
+  "exposure": "LOW",
+  "persona_grades": {
+    "copy_paster": "F",
+    "prompt_engineer": "F",
+    "honest_helper": "F"
+  },
+  "persona_totals": {
+    "copy_paster": 26,
+    "prompt_engineer": 31,
+    "honest_helper": 18
+  },
+  "pass_mark": 50,
+  "clos_at_risk": [],
+  "easy_criteria": [],
+  "summary": "All AI personas failed to reach the 50% pass mark, with the prompt engineer scoring highest at 31% (F) because half the marks require a live website demonstration and visual diagrams. Both CLOs remain protected under the current assessment structure."
+}

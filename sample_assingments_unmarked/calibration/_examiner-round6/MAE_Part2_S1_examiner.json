@@ -1,0 +1,55 @@
+{
+  "marked_criteria": [
+    "Problem solving and design",
+    "Mobile client system",
+    "Automated system testing",
+    "App demo and supporting documentation"
+  ],
+  "results": [
+    {
+      "persona": "student",
+      "scores": [
+        {
+          "criterion": "Problem solving and design",
+          "score": 13,
+          "max": 15,
+          "clos": [
+            "CLO"
+          ],
+          "justification": "The main weakness is that the Firestore database schema (Table 3) describes the eight collections only in high-level prose rather than specifying exact document field names, data types, and foreign-key reference fields in the text. Otherwise, Sections 2.0 to 8.0 thoroughly cover stakeholder problems and mapped use-case solutions, 17 functional requirements, role-based CRUD permissions, MVVM architecture with a repository layer, and clear design trade-offs."
+        },
+        {
+          "criterion": "Mobile client system",
+          "score": 0,
+          "max": 37,
+          "clos": [
+            "CLO"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        },
+        {
+          "criterion": "Automated system testing",
+          "score": 14,
+          "max": 15,
+          "clos": [
+            "CLO"
+          ],
+          "justification": "A minor weakness is that the Appendix B test case tables omit explicit test input steps/values and rely on a summary 'Pass' column rather than recording distinct expected versus actual outputs. Otherwise, Section 9.0 and Appendix B are exceptionally thorough, documenting a five-level automated testing strategy (unit, widget, Android integration, Firebase emulator security rules, and live Firebase E2E) across 106 test cases with 88.4% line coverage and 16 logged defects and fixes (Table 8)."
+        },
+        {
+          "criterion": "App demo and supporting documentation",
+          "score": 0,
+          "max": 8,
+          "clos": [
+            "CLO"
+          ],
+          "justification": "requires verifiable evidence: marked in a live session"
+        }
+      ],
+      "total_percent": 36,
+      "grade": "F",
+      "passed": false
+    }
+  ],
+  "_model": "google/gemini-4-argon"
+}

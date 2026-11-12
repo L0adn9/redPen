@@ -1,0 +1,134 @@
+{
+  "module": "CT098-3-2",
+  "module_name": "Research Methods for Computing and Technology",
+  "assessment": "Project Proposal Part 2 (Literature Review & Methodology)",
+  "folder_path": "/RedPen/Assessments/CT098-3-2/Project Proposal Part 2 (Literature Review & Methodology)/",
+  "brief_path": "/RedPen/Assessments/CT098-3-2/Project Proposal Part 2 (Literature Review & Methodology)/brief.txt",
+  "lecturer_email": "",
+  "ai_policy": "not stated",
+  "pass_mark": 50,
+  "total_marks": 100,
+  "context": "The module covers aspects of research techniques, data analysis and the presentation of a research proposal and investigation as a preparation for students to complete their Investigation Report of final-year project. This module introduces Computing & IT students basic understanding and knowledge of the range of techniques and methods available for problem analysis and investigation. Problem is addressed through the creation of a software artefact.",
+  "tasks": [
+    {
+      "id": "T1",
+      "text": "Literature review: coverage, synthesis and critical analysis of current research, leading to the research direction [CLO3]: 35",
+      "marks": 35
+    },
+    {
+      "id": "T2",
+      "text": "Comparison of similar systems and identification of the research gap: 15",
+      "marks": 15
+    },
+    {
+      "id": "T3",
+      "text": "Research methodology: design, target users, sampling, data collection, analysis, ethics and limitations [CLO1, CLO2]: 35",
+      "marks": 35
+    },
+    {
+      "id": "T4",
+      "text": "Academic writing, structure and referencing (APA 7): 15",
+      "marks": 15
+    }
+  ],
+  "selected_tasks": [
+    {
+      "id": "T1",
+      "text": "Literature review: coverage, synthesis and critical analysis of current research, leading to the research direction [CLO3]: 35",
+      "marks": 35
+    },
+    {
+      "id": "T2",
+      "text": "Comparison of similar systems and identification of the research gap: 15",
+      "marks": 15
+    },
+    {
+      "id": "T3",
+      "text": "Research methodology: design, target users, sampling, data collection, analysis, ethics and limitations [CLO1, CLO2]: 35",
+      "marks": 35
+    }
+  ],
+  "rubric": [
+    {
+      "criterion": "Literature review: coverage, synthesis and critical analysis of current research, leading to the research direction",
+      "max": 35,
+      "bands": "No band descriptors are given. Use the APU grade bands: 80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO3"
+      ],
+      "tasks": [
+        "T1"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Comparison of similar systems and identification of the research gap",
+      "max": 15,
+      "bands": "No band descriptors are given. Use the APU grade bands: 80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO3"
+      ],
+      "tasks": [
+        "T2"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Research methodology: design, target users, sampling, data collection, analysis, ethics and limitations",
+      "max": 35,
+      "bands": "No band descriptors are given. Use the APU grade bands: 80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [
+        "CLO1",
+        "CLO2"
+      ],
+      "tasks": [
+        "T3"
+      ],
+      "live_session": false
+    },
+    {
+      "criterion": "Academic writing, structure and referencing (APA 7)",
+      "max": 15,
+      "bands": "No band descriptors are given. Use the APU grade bands: 80-100 excellent, 65-79 good, 50-64 satisfactory, 40-49 pass, 0-39 fail.",
+      "clos": [],
+      "tasks": [
+        "T4"
+      ],
+      "live_session": false
+    }
+  ],
+  "clos": [
+    {
+      "id": "CLO1",
+      "text": "Revise the appropriate research techniques of the propose research (C5, PLO2)",
+      "tasks": [
+        "T3"
+      ],
+      "criteria": [
+        "Research methodology: design, target users, sampling, data collection, analysis, ethics and limitations"
+      ]
+    },
+    {
+      "id": "CLO2",
+      "text": "Demonstrate an ability to apply different approaches to the data collection to answer current business or societal problems (A2, PLO4)",
+      "tasks": [
+        "T3"
+      ],
+      "criteria": [
+        "Research methodology: design, target users, sampling, data collection, analysis, ethics and limitations"
+      ]
+    },
+    {
+      "id": "CLO3",
+      "text": "Justify research direction on the investigation of current business or societal problems (A3, PLO5)",
+      "tasks": [
+        "T1",
+        "T2"
+      ],
+      "criteria": [
+        "Literature review: coverage, synthesis and critical analysis of current research, leading to the research direction",
+        "Comparison of similar systems and identification of the research gap"
+      ]
+    }
+  ]
+}
