@@ -1,7 +1,7 @@
 # How judges can try RedPen
 
 ## Prototype (submitted 13 Nov)
-1. **Hosted app:** `[link: Streamlit Community Cloud]`. Open **Saved audits**: 9 full audits replay instantly with no key (4 real APU Level 2 briefs, 5 sample briefs).
+1. **Hosted app:** [https://redpen-apu.streamlit.app](https://redpen-apu.streamlit.app). Open **Saved audits**: 9 full audits replay instantly with no key (4 real APU Level 2 briefs, 5 sample briefs).
    - Pick **CT074-3-2 A1 · Concurrent Programming**: three AI students attempt it, the Examiner marks them, verdict **HIGH**, CLO2 and CLO3 at risk.
    - Scroll to **Fix**: redesign options (AIAS level, lane, extra marking time) → **Approve**.
    - The **outbox** below shows everything RedPen sends: the report email exactly as the lecturer gets it (download `.eml`), the review meeting (**Add to Google Calendar** or `.ics`), the revised brief and the verdict file.

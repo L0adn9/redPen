@@ -7,7 +7,7 @@
 **Team:** Hassan · Abdullah
 **Prototype (13 Nov):** Streamlit app running our agent prompts on Google Gemini (Flash and Pro). On approval it acts for real: a **Jira Cloud** card, a **Gmail** report and a **Google Calendar invitation**. A **monthly scheduled re-audit** (GitHub Actions) re-runs the red team with no one pressing a button. **Final build (17 Nov):** the same prompts as Gemini Enterprise workflow agents + a chat agent, with Drive, Gmail, Calendar and Jira connectors. Google Antigravity used in development (see below).
 
-**Try it:** run `streamlit run streamlit_app.py` (see [Try it](#try-it)). Architecture: [`docs/architecture.png`](docs/architecture.png).
+**Try it:** **[https://redpen-apu.streamlit.app](https://redpen-apu.streamlit.app)** (hosted), or run `streamlit run streamlit_app.py` (see [Try it](#try-it)). Architecture: [`docs/architecture.png`](docs/architecture.png).
 
 ---
 
@@ -131,4 +131,4 @@ streamlit run streamlit_app.py
 - Optional secrets: `APP_PASSWORD` (locks live runs), `JIRA_BASE_URL` / `JIRA_EMAIL` / `JIRA_API_TOKEN` (real Jira card on Approve), `SMTP_USER` / `SMTP_PASSWORD` (Gmail address + app password: real email with the revised brief and calendar invitation). Without them the app shows previews. Keys: [`docs/api-keys.md`](docs/api-keys.md).
 - Command line: `python3 tools/redpen_audit.py <folder with brief.txt rubric.txt clo-map.txt>` (audit), `python3 tools/redpen_insight.py "<question>"` (RedPen Insight chat agent over the register), `python3 tools/calibrate.py <folder>` (calibration), `python3 tools/reaudit.py` (monthly re-audit), `python3 tools/test_engine.py` (43 offline tests).
 
-Demo video: `[TODO: link]` · Hosted app: `[TODO: link]` · Judge access to Gemini Enterprise: [`docs/judge-access.md`](docs/judge-access.md)
+Demo video: `[TODO: link]` · Hosted app: [https://redpen-apu.streamlit.app](https://redpen-apu.streamlit.app) · Judge access to Gemini Enterprise: [`docs/judge-access.md`](docs/judge-access.md)

@@ -15,7 +15,7 @@
 - RedPen Insight backend: `tools/redpen_insight.py` (Hassan can add a chat box with `from redpen_insight import ask`).
 
 ## Still to do (in order)
-1. **Deploy to Streamlit Community Cloud** (user must log in with GitHub; repo must be public or app given access). Main file `streamlit_app.py`. Secrets: `OPENROUTER_API_KEY`, `APP_PASSWORD`, optional `JIRA_BASE_URL`/`JIRA_EMAIL`/`JIRA_API_TOKEN` (API token from id.atlassian.com, user creates it), `SMTP_*`, `DEMO_LECTURER_EMAIL`. Put the link in README "Try it".
+1. ~~Deploy~~ **Done 13 Nov:** https://redpen-apu.streamlit.app (Python 3.12, secrets set in Streamlit Cloud: OpenRouter, Jira, SMTP, APP_PASSWORD).
 2. **Antigravity:** the user must actually use it (e.g. open the repo, ask it to explain/refactor something, generate a sample brief) and screenshot each use into `docs/antigravity/`, fill the table, then fill slide 10 in `deck/deck.html` and re-render:
    `cd deck && chromium --headless=new --no-sandbox --disable-gpu --no-pdf-header-footer --print-to-pdf=RedPen-deck.pdf "file://$PWD/deck.html"`
 3. **Video** (3 min) from `docs/demo-script.md`; upload, link in README.
