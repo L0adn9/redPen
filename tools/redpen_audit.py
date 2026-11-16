@@ -344,8 +344,12 @@ def run_audit(brief, rubric, clo_map, module="MODULE", assessment="A1", lecturer
     """
     if mode not in ("direct", "passthrough"):
         raise AuditError("mode must be 'direct' or 'passthrough'")
-    if not (brief or "").strip() or not (rubric or "").strip():
-        raise AuditError("the brief and the rubric are both required and must contain text")
+    if not (brief or "").strip():
+        raise AuditError("the brief is required and must contain text")
+    if not (rubric or "").strip():
+        rubric = "(no separate rubric file was given: the marking scheme is inside the brief)"
+    if not (clo_map or "").strip():
+        clo_map = "(no CLO map was given: take the CLOs from the brief and the rubric)"
     key = key or api_key()
     model_list = _guard(list(model_list or models()))
     model_label = model_label or label_for(model_list)

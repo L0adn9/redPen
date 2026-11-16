@@ -482,12 +482,12 @@ def page_audit():
             module = c1.text_input("Module code", placeholder="CT074-3-2")
             assessment = c2.text_input("Assessment", placeholder="A1")
             c1, c2, c3 = st.columns(3)
-            brief_f = c1.file_uploader("Brief", type=["pdf", "docx", "txt", "md"])
-            rubric_f = c2.file_uploader("Rubric", type=["pdf", "docx", "txt", "md"])
-            clo_f = c3.file_uploader("Learning outcomes", type=["pdf", "docx", "txt", "md"])
-            if st.button("Run the red team", type="primary", icon=":material/play_arrow:", disabled=not (brief_f and rubric_f)):
+            brief_f = c1.file_uploader("Assignment brief", type=["pdf", "docx", "txt", "md"])
+            rubric_f = c2.file_uploader("Marking scheme (if separate)", type=["pdf", "docx", "txt", "md"])
+            clo_f = c3.file_uploader("Learning outcomes (if separate)", type=["pdf", "docx", "txt", "md"])
+            if st.button("Run the red team", type="primary", icon=":material/play_arrow:", disabled=not brief_f):
                 brief, rubric = read_upload(brief_f), read_upload(rubric_f)
-                clo = read_upload(clo_f) or "(no CLO map given)"
+                clo = read_upload(clo_f)
                 mod, ass = (module or "MODULE").strip().upper(), (assessment or "A1").strip().upper()
                 with st.status("Auditing…", expanded=True) as status:
                     def on_step(n, d, secs):

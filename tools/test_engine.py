@@ -210,9 +210,22 @@ class TestRunAudit(Env):
             r = ra.run_audit("b", "r", "c", "DSA201", "A1")
         self.assertEqual(r["verdict"]["exposure"], "HIGH")
 
-    def test_empty_inputs_rejected(self):
+    def test_empty_brief_rejected(self):
         self.assertRaises(ra.AuditError, ra.run_audit, "", "rubric", "")
-        self.assertRaises(ra.AuditError, ra.run_audit, "brief", "   ", "")
+
+    def test_brief_alone_is_enough(self):
+        """Marking scheme and CLOs often live inside the brief: the rubric and CLO files are optional."""
+        seen = []
+        inner = fake_post_from_demo()
+
+        def post(model, system, user, key):
+            seen.append(user)
+            return inner(model, system, user, key)
+        with mock.patch.object(ra, "_post", side_effect=post):
+            r = ra.run_audit("brief with marking scheme and learning outcomes", "   ", "", "DSA201", "A1")
+        self.assertEqual(r["verdict"]["exposure"], "HIGH")
+        self.assertIn("marking scheme is inside the brief", seen[0])
+        self.assertIn("take the CLOs from the brief and the rubric", seen[0])
 
     def test_failure_is_audit_error(self):
         with mock.patch.object(ra, "_post", side_effect=http_error(401)):
