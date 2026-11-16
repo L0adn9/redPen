@@ -4,7 +4,7 @@ Run locally:  streamlit run streamlit_app.py
 Hosted:       Streamlit Community Cloud, main file streamlit_app.py, secrets as in docs/api-keys.md.
 
 The agents are the prompts in agents/ (the same text pasted into Gemini Enterprise for the final build).
-Layout: sidebar menu (Audit, Register, How it works). The Audit page leads with a report banner (risk ring + one-line
+Layout: sidebar menu (Audit, Agents, Register, How it works). Agents: antigravity/agents_page.py. The Audit page leads with a report banner (risk ring + one-line
 verdict), then one step at a time: Verdict, Fix, Approve. Explanations live on the How it works page, not in captions.
 """
 import csv
@@ -21,6 +21,7 @@ import streamlit as st
 
 ROOT = pathlib.Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT / "tools"))
+sys.path.insert(0, str(ROOT / "antigravity"))  # agents_page + orchestrator (the Agents page)
 
 # Streamlit secrets -> environment, before the engine reads them.
 try:
@@ -214,7 +215,7 @@ def reset_step():
 # ------------------------------------------------------------------ sidebar
 with st.sidebar:
     ui('<div class="rp-brand"><div class="rp-logo">🖍️</div><span>RedPen</span></div>')
-    page = st.radio("Menu", ["Audit", "Register", "How it works"], label_visibility="collapsed", key="page")
+    page = st.radio("Menu", ["Audit", "Agents", "Register", "How it works"], label_visibility="collapsed", key="page")
     st.divider()
     if os.environ.get("APP_PASSWORD") and not st.session_state.get("pw_ok"):
         pw = st.text_input("Judge access", type="password", placeholder="Access code")
@@ -591,4 +592,9 @@ def page_how():
 
 
 # ------------------------------------------------------------------ route
-{"Audit": page_audit, "Register": page_register, "How it works": page_how}[page]()
+def page_agents_live():
+    import agents_page  # imported here so the other pages never depend on it
+    agents_page.page_agents(ui, unlocked)
+
+
+{"Audit": page_audit, "Agents": page_agents_live, "Register": page_register, "How it works": page_how}[page]()

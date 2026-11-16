@@ -1,0 +1,102 @@
+{
+  "run_id": "CT074-3-2_A1_swarm_20261116-221928",
+  "module": "CT074-3-2",
+  "assessment": "A1",
+  "backend": "antigravity-swarm",
+  "label": "pro",
+  "source": "~/Desktop/hack-google/redPen/data/pilot-real/CCP/A1",
+  "started": "2026-11-16T22:19:28",
+  "agents": {
+    "01-intake": {
+      "name": "Intake",
+      "prompt_file": "agents/audit/01-intake.md",
+      "prompt_sha256": "47c1ea836150",
+      "schema": "agents/schemas/01-intake.schema.json",
+      "model": "antigravity-swarm worker",
+      "seconds": 385.3,
+      "attempts": 1,
+      "schema_ok": true,
+      "schema_errors": [],
+      "input_chars": 10348
+    },
+    "02-copy_paster": {
+      "name": "Copy-paster",
+      "prompt_file": "agents/audit/02-persona-copy-paster.md",
+      "prompt_sha256": "f0e69eb2047e",
+      "schema": "agents/schemas/02-persona.schema.json",
+      "model": "antigravity-swarm worker",
+      "seconds": 0.0,
+      "attempts": 1,
+      "schema_ok": true,
+      "schema_errors": [],
+      "input_chars": 12665
+    },
+    "02-prompt_engineer": {
+      "name": "Prompt engineer",
+      "prompt_file": "agents/audit/03-persona-prompt-engineer.md",
+      "prompt_sha256": "d1be8f832506",
+      "schema": "agents/schemas/02-persona.schema.json",
+      "model": "antigravity-swarm worker",
+      "seconds": 349.7,
+      "attempts": 2,
+      "schema_ok": true,
+      "schema_errors": [],
+      "input_chars": 12665
+    },
+    "02-honest_helper": {
+      "name": "Honest helper",
+      "prompt_file": "agents/audit/04-persona-honest-helper.md",
+      "prompt_sha256": "92476ec9d0ce",
+      "schema": "agents/schemas/02-persona.schema.json",
+      "model": "antigravity-swarm worker",
+      "seconds": 0.0,
+      "attempts": 1,
+      "schema_ok": true,
+      "schema_errors": [],
+      "input_chars": 12665
+    }
+  },
+  "waves": [],
+  "guardrails": [],
+  "skipped": {},
+  "events": [
+    {
+      "t": "2026-11-16T22:26:08",
+      "e": "Intake started"
+    },
+    {
+      "t": "2026-11-16T22:32:34",
+      "e": "Intake accepted"
+    },
+    {
+      "t": "2026-11-16T22:37:53",
+      "e": "Prompt engineer started"
+    },
+    {
+      "t": "2026-11-16T22:40:27",
+      "e": "Copy-paster accepted"
+    },
+    {
+      "t": "2026-11-16T22:43:31",
+      "e": "Prompt engineer accepted"
+    },
+    {
+      "t": "2026-11-16T22:43:43",
+      "e": "Prompt engineer accepted"
+    },
+    {
+      "t": "2026-11-16T22:45:33",
+      "e": "Honest helper accepted"
+    }
+  ],
+  "started_at": {
+    "01-intake": 1794839168.9378738,
+    "02-prompt_engineer": 1794839873.614712
+  },
+  "tries": {
+    "01-intake": 1,
+    "02-copy_paster": 1,
+    "02-prompt_engineer": 2,
+    "02-honest_helper": 1
+  }
+}

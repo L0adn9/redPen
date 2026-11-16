@@ -1,0 +1,3 @@
+# Runs are local working folders; curated evidence is copied to docs/antigravity/
+runs/
+__pycache__/
