@@ -126,6 +126,17 @@ hr{margin:1.4rem 0!important;border-color:var(--border)!important}
 .rp-check b{color:var(--fg)}
 .rp-check a{color:var(--primary)}
 .rp-pre{white-space:pre-wrap;font-size:.92rem;line-height:1.6;color:var(--fg2)}
+.rp-on{display:inline-flex;align-items:center;gap:.5rem;padding:.5rem .85rem;border-radius:999px;background:#eef5ec;color:#2f5f3a;font-weight:600;font-size:.9rem}
+.rp-on::before{content:"";width:.55rem;height:.55rem;border-radius:50%;background:#3c7a4a}
+.rp-why{font-size:.92rem;color:var(--muted);margin-top:.25rem}
+.rp-para{font-size:1.02rem;line-height:1.65;color:var(--fg2);margin:.2rem 0 .4rem 0}
+.rp-easy{display:flex;gap:.7rem;align-items:baseline;padding:.55rem 0;border-top:1px solid var(--border);font-size:.97rem;color:var(--fg2)}
+.rp-easy:last-child{border-bottom:1px solid var(--border)}
+.rp-easy::before{content:"";flex:none;width:.5rem;height:.5rem;border-radius:50%;background:var(--primary);transform:translateY(-.1rem)}
+.rp-fix{background:var(--card);border:1px solid var(--border);border-top:3px solid var(--primary);border-radius:16px;padding:1.4rem 1.5rem;margin:.6rem 0 1rem 0}
+.rp-fix .ft{font-family:var(--serif);font-weight:600;font-size:1.5rem;color:var(--fg);line-height:1.25}
+.rp-fix .tag{font-family:var(--sans);display:inline-block;font-size:.78rem;font-weight:600;color:var(--primary);background:rgba(182,83,41,.1);border-radius:999px;padding:.15rem .6rem;margin-left:.5rem;vertical-align:middle}
+.rp-quote{border-left:3px solid var(--primary);padding:.2rem 0 .2rem 1rem;font-size:1rem;line-height:1.65;color:var(--fg2);white-space:pre-wrap}
 .rp-title{font-family:var(--serif);font-weight:600;font-size:2.2rem;letter-spacing:-.02em;color:var(--fg);margin:.4rem 0 1rem 0}
 /* how it works */
 .rp-flow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.9rem;margin:.4rem 0 1.4rem 0}
@@ -210,7 +221,7 @@ with st.sidebar:
                 st.rerun()
             st.error("Wrong code")
     elif os.environ.get("APP_PASSWORD"):
-        st.success("Judge access on", icon=":material/lock_open:")
+        ui('<div class="rp-on">Judge access on</div>')
     if unlocked():
         with st.expander("API key"):
             try:
@@ -259,12 +270,18 @@ def step_verdict(cur):
                      f'<div class="s" style="color:{col}">{"Passes" if passed else "Fails"}</div></div>')
     ui('<div class="rp-tiles">' + "".join(tiles) + '</div>')
 
+    ui(f'<div class="rp-h">What we found</div><div class="rp-para">{esc(human(v.get("summary", "")))}</div>')
     clos = v.get("clos_at_risk") or []
     if clos:
-        ui('<div class="rp-h">No longer proven</div>' +
-           "".join(f'<div class="rp-clo"><b>{esc(c.get("id"))}</b><span>{esc(c.get("text"))}</span></div>' for c in clos))
+        ui('<div class="rp-h">Learning outcomes no longer proven</div>' +
+           "".join(f'<div class="rp-clo"><b>{esc(c.get("id"))}</b><span>{esc(c.get("text"))}'
+                   f'<div class="rp-why">{esc(human(c.get("why", "")))}</div></span></div>' for c in clos))
     else:
-        ui('<div class="rp-ok">Every learning outcome is still proven.</div>')
+        ui('<div class="rp-ok">Every learning outcome is still proven. Nothing needs fixing.</div>')
+    easy = v.get("easy_criteria") or []
+    if easy and clos:
+        ui('<div class="rp-h">What the AI did easily</div>' +
+           "".join(f'<div class="rp-easy">{esc(c)}</div>' for c in easy))
 
     st.write("")
     with st.expander("Evidence", icon=":material/description:"):
@@ -318,16 +335,23 @@ def step_fix(cur):
     pick = st.radio("Choose a fix", ids, index=ids.index(rec) if rec in ids else 0, key=f"pick-{cur['name']}",
                     format_func=lambda i: next(o.get("title", i) for o in opts if o["id"] == i) + ("  · recommended" if i == rec else ""))
     opt = rf.option(red, pick)
+    why = f'<div class="rp-para" style="margin-top:.7rem">{esc(human(red.get("why_recommended", "")))}</div>' \
+        if pick == rec and red.get("why_recommended") else ""
+    techs = ", ".join(str(t).capitalize() for t in opt.get("techniques", []))
+    ui(f'<div class="rp-fix"><div class="ft">{esc(opt.get("title", pick))}'
+       f'{"<span class=tag>Recommended</span>" if pick == rec else ""}</div>{why}'
+       + (f'<div class="rp-why" style="margin-top:.5rem">How: {esc(techs)}</div>' if techs else '') + '</div>')
     ui('<div class="rp-stats">'
-       f'<div class="rp-stat"><b>+{esc(opt.get("extra_marking_minutes_per_student"))} min</b><span>marking per student</span></div>'
+       f'<div class="rp-stat"><b>+{esc(opt.get("extra_marking_minutes_per_student"))} min</b><span>extra marking per student</span></div>'
        f'<div class="rp-stat"><b>{esc(str(opt.get("lane", "")).title())}</b><span>lane</span></div>'
        f'<div class="rp-stat"><b>Level {esc(opt.get("aias_level"))}</b><span>AI Assessment Scale</span></div></div>')
+    ui(f'<div class="rp-h">What changes for students</div><div class="rp-quote">{esc(opt.get("revised_task_text", ""))}</div>')
+    if opt.get("targets_easy_criteria"):
+        ui('<div class="rp-h">What it stops the AI from doing</div>' +
+           "".join(f'<div class="rp-easy">{esc(c)}</div>' for c in opt["targets_easy_criteria"]))
     if opt.get("clo_coverage"):
-        ui('<div class="rp-h">Still tests</div>' +
+        ui('<div class="rp-h">Learning outcomes it still tests</div>' +
            "".join(f'<div class="rp-clo"><b>{esc(c.get("id"))}</b><span>{esc(c.get("how"))}</span></div>' for c in opt["clo_coverage"]))
-    st.write("")
-    with st.expander("Revised task", icon=":material/description:"):
-        ui(f'<div class="rp-pre">{pre(opt.get("revised_task_text", ""))}</div>')
     st.write("")
     st.button("Continue to approval", type="primary", icon=":material/arrow_forward:", on_click=set_step, args=(2,))
 
@@ -429,6 +453,9 @@ def show_done(cur, red, opt):
 
 def report(cur):
     banner(cur["result"]["verdict"])
+    if cur["result"]["verdict"].get("exposure") not in ("HIGH", "MEDIUM"):
+        step_verdict(cur)
+        return
     if st.session_state.get("step") not in STEPS:
         st.session_state.step = STEPS[0]
     st.segmented_control("Step", STEPS, key="step", label_visibility="collapsed")
@@ -447,7 +474,7 @@ def page_audit():
                                label_visibility="collapsed", on_change=reset_step)
     if src == "New audit":
         if not unlocked():
-            st.info("Enter the judge access code in the sidebar to run a live audit.", icon=":material/lock:")
+            st.info("Enter the judge access code in the sidebar to run a live audit.")
             return
         live = st.session_state.get("live")
         if not live:
