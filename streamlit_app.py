@@ -1,11 +1,13 @@
-"""RedPen prototype app (Streamlit).
+"""RedPen app (Streamlit).
 
 Run locally:  streamlit run streamlit_app.py
 Hosted:       Streamlit Community Cloud, main file streamlit_app.py, secrets as in docs/api-keys.md.
 
 The agents are the prompts in agents/ (the same text pasted into Gemini Enterprise for the final build).
-UI: shadcn/ui-style look (zinc palette, Inter, cards, badges) done with CSS on top of Streamlit.
+Layout: sidebar menu (Audit, Register, How it works). The Audit page leads with a report banner (risk ring + one-line
+verdict), then one step at a time: Verdict, Fix, Approve. Explanations live on the How it works page, not in captions.
 """
+import csv
 import datetime as dt
 import html
 import io
@@ -33,118 +35,105 @@ import redpen_fix as rf  # noqa: E402
 
 st.set_page_config(page_title="RedPen", page_icon="🖍️", layout="wide")
 
-PERSONA_NAMES = {"copy_paster": "Copy-paster", "prompt_engineer": "Prompt engineer", "honest_helper": "Honest helper"}
-PERSONA_HELP = {"copy_paster": "Pastes the brief into a chatbot and submits the answer as is.",
-                "prompt_engineer": "Plans, drafts and self-critiques with AI.",
-                "honest_helper": "Uses AI only the way the brief allows."}
+PERSONAS = {"copy_paster": "Copy-paster", "prompt_engineer": "Prompt engineer", "honest_helper": "Honest helper"}
+PERSONA_HELP = {"copy_paster": "Pastes the brief into a chatbot and submits the answer as it is.",
+                "prompt_engineer": "Uses AI strategically: plans, drafts and self-critiques.",
+                "honest_helper": "Uses AI only the way the brief allows, and leaves the student’s own parts blank."}
 PILOT = {"CCP_A1", "DSTR_LW1", "DSTR_LW2", "WAPP_GA"}
-TONE = {"HIGH": "red", "MEDIUM": "amber", "LOW": "green"}
+HEADLINE = {"HIGH": "A student can pass this by pasting the brief into AI.",
+            "MEDIUM": "A student who uses AI cleverly can pass this.",
+            "LOW": "AI alone can’t pass this assignment."}
+TONE = {"HIGH": "#b65329", "MEDIUM": "#c08a1e", "LOW": "#3c7a4a"}
+STEPS = ["1  Verdict", "2  Fix", "3  Approve"]
 
-# ------------------------------------------------------------------ styles (shadcn/ui look)
+# ------------------------------------------------------------------ styles (RedPen brand: cream, terracotta, Fraunces + Geist)
 st.markdown("""<style>
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Geist:wght@400;500;600;700&display=swap');
-:root{--bg:#fcf9f2;--fg:#231b14;--fg2:#4a4039;--card:#fffdfa;--muted:#71675d;--border:#e3ddd3;--input:#c9bfb1;--subtle:#f3eee4;
-  --primary:#b65329;--primary-fg:#fffdfa;--radius:14px;--shadow:0 1px 3px rgba(35,27,20,.07),0 1px 2px -1px rgba(35,27,20,.07);
-  --serif:'Fraunces',Georgia,serif;--sans:'Geist',ui-sans-serif,system-ui,sans-serif}
+:root{--bg:#fcf9f2;--fg:#231b14;--fg2:#4a4039;--card:#fffdfa;--muted:#7a6e62;--border:#e6dfd3;--input:#cfc5b6;--subtle:#f3eee4;
+  --primary:#b65329;--primary-fg:#fffdfa;--serif:'Fraunces',Georgia,serif;--sans:'Geist',ui-sans-serif,system-ui,sans-serif}
 html,body,[class*="st-"],.stMarkdown,button,input,textarea,select{font-family:var(--sans)!important}
 [data-testid="stIconMaterial"],[data-testid="stExpanderIcon"],.material-symbols-rounded{font-family:'Material Symbols Rounded'!important}
-.stApp{background:radial-gradient(1000px 480px at 50% -120px,rgba(182,83,41,.09),transparent 70%),var(--bg)!important}
-/* top spacing: main */
+.stApp{background:var(--bg)!important}
 header[data-testid="stHeader"]{background:transparent!important;height:2.5rem}
-[data-testid="stMainBlockContainer"],.block-container{max-width:1080px;padding-top:.2rem!important;padding-bottom:3rem}
-/* sidebar: collapse button sits on the brand row (top-right) instead of pushing the brand down */
-[data-testid="stSidebar"]{background:#f6f1e7!important;border-right:1px solid var(--border)}
-[data-testid="stSidebarHeader"]{position:absolute!important;top:1.15rem;right:.6rem;height:auto!important;min-height:0!important;
-  padding:0!important;margin:0!important;z-index:5;width:auto!important}
-[data-testid="stSidebarUserContent"]{padding-top:1.25rem!important}
-[data-testid="stSidebar"] [data-testid="stVerticalBlock"]{gap:.85rem}
 #MainMenu,footer,[data-testid="stDecoration"]{display:none!important}
+[data-testid="stMainBlockContainer"],.block-container{max-width:1000px;padding-top:1.2rem!important;padding-bottom:4rem}
 h1,h2,h3,h4{color:var(--fg);font-family:var(--serif)!important;letter-spacing:-.02em}
-/* inputs: always a clearly visible border */
-[data-baseweb="input"],[data-baseweb="select"]>div,[data-baseweb="textarea"]{
-  background:#fff!important;border:1px solid var(--input)!important;border-radius:10px!important}
-[data-baseweb="input"]:focus-within,[data-baseweb="select"]>div:focus-within,[data-baseweb="textarea"]:focus-within{
-  border-color:var(--primary)!important;box-shadow:0 0 0 3px rgba(182,83,41,.15)!important}
-[data-baseweb="input"] input,[data-baseweb="base-input"],[data-baseweb="input"] button{background:transparent!important;border:none!important}
-[data-testid="InputInstructions"]{display:none!important}
-[data-testid="stWidgetLabel"] p{font-size:.875rem!important;font-weight:500!important;color:var(--fg)!important}
-/* buttons: terracotta pill primary, outline secondary */
-.stButton>button,.stDownloadButton>button,.stLinkButton>a{border-radius:999px!important;font-weight:500!important;font-size:.9rem!important;
-  min-height:2.5rem;border:1px solid var(--input)!important;background:#fff!important;color:var(--fg)!important;box-shadow:var(--shadow)}
-.stButton>button[kind="primary"]{background:var(--primary)!important;color:var(--primary-fg)!important;border-color:var(--primary)!important}
-.stButton>button[kind="primary"]:hover{filter:brightness(1.08)}
-.stButton>button[kind="secondary"]:hover,.stDownloadButton>button:hover,.stLinkButton>a:hover{background:var(--subtle)!important;
-  border-color:#b3a898!important;color:var(--fg)!important}
-/* containers, expanders, tables */
-[data-testid="stVerticalBlockBorderWrapper"]{border-radius:var(--radius)!important;border-color:var(--border)!important}
-[class*="st-key-rpbox"]{background:var(--card)!important;border:1px solid var(--border)!important;border-radius:var(--radius)!important;
-  box-shadow:var(--shadow);padding:1.1rem 1.2rem!important;gap:.75rem}
-[data-testid="stExpander"] details{border-radius:12px!important;border-color:var(--border)!important;background:var(--card)}
-[data-testid="stExpander"] summary{font-weight:500;font-size:.9rem}
-[data-testid="stDataFrame"]{border:1px solid var(--border);border-radius:12px;overflow:hidden;background:#fff}
-hr{margin:1.6rem 0!important;border-color:var(--border)!important}
-/* components */
-.rp-hero{margin:0 0 1.3rem 0}
-.rp-hero h1{font-family:var(--serif)!important;font-size:2.5rem;font-weight:600;letter-spacing:-.025em;margin:.7rem 0 .35rem 0;padding:0;line-height:1.1}
-.rp-hero p{color:var(--muted);font-size:1.02rem;margin:0;max-width:760px;line-height:1.55}
-.rp-muted{color:var(--muted);font-size:.875rem;line-height:1.5}
-.rp-lead{color:var(--fg2);font-size:.95rem;line-height:1.55}
-.rp-badge{display:inline-flex;align-items:center;gap:.3rem;border:1px solid var(--border);border-radius:999px;padding:.08rem .6rem;
-  font-size:.74rem;font-weight:500;line-height:1.35rem;background:var(--subtle);color:var(--fg2);white-space:nowrap}
-.rp-badge.solid{background:var(--primary);color:var(--primary-fg);border-color:var(--primary);font-weight:600}
-.rp-badge.red{background:#fef2f2;color:#b91c1c;border-color:#fecaca}
-.rp-badge.amber{background:#fffbeb;color:#b45309;border-color:#fde68a}
-.rp-badge.green{background:#f0fdf4;color:#15803d;border-color:#bbf7d0}
-.rp-badge.gray{background:var(--subtle);color:var(--fg2)}
-.rp-badge.lg{font-size:.82rem;padding:.2rem .75rem;font-weight:600}
-.rp-step{display:flex;gap:.85rem;align-items:flex-start;margin:1.9rem 0 .85rem 0}
-.rp-step-n{flex:none;width:2rem;height:2rem;border-radius:999px;background:rgba(182,83,41,.09);color:var(--primary);
-  border:1px solid rgba(182,83,41,.3);display:flex;align-items:center;justify-content:center;font-weight:600;font-size:.85rem;margin-top:.15rem}
-.rp-step-t{font-family:var(--serif);font-weight:600;font-size:1.45rem;letter-spacing:-.015em;line-height:1.25;color:var(--fg)}
-.rp-card{border:1px solid var(--border);border-radius:var(--radius);padding:1.05rem 1.15rem;background:var(--card);box-shadow:var(--shadow);height:100%}
-.rp-card.tint-red{background:linear-gradient(180deg,#fef4f2,var(--card));border-color:#f5c9c0}
-.rp-card.tint-amber{background:linear-gradient(180deg,#fff8eb,var(--card));border-color:#f3dca6}
-.rp-card.tint-green{background:linear-gradient(180deg,#f2fbf3,var(--card));border-color:#c4e8cb}
-.rp-row{display:flex;justify-content:space-between;align-items:center;gap:.6rem}
-.rp-grid{display:grid;gap:.75rem;margin:.75rem 0}
-.rp-g3{grid-template-columns:repeat(3,minmax(0,1fr))}.rp-g2{grid-template-columns:repeat(2,minmax(0,1fr))}
-@media (max-width:760px){.rp-g3,.rp-g2{grid-template-columns:1fr}}
-.rp-label{font-size:.875rem;font-weight:600;color:var(--fg)}
-.rp-grade{font-family:var(--serif);font-size:2.2rem;font-weight:600;letter-spacing:-.03em;margin:.3rem 0 .1rem 0;color:var(--fg)}
-.rp-grade span{font-family:var(--sans);font-size:1rem;font-weight:500;color:var(--muted);margin-left:.4rem}
-.rp-bar{position:relative;height:.4rem;border-radius:999px;background:var(--subtle);margin:.6rem 0 .55rem 0}
-.rp-bar>i{position:absolute;left:0;top:0;bottom:0;border-radius:999px;background:var(--primary)}
-.rp-bar>b{position:absolute;top:-.28rem;bottom:-.28rem;width:2px;background:#dc2626;border-radius:2px}
-.rp-title{font-family:var(--serif);font-size:1.6rem;font-weight:600;letter-spacing:-.02em;margin:.55rem 0 .3rem 0;color:var(--fg)}
-.rp-meta{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.75rem}
-.rp-alert{border:1px solid #f5c9c0;background:#fef4f2;border-radius:12px;padding:.8rem 1rem;margin:.5rem 0;color:#8a2a17}
-.rp-alert.ok{border-color:#c4e8cb;background:#f2fbf3;color:#14532d}
-.rp-alert b{display:block;margin-bottom:.15rem;color:inherit}
-.rp-alert .rp-muted{color:inherit;opacity:.85}
-.rp-section-label{font-size:.74rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:1.2rem 0 .25rem 0}
-.rp-stat{font-family:var(--serif);font-size:1.75rem;font-weight:600;letter-spacing:-.02em;margin-top:.15rem;color:var(--fg)}
-.rp-pre{white-space:pre-wrap;font-size:.875rem;line-height:1.6;background:#fff;border:1px solid var(--border);
-  border-radius:12px;padding:.9rem 1rem;max-height:340px;overflow:auto;color:var(--fg2)}
-.rp-pre.plain{background:transparent;border:none;padding:0;max-height:none;overflow:visible;margin-bottom:.4rem}
-.rp-check{display:flex;gap:.55rem;align-items:flex-start;margin:.4rem 0;font-size:.9rem;color:var(--fg2)}
-.rp-check b{color:var(--fg)}
-.rp-check a{color:var(--primary)}
-.rp-check>span:first-child{flex:none;width:1.15rem;height:1.15rem;border-radius:999px;background:var(--primary);color:var(--primary-fg);
-  font-size:.68rem;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:.15rem}
-.rp-mail-h{display:grid;grid-template-columns:5.5rem 1fr;gap:.3rem .5rem;font-size:.875rem;padding-bottom:.75rem;
-  border-bottom:1px solid var(--border);margin-bottom:.75rem;color:var(--fg2)}
-.rp-mail-h>div:nth-child(odd){color:var(--muted)}
-.rp-date{flex:none;width:3.6rem;border:1px solid var(--border);border-radius:10px;overflow:hidden;text-align:center;background:#fff}
-.rp-date>div:first-child{background:var(--primary);color:var(--primary-fg);font-size:.7rem;font-weight:700;padding:.12rem 0;text-transform:uppercase}
-.rp-date>div:last-child{font-family:var(--serif);font-size:1.4rem;font-weight:600;padding:.2rem 0;color:var(--fg)}
-.rp-brand{display:flex;align-items:center;gap:.6rem;margin:0 0 .15rem 0;min-height:2rem}
+/* sidebar: brand + menu */
+[data-testid="stSidebar"]{background:#f6f1e7!important;border-right:1px solid var(--border)}
+[data-testid="stSidebarHeader"]{position:absolute!important;top:1.15rem;right:.6rem;height:auto!important;min-height:0!important;padding:0!important;margin:0!important;z-index:5;width:auto!important}
+[data-testid="stSidebarUserContent"]{padding-top:1.25rem!important}
+[data-testid="stSidebar"] [role="radiogroup"]{gap:.2rem!important}
+[data-testid="stSidebar"] [role="radiogroup"]>div,[data-testid="stSidebar"] [data-testid="stRadioOption"]{width:100%}
+[data-testid="stSidebar"] [data-testid="stRadioOption"]{padding:.55rem .75rem;border-radius:10px;margin:0!important;cursor:pointer}
+[data-testid="stSidebar"] [data-testid="stRadioOption"]>div>div:first-child{display:none!important}
+[data-testid="stSidebar"] [data-testid="stRadioOption"][data-selected="true"]{background:#fffdfa;box-shadow:inset 3px 0 0 var(--primary)}
+[data-testid="stSidebar"] [data-testid="stRadioOption"][data-selected="true"] p{color:var(--fg)!important;font-weight:600!important}
+[data-testid="stSidebar"] [role="radiogroup"] label p{font-size:.98rem!important;font-weight:500!important;color:var(--fg2)!important}
+[data-testid="stSidebar"] [role="radiogroup"] label:has(input:checked){background:#fffdfa;box-shadow:inset 3px 0 0 var(--primary)}
+[data-testid="stSidebar"] [role="radiogroup"] label:has(input:checked) p{color:var(--fg)!important;font-weight:600!important}
+.rp-brand{display:flex;align-items:center;gap:.6rem;margin:0 0 1.2rem 0;min-height:2rem}
 .rp-logo{width:2rem;height:2rem;border-radius:9px;background:var(--primary);display:flex;align-items:center;justify-content:center;font-size:1rem}
 .rp-brand span{font-family:var(--serif);font-size:1.3rem;font-weight:600;letter-spacing:-.01em;color:var(--fg)}
-.rp-flow{font-size:.8rem;color:var(--muted);line-height:1.95}
-.rp-flow b{color:var(--fg);font-weight:500}
-[data-testid="stSidebar"] [data-testid="stWidgetLabel"] p{font-size:.82rem!important}
-[data-testid="stSidebar"] hr{margin:.3rem 0!important}
-[data-testid="stSidebar"] [data-testid="stExpander"] summary p{font-size:.85rem!important}
+/* inputs + buttons */
+[data-baseweb="input"],[data-baseweb="select"]>div,[data-baseweb="textarea"]{background:#fff!important;border:1px solid var(--input)!important;border-radius:10px!important}
+[data-baseweb="input"]:focus-within,[data-baseweb="select"]>div:focus-within{border-color:var(--primary)!important;box-shadow:0 0 0 3px rgba(182,83,41,.15)!important}
+[data-baseweb="input"] input,[data-baseweb="base-input"],[data-baseweb="input"] button{background:transparent!important;border:none!important}
+[data-testid="InputInstructions"]{display:none!important}
+[data-testid="stWidgetLabel"] p{font-size:.88rem!important;font-weight:500!important;color:var(--fg2)!important}
+.stButton>button,.stDownloadButton>button,.stLinkButton>a{border-radius:999px!important;font-weight:500!important;min-height:2.6rem;
+  border:1px solid var(--input)!important;background:#fff!important;color:var(--fg)!important;box-shadow:none!important}
+.stButton>button:hover,.stDownloadButton>button:hover,.stLinkButton>a:hover{border-color:#a89b89!important;background:var(--subtle)!important;color:var(--fg)!important}
+.stButton>button[kind="primary"]{background:var(--primary)!important;border-color:var(--primary)!important;padding:0 1.5rem!important}
+.stButton>button[kind="primary"],.stButton>button[kind="primary"] *{color:var(--primary-fg)!important}
+.stButton>button[kind="primary"]:hover{background:#9f4722!important}
+/* step switcher */
+[data-testid="stButtonGroup"] button{border-radius:999px!important;font-weight:500!important;padding:0 1.1rem!important;min-height:2.4rem}
+[data-testid="stButtonGroup"] button[kind*="Active"],[data-testid="stButtonGroup"] button[aria-checked="true"]{background:var(--primary)!important;border-color:var(--primary)!important}
+[data-testid="stButtonGroup"] button[kind*="Active"] *,[data-testid="stButtonGroup"] button[aria-checked="true"] *{color:var(--primary-fg)!important}
+[data-testid="stExpander"] details{border-radius:12px!important;border-color:var(--border)!important;background:var(--card)}
+[data-testid="stExpander"] summary p{font-weight:500;font-size:.95rem}
+[data-testid="stDataFrame"]{border:1px solid var(--border);border-radius:12px;overflow:hidden;background:#fff}
+hr{margin:1.4rem 0!important;border-color:var(--border)!important}
+/* report banner */
+.rp-banner{display:flex;gap:1.8rem;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:18px;padding:1.6rem 1.8rem;margin:.6rem 0 1.4rem 0}
+.rp-ring{flex:none;width:118px;height:118px;position:relative}
+.rp-ring svg{width:118px;height:118px}
+.rp-ring div{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-weight:700;font-size:1.35rem;letter-spacing:.02em}
+.rp-code{font-size:.85rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.rp-name{font-family:var(--serif);font-weight:600;font-size:1.75rem;line-height:1.2;color:var(--fg);margin:.15rem 0 .45rem 0}
+.rp-say{font-size:1.12rem;line-height:1.5;color:var(--fg2)}
+/* persona tiles */
+.rp-tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.9rem;margin:.4rem 0 1.4rem 0}
+.rp-tile{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.1rem 1.2rem}
+.rp-tile .t{font-weight:600;font-size:.95rem;color:var(--fg)}
+.rp-tile .g{font-family:var(--serif);font-weight:600;font-size:2.5rem;line-height:1;margin:.7rem 0 .2rem 0;color:var(--fg)}
+.rp-tile .g span{font-family:var(--sans);font-size:1rem;font-weight:500;color:var(--muted);margin-left:.4rem}
+.rp-tile .s{font-size:.85rem;font-weight:600;margin-top:.7rem}
+.rp-bar{position:relative;height:7px;border-radius:999px;background:var(--subtle);margin-top:.8rem}
+.rp-bar i{position:absolute;left:0;top:0;bottom:0;border-radius:999px}
+.rp-bar b{position:absolute;top:-5px;bottom:-5px;width:2px;background:var(--fg);border-radius:2px}
+.rp-h{font-family:var(--serif);font-weight:600;font-size:1.3rem;color:var(--fg);margin:1.2rem 0 .5rem 0}
+.rp-clo{display:flex;gap:1rem;align-items:baseline;padding:.75rem 0;border-top:1px solid var(--border);font-size:1rem;color:var(--fg2);line-height:1.5}
+.rp-clo:last-child{border-bottom:1px solid var(--border)}
+.rp-clo b{flex:none;color:var(--primary);font-weight:700;min-width:3.2rem}
+.rp-ok{padding:.9rem 1.1rem;border-radius:12px;background:#eef5ec;color:#2f5f3a;font-weight:500}
+.rp-stats{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.9rem;margin:.5rem 0 1rem 0}
+.rp-stat{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1rem 1.2rem}
+.rp-stat b{display:block;font-family:var(--serif);font-weight:600;font-size:2rem;line-height:1.1;color:var(--fg)}
+.rp-stat span{font-size:.9rem;color:var(--muted)}
+.rp-check{display:flex;gap:.7rem;align-items:flex-start;padding:.5rem 0;font-size:1rem;color:var(--fg2)}
+.rp-check>i{flex:none;width:1.3rem;height:1.3rem;border-radius:999px;background:var(--primary);color:#fff;font-style:normal;font-size:.75rem;font-weight:700;display:flex;align-items:center;justify-content:center;margin-top:.15rem}
+.rp-check b{color:var(--fg)}
+.rp-check a{color:var(--primary)}
+.rp-pre{white-space:pre-wrap;font-size:.92rem;line-height:1.6;color:var(--fg2)}
+.rp-title{font-family:var(--serif);font-weight:600;font-size:2.2rem;letter-spacing:-.02em;color:var(--fg);margin:.4rem 0 1rem 0}
+/* how it works */
+.rp-flow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.9rem;margin:.4rem 0 1.4rem 0}
+.rp-flow div{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.1rem 1.2rem}
+.rp-flow em{display:inline-flex;width:1.8rem;height:1.8rem;border-radius:999px;background:rgba(182,83,41,.1);color:var(--primary);font-style:normal;font-weight:700;font-size:.85rem;align-items:center;justify-content:center}
+.rp-flow b{display:block;font-family:var(--serif);font-size:1.15rem;margin:.6rem 0 .25rem 0;color:var(--fg)}
+.rp-flow p{margin:0;font-size:.95rem;color:var(--fg2);line-height:1.5}
+@media (max-width:760px){.rp-tiles,.rp-stats,.rp-flow{grid-template-columns:1fr}.rp-banner{flex-direction:column;align-items:flex-start}}
 </style>""", unsafe_allow_html=True)
 
 
@@ -153,44 +142,30 @@ def esc(x):
     return html.escape(str(x if x is not None else ""))
 
 
+def ui(markup):
+    st.markdown(markup, unsafe_allow_html=True)
+
+
 def pre(x):
-    """Escaped multi-line text as ONE html block (no blank lines, so Streamlit's markdown never re-parses it)."""
     return esc(x).replace("\r", "").replace("\n", "<br>")
 
 
 def human(x):
-    """Readable persona names inside model-written sentences."""
-    for k, n in (("copy_paster", "copy-paster"), ("prompt_engineer", "prompt engineer"), ("honest_helper", "honest helper")):
-        x = str(x).replace(k, n)
+    for k, n in PERSONAS.items():
+        x = str(x).replace(k, n.lower())
     return x
 
 
 def md_inline(x):
-    """**bold** and [text](url) from the action log -> html."""
-    import re
     x = esc(x)
     x = re.sub(r"\*\*(.+?)\*\*", r"<b>\1</b>", x)
     return re.sub(r"\[([^\]]+)\]\((https?://[^)\s]+)\)", r'<a href="\2" target="_blank">\1</a>', x)
 
 
-def ui(markup):
-    st.markdown(markup, unsafe_allow_html=True)
-
-
-def badge(text, tone="", size=""):
-    return f'<span class="rp-badge {tone} {size}">{esc(text)}</span>'
-
-
-def step(n, title, sub):
-    ui(f'<div class="rp-step"><div class="rp-step-n">{n}</div><div><div class="rp-step-t">{esc(title)}</div>'
-       f'<div class="rp-muted">{esc(sub)}</div></div></div>')
-
-
 def read_upload(f):
     if f is None:
         return ""
-    data = f.getvalue()
-    name = f.name.lower()
+    data, name = f.getvalue(), f.name.lower()
     if name.endswith(".pdf"):
         from pypdf import PdfReader
         return "\n".join((p.extract_text() or "") for p in PdfReader(io.BytesIO(data)).pages)
@@ -204,404 +179,386 @@ def read_upload(f):
     return data.decode("utf-8", errors="replace")
 
 
-def demo_label(name):
-    r = ra.load_demo(name)
-    v = r["verdict"]
-    tag = "real APU brief" if name in PILOT else "sample brief"
-    return f"{v.get('module')} {v.get('assessment')} · {v.get('module_name', '')} · {v.get('exposure')} ({tag})"
-
-
 def unlocked():
     pw = os.environ.get("APP_PASSWORD", "")
     return not pw or st.session_state.get("pw_ok", False)
 
 
-# ------------------------------------------------------------------ 1 · audit
-def show_verdict(result, is_real=None):
-    v, steps = result["verdict"], result["steps"]
-    exp = v.get("exposure", "?")
-    tone = TONE.get(exp, "gray")
-    tags = [badge(f"{exp} AI-exposure", tone, "lg")]
-    if is_real is not None:
-        tags.append(badge("Real APU brief" if is_real else "Sample brief", "gray"))
-    meta = [badge(f"Pass mark {v.get('pass_mark')}%"), badge(f"Audited {v.get('audit_date')}"),
-            badge(f"Gemini {v.get('model')}")]
-    ui(f'<div class="rp-card tint-{tone}"><div class="rp-row" style="justify-content:flex-start;gap:.4rem">{"".join(tags)}</div>'
-       f'<div class="rp-title">{esc(v.get("module"))} {esc(v.get("assessment"))} · {esc(v.get("module_name", ""))}</div>'
-       f'<div class="rp-lead">{esc(human(v.get("summary", "")))}</div>'
-       f'<div class="rp-meta">{"".join(meta)}</div></div>')
+def past_label(name):
+    v = ra.load_demo(name)["verdict"]
+    return f"{v.get('module')} {v.get('assessment')} · {v.get('module_name', '')}" + ("" if name in PILOT else " (sample)")
 
-    cards = []
-    pass_mark = v.get("pass_mark", 50) or 50
-    for p, label in PERSONA_NAMES.items():
+
+def set_step(i):
+    st.session_state.step = STEPS[i]
+
+
+def reset_step():
+    st.session_state.step = STEPS[0]
+
+
+# ------------------------------------------------------------------ sidebar
+with st.sidebar:
+    ui('<div class="rp-brand"><div class="rp-logo">🖍️</div><span>RedPen</span></div>')
+    page = st.radio("Menu", ["Audit", "Register", "How it works"], label_visibility="collapsed", key="page")
+    st.divider()
+    if os.environ.get("APP_PASSWORD") and not st.session_state.get("pw_ok"):
+        pw = st.text_input("Judge access", type="password", placeholder="Access code")
+        if pw:
+            st.session_state.pw_ok = pw == os.environ["APP_PASSWORD"]
+            if st.session_state.pw_ok:
+                st.rerun()
+            st.error("Wrong code")
+    elif os.environ.get("APP_PASSWORD"):
+        st.success("Judge access on", icon=":material/lock_open:")
+    if unlocked():
+        with st.expander("API key"):
+            try:
+                st.caption(", ".join(m.split("/")[-1] for m in ra.models()))
+            except ra.AuditError as e:
+                st.error(str(e))
+            new_key = st.text_input("OpenRouter key", type="password", placeholder="sk-or-…")
+            if st.button("Use this key") and new_key:
+                try:
+                    ra.set_credentials(new_key)
+                    st.success("Key in use")
+                except ra.AuditError as e:
+                    st.error(str(e))
+            if st.button("Test models"):
+                with st.spinner("Testing…"):
+                    for m, s in ra.check_models():
+                        st.write(f"`{m.split('/')[-1]}`: {s}")
+
+
+# ------------------------------------------------------------------ audit: banner + steps
+def banner(v):
+    exp = v.get("exposure", "LOW")
+    c = TONE.get(exp, "#7a6e62")
+    arc = {"HIGH": 327, "MEDIUM": 218, "LOW": 109}.get(exp, 0)
+    ui(f'<div class="rp-banner"><div class="rp-ring"><svg viewBox="0 0 120 120">'
+       f'<circle cx="60" cy="60" r="52" fill="none" stroke="#efe8dc" stroke-width="10"/>'
+       f'<circle cx="60" cy="60" r="52" fill="none" stroke="{c}" stroke-width="10" stroke-linecap="round" '
+       f'stroke-dasharray="{arc} 327" transform="rotate(-90 60 60)"/></svg>'
+       f'<div style="color:{c}">{esc(exp)}</div></div>'
+       f'<div><div class="rp-code">{esc(v.get("module"))} {esc(v.get("assessment"))}</div>'
+       f'<div class="rp-name">{esc(v.get("module_name", ""))}</div>'
+       f'<div class="rp-say">{HEADLINE.get(exp, "")}</div></div></div>')
+
+
+def step_verdict(cur):
+    v, steps = cur["result"]["verdict"], cur["result"]["steps"]
+    pm = v.get("pass_mark", 50) or 50
+    tiles = []
+    for p, n in PERSONAS.items():
         total = v.get("persona_totals", {}).get(p) or 0
-        grade = v.get("persona_grades", {}).get(p, "-")
-        passed = total >= pass_mark
-        state = badge("Passes", "red" if p != "honest_helper" else "gray") if passed else badge("Fails", "green" if p != "honest_helper" else "gray")
-        cards.append(f'<div class="rp-card"><div class="rp-row"><span class="rp-label">{label}</span>{state}</div>'
-                     f'<div class="rp-grade">{esc(grade)}<span>{total}%</span></div>'
-                     f'<div class="rp-bar"><i style="width:{min(total, 100)}%"></i><b style="left:{pass_mark}%"></b></div>'
-                     f'<div class="rp-muted">{PERSONA_HELP[p]}</div></div>')
-    ui(f'<div class="rp-grid rp-g3">{"".join(cards)}</div>'
-       f'<div class="rp-muted" style="font-size:.78rem;margin-top:.15rem">Red tick on each bar = pass mark.</div>')
+        passed = total >= pm
+        col = "#b65329" if (passed and p != "honest_helper") else "#8a7d6e"
+        tiles.append(f'<div class="rp-tile"><div class="t">{n}</div>'
+                     f'<div class="g">{esc(v.get("persona_grades", {}).get(p, "–"))}<span>{total}%</span></div>'
+                     f'<div class="rp-bar"><i style="width:{min(total, 100)}%;background:{col}"></i><b style="left:{pm}%"></b></div>'
+                     f'<div class="s" style="color:{col}">{"Passes" if passed else "Fails"}</div></div>')
+    ui('<div class="rp-tiles">' + "".join(tiles) + '</div>')
 
-    if v.get("clos_at_risk"):
-        ui('<div class="rp-section-label">Learning outcomes this assessment no longer reliably proves</div>')
-        ui("".join(f'<div class="rp-alert"><b>{esc(c.get("id"))} · {esc(c.get("text"))}</b>'
-                   f'<div class="rp-muted">{esc(human(c.get("why", "")))}</div></div>' for c in v["clos_at_risk"]))
+    clos = v.get("clos_at_risk") or []
+    if clos:
+        ui('<div class="rp-h">No longer proven</div>' +
+           "".join(f'<div class="rp-clo"><b>{esc(c.get("id"))}</b><span>{esc(c.get("text"))}</span></div>' for c in clos))
     else:
-        ui('<div class="rp-alert ok"><b>No learning outcomes at risk</b><div class="rp-muted">The AI students could not pass.</div></div>')
-    if v.get("easy_criteria"):
-        easy = v["easy_criteria"]
-        more = f'<span class="rp-muted" style="font-size:.8rem;align-self:center">+{len(easy) - 3} more</span>' if len(easy) > 3 else ""
-        ui('<div class="rp-section-label">Rubric criteria the AI met easily</div>'
-           f'<div class="rp-meta" style="margin-top:.4rem">{"".join(badge(c) for c in easy[:3])}{more}</div>')
+        ui('<div class="rp-ok">Every learning outcome is still proven.</div>')
 
     st.write("")
-    with st.expander("See what each AI student submitted and how the Examiner marked it"):
+    with st.expander("Evidence", icon=":material/description:"):
         ex = {r.get("persona"): r for r in steps.get("05-examiner", {}).get("results", [])}
-        for p in PERSONA_NAMES:
-            st.markdown(f"#### {PERSONA_NAMES[p]}")
+        for p, n in PERSONAS.items():
+            st.markdown(f"**{n}**")
             for s in ex.get(p, {}).get("scores", []):
-                st.markdown(f"- **{s.get('criterion')}**: {s.get('score')}/{s.get('max')}. {s.get('justification', '')}")
-            ans = steps.get(f"02-{p}", {}).get("answers", [])
-            for a in ans:
-                st.text_area(f"{PERSONA_NAMES[p]}, task {a.get('task_id')}", a.get("answer", ""), height=160,
-                             key=f"ans-{p}-{a.get('task_id')}-{id(result)}")
-    with st.expander("Raw verdict JSON (the hand-off file between the Audit and Fix workflows)"):
-        st.json(v)
+                st.markdown(f"- {s.get('criterion')}: **{s.get('score')}/{s.get('max')}**. {s.get('justification', '')}")
+            for a in steps.get(f"02-{p}", {}).get("answers", []):
+                st.text_area(f"{n}, task {a.get('task_id')}", a.get("answer", ""), height=150,
+                             key=f"ans-{p}-{a.get('task_id')}-{cur['name']}")
+        st.download_button("Verdict file (.json)", json.dumps(v, indent=2),
+                           f"{v.get('module')}_{v.get('assessment')}_verdict.json", mime="application/json",
+                           key=f"vj-{cur['name']}")
+    st.write("")
+    if v.get("exposure") in ("HIGH", "MEDIUM"):
+        st.button("Fix this assignment", type="primary", icon=":material/arrow_forward:", on_click=set_step, args=(1,))
 
 
-# ------------------------------------------------------------------ 2 · fix, 3 · approve
-def show_fix(result, brief_text, name):
-    v = result["verdict"]
-    if v.get("exposure") not in ("HIGH", "MEDIUM"):
-        ui('<div class="rp-alert ok" style="margin-top:1.2rem"><b>LOW exposure: no redesign needed</b>'
-           '<div class="rp-muted">It is still logged in the register and re-audited monthly.</div></div>')
-        return
-    step(2, "Fix", "Redesign options that keep testing the same learning outcomes but make AI-only completion fail.")
-    key = f"redesign-{name}"
-    if key not in st.session_state:
-        saved = rf.demo_redesign(name) if name else None
+def redesign_for(cur):
+    key = f"redesign-{cur['name']}"
+    if key not in st.session_state and not cur["name"].startswith("live-"):
+        saved = rf.demo_redesign(cur["name"])
         if saved:
             st.session_state[key] = saved
-    if key not in st.session_state:
-        if st.button("Propose redesigns", type="primary", disabled=not unlocked()):
-            with st.spinner("Redesign agent is working..."):
+    return st.session_state.get(key), key
+
+
+def brief_of(cur):
+    return cur.get("brief") or rf.brief_for_demo(cur["name"], cur["result"]["steps"].get("01-intake", {}))
+
+
+def step_fix(cur):
+    v = cur["result"]["verdict"]
+    if v.get("exposure") not in ("HIGH", "MEDIUM"):
+        ui('<div class="rp-ok">Nothing to fix.</div>')
+        return
+    red, key = redesign_for(cur)
+    if red is None:
+        if st.button("Suggest fixes", type="primary", icon=":material/auto_fix_high:", disabled=not unlocked()):
+            with st.spinner("Writing fixes…"):
                 try:
-                    st.session_state[key] = rf.run_redesign(v, brief_text)
+                    st.session_state[key] = rf.run_redesign(v, brief_of(cur))
+                    st.rerun()
                 except ra.AuditError as e:
-                    st.error(f"Redesign failed: {e}")
-                    return
-        else:
-            return
-    red = st.session_state[key]
+                    st.error(f"Couldn’t write fixes: {e}")
+        return
     opts = red.get("options", [])
-    if red.get("why_recommended"):
-        ui(f'<div class="rp-lead" style="margin-bottom:.6rem">{esc(red["why_recommended"])}</div>')
     ids = [o.get("id") for o in opts]
-    pick = st.radio("Choose a redesign", ids, index=ids.index(red.get("recommended")) if red.get("recommended") in ids else 0,
-                    format_func=lambda i: next(f"{o['id']}: {o.get('title')}" + (" (recommended)" if i == red.get("recommended") else "")
-                                               for o in opts if o["id"] == i), horizontal=True)
+    rec = red.get("recommended")
+    pick = st.radio("Choose a fix", ids, index=ids.index(rec) if rec in ids else 0, key=f"pick-{cur['name']}",
+                    format_func=lambda i: next(o.get("title", i) for o in opts if o["id"] == i) + ("  · recommended" if i == rec else ""))
     opt = rf.option(red, pick)
-    stats = [("AIAS level", opt.get("aias_level")), ("Lane", str(opt.get("lane", "")).title()),
-             ("Extra marking / student", f"{opt.get('extra_marking_minutes_per_student')} min")]
-    ui('<div class="rp-grid rp-g3">' + "".join(f'<div class="rp-card"><div class="rp-muted">{a}</div><div class="rp-stat">{esc(b)}</div></div>'
-                                              for a, b in stats) + '</div>')
-    if opt.get("techniques"):
-        ui('<div class="rp-section-label">Techniques</div>'
-           f'<div class="rp-meta" style="margin-top:.4rem">{"".join(badge(t) for t in opt["techniques"])}</div>')
+    ui('<div class="rp-stats">'
+       f'<div class="rp-stat"><b>+{esc(opt.get("extra_marking_minutes_per_student"))} min</b><span>marking per student</span></div>'
+       f'<div class="rp-stat"><b>{esc(str(opt.get("lane", "")).title())}</b><span>lane</span></div>'
+       f'<div class="rp-stat"><b>Level {esc(opt.get("aias_level"))}</b><span>AI Assessment Scale</span></div></div>')
     if opt.get("clo_coverage"):
-        ui('<div class="rp-section-label">Same learning outcomes, still assessed</div>' +
-           "".join(f'<div class="rp-check"><span>✓</span><span><b>{esc(c.get("id"))}</b> · {esc(c.get("how"))}</span></div>'
-                   for c in opt["clo_coverage"]))
+        ui('<div class="rp-h">Still tests</div>' +
+           "".join(f'<div class="rp-clo"><b>{esc(c.get("id"))}</b><span>{esc(c.get("how"))}</span></div>' for c in opt["clo_coverage"]))
     st.write("")
-    with st.expander("Read the revised task text"):
-        ui(f'<div class="rp-pre" style="margin:0">{pre(opt.get("revised_task_text", ""))}</div>')
+    with st.expander("Revised task", icon=":material/description:"):
+        ui(f'<div class="rp-pre">{pre(opt.get("revised_task_text", ""))}</div>')
+    st.write("")
+    st.button("Continue to approval", type="primary", icon=":material/arrow_forward:", on_click=set_step, args=(2,))
 
-    step(3, "Lecturer approval", "Human in the loop: nothing is changed, logged or sent until the lecturer approves.")
-    with st.container(border=True, key=f"rpbox-approve-{name}"):
-        c1, c2 = st.columns([3, 1], vertical_alignment="bottom")
-        to = c1.text_input("Lecturer email", value=v.get("lecturer_email", "") if "@" in v.get("lecturer_email", "") and
-                           "REPLACE" not in v.get("lecturer_email", "") else os.environ.get("DEMO_LECTURER_EMAIL", ""),
-                           placeholder="lecturer@university.edu.my")
-        approve = c2.button(f"Approve {pick}  →", type="primary", width="stretch")
-        if not unlocked():
-            ui('<div class="rp-muted" style="font-size:.8rem;margin:-.15rem 0 .1rem 0">🔒 Anyone can approve to see the follow-up. '
-               'The judge password makes the Jira card and email real.</div>')
-        elif rf.smtp_configured():
-            ui('<div class="rp-muted" style="font-size:.8rem;margin:-.15rem 0 .1rem 0">✉️ This address really gets the email. '
-               'Type your own to see it arrive.</div>')
-    if approve:
-        do_actions(v, red, opt, brief_text, to, name)
+
+def step_approve(cur):
+    v = cur["result"]["verdict"]
+    name = cur["name"]
+    red, _ = redesign_for(cur)
+    if v.get("exposure") not in ("HIGH", "MEDIUM") or red is None:
+        ui('<div class="rp-ok">Pick a fix first.</div>')
+        return
+    opt = rf.option(red, st.session_state.get(f"pick-{name}"))
+    high = v.get("exposure") == "HIGH"
+    ui('<div class="rp-h" style="margin-top:.2rem">On approval, RedPen will</div>'
+       '<div class="rp-check"><i>1</i><span>Add the card to the <b>Jira</b> exposure register</span></div>'
+       '<div class="rp-check"><i>2</i><span>Email the report and revised brief with <b>Gmail</b></span></div>'
+       + ('<div class="rp-check"><i>3</i><span>Book a 30-minute review in <b>Google Calendar</b></span></div>' if high else ''))
+    st.write("")
+    c1, c2 = st.columns([3, 1.2], vertical_alignment="bottom")
+    to = c1.text_input("Lecturer email", value=os.environ.get("DEMO_LECTURER_EMAIL", ""),
+                       placeholder="lecturer@university.edu.my", key=f"to-in-{name}")
+    if c2.button(f"Approve {opt.get('id', '')}" + ("" if unlocked() else " (preview)"), type="primary",
+                 icon=":material/check:", width="stretch"):
+        do_actions(v, red, opt, brief_of(cur), to, name)
     if st.session_state.get(f"done-{name}"):
-        show_downloads(v, red, opt, brief_text, name)
+        show_done(cur, red, opt)
 
 
-def do_actions(v, red, opt, brief_text, to, name):
+def do_actions(v, red, opt, brief, to, name):
     log = []
-    revised = rf.revised_brief(brief_text, v, opt)
+    revised = rf.revised_brief(brief, v, opt)
     ics = rf.ics_invite(v, to) if v.get("exposure") == "HIGH" else None
     st.session_state.pop(f"jira-{name}", None)
+    st.session_state.pop(f"sent-{name}", None)
+    st.session_state[f"to-{name}"] = to
     if rf.jira_configured() and unlocked():
         try:
             k, url, how = rf.jira_upsert(v, opt)
             st.session_state[f"jira-{name}"] = k
-            log.append(("Jira", f"{how} [{k}]({url}) in the exposure register"))
+            log.append(("Jira", f"{how} [{k}]({url})"))
         except ra.AuditError as e:
-            log.append(("Jira", f"⚠️ {e}"))
-    elif rf.jira_configured():
-        log.append(("Jira", f"card **{v.get('module')} {v.get('assessment')}** ready (the judge password writes it for real)"))
+            log.append(("Jira", f"failed: {e}"))
     else:
-        log.append(("Jira", "not configured here (set JIRA_* secrets). Card that would be created: "
-                            f"**{v.get('module')} {v.get('assessment')}**, labels {', '.join(rf.jira_labels(v))}"))
-    st.session_state[f"to-{name}"] = to
-    st.session_state.pop(f"sent-{name}", None)
+        log.append(("Jira", "card ready (preview)"))
     if rf.smtp_configured() and unlocked() and re.fullmatch(r"[^@\s]+@[^@\s]+\.[^@\s]+", to or ""):
         try:
             att = [(f"{v.get('module')}_{v.get('assessment')}_revised.txt", revised.encode(), "text/plain")]
             if ics:
                 att.append(("redpen-review.ics", ics.encode(), "text/calendar"))
             rf.send_email(to, rf.email_subject(v), rf.email_body(v, red, opt), att, invite=ics)
-            st.session_state[f"sent-{name}"] = dt.datetime.now(dt.timezone(dt.timedelta(hours=8))).strftime("%H:%M")
-            log.append(("Email", f"**sent via Gmail** to {to}. Check the inbox."))
+            st.session_state[f"sent-{name}"] = True
+            log.append(("Email", f"**sent** to {to}"))
         except Exception as e:  # noqa: BLE001
-            log.append(("Email", f"⚠️ {e}"))
+            log.append(("Email", f"failed: {e}"))
     elif rf.smtp_configured() and unlocked():
-        log.append(("Email", "not sent: type an email above and approve again"))
+        log.append(("Email", "not sent: add an email address"))
     else:
-        log.append(("Email", "ready in the outbox below (the judge password sends it for real)"))
+        log.append(("Email", "ready (preview)"))
     if ics:
-        when = f"{rf.next_working_day_10am():%a %d %b, 10:00} MYT"
-        log.append(("Calendar", f"**invitation sent** for a 30-min review, {when}"
-                    if st.session_state.get(f"sent-{name}") else f"30-min review booked for {when}"))
-    log.append(("Revised brief", "ready below"))
+        when = f"{rf.next_working_day_10am():%a %d %b, 10:00}"
+        log.append(("Calendar", f"**invite sent** for {when}" if st.session_state.get(f"sent-{name}") else f"review set for {when}"))
     st.session_state[f"done-{name}"] = log
 
 
-def show_reaudit():
-    """The scheduled half of RedPen Audit: monthly re-audit results (data/reaudit/history.json, written by
-    tools/reaudit.py from the GitHub Actions schedule)."""
-    import reaudit
-    st.divider()
-    step("↻", "Monthly re-audit (scheduled)",
-         "Runs by itself every month on the newest Gemini model, so a newly unsafe assessment is caught.")
-    hist = reaudit.load_history()["runs"]
-    last = hist[-1] if hist else None
-    nxt = reaudit.next_run()
-    nice = lambda iso: f"{dt.date.fromisoformat(iso):%d %b %Y}".lstrip("0") if iso else ""
-    cards = [("Schedule", "1st of month, 09:00"), ("Next run", f"{nxt:%d %b %Y}".lstrip("0")),
-             ("Last run", f"{nice(last['date'])} · {'scheduled' if last['trigger'] == 'schedule' else 'manual'}" if last else "—")]
-    ui('<div class="rp-grid rp-g3">' + "".join(
-        f'<div class="rp-card"><div class="rp-muted">{a}</div><div class="rp-stat" style="font-size:1.25rem">{esc(b)}</div></div>'
-        for a, b in cards) + '</div>')
-    if last:
-        arrow = {"same": "= no change", "up": "▲ went up", "down": "▼ went down"}
-        rows = [{"Assessment": r.get("assessment", r["name"]), "Last audit": f"{r['previous']} ({nice(r.get('previous_date'))})",
-                 "This run": r.get("exposure") or "failed", "Change": arrow.get(r.get("change"), "-"),
-                 "Copy-paster": f"{r.get('totals', {}).get('copy_paster', '-')}%", "Jira": r.get("jira", "-"),
-                 "Model": str(r.get("model", "-")).split("/")[-1]} for r in last["results"]]
-        st.dataframe(rows, hide_index=True, width="stretch")
-    st.link_button("See the schedule and its runs on GitHub Actions ↗",
-                   "https://github.com/L0adn9/redPen/actions/workflows/monthly-reaudit.yml")
-
-
-def show_downloads(v, red, opt, brief_text, name):
-    with st.container(border=True, key=f"rpbox-done-{name}"):
-        ui('<div class="rp-row" style="justify-content:flex-start;gap:.5rem;margin-bottom:.3rem">'
-           f'{badge("Approved", "green", "lg")}<span class="rp-label">RedPen did the follow-up</span></div>')
-        ui("".join(f'<div class="rp-check"><span>✓</span><span><b>{esc(what)}:</b> {md_inline(msg)}</span></div>'
-                   for what, msg in st.session_state[f"done-{name}"]))
-    base = f"{v.get('module')}_{v.get('assessment')}"
+def show_done(cur, red, opt):
+    v, name = cur["result"]["verdict"], cur["name"]
     to = st.session_state.get(f"to-{name}", "")
-    revised = rf.revised_brief(brief_text, v, opt)
-    ics = rf.ics_invite(v, to) if v.get("exposure") == "HIGH" else None
-
-    step("✉", "Outbox", "Everything RedPen sent, exactly as the lecturer receives it.")
+    st.divider()
+    ui('<div class="rp-h" style="margin-top:0">Done</div>' +
+       "".join(f'<div class="rp-check"><i>✓</i><span><b>{esc(w)}:</b> {md_inline(m)}</span></div>'
+               for w, m in st.session_state[f"done-{name}"]))
     key = st.session_state.get(f"jira-{name}")
-    if key:
-        with st.container(border=True, key=f"rpbox-jira-{name}"):
+    ics = rf.ics_invite(v, to) if v.get("exposure") == "HIGH" else None
+    st.write("")
+    with st.container(horizontal=True, gap="small"):
+        if key:
             try:
-                i = rf.jira_issue(key)
-                ui(f'<div class="rp-row"><span class="rp-label">Jira · Assessment Exposure Register</span>'
-                   f'{badge("Read back live from Jira", "gray")}</div>'
-                   f'<div class="rp-row" style="justify-content:flex-start;gap:.5rem;margin:.7rem 0 .3rem 0">'
-                   f'{badge(i["key"], "solid", "lg")}{badge(i["status"], "green", "lg")}'
-                   f'<span style="font-weight:600">{esc(i["summary"])}</span></div>'
-                   f'<div class="rp-meta">{"".join(badge(lb) for lb in i["labels"])}</div>'
-                   f'<div class="rp-muted" style="margin:.55rem 0 1rem 0;font-size:.8rem">Updated {esc(i["updated"])}</div>')
-                st.link_button("Open the card in Jira ↗", i["url"])
-            except ra.AuditError as e:
-                st.warning(f"Could not read the card back: {e}")
-
+                st.link_button(f"Open {key} in Jira", rf.jira_issue(key)["url"], icon=":material/open_in_new:")
+            except ra.AuditError:
+                pass
+        if ics:
+            st.link_button("Add to Google Calendar", rf.google_calendar_link(v, to), icon=":material/event:")
+    base = f"{v.get('module')}_{v.get('assessment')}"
+    revised = rf.revised_brief(brief_of(cur), v, opt)
     atts = [(f"{base}_revised.txt", revised.encode(), "text/plain")]
     if ics:
         atts.append(("redpen-review.ics", ics.encode(), "text/calendar"))
-    with st.container(border=True, key=f"rpbox-mail-{name}"):
-        ui('<div class="rp-row" style="margin-bottom:.7rem"><span class="rp-label">Email to the lecturer</span>'
-           f'{badge("Sent via Gmail · " + st.session_state[f"sent-{name}"] + " MYT", "green") if st.session_state.get(f"sent-{name}") else badge("Report", "gray")}</div>'
-           '<div class="rp-mail-h">'
-           f'<div>From</div><div>RedPen</div><div>To</div><div>{esc(to or "(lecturer email)")}</div>'
-           f'<div>Subject</div><div style="font-weight:600">{esc(rf.email_subject(v))}</div>'
-           f'<div>Attached</div><div>{"".join(badge("📎 " + a[0]) + " " for a in atts)}</div></div>')
-        with st.expander("Read the full email"):
-            ui(f'<div class="rp-pre plain" style="margin:0">{pre(rf.email_body(v, red, opt))}</div>')
-        st.download_button("Download this email (.eml)", rf.email_eml(to, rf.email_subject(v), rf.email_body(v, red, opt), atts),
-                           f"{base}_redpen-report.eml", mime="message/rfc822", key=f"eml-{name}")
-
-    if ics:
-        e = rf.calendar_event(v, to)
-        with st.container(border=True, key=f"rpbox-cal-{name}"):
-            ui('<div class="rp-row" style="margin-bottom:.7rem"><span class="rp-label">Calendar · T&amp;L review meeting</span>'
-               '<span style="display:inline-flex;gap:.4rem;flex-wrap:wrap;justify-content:flex-end">'
-               f'{badge("Booked because exposure is HIGH", "red")}'
-               f'{badge("Invitation sent", "green") if st.session_state.get(f"sent-{name}") else ""}</span></div>'
-               f'<div class="rp-row" style="justify-content:flex-start;gap:.9rem">'
-               f'<div class="rp-date"><div>{e["start"]:%b}</div><div>{e["start"]:%d}</div></div>'
-               f'<div><div style="font-weight:600">{esc(e["title"])}</div>'
-               f'<div class="rp-muted">{e["start"]:%A %d %B %Y} · {e["start"]:%H:%M}–{e["end"]:%H:%M} ({e["tz"]}) · 30 min</div>'
-               f'<div class="rp-muted">Guests: {esc(", ".join(e["guests"]))}</div></div></div>')
-            st.write("")
-            c1, c2, _ = st.columns([1, 1, 1])
-            c1.link_button("Add to Google Calendar ↗", rf.google_calendar_link(v, to), width="stretch")
-            c2.download_button("Download invite (.ics)", ics, "redpen-review.ics", mime="text/calendar", key=f"ics-{name}",
-                               width="stretch")
-
-    with st.container(border=True, key=f"rpbox-files-{name}"):
-        ui('<div class="rp-label" style="margin-bottom:.6rem">Files</div>')
-        c1, c2, _ = st.columns([1, 1, 1])
-        c1.download_button("Revised brief (.txt)", revised, f"{base}_revised.txt", key=f"rev-{name}", width="stretch")
-        c2.download_button("Verdict (.json)", json.dumps(v, indent=2), f"{base}_verdict.json", mime="application/json",
-                           key=f"ver-{name}", width="stretch")
-        with st.expander("Preview the revised brief"):
-            st.text(revised[:6000])
+    st.write("")
+    with st.expander("The email", icon=":material/mail:"):
+        ui(f'<p><b>{esc(rf.email_subject(v))}</b></p><div class="rp-pre">{pre(rf.email_body(v, red, opt))}</div>')
+    with st.expander("Files", icon=":material/download:"):
+        with st.container(horizontal=True, gap="small"):
+            st.download_button("Revised brief", revised, f"{base}_revised.txt", key=f"rev-{name}")
+            st.download_button("Email (.eml)", rf.email_eml(to, rf.email_subject(v), rf.email_body(v, red, opt), atts),
+                               f"{base}_redpen-report.eml", mime="message/rfc822", key=f"eml-{name}")
+            if ics:
+                st.download_button("Invite (.ics)", ics, "redpen-review.ics", mime="text/calendar", key=f"ics-{name}")
 
 
-# ------------------------------------------------------------------ sidebar
-with st.sidebar:
-    ui('<div class="rp-brand"><div class="rp-logo">🖍️</div><span>RedPen</span></div>'
-       '<div class="rp-muted" style="margin-bottom:.9rem">They catch students. We fix assignments.</div>')
-    mode = st.radio("Mode", ["Saved audits (instant)", "Run a new audit"], index=0)
-    st.divider()
-    if os.environ.get("APP_PASSWORD") and not st.session_state.get("pw_ok"):
-        pw = st.text_input("Judge password", type="password", help="Unlocks the real Jira write, real email + calendar invitation, and live audits.",
-                           placeholder="Enter password")
-        ui('<div class="rp-muted" style="font-size:.76rem;margin-top:-.45rem">Press Enter to unlock.</div>')
-        if pw:
-            st.session_state.pw_ok = pw == os.environ["APP_PASSWORD"]
-            if st.session_state.pw_ok:
-                st.rerun()  # swap the field for the "Unlocked" badge straight away
-            st.error("Wrong password")
-    elif os.environ.get("APP_PASSWORD"):
-        ui(badge("🔓 Unlocked: real Jira, Gmail + live audits", "green"))
-    if unlocked():
-        with st.expander("API key (OpenRouter · Gemini models)"):
-            try:
-                st.caption(f"Backend: **{ra.backend()}** · models: {', '.join(ra.models())}")
-            except ra.AuditError as e:
-                st.error(str(e))
-            new_key = st.text_input("Swap OpenRouter key (sk-or-…)", type="password")
-            if st.button("Use this key") and new_key:
-                try:
-                    ra.set_credentials(new_key)
-                    st.success(f"Now using {ra.backend()}")
-                except ra.AuditError as e:
-                    st.error(str(e))
-            if st.button("Test models"):
-                with st.spinner("One tiny call per model..."):
-                    for m, s in ra.check_models():
-                        st.write(f"`{m}`: {s}")
-    st.divider()
-    ui('<div class="rp-section-label" style="margin-top:0">How it works</div><div class="rp-flow">'
-       '<b>Intake</b> reads brief, rubric, CLO map<br><b>3 AI students</b> attempt it<br><b>Examiner</b> marks on the real rubric<br>'
-       '<b>Verdict</b> exposure + CLOs at risk<br><b>Redesign</b> same CLOs, harder to fake<br><b>Lecturer approves</b><br>'
-       '<b>Jira · email · calendar</b></div>'
-       '<div class="rp-muted" style="font-size:.78rem;margin-top:.8rem">Same agent prompts as our Gemini Enterprise workflows.</div>')
+def report(cur):
+    banner(cur["result"]["verdict"])
+    if st.session_state.get("step") not in STEPS:
+        st.session_state.step = STEPS[0]
+    st.segmented_control("Step", STEPS, key="step", label_visibility="collapsed")
+    st.write("")
+    s = st.session_state.get("step") or STEPS[0]
+    if s == STEPS[0]:
+        step_verdict(cur)
+    elif s == STEPS[1]:
+        step_fix(cur)
+    else:
+        step_approve(cur)
 
-ui('<div class="rp-hero">' + badge("Prototype · Gemini", "gray") + " " + badge("APU Cloud Innovation Hackathon 2026", "gray") +
-   '<h1>An AI red team for your assessments</h1>'
-   '<p>Before students get AI to do the assignment, RedPen already has, and tells you which learning outcomes '
-   'you can no longer trust. Then it fixes the assignment, with the lecturer.</p></div>')
 
-# ------------------------------------------------------------------ main
-if mode.startswith("Saved"):
-    runs = ra.demo_runs()
-    order = sorted(runs, key=lambda n: (n not in PILOT, n))
-    name = st.selectbox("Choose an audited assessment", order, format_func=demo_label)
-    result = ra.load_demo(name)
-    step(1, "Audit", "Three AI students attempt the assignment; an AI examiner marks them on the real rubric.")
-    show_verdict(result, is_real=name in PILOT)
-    show_fix(result, rf.brief_for_demo(name, result["steps"].get("01-intake", {})), name)
+def page_audit():
+    src = st.segmented_control("Source", ["Past audits", "New audit"], default="Past audits", key="src",
+                               label_visibility="collapsed", on_change=reset_step)
+    if src == "New audit":
+        if not unlocked():
+            st.info("Enter the judge access code in the sidebar to run a live audit.", icon=":material/lock:")
+            return
+        live = st.session_state.get("live")
+        if not live:
+            c1, c2 = st.columns(2)
+            module = c1.text_input("Module code", placeholder="CT074-3-2")
+            assessment = c2.text_input("Assessment", placeholder="A1")
+            c1, c2, c3 = st.columns(3)
+            brief_f = c1.file_uploader("Brief", type=["pdf", "docx", "txt", "md"])
+            rubric_f = c2.file_uploader("Rubric", type=["pdf", "docx", "txt", "md"])
+            clo_f = c3.file_uploader("Learning outcomes", type=["pdf", "docx", "txt", "md"])
+            if st.button("Run the red team", type="primary", icon=":material/play_arrow:", disabled=not (brief_f and rubric_f)):
+                brief, rubric = read_upload(brief_f), read_upload(rubric_f)
+                clo = read_upload(clo_f) or "(no CLO map given)"
+                mod, ass = (module or "MODULE").strip().upper(), (assessment or "A1").strip().upper()
+                with st.status("Auditing…", expanded=True) as status:
+                    def on_step(n, d, secs):
+                        status.write(f"{ra.STEP_TITLES.get(n, n)} · {secs:.0f}s")
+                    try:
+                        res = ra.run_audit(brief, rubric, clo, mod, ass, on_step=on_step)
+                    except ra.AuditError as e:
+                        status.update(label="Audit failed", state="error")
+                        st.error(str(e))
+                        return
+                    status.update(label="Done", state="complete", expanded=False)
+                st.session_state.live = {"result": res, "brief": brief,
+                                         "name": f"live-{mod}-{ass}-{dt.datetime.now():%H%M%S}"}
+                reset_step()
+                st.rerun()
+            return
+        if st.button("New audit", icon=":material/add:"):
+            st.session_state.pop("live", None)
+            st.rerun()
+        report(live)
+        return
+    order = sorted(ra.demo_runs(), key=lambda n: (n not in PILOT, n))
+    name = st.selectbox("Assessment", order, format_func=past_label, label_visibility="collapsed", on_change=reset_step)
+    report({"result": ra.load_demo(name), "name": name})
 
-    st.divider()
-    ui('<div class="rp-step" style="margin-top:0"><div class="rp-step-n">≡</div><div><div class="rp-step-t">Assessment Exposure Register</div>'
-       '<div class="rp-muted">Every audited assessment, its exposure and the learning outcomes at risk.</div></div></div>')
+
+# ------------------------------------------------------------------ register
+def page_register():
+    ui('<div class="rp-title">Exposure register</div>')
+    order = sorted(ra.demo_runs(), key=lambda n: (n not in PILOT, n))
     rows = []
     for n in order:
         v = ra.load_demo(n)["verdict"]
         rows.append({"Assessment": f"{v.get('module')} {v.get('assessment')}", "Module": v.get("module_name", ""),
-                     "Brief": "real APU" if n in PILOT else "sample", "Exposure": v.get("exposure"),
+                     "Brief": "Real APU" if n in PILOT else "Sample", "Exposure": v.get("exposure"),
                      "Copy-paster": f"{v['persona_grades'].get('copy_paster')} ({v['persona_totals'].get('copy_paster')}%)",
-                     "CLOs at risk": ", ".join(c.get("id", "") for c in v.get("clos_at_risk", [])) or "-"})
-    high = sum(r["Exposure"] == "HIGH" for r in rows)
-    real_pass = sum(1 for n in order if n in PILOT and
-                    ra.load_demo(n)["verdict"]["persona_totals"].get("copy_paster", 0) >= ra.load_demo(n)["verdict"].get("pass_mark", 50))
-    ui('<div class="rp-grid rp-g3">' + "".join(
-        f'<div class="rp-card"><div class="rp-muted">{a}</div><div class="rp-stat">{b}</div></div>' for a, b in
-        [("Assessments audited", len(rows)), ("HIGH exposure", high),
-         ("Real APU briefs passed by copy-paste", f"{real_pass} of {len(PILOT)}")]) + '</div>')
+                     "CLOs at risk": ", ".join(c.get("id", "") for c in v.get("clos_at_risk", [])) or "–"})
+    real = [ra.load_demo(n)["verdict"] for n in order if n in PILOT]
+    real_pass = sum(1 for v in real if v["persona_totals"].get("copy_paster", 0) >= v.get("pass_mark", 50))
+    ui('<div class="rp-stats">'
+       f'<div class="rp-stat"><b>{len(rows)}</b><span>audited</span></div>'
+       f'<div class="rp-stat"><b>{sum(r["Exposure"] == "HIGH" for r in rows)}</b><span>high exposure</span></div>'
+       f'<div class="rp-stat"><b>{real_pass} of {len(real)}</b><span>real APU briefs passed by copy-paste</span></div></div>')
     st.dataframe(rows, hide_index=True, width="stretch")
-    import csv
+    buf = io.StringIO()
+    w = csv.DictWriter(buf, fieldnames=list(rows[0].keys()))
+    w.writeheader()
+    w.writerows(rows)
+    st.download_button("Download CSV", buf.getvalue(), "redpen-register.csv", mime="text/csv", icon=":material/download:")
 
-    csv_buf = io.StringIO()
-    if rows:
-        writer = csv.DictWriter(csv_buf, fieldnames=list(rows[0].keys()))
-        writer.writeheader()
-        writer.writerows(rows)
-    st.download_button("Download CSV", csv_buf.getvalue(), "redpen-register.csv", mime="text/csv")
     if rf.jira_configured():
-        ui('<div class="rp-section-label">Live from Jira · RP board</div>')
+        ui('<div class="rp-h">Live from Jira</div>')
         try:
             st.dataframe(rf.jira_register(), hide_index=True, width="stretch")
-            st.caption("Each lecturer approval creates or updates one card here.")
         except ra.AuditError as e:
-            st.caption(f"Jira not reachable right now: {e}")
-    show_reaudit()
-else:
-    if not unlocked():
-        st.warning("Enter the judge password in the sidebar to run a live audit (each run uses 6 Gemini calls). "
-                   "Saved audits work without it.")
-        st.stop()
-    step(1, "Audit a new assessment", "Upload a brief and its rubric (PDF, DOCX or TXT). Takes about 1–5 minutes.")
-    with st.container(border=True, key=f"rpbox-upload"):
-        c1, c2 = st.columns(2)
-        module = c1.text_input("Module code", "DEMO101")
-        assessment = c2.text_input("Assessment", "A1")
-        brief_f = st.file_uploader("Assignment brief", type=["txt", "pdf", "docx", "md"])
-        rubric_f = st.file_uploader("Marking rubric", type=["txt", "pdf", "docx", "md"])
-        clo_f = st.file_uploader("CLO map (optional)", type=["txt", "pdf", "docx", "md"])
-        email = st.text_input("Lecturer email (optional)")
-        run = st.button("Run the red team", type="primary", disabled=not (brief_f and rubric_f))
-    if run:
-        brief, rubric, clo = read_upload(brief_f), read_upload(rubric_f), read_upload(clo_f) or "(no CLO map given)"
-        status = st.status("Auditing... (about 1-5 minutes)", expanded=True)
+            st.warning(f"Jira not reachable: {e}")
 
-        def on_step(n, d, secs):
-            status.write(f"✓ {ra.STEP_TITLES.get(n, n)} ({secs:.0f}s)")
-        try:
-            res = ra.run_audit(brief, rubric, clo, module.strip().upper(), assessment.strip().upper(),
-                               lecturer_email=email or None, on_step=on_step)
-            status.update(label="Audit complete", state="complete")
-            st.session_state.live = {"result": res, "brief": brief, "name": f"live-{module}-{assessment}-{dt.datetime.now():%H%M%S}"}
-        except ra.AuditError as e:
-            status.update(label="Audit failed", state="error")
-            st.error(f"{e}. Try 'Test models' in the sidebar, or use Saved audits.")
-    live = st.session_state.get("live")
-    if live:
-        show_verdict(live["result"])
-        show_fix(live["result"], live["brief"], live["name"])
+    import reaudit
+    hist = reaudit.load_history()["runs"]
+    last = hist[-1] if hist else None
+    last_txt = dt.date.fromisoformat(last["date"][:10]).strftime("%d %b") if last else "–"
+    ui('<div class="rp-h">Monthly re-audit</div><div class="rp-stats">'
+       '<div class="rp-stat"><b>1st, 09:00</b><span>every month</span></div>'
+       f'<div class="rp-stat"><b>{reaudit.next_run():%d %b}</b><span>next run</span></div>'
+       f'<div class="rp-stat"><b>{last_txt}</b><span>last run</span></div></div>')
+    if last:
+        st.dataframe([{"Assessment": r.get("assessment", r["name"]), "Before": r["previous"], "Now": r.get("exposure") or "failed",
+                       "Jira": r.get("jira", "–")} for r in last["results"]], hide_index=True, width="stretch")
+    st.link_button("Schedule on GitHub Actions", "https://github.com/L0adn9/redPen/actions/workflows/monthly-reaudit.yml",
+                   icon=":material/open_in_new:")
 
-st.divider()
-ui('<div class="rp-muted" style="font-size:.8rem">RedPen is a risk signal from simulated AI attempts marked by an AI examiner '
-   '(calibrated: 7 of 7 real assignments within one grade band of independent reference marks). '
-   'It never sees or judges real student work.</div>')
+
+# ------------------------------------------------------------------ how it works
+def page_how():
+    ui('<div class="rp-title">How RedPen works</div>'
+       '<div class="rp-flow">'
+       '<div><em>1</em><b>Intake</b><p>Reads the brief, the rubric and the learning outcomes.</p></div>'
+       '<div><em>2</em><b>Three AI students</b><p>Attempt the assignment, each in a different way.</p></div>'
+       '<div><em>3</em><b>Examiner</b><p>Marks every attempt on the real rubric, like a lecturer.</p></div>'
+       '<div><em>4</em><b>Verdict</b><p>HIGH, MEDIUM or LOW exposure, and the learning outcomes at risk.</p></div>'
+       '<div><em>5</em><b>Redesign</b><p>Fixes that test the same outcomes but are harder to fake.</p></div>'
+       '<div><em>6</em><b>Lecturer approves</b><p>Then Jira, Gmail and Calendar do the follow-up.</p></div></div>')
+    ui('<div class="rp-h">The three AI students</div>' +
+       "".join(f'<div class="rp-clo"><b style="min-width:9rem;color:var(--fg)">{PERSONAS[p]}</b><span>{PERSONA_HELP[p]}</span></div>'
+               for p in PERSONAS))
+    ui('<div class="rp-h">What the verdict means</div>'
+       '<div class="rp-clo"><b style="min-width:6rem">HIGH</b><span>The copy-paster passes.</span></div>'
+       '<div class="rp-clo"><b style="min-width:6rem;color:#c08a1e">MEDIUM</b><span>Only the prompt engineer passes.</span></div>'
+       '<div class="rp-clo"><b style="min-width:6rem;color:#3c7a4a">LOW</b><span>No AI student passes.</span></div>')
+    ui('<div class="rp-h">Can you trust the examiner?</div>'
+       '<div class="rp-stats"><div class="rp-stat"><b>7 / 7</b><span>real assignments within one grade band</span></div>'
+       '<div class="rp-stat"><b>4.4</b><span>average gap in points</span></div>'
+       '<div class="rp-stat"><b>0</b><span>student work read</span></div></div>')
+    ui('<div class="rp-h">Built for Gemini Enterprise</div>'
+       '<p style="color:var(--fg2);font-size:1rem;line-height:1.6">The same agent instructions run in Gemini Enterprise '
+       'workflows: an Audit workflow triggered from Google Drive, a Fix workflow with an approval step and Jira, Gmail and '
+       'Calendar actions, and a chat agent over the register.</p>')
+
+
+# ------------------------------------------------------------------ route
+{"Audit": page_audit, "Register": page_register, "How it works": page_how}[page]()
