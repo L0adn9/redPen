@@ -37,7 +37,7 @@ st.set_page_config(page_title="RedPen", page_icon="🖍️", layout="wide")
 
 PERSONAS = {"copy_paster": "Copy-paster", "prompt_engineer": "Prompt engineer", "honest_helper": "Honest helper"}
 PERSONA_HELP = {"copy_paster": "Pastes the brief into a chatbot and submits the answer as it is.",
-                "prompt_engineer": "Uses AI strategically: plans, drafts and self-critiques.",
+                "prompt_engineer": "The strategic cheater: reads the marking scheme, gets AI to hit every top-band requirement, marks its own draft and polishes it to look human.",
                 "honest_helper": "Uses AI only the way the brief allows, and leaves the student’s own parts blank."}
 PILOT = {"CCP_A1", "DSTR_LW1", "DSTR_LW2", "WAPP_GA"}
 HEADLINE = {"HIGH": "A student can pass this by pasting the brief into AI.",
