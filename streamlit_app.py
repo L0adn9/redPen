@@ -180,6 +180,9 @@ def read_upload(f):
     if name.endswith(".pdf"):
         from pypdf import PdfReader
         return "\n".join((p.extract_text() or "") for p in PdfReader(io.BytesIO(data)).pages)
+    if name.endswith(".doc"):
+        from doc_reader import doc_text
+        return doc_text(data)
     if name.endswith(".docx"):
         import docx
         d = docx.Document(io.BytesIO(data))
@@ -482,9 +485,9 @@ def page_audit():
             module = c1.text_input("Module code", placeholder="CT074-3-2")
             assessment = c2.text_input("Assessment", placeholder="A1")
             c1, c2, c3 = st.columns(3)
-            brief_f = c1.file_uploader("Assignment brief", type=["pdf", "docx", "txt", "md"])
-            rubric_f = c2.file_uploader("Marking scheme (if separate)", type=["pdf", "docx", "txt", "md"])
-            clo_f = c3.file_uploader("Learning outcomes (if separate)", type=["pdf", "docx", "txt", "md"])
+            brief_f = c1.file_uploader("Assignment brief", type=["pdf", "docx", "doc", "txt", "md"])
+            rubric_f = c2.file_uploader("Marking scheme (if separate)", type=["pdf", "docx", "doc", "txt", "md"])
+            clo_f = c3.file_uploader("Learning outcomes (if separate)", type=["pdf", "docx", "doc", "txt", "md"])
             if st.button("Run the red team", type="primary", icon=":material/play_arrow:", disabled=not brief_f):
                 brief, rubric = read_upload(brief_f), read_upload(rubric_f)
                 clo = read_upload(clo_f)
