@@ -474,7 +474,9 @@ def report(cur):
 
 
 def page_audit():
-    src = st.segmented_control("Source", ["Past audits", "New audit"], default="Past audits", key="src",
+    if st.session_state.get("src") not in ("Past audits", "New audit"):
+        st.session_state.src = "Past audits"  # set via state, not default=, so the Agents page can switch it
+    src = st.segmented_control("Source", ["Past audits", "New audit"], key="src",
                                label_visibility="collapsed", on_change=reset_step)
     if src == "New audit":
         if not unlocked():
@@ -594,7 +596,7 @@ def page_how():
 # ------------------------------------------------------------------ route
 def page_agents_live():
     import agents_page  # imported here so the other pages never depend on it
-    agents_page.page_agents(ui, unlocked)
+    agents_page.page_agents(ui, unlocked, read_upload)
 
 
 {"Audit": page_audit, "Agents": page_agents_live, "Register": page_register, "How it works": page_how}[page]()

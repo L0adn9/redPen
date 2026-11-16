@@ -30,6 +30,10 @@ LIVE_FOLDERS = {  # real APU briefs first, then the synthetic samples
     "SEP310 A2 · Software Engineering PM (sample)": ("sample-assessments/SEP310/A2", "SEP310", "A2"),
 }
 REPLAY_SPEED = 3
+UPLOAD = "Upload your own assignment"
+UPLOAD_TYPES = ["pdf", "docx", "doc", "txt", "md"]
+NO_RUBRIC = "(no separate rubric file was given: the marking scheme is inside the brief)"
+NO_CLO = "(no CLO map was given: take the CLOs from the brief and the rubric)"
 
 C = {"wait": ("#f3eee4", "#cfc5b6", "#7a6e62"), "run": ("#fbe3c4", "#c08a1e", "#231b14"),
      "done": ("#e6f0e3", "#3c7a4a", "#231b14"), "skip": ("#fcf9f2", "#cfc5b6", "#a59a8d"),
@@ -107,7 +111,17 @@ def _dot(s):
     return "\n".join(lines)
 
 
-def _run(mode, choice, unlocked):
+def _files_from_upload(upload, read_upload):
+    """The lecturer's own files -> the orchestrator's three text inputs (brief required, the rest optional)."""
+    brief = read_upload(upload["brief"]).strip()
+    if not brief:
+        raise o.OrchestratorError("the brief file has no readable text (a scanned PDF? try the Word file or a text copy)")
+    return {"brief.txt": brief,
+            "rubric.txt": read_upload(upload["rubric"]).strip() or NO_RUBRIC,
+            "clo-map.txt": read_upload(upload["clo"]).strip() or NO_CLO}
+
+
+def _run(mode, choice, unlocked, upload=None, read_upload=None):
     state = {"status": {a["id"]: "wait" for a in o.AGENTS}, "results": {}, "trace": {"agents": {}}, "log": []}
     graph, log_box = st.empty(), st.empty()
     t0 = time.time()
@@ -140,6 +154,13 @@ def _run(mode, choice, unlocked):
         files = {"brief.txt": "(replay)", "rubric.txt": "(replay)", "clo-map.txt": "(replay)"}
         module, assessment = name, ""
         log(f"replay of saved run {name}: no API calls, real recorded timings sped up ×{REPLAY_SPEED}")
+    elif choice == UPLOAD:
+        files = _files_from_upload(upload, read_upload)
+        module = (upload.get("module") or "MODULE").strip().upper()
+        assessment = (upload.get("assessment") or "A1").strip().upper()
+        backend = o.pick_backend("auto", None)
+        log(f"live run on {backend.name} · your upload ({upload['brief'].name}) · "
+            f"models: {', '.join(m.split('/')[-1] for m in backend.models)}")
     else:
         rel, module, assessment = LIVE_FOLDERS[choice]
         backend = o.pick_backend("auto", None)
@@ -153,7 +174,8 @@ def _run(mode, choice, unlocked):
     log(f"done in {orch.trace['total_seconds']}s · verdict {v.get('exposure')} · "
         + ("waiting for the lecturer's approval" if "07-redesign" in orch.results else "no redesign needed"))
     st.session_state.agents_run = {"state": state, "results": orch.results, "trace": orch.trace, "mode": mode,
-                                   "choice": choice}
+                                   "choice": choice, "brief": files.get("brief.txt", ""), "module": module,
+                                   "assessment": assessment}
     st.session_state.agents_prompts = {a["id"]: orch.system_for(a) for a in o.AGENTS}
 
 
@@ -196,7 +218,24 @@ def _summary(run, ui):
                     st.caption("Not run.")
 
 
-def page_agents(ui, unlocked):
+def _to_lecturer(run):
+    """Hand the live run to the Audit page as the lecturer's view: same verdict, same answers and marks, and the
+    redesign the agent already wrote (no extra API call). Runs as a button callback, before the next rerun."""
+    res = run["results"]
+    v = dict(res["06-verdict"])
+    v.setdefault("audit_date", dt.date.today().isoformat())
+    v.setdefault("model", "flash")
+    tag = "".join(ch for ch in f"{run.get('module', 'X')}-{run.get('assessment', 'A1')}" if ch.isalnum() or ch == "-")
+    name = f"live-{tag}-{dt.datetime.now():%H%M%S}"
+    st.session_state.live = {"result": {"verdict": v, "steps": dict(res)}, "brief": run.get("brief", ""), "name": name}
+    if "07-redesign" in res:
+        st.session_state[f"redesign-{name}"] = res["07-redesign"]
+    st.session_state.page = "Audit"
+    st.session_state.src = "New audit"
+    st.session_state.step = "1  Verdict"
+
+
+def page_agents(ui, unlocked, read_upload=None):
     ui('<div class="rp-title">Agent orchestration</div>')
     ui('<div class="rp-para">Seven Gemini agents audit one assignment. Intake runs first, the three AI students run '
        'in parallel, then the Examiner and the Verdict. Every output is checked against its schema and sent back to '
@@ -207,15 +246,25 @@ def page_agents(ui, unlocked):
     c1, c2 = st.columns([1, 2])
     mode_label = c1.radio("Mode", modes, key="agents_mode")
     mode = "live" if mode_label.startswith("Run live") else "replay"
-    options = list(LIVE_FOLDERS) if mode == "live" else list(_saved_runs())
+    options = (list(LIVE_FOLDERS) + ([UPLOAD] if read_upload else [])) if mode == "live" else list(_saved_runs())
     default = next((i for i, k in enumerate(options) if k.startswith("CT074")), 0)
     choice = c2.selectbox("Assignment", options, index=default, key=f"agents_choice_{mode}")
     if not live_ok:
         c2.caption("Judge access unlocks live runs on Gemini.")
+    upload = None
+    if mode == "live" and choice == UPLOAD:
+        u1, u2 = st.columns(2)
+        upload = {"module": u1.text_input("Module code", placeholder="CT074-3-2", key="ag_module"),
+                  "assessment": u2.text_input("Assessment", placeholder="A1", key="ag_assessment")}
+        f1, f2, f3 = st.columns(3)
+        upload["brief"] = f1.file_uploader("Assignment brief", type=UPLOAD_TYPES, key="ag_brief")
+        upload["rubric"] = f2.file_uploader("Marking scheme (if separate)", type=UPLOAD_TYPES, key="ag_rubric")
+        upload["clo"] = f3.file_uploader("Learning outcomes (if separate)", type=UPLOAD_TYPES, key="ag_clo")
     ran_now = False
-    if st.button("Run the agents", type="primary", icon=":material/play_arrow:", key="agents_go"):
+    if st.button("Run the agents", type="primary", icon=":material/play_arrow:", key="agents_go",
+                 disabled=bool(upload is not None and not upload["brief"])):
         try:
-            _run(mode, choice, unlocked)
+            _run(mode, choice, unlocked, upload, read_upload)
             ran_now = True
         except o.OrchestratorError as e:
             msg = ("Live runs are not set up on this server (no Gemini API key)" if "no API key" in str(e)
@@ -231,6 +280,11 @@ def page_agents(ui, unlocked):
             st.graphviz_chart(_dot(run["state"]), use_container_width=True)
         st.caption(("Replay of a saved audit: the real outputs and recorded timings of an earlier Gemini run, sped up. "
                     if run["mode"] == "replay" else "Live run on Gemini. ") + f"Assignment: {run['choice']}")
+        if run["mode"] == "live" and "06-verdict" in run["results"]:
+            at_risk = run["results"]["06-verdict"].get("exposure") in ("HIGH", "MEDIUM")
+            st.button("Continue as the lecturer: fix and approve" if at_risk else "Open the lecturer's view",
+                      type="primary", icon=":material/arrow_forward:", key="agents_to_lecturer",
+                      on_click=_to_lecturer, args=(run,))
         _summary(run, ui)
     else:
         st.graphviz_chart(_dot({"status": {a["id"]: "wait" for a in o.AGENTS}, "results": {}, "trace": {}}),
