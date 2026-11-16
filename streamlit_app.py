@@ -587,10 +587,11 @@ def page_how():
        '<div class="rp-stats"><div class="rp-stat"><b>7 / 7</b><span>real assignments within one grade band</span></div>'
        '<div class="rp-stat"><b>4.4</b><span>average gap in points</span></div>'
        '<div class="rp-stat"><b>0</b><span>student work read</span></div></div>')
-    ui('<div class="rp-h">Built for Gemini Enterprise</div>'
-       '<p style="color:var(--fg2);font-size:1rem;line-height:1.6">The same agent instructions run in Gemini Enterprise '
-       'workflows: an Audit workflow triggered from Google Drive, a Fix workflow with an approval step and Jira, Gmail and '
-       'Calendar actions, and a chat agent over the register.</p>')
+    ui('<div class="rp-h">Ready for Gemini Enterprise</div>'
+       '<p style="color:var(--fg2);font-size:1rem;line-height:1.6">The agents run on Gemini today. The same agent '
+       'instructions are packaged as Gemini Enterprise workflows (an Audit workflow triggered from Google Drive, a Fix '
+       'workflow with an approval step and Jira, Gmail and Calendar actions, and a chat agent over the register), ready '
+       'to paste in once our licences are issued.</p>')
 
 
 # ------------------------------------------------------------------ route
